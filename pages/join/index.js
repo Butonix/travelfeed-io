@@ -3,11 +3,11 @@ import { indigo, teal } from '@material-ui/core/colors';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
-import Head from '../components/Header/Head';
-import Header from '../components/Header/Header';
-import { DEFAULT_META_DESCRIPTION } from '../config';
-import { imageProxy } from '../helpers/getImage';
-import { GET_TF_STATS } from '../helpers/graphql/stats';
+import Head from '../../components/Header/Head';
+import Header from '../../components/Header/Header';
+import { DEFAULT_META_DESCRIPTION } from '../../config';
+import { imageProxy } from '../../helpers/getImage';
+import { GET_TF_STATS } from '../../helpers/graphql/stats';
 
 class JoinPage extends Component {
   componentDidMount() {
