@@ -9,7 +9,6 @@ import OnboardStart from '../../components/Onboarding/OnboardStart';
 
 const RegisterStartPage = props => {
   const { ref } = props;
-
   return (
     <>
       <Header subheader="Register" />
