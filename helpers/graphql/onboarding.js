@@ -17,3 +17,20 @@ export const ONBOARD_START = gql`
     }
   }
 `;
+
+export const ONBOARD_INFO = gql`
+  mutation onboardInformation(
+    $infoToken: String!
+    $post: String!
+    $accountMetadata: String
+  ) {
+    onboardInformation(
+      infoToken: $infoToken
+      post: $post
+      accountMetadata: $accountMetadata
+    ) {
+      success
+      message
+    }
+  }
+`;
