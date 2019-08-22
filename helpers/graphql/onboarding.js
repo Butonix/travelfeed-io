@@ -34,3 +34,28 @@ export const ONBOARD_INFO = gql`
     }
   }
 `;
+
+export const ONBOARD_CREATE = gql`
+  mutation onboardCreate(
+    $claimToken: String!
+    $username: String!
+    $postingPubKey: String!
+    $activePubKey: String!
+    $memoPubKey: String!
+    $ownerPubKey: String!
+    $password: String
+  ) {
+    onboardCreate(
+      claimToken: $claimToken
+      username: $username
+      postingPubKey: $postingPubKey
+      activePubKey: $activePubKey
+      memoPubKey: $memoPubKey
+      ownerPubKey: $ownerPubKey
+      password: $password
+    ) {
+      success
+      message
+    }
+  }
+`;

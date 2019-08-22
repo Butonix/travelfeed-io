@@ -10,6 +10,7 @@ import OnboardCreate from '../../components/Onboarding/OnboardCreate';
 
 const RegisterCreatePage = props => {
   const { claimToken } = props;
+  // TODO: Query if token is valid in the beginning
 
   return (
     <>

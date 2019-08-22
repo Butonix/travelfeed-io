@@ -10,6 +10,7 @@ import OnboardInfo from '../../components/Onboarding/OnboardInfo';
 
 const RegisterInfoPage = props => {
   const { infoToken } = props;
+  // TODO: Query if token is valid in the beginning
 
   return (
     <>
