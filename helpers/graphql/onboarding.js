@@ -18,6 +18,14 @@ export const ONBOARD_START = gql`
   }
 `;
 
+export const ONBOARD_VERIFY_TOKEN = gql`
+  query onboardingVerifyToken($infoToken: String, $claimToken: String) {
+    onboardingVerifyToken(infoToken: $infoToken, claimToken: $claimToken) {
+      success
+    }
+  }
+`;
+
 export const ONBOARD_INFO = gql`
   mutation onboardInformation(
     $infoToken: String!

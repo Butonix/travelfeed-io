@@ -2,15 +2,16 @@ import { teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Query } from 'react-apollo';
 import HeaderCard from '../../components/General/HeaderCard';
 import NotFound from '../../components/General/NotFound';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import OnboardInfo from '../../components/Onboarding/OnboardInfo';
+import { ONBOARD_VERIFY_TOKEN } from '../../helpers/graphql/onboarding';
 
 const RegisterInfoPage = props => {
   const { infoToken } = props;
-  // TODO: Query if token is valid in the beginning
 
   return (
     <>
@@ -28,7 +29,20 @@ const RegisterInfoPage = props => {
             <HeaderCard
               title="Register"
               background={teal[600]}
-              content={<OnboardInfo infoToken={infoToken} />}
+              content={
+                <Query query={ONBOARD_VERIFY_TOKEN} variables={{ infoToken }}>
+                  {({ data }) => {
+                    if (
+                      data &&
+                      data.onboardingVerifyToken &&
+                      data.onboardingVerifyToken.success
+                    ) {
+                      return <OnboardInfo infoToken={infoToken} />;
+                    }
+                    return 'Invalid token provided';
+                  }}
+                </Query>
+              }
             />
           )) || <NotFound statusCode={404} />}
         </Grid>
