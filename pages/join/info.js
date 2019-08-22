@@ -27,7 +27,7 @@ const RegisterInfoPage = props => {
         <Grid item lg={7} md={8} sm={11} xs={12}>
           {(infoToken && (
             <HeaderCard
-              title="Register"
+              title="Complete your TravelFeed Profile"
               background={teal[600]}
               content={
                 <Query query={ONBOARD_VERIFY_TOKEN} variables={{ infoToken }}>
@@ -39,7 +39,7 @@ const RegisterInfoPage = props => {
                     ) {
                       return <OnboardInfo infoToken={infoToken} />;
                     }
-                    return 'Invalid token provided';
+                    return 'The link you followed is invalid or has been used already.';
                   }}
                 </Query>
               }

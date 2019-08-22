@@ -27,7 +27,7 @@ const RegisterCreatePage = props => {
         <Grid item lg={7} md={8} sm={11} xs={12}>
           {(claimToken && (
             <HeaderCard
-              title="Register"
+              title="Create your TravelFeed Account"
               background={teal[600]}
               content={
                 <Query query={ONBOARD_VERIFY_TOKEN} variables={{ claimToken }}>
@@ -39,7 +39,7 @@ const RegisterCreatePage = props => {
                     ) {
                       return <OnboardCreate claimToken={claimToken} />;
                     }
-                    return 'Invalid token provided';
+                    return 'The link you followed is invalid or has been used already.';
                   }}
                 </Query>
               }

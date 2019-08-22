@@ -86,7 +86,7 @@ const OnboardCreate = props => {
                   You have chosen the username <strong>{username}</strong>
                 </span>
               )) ||
-                'Choose a username below'}
+                'Choose a username below. Your username cannot be changed once your account has been created!'}
             </FormLabel>
             <div className="pb-3">
               <UsernamePicker
@@ -158,7 +158,7 @@ const OnboardCreate = props => {
               </Link>
               .
             </FormLabel>
-            <div className=" pb-3 pt-3">
+            <div className="pb-3 pt-3">
               <div className="embed-responsive embed-responsive-16by9">
                 <iframe
                   title="Steem Onboarding - Passwords, Keys and Security"

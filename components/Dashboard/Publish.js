@@ -509,7 +509,7 @@ const PostEditor = props => {
                     selector={
                       <TagPicker
                         recommendations={tagRecommendations}
-                        defaultTag={defaultTag}
+                        defaultTags={[defaultTag]}
                         value={tags}
                         onTagChange={handleTagClick}
                       />
