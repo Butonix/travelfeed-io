@@ -8,7 +8,12 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
+import {
+  GoogleReCaptcha,
+  GoogleReCaptchaProvider,
+} from 'react-google-recaptcha-v3';
 import isEmail from 'validator/lib/isEmail';
+import { RECAPTCHA_SITE_KEY } from '../../config';
 import { ONBOARD_START } from '../../helpers/graphql/onboarding';
 import Link from '../../lib/Link';
 
@@ -53,6 +58,7 @@ const OnboardStart = props => {
   const [isMailValid, setMailValid] = useState(true);
   const [isTosValid, setTosValid] = useState(true);
   const [mutate, setMutate] = useState(false);
+  const [captcha, setCaptcha] = useState(undefined);
 
   const handleEmailChange = () => event => {
     setEmail(event.target.value);
@@ -68,109 +74,113 @@ const OnboardStart = props => {
 
   return (
     <>
-      <Mutation
-        mutation={ONBOARD_START}
-        variables={{
-          email,
-          newsletter,
-          referrer,
-        }}
-      >
-        {(onboardStart, data) => {
-          if (mutate) onboardStart();
-          setMutate(false);
-          if (data && data.data && data.data.onboardStart) {
-            if (data.data.onboardStart.success) {
-              return 'Welcome to TravelFeed! We just sent you an email. Follow the instructions to create your TravelFeed account!';
+      <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
+        <Mutation
+          mutation={ONBOARD_START}
+          variables={{
+            email,
+            newsletter,
+            referrer,
+            captcha,
+          }}
+        >
+          {(onboardStart, data) => {
+            if (mutate) onboardStart();
+            setMutate(false);
+            if (data && data.data && data.data.onboardStart) {
+              if (data.data.onboardStart.success) {
+                return 'Welcome to TravelFeed! We just sent you an email. Follow the instructions to create your TravelFeed account!';
+              }
+              return data.data.onboardStart.message;
             }
-            return data.data.onboardStart.message;
-          }
-          return (
-            <>
-              <FormGroup>
-                <FormControl required error={!isTosValid}>
-                  <CssTextField
-                    InputProps={{
-                      classes: {
-                        input: classes.root,
-                      },
-                    }}
-                    id="custom-css-outlined-input"
-                    autoFocus
-                    className={classes.margin}
-                    label="Email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    margin="normal"
-                    variant="outlined"
-                    value={email}
-                    onChange={handleEmailChange()}
-                    error={!isMailValid}
-                  />
-                  {!isMailValid && (
-                    <FormHelperText>A valid email is required</FormHelperText>
-                  )}
-                </FormControl>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="inherit"
-                      className={classes.root}
-                      checked={newsletter}
-                      onChange={() => setNewsletter(!newsletter)}
+            return (
+              <>
+                <FormGroup>
+                  <FormControl required error={!isTosValid}>
+                    <CssTextField
+                      InputProps={{
+                        classes: {
+                          input: classes.root,
+                        },
+                      }}
+                      id="custom-css-outlined-input"
+                      autoFocus
+                      className={classes.margin}
+                      label="Email"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      margin="normal"
+                      variant="outlined"
+                      value={email}
+                      onChange={handleEmailChange()}
+                      error={!isMailValid}
                     />
-                  }
-                  label="Subscribe to the TravelFeed newsletter"
-                />
-                <FormControl required error={!isTosValid}>
+                    {!isMailValid && (
+                      <FormHelperText>A valid email is required</FormHelperText>
+                    )}
+                  </FormControl>
                   <FormControlLabel
                     control={
                       <Checkbox
                         color="inherit"
                         className={classes.root}
-                        checked={tos}
-                        onChange={() => setTos(!tos)}
+                        checked={newsletter}
+                        onChange={() => setNewsletter(!newsletter)}
                       />
                     }
-                    label={
-                      <>
-                        I have read and accept the{' '}
-                        <Link href="/about/tos" passHref>
-                          <a>terms of service</a>
-                        </Link>
-                        , the{' '}
-                        <Link href="/about/privacy" passHref>
-                          <a>privacy policy</a>{' '}
-                        </Link>{' '}
-                        and the{' '}
-                        <Link href="/about/cookies" passHref>
-                          <a>cookie policy</a>
-                        </Link>{' '}
-                        (required)
-                      </>
-                    }
+                    label="Subscribe to the TravelFeed newsletter"
                   />
-                  {!isTosValid && (
-                    <FormHelperText>
-                      You need to accept our terms of service, privacy policy
-                      and cookie policy to continue
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                TODO: HCaptcha
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={submit()}
-                >
-                  Join TravelFeed
-                </Button>
-              </FormGroup>
-            </>
-          );
-        }}
-      </Mutation>
+                  <FormControl required error={!isTosValid}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="inherit"
+                          className={classes.root}
+                          checked={tos}
+                          onChange={() => setTos(!tos)}
+                        />
+                      }
+                      label={
+                        <>
+                          I have read and accept the{' '}
+                          <Link href="/about/tos" passHref>
+                            <a>terms of service</a>
+                          </Link>
+                          , the{' '}
+                          <Link href="/about/privacy" passHref>
+                            <a>privacy policy</a>{' '}
+                          </Link>{' '}
+                          and the{' '}
+                          <Link href="/about/cookies" passHref>
+                            <a>cookie policy</a>
+                          </Link>{' '}
+                          (required)
+                        </>
+                      }
+                    />
+                    {!isTosValid && (
+                      <FormHelperText>
+                        You need to accept our terms of service, privacy policy
+                        and cookie policy to continue
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                  <GoogleReCaptcha onVerify={token => setCaptcha(token)} />
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={submit()}
+                    disabled={!captcha}
+                  >
+                    Sign Up
+                  </Button>
+                </FormGroup>
+              </>
+            );
+          }}
+        </Mutation>
+      </GoogleReCaptchaProvider>
     </>
   );
 };

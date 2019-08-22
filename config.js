@@ -4,6 +4,7 @@
 // Prduction settings. TODO: Add next.js equivalent of dotenv for localhost keys
 //  (local development)
 export const GMAPS_API_KEY = 'AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c';
+export const RECAPTCHA_SITE_KEY = '6LcYarQUAAAAADqDyT5Y27mcWqNnXZLljW9b1Vss';
 export const MAPBOX_TOKEN =
   'pk.eyJ1IjoidGlvdGRldiIsImEiOiJjanZ2NjVzdjQxZ3Q2M3ptczN5NTIwY3k4In0.ZIhYhbkfSAfbX11XDwI57w';
 

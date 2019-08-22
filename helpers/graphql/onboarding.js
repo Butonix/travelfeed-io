@@ -6,11 +6,13 @@ export const ONBOARD_START = gql`
     $email: String!
     $isNewsletter: Boolean
     $referrer: String
+    $captcha: String!
   ) {
     onboardStart(
       email: $email
       isNewsletter: $isNewsletter
       referrer: $referrer
+      captcha: $captcha
     ) {
       success
       message
