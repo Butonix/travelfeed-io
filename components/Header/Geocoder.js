@@ -5,9 +5,9 @@
 //  nominatim forbids autocomplete. Komoot photon, osmnames or pelias
 //  (probably the best option, but complicated) could be considered.
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles } from '@material-ui/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import SearchIcon from '@material-ui/icons/Search';
+import { withStyles } from '@material-ui/styles';
 import MUIPlacesAutocomplete, {
   geocodeBySuggestion,
 } from 'mui-places-autocomplete';
@@ -70,8 +70,9 @@ class Geocoder extends Component {
         if (!bounds) {
           bounds = result.geometry.viewport;
         }
+        console.log(bounds);
         Router.push(
-          `/location?location_box=${bounds.ga.j},${bounds.na.j},${bounds.ga.l},${bounds.na.l}&formatted_address=${result.formatted_address}${args}`,
+          `/location?location_box=${bounds.da.g},${bounds.ha.g},${bounds.da.h},${bounds.ha.h}&formatted_address=${result.formatted_address}${args}`,
         );
       })
       .catch(err => {
