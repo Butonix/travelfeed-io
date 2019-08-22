@@ -8,7 +8,7 @@ import steem from 'steem';
 import accountExists from '../../helpers/accountExists';
 
 const UsernameInput = props => {
-  const { data, onChange } = props;
+  const { onChange } = props;
 
   const [value, setValue] = useState(undefined);
   const [timer, setTimer] = useState(undefined);
@@ -18,14 +18,18 @@ const UsernameInput = props => {
     accountExists(newval).then(res => {
       if (res) {
         setValid(false);
+        onChange('');
       } else {
         setValid(true);
         if (steem.utils.validateAccountName(newval) == null) onChange(newval);
+        else onChange('');
       }
     });
   };
 
   const handleChange = () => event => {
+    onChange('');
+    setValid(undefined);
     setTimer(clearTimeout(timer));
 
     setValue(event.target.value.toLowerCase());
@@ -37,14 +41,16 @@ const UsernameInput = props => {
     <FormControl
       fullWidth
       error={
-        (value && steem.utils.validateAccountName(value) !== null) || !isValid
+        (value && steem.utils.validateAccountName(value) !== null) ||
+        isValid === false
       }
     >
       <FormGroup>
         <TextField
+          autoFocus
           error={
             (value && steem.utils.validateAccountName(value) !== null) ||
-            !isValid
+            isValid === false
           }
           fullWidth
           inputProps={{
@@ -58,8 +64,9 @@ const UsernameInput = props => {
           margin="normal"
         />
         <FormHelperText>
-          {(!isValid && 'Username already exists') ||
-            steem.utils.validateAccountName(value)}
+          {(isValid === false && 'Username already exists') ||
+            steem.utils.validateAccountName(value) ||
+            (isValid === undefined && 'Checking availability...')}
         </FormHelperText>
       </FormGroup>
     </FormControl>

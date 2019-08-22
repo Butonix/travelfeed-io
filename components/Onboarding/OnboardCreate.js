@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import FormLabel from '@material-ui/core/FormLabel';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
@@ -9,6 +10,7 @@ import { Mutation } from 'react-apollo';
 import steem from 'steem';
 import { ONBOARD_CREATE } from '../../helpers/graphql/onboarding';
 import generateSteemPassphrase from '../../helpers/steeminvite/generateSteemPassphrase';
+import Link from '../../lib/Link';
 import AccountSetup from './AccountSetup';
 import AccountTypePicker from './AccountTypePicker';
 import EasyLogin from './EasyLogin';
@@ -53,10 +55,6 @@ const OnboardCreate = props => {
 
   const pubKeys = getPubKeys();
 
-  function isStepOptional(step) {
-    return step === 2;
-  }
-
   function getSteps() {
     return [
       'Pick a username',
@@ -67,62 +65,133 @@ const OnboardCreate = props => {
     ];
   }
 
+  function handleNext() {
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
+  }
+
+  const pickAccountType = res => () => {
+    setAccountType(res);
+    if (res === 1) setActiveStep(3);
+    else handleNext();
+  };
+
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
         return (
           <>
-            {(username && `You have picked the username @${username}`) ||
-              'Pick a username'}
-            <UsernamePicker
-              data={username}
-              placeholder="Pick a username"
-              onChange={res => setUserName(res)}
-            />
+            <FormLabel component="legend">
+              {(username && (
+                <span>
+                  You have chosen the username <strong>{username}</strong>
+                </span>
+              )) ||
+                'Choose a username below'}
+            </FormLabel>
+            <div className="pb-3">
+              <UsernamePicker
+                data={username}
+                placeholder="Pick a username"
+                onChange={res => setUserName(res)}
+              />
+            </div>
           </>
         );
       case 1:
         return (
           <>
-            TravelFeed is built on the Steem blockchain, a next level technology
-            powered by a decentralised ledger and strong encryption. Fxor most
-            users, a regular Steem account is too uncomfortable to use, this is
-            why we offer you to set up your STEEM account with TravelFeed
-            EasyLogin
-            <AccountTypePicker setAccountType={pickAccountType} />
+            <FormLabel component="legend" className="pb-3">
+              TravelFeed is built on the Steem blockchain, a next generation
+              technology powered by a decentralised ledger and strong
+              encryption. For most users, a regular Steem account is too
+              uncomfortable to use, this is why we offer you to set up your
+              STEEM account with TravelFeed EasyLogin.
+            </FormLabel>
+            <div className="pt-3 pb-3">
+              <AccountTypePicker setAccountType={pickAccountType} />
+            </div>
           </>
         );
       case 2:
-        return (
-          <>
-            {accountType === 0 && (
-              <EasyLogin
-                password={password}
-                setPassword={setPassword}
-                passwordConfirm={passwordConfirm}
-                setPasswordConfirm={setPasswordConfirm}
-              />
-            )}
-          </>
-        );
+        if (accountType === 0)
+          return (
+            <>
+              <FormLabel component="legend" className="pb-3">
+                Choose your TravelFeed password here. With your TravelFeed
+                password you can log in to TravelFeed. Your password should be
+                between 10 and 72 characters long.
+              </FormLabel>
+              <div className="pb-2">
+                <EasyLogin
+                  password={password}
+                  setPassword={setPassword}
+                  passwordConfirm={passwordConfirm}
+                  setPasswordConfirm={setPasswordConfirm}
+                />
+              </div>
+            </>
+          );
+        return '';
       case 3:
         return (
           <>
+            <FormLabel component="legend" className="pt-2 pb-2">
+              {accountType === 0 && (
+                <span>
+                  Since you have chosen EasyLogin, you will only need your Steem
+                  keys to perform actions such as transferring your funds or
+                  using other Steem dApps.{' '}
+                </span>
+              )}
+              Your Steem keys <strong>cannot be recovered</strong> - if you
+              forget them, you loose access to your account and any funds that
+              are on it <strong>forever</strong>. This is why it is extremely
+              important that you store them savely. We recommend to download
+              your Steem keys and store them offline and/or print them out.
+            </FormLabel>
             <SteemKeys username={username} passPhrase={passPhrase} />
+            <FormLabel component="legend" className="pt-2 pb-2">
+              Want to know more about your Steem keys? Watch this video by
+              TravelFeed user{' '}
+              <Link as="/@coruscate" href="/blog?author=coruscate" passHref>
+                <a>@coruscate</a>
+              </Link>
+              .
+            </FormLabel>
+            <div className=" pb-3 pt-3">
+              <div className="embed-responsive embed-responsive-16by9">
+                <iframe
+                  title="Steem Onboarding - Passwords, Keys and Security"
+                  className="embed-responsive-item"
+                  src="https://www.youtube.com/embed/HSxYKW9X8_I"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
           </>
         );
       case 4:
         return (
           <>
-            <p>
+            <FormLabel component="legend" className="pb-2">
               To confirm that you have stored your Steem passphrase securely,
-              please reenter it
-            </p>
-            <PasswordPicker
-              label="Confirm Passphrase"
-              password={passPhraseConfirm}
-              setPassword={setPassPhraseConfirm}
-            />
+              please reenter it below.
+            </FormLabel>
+            <div className="pb-2">
+              <PasswordPicker
+                autofocus
+                label="Confirm Passphrase"
+                password={passPhraseConfirm}
+                setPassword={setPassPhraseConfirm}
+                isValid={!passPhraseConfirm || passPhraseConfirm === passPhrase}
+                helper={
+                  passPhraseConfirm &&
+                  passPhraseConfirm !== passPhrase &&
+                  'This does not match your passphrase'
+                }
+              />
+            </div>
           </>
         );
       default:
@@ -132,10 +201,6 @@ const OnboardCreate = props => {
 
   const steps = getSteps();
 
-  function handleNext() {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-  }
-
   function handleBack() {
     if (accountType === 1 && activeStep === 3) setActiveStep(1);
     else setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -144,12 +209,6 @@ const OnboardCreate = props => {
   const mutateNow = () => {
     setMutate(true);
     setMutateTriggered(true);
-  };
-
-  const pickAccountType = res => () => {
-    setAccountType(res);
-    if (res === 1) setActiveStep(3);
-    else handleNext();
   };
 
   const { claimToken } = props;
@@ -165,7 +224,7 @@ const OnboardCreate = props => {
           activePubKey: pubKeys.active,
           memoPubKey: pubKeys.memo,
           ownerPubKey: pubKeys.owner,
-          password,
+          password: accountType === 0 ? password : undefined,
         }}
       >
         {(onboardCreate, data) => {
@@ -202,7 +261,7 @@ const OnboardCreate = props => {
                     <Typography className={classes.instructions}>
                       {getStepContent(activeStep)}
                     </Typography>
-                    <div>
+                    <div className="text-right">
                       <Button
                         disabled={activeStep === 0}
                         onClick={handleBack}
@@ -216,7 +275,11 @@ const OnboardCreate = props => {
                         onClick={handleNext}
                         disabled={
                           (activeStep === 0 && username === '') ||
-                          (activeStep === 2 && password !== passwordConfirm) ||
+                          (activeStep === 2 &&
+                            (!password ||
+                              password !== passwordConfirm ||
+                              password.length < 10 ||
+                              password.length > 72)) ||
                           (activeStep === 4 && passPhrase !== passPhraseConfirm)
                         }
                       >

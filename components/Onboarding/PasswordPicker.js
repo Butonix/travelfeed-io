@@ -1,4 +1,5 @@
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -20,9 +21,11 @@ const PasswordPicker = props => {
 
   return (
     <>
-      <FormControl fullWidth>
+      <FormControl fullWidth error={!props.isValid}>
         <InputLabel htmlFor="adornment-password">{props.label}</InputLabel>
         <Input
+          autoFocus={props.autofocus}
+          multiline
           fullWidth
           id="adornment-password"
           type={showPassword ? 'text' : 'password'}
@@ -40,9 +43,14 @@ const PasswordPicker = props => {
             </InputAdornment>
           }
         />
+        {props.helper && <FormHelperText>{props.helper}</FormHelperText>}
       </FormControl>
     </>
   );
+};
+
+PasswordPicker.defaultProps = {
+  isValid: true,
 };
 
 export default PasswordPicker;

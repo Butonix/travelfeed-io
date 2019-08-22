@@ -1,27 +1,46 @@
-import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import PasswordPicker from './PasswordPicker';
 
 const EasyLogin = props => {
   return (
     <>
-      <Typography variant="h5" className="pt-4" gutterBottom>
-        TravelFeed password
-      </Typography>
-      <p>
-        Choose a TravelFeed password here. With your TravelFeed password you can
-        log in to TravelFeed. You will only need your Steem keys to perform
-        actions such as transferring your funds or using other Steem apps.
-      </p>
+      {
+        // We don't require Uppercase letters, numbers, special chars etc -
+        // passphrases are very secure as well, it's the user's choice
+      }
       <PasswordPicker
+        autofocus
         label="Password"
         password={props.password}
         setPassword={props.setPassword}
+        isValid={
+          props.password &&
+          (props.password.length > 9 && props.password.length < 73)
+        }
+        helper={
+          (props.password &&
+            (props.password.length < 10 &&
+              'Your password needs to be at least 10 characters long')) ||
+          (props.password &&
+            (props.password.length > 72 &&
+              'Your password cannot be longer than 72 charcters'))
+        }
       />
       <PasswordPicker
         label="Confirm password"
         password={props.passwordConfirm}
         setPassword={props.setPasswordConfirm}
+        helper={
+          props.password &&
+          props.passwordConfirm &&
+          props.password !== props.passwordConfirm &&
+          'This needs to match your password'
+        }
+        isValid={
+          !props.password ||
+          !props.passwordConfirm ||
+          props.password === props.passwordConfirm
+        }
       />
     </>
   );
