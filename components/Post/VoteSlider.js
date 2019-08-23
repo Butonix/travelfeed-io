@@ -19,10 +19,10 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
-import { vote } from '../../helpers/actions';
 import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import VoteButton from './VoteButton';
 
 class VoteSlider extends Component {
   state = {
@@ -62,6 +62,17 @@ class VoteSlider extends Component {
     }
   }
 
+  pastVote = res => {
+    if (!res.success) this.newNotification(res);
+    else
+      this.setState(prevState => ({
+        hasVoted: true,
+        totalmiles: prevState.totalmiles + prevState.weight,
+      }));
+    this.setState({ loading: undefined });
+    this.collapseVoteBar();
+  };
+
   progress = () => {
     const { loading } = this.state;
     if (loading < 100) {
@@ -74,23 +85,6 @@ class VoteSlider extends Component {
   setWeight = (event, value) => {
     this.setState({ weight: value });
   };
-
-  votePost(author, permlink) {
-    const weight = this.state.weight * 1000;
-    this.setState({ loading: 0 });
-    return vote(author, permlink, weight).then(res => {
-      if (res) {
-        if (!res.success) this.newNotification(res);
-        else
-          this.setState(prevState => ({
-            hasVoted: true,
-            totalmiles: prevState.totalmiles + prevState.weight,
-          }));
-        this.setState({ loading: undefined });
-        this.collapseVoteBar();
-      }
-    });
-  }
 
   expandVoteBar() {
     this.setState({ voteExpanded: true });
@@ -351,15 +345,13 @@ class VoteSlider extends Component {
                 <Divider variant="middle" />
                 <CardActions>
                   <Tooltip title="Upvote now" placement="bottom">
-                    <IconButton
-                      aria-label="Upvote"
-                      onClick={() =>
-                        this.votePost(this.props.author, this.props.permlink)
-                      }
-                      color="primary"
-                    >
-                      <FlightIcon className="mr" />
-                    </IconButton>
+                    <VoteButton
+                      author={this.props.author}
+                      permlink={this.props.permlink}
+                      weight={this.state.weight}
+                      pastVote={success => this.pastVote(success)}
+                      setLoading={() => this.setState({ loading: 0 })}
+                    />
                   </Tooltip>
                   <div className="pr-2">{weightIndicator}</div>
                   <Slider
