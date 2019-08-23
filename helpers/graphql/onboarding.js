@@ -71,3 +71,23 @@ export const ONBOARD_CREATE = gql`
     }
   }
 `;
+
+export const ONBOARD_GET_REVIEWABLE = gql`
+  query onboardingGetReviewable {
+    onboardingGetReviewable {
+      email
+      post
+      tags
+      accountMetadata
+    }
+  }
+`;
+
+export const ONBOARD_REVIEW = gql`
+  mutation onboardReview($email: String!, $isApproved: Boolean!) {
+    onboardReview(email: $email, isApproved: $isApproved) {
+      success
+      message
+    }
+  }
+`;

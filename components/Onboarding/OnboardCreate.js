@@ -234,7 +234,7 @@ const OnboardCreate = props => {
             return (
               <>
                 <FormLabel component="legend">
-                  Please wat a few seconds while we set up your account...
+                  Please wait a few seconds while we set up your account...
                 </FormLabel>
                 <div className="pt-3 text-center">
                   <CircularProgress />
