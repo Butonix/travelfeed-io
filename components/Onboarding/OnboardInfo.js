@@ -275,6 +275,7 @@ const OnboardInfo = props => {
         variables={{
           infoToken,
           post,
+          tags,
           accountMetadata,
         }}
       >

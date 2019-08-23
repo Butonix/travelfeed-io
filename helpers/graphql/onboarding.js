@@ -32,11 +32,13 @@ export const ONBOARD_INFO = gql`
   mutation onboardInformation(
     $infoToken: String!
     $post: String!
+    $tags: [String]
     $accountMetadata: String
   ) {
     onboardInformation(
       infoToken: $infoToken
       post: $post
+      tags: $tags
       accountMetadata: $accountMetadata
     ) {
       success

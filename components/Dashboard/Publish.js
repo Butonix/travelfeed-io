@@ -324,7 +324,7 @@ const PostEditor = props => {
         }
         let commentOptions = '';
         if (beneficiaries.length > 0 || poweredUp) {
-          let percent_steem_dollars = 50;
+          let percent_steem_dollars = 10000;
           if (poweredUp) percent_steem_dollars = 0;
           const extensions = [];
           if (beneficiaries) {

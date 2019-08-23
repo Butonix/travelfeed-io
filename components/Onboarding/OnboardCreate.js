@@ -227,7 +227,7 @@ const OnboardCreate = props => {
           password: accountType === 0 ? password : undefined,
         }}
       >
-        {(onboardCreate, data, loading, error) => {
+        {(onboardCreate, { data, loading, error }) => {
           if (mutate) onboardCreate();
           setMutate(false);
           if (loading) {
@@ -242,8 +242,8 @@ const OnboardCreate = props => {
               </>
             );
           }
-          if (data && data.data && data.data.onboardCreate) {
-            if (data.data.onboardCreate.success) {
+          if (data && data.onboardCreate) {
+            if (data.onboardCreate.success) {
               return (
                 <FormLabel component="legend">
                   Your account has been created! You can now log in.
@@ -252,7 +252,7 @@ const OnboardCreate = props => {
             }
             return (
               <FormLabel component="legend">
-                Account could not be created: {data.data.onboardCreate.message}
+                Account could not be created: {data.onboardCreate.message}
               </FormLabel>
             );
           }
