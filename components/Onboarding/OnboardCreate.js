@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FormLabel from '@material-ui/core/FormLabel';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -11,7 +12,6 @@ import steem from 'steem';
 import { ONBOARD_CREATE } from '../../helpers/graphql/onboarding';
 import generateSteemPassphrase from '../../helpers/steeminvite/generateSteemPassphrase';
 import Link from '../../lib/Link';
-import AccountSetup from './AccountSetup';
 import AccountTypePicker from './AccountTypePicker';
 import EasyLogin from './EasyLogin';
 import PasswordPicker from './PasswordPicker';
@@ -46,7 +46,7 @@ const OnboardCreate = props => {
 
   const getPubKeys = () => {
     const roles = ['active', 'owner', 'posting', 'memo'];
-    return steem.auth.generateKeys(props.username, passPhrase, roles);
+    return steem.auth.generateKeys(username, passPhrase, roles);
   };
 
   useEffect(() => {
@@ -227,17 +227,40 @@ const OnboardCreate = props => {
           password: accountType === 0 ? password : undefined,
         }}
       >
-        {(onboardCreate, data) => {
+        {(onboardCreate, data, loading, error) => {
           if (mutate) onboardCreate();
           setMutate(false);
+          if (loading) {
+            return (
+              <>
+                <FormLabel component="legend">
+                  Please wat a few seconds while we set up your account...
+                </FormLabel>
+                <div className="pt-3 text-center">
+                  <CircularProgress />
+                </div>
+              </>
+            );
+          }
           if (data && data.data && data.data.onboardCreate) {
             if (data.data.onboardCreate.success) {
-              return <AccountSetup />;
+              return (
+                <FormLabel component="legend">
+                  Your account has been created! You can now log in.
+                </FormLabel>
+              );
             }
             return (
-              <Typography className={classes.instructions}>
+              <FormLabel component="legend">
+                Account could not be created: {data.data.onboardCreate.message}
+              </FormLabel>
+            );
+          }
+          if (error) {
+            return (
+              <FormLabel component="legend">
                 Account could not be created :(
-              </Typography>
+              </FormLabel>
             );
           }
           return (
