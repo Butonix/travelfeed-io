@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
+import { useTheme } from '@material-ui/styles';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -66,6 +67,8 @@ const KeychainButton = props => {
         message: 'Enter your username first',
       });
   };
+
+  const theme = useTheme();
 
   return (
     <>
@@ -135,7 +138,7 @@ const KeychainButton = props => {
                     padding: 0 0.5em;
                     line-height: 1.5em;
                     color: #818078;
-                    background-color: #fcfcfa;
+                    background-color: ${theme.palette.background.paper};
                   }
                 `}</style>
               </div>
