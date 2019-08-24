@@ -20,11 +20,12 @@ const BlogGridList = () => {
             return <Fragment />;
           }
           const posts = [
-            {
-              author: 'travelfeed',
-              permlink: 'introducing-travelfeed-beta',
-              title: 'Introducing TravelFeed Beta',
-            },
+            // Pin posts here
+            // {
+            //   author: 'travelfeed',
+            //   permlink: 'introducing-travelfeed-beta',
+            //   title: 'Introducing TravelFeed Beta',
+            // },
             ...data.posts,
           ];
           return (
