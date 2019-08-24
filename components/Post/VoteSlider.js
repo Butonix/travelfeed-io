@@ -386,7 +386,7 @@ class VoteSlider extends Component {
                 parent_author={this.props.author}
                 parent_permlink={this.props.permlink}
                 onClose={() => this.collapseCommentBar()}
-                onCommentEdit={this.props.onCommentAdd}
+                onCommentAdd={this.props.onCommentAdd}
               />
             </div>
             <Tooltip title="Close" placement="bottom">

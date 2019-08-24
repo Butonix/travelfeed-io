@@ -1,4 +1,3 @@
-// FIXME: Broadcast is triggered twice
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withSnackbar } from 'notistack';
@@ -32,14 +31,14 @@ const PublishBtn = props => {
         if (res) {
           newNotification(res);
           setLoading(undefined);
-          props.setSuccess();
+          props.pastPublish(res);
         }
       });
     }
   };
 
   useEffect(() => {
-    if (props.publishThis && !props.success && !loading) {
+    if (props.publishThis && !loading) {
       setLoading(true);
       publishComment();
     }
@@ -55,7 +54,7 @@ const PublishBtn = props => {
             setLoading(false);
             if (loading) {
               newNotification(data.post);
-              props.setSuccess();
+              props.pastPublish(data.post);
             }
           }
           return (

@@ -14,7 +14,6 @@ import PublishBtn from './PublishBtn';
 
 const CommentEditor = props => {
   const [content, setContent] = useState('');
-  const [success, setSuccess] = useState(false);
   const [publishThis, setPublishThis] = useState(undefined);
 
   const handleEditorChange = value => {
@@ -54,19 +53,21 @@ const CommentEditor = props => {
     });
   };
 
-  if (success) {
-    if (props.editMode) {
-      props.onCommentEdit({
-        body: publishThis.body,
-      });
-    } else {
-      props.onCommentAdd({
-        body: publishThis.body,
-        permlink: publishThis.permlink,
-      });
+  const pastPublish = res => {
+    if (res.success) {
+      if (props.editMode) {
+        props.onCommentEdit({
+          body: publishThis.body,
+        });
+      } else {
+        props.onCommentAdd({
+          body: publishThis.body,
+          permlink: publishThis.permlink,
+        });
+      }
     }
     if (!props.editMode) props.onClose();
-  }
+  };
 
   return (
     <Fragment>
@@ -86,8 +87,7 @@ const CommentEditor = props => {
       />
       <PublishBtn
         publishThis={publishThis}
-        success={success}
-        setSuccess={setSuccess}
+        pastPublish={res => pastPublish(res)}
         triggerPublish={triggerPublish}
         disabled={content.length < 1}
         editMode={props.editMode}
