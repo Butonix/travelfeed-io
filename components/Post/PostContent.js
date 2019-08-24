@@ -67,7 +67,7 @@ const PostContent = props => {
         }
         subheader={
           <SubHeader
-            created_at={String(props.created_at)}
+            created_at={props.created_at ? String(props.created_at) : undefined}
             readtime={props.readtime}
           />
         }

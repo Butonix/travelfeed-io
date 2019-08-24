@@ -29,7 +29,6 @@ const EditorPreview = props => {
               author={getUser()}
               permlink={props.permlink}
               display_name={getUser()}
-              created_at={Date.now()}
               readtime={props.readtime}
               content={
                 <div
