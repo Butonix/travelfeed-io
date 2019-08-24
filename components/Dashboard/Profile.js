@@ -231,6 +231,7 @@ class Profile extends Component {
                           fullWidth
                         />
                         <TextField
+                          multiline
                           label="Profile description"
                           inputProps={{
                             maxLength: 160,

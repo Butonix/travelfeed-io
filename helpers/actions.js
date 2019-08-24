@@ -1,19 +1,20 @@
 import api from './steemConnectAPI';
 import { getScToken, getUser } from './token';
 
-export const post = (
-  author,
-  title,
-  body,
-  parentPermlink,
-  parentAuthor,
-  jsonMetadata,
-  permlink,
-  commentOptions,
-) => {
+export const post = args => {
+  const {
+    author,
+    title,
+    body,
+    parentPermlink,
+    parentAuthor,
+    jsonMetadata,
+    permlink,
+    commentOptions,
+  } = args;
   if (window && window.steem_keychain) {
     const comment_options =
-      commentOptions === '' ? '' : JSON.stringify(commentOptions);
+      !commentOptions || commentOptions === '' ? '' : commentOptions;
     return new Promise(resolve => {
       window.steem_keychain.requestPost(
         author,
@@ -21,7 +22,7 @@ export const post = (
         body,
         parentPermlink,
         parentAuthor,
-        JSON.stringify(jsonMetadata),
+        jsonMetadata,
         permlink,
         comment_options,
         res => {
@@ -51,11 +52,11 @@ export const post = (
         permlink,
         title,
         body,
-        json_metadata: JSON.stringify(jsonMetadata),
+        json_metadata: jsonMetadata,
       },
     ];
     let ops;
-    if (commentOptions !== '') {
+    if (commentOptions && commentOptions !== '') {
       ops = [commentop, ['comment_options', commentOptions]];
     } else ops = [commentop];
     api.broadcast(ops, (err, res) => {

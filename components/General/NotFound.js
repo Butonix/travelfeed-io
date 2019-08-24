@@ -24,6 +24,16 @@ const NotFound = props => {
       </Fragment>
     );
   }
+  if (props.statusCode === 'invalid_login') {
+    content = (
+      <Fragment>
+        <h1>Error: Invalid login credentials</h1>
+        <p>
+          The login credentials you provided are not valid. Please log in again.
+        </p>
+      </Fragment>
+    );
+  }
   return (
     <Fragment>
       <Head title={helmet} />
