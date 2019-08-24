@@ -10,6 +10,10 @@ TravelFeed is written in JavaScript using React and Next.js. The UI is made usin
 
 ## How to Run
 
+### Environment variables
+
+Environment variables need to be present at build time for production (e.g. configure build environment variables on DockerHub). For the local development server, an .env file works fine.
+
 ### Development
 
 This starts a local development server that updates upon code changes.

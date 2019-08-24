@@ -25,7 +25,7 @@ module.exports = withImages(
           config.node = { fs: 'empty' };
           return config;
         },
-        publicRuntimeConfig: {
+        env: {
           MAPBOX_TOKEN,
           GMAPS_API_KEY,
           RECAPTCHA_SITE_KEY,

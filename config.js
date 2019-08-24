@@ -1,7 +1,3 @@
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
-
 export const {
   MAPBOX_TOKEN,
   GMAPS_API_KEY,
@@ -9,7 +5,7 @@ export const {
   CLOUDINARY_CLOUD_NAME,
   ROOTURL,
   GRAPHQL_URL,
-} = publicRuntimeConfig;
+} = process.env;
 
 export const STEEMCONNECT_CALLBACK_URL = `${ROOTURL}/login`;
 
