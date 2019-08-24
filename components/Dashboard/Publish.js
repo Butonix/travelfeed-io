@@ -231,8 +231,14 @@ const PostEditor = props => {
           please select &quot;traveladvice&quot; as tag
         </span>
       ),
-      hide: location || tags.indexOf('traveladvice') !== -1,
-      checked: location || tags.indexOf('traveladvice') !== -1,
+      hide:
+        user === 'travelfeed' ||
+        location ||
+        tags.indexOf('traveladvice') !== -1,
+      checked:
+        user === 'travelfeed' ||
+        location ||
+        tags.indexOf('traveladvice') !== -1,
     },
     {
       label: (
