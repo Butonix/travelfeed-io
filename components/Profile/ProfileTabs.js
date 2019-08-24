@@ -81,12 +81,8 @@ const FullWidthTabs = props => {
           aria-label="full width tabs example"
         >
           <Tab label="Blog" {...a11yProps(0)} />
-          {tabs && (
-            <>
-              <Tab label="Map" {...a11yProps(1)} />
-              <Tab label="Badges" {...a11yProps(2)} />
-            </>
-          )}
+          {tabs && <Tab label="Map" {...a11yProps(1)} />}
+          {tabs && <Tab label="Badges" {...a11yProps(2)} />}
         </Tabs>
       </AppBar>
       <SwipeableViews
