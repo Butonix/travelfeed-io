@@ -14,9 +14,7 @@ export const post = args => {
   } = args;
   if (window && window.steem_keychain) {
     const comment_options =
-      !commentOptions || commentOptions === ''
-        ? ''
-        : JSON.stringify(commentOptions);
+      !commentOptions || commentOptions === '' ? '' : commentOptions;
     return new Promise(resolve => {
       window.steem_keychain.requestPost(
         author,

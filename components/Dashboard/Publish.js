@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import PublishIcon from '@material-ui/icons/ChevronRight';
 import SaveIcon from '@material-ui/icons/SaveAlt';
 import EditIcon from '@material-ui/icons/Update';
@@ -16,7 +15,6 @@ import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
-import { post } from '../../helpers/actions';
 import categoryFinder from '../../helpers/categoryFinder';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
@@ -41,6 +39,7 @@ import LanguageSelector, { languages } from '../Editor/LanguageSelector';
 import LocationPicker from '../Editor/LocationPicker';
 import PayoutTypeSelector from '../Editor/PayoutTypeSelector';
 import PermlinkInput from '../Editor/PermlinkInput';
+import PublishBtn from '../Editor/PublishBtn';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
 import TitleEditor from '../Editor/TitleEditor';
@@ -70,6 +69,7 @@ const PostEditor = props => {
   const [language, setLanguage] = useState('en');
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [tagRecommendations, setTagRecommendations] = useState([]);
+  const [publishThis, setPublishThis] = useState(undefined);
 
   const editMode = props.edit.editmode === 'true';
 
@@ -127,6 +127,11 @@ const PostEditor = props => {
 
   const handleTagClick = taglist => {
     setTags(taglist);
+  };
+
+  const pastPublish = res => {
+    if (res.success) setSuccess(true);
+    setPublishThis(undefined);
   };
 
   const handleEditorChange = value => {
@@ -252,7 +257,7 @@ const PostEditor = props => {
     },
   ];
 
-  const publishPost = () => {
+  const triggerPublish = () => {
     setCompleted(false);
     if (
       !checklist[0].checked ||
@@ -344,25 +349,20 @@ const PostEditor = props => {
             extensions,
           };
         }
-        post(
-          user,
+        const jsonMetadata = JSON.stringify(metadata);
+        const author = user;
+        setPublishThis({
+          author,
           title,
           body,
           parentPermlink,
           parentAuthor,
-          metadata,
-          perm,
-          commentOptions,
-        ).then(msg => {
-          setCompleted(true);
-          if (msg) {
-            newNotification(msg);
-            if (msg.success) setSuccess(true);
-          } else
-            newNotification({
-              message: 'Post could not be posted',
-              success: false,
-            });
+          jsonMetadata,
+          permlink: perm,
+          commentOptions:
+            commentOptions && commentOptions !== ''
+              ? JSON.stringify(commentOptions)
+              : undefined,
         });
       }
     });
@@ -645,29 +645,33 @@ const PostEditor = props => {
                             )}
                           </div>
                           <div className="col-6 text-right">
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => publishPost()}
-                              disabled={!completed}
-                            >
-                              {(editMode && (
-                                <span>
-                                  Update Post <EditIcon />
-                                </span>
-                              )) || (
-                                <span>
-                                  Publish Now
-                                  <PublishIcon />
-                                </span>
-                              )}
-                            </Button>
-                            {!completed && (
-                              <CircularProgress
-                                className="p-1"
-                                size={35}
-                                thickness={5}
+                            {(!success && (
+                              <PublishBtn
+                                publishThis={publishThis}
+                                pastPublish={res => pastPublish(res)}
+                                triggerPublish={triggerPublish}
+                                label={
+                                  (editMode && (
+                                    <span>
+                                      Update Post <EditIcon />
+                                    </span>
+                                  )) || (
+                                    <span>
+                                      Publish Now
+                                      <PublishIcon />
+                                    </span>
+                                  )
+                                }
                               />
+                            )) || (
+                              <Button
+                                className="mt-1"
+                                variant="contained"
+                                color="primary"
+                                disabled
+                              >
+                                Published
+                              </Button>
                             )}
                           </div>
                         </div>

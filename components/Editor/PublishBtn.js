@@ -64,18 +64,17 @@ const PublishBtn = props => {
                 variant="contained"
                 color="primary"
                 onClick={props.triggerPublish}
-                disabled={props.disabled}
+                disabled={props.disabled || loading}
               >
-                {(props.editMode && 'Edit') || 'Reply'}
+                {props.label}
+                {loading && (
+                  <CircularProgress
+                    className="ml-2"
+                    value={loading}
+                    size={24}
+                  />
+                )}
               </Button>
-              {loading && (
-                <CircularProgress
-                  value={loading}
-                  className="p-1"
-                  size={35}
-                  thickness={5}
-                />
-              )}
             </>
           );
         }}

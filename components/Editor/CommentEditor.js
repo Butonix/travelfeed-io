@@ -90,7 +90,7 @@ const CommentEditor = props => {
         pastPublish={res => pastPublish(res)}
         triggerPublish={triggerPublish}
         disabled={content.length < 1}
-        editMode={props.editMode}
+        label={(props.editMode && 'Edit') || 'Reply'}
       />
     </Fragment>
   );
