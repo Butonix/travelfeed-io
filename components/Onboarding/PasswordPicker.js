@@ -9,7 +9,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import React, { useState } from 'react';
 
 const PasswordPicker = props => {
-  const [showPassword, setShowPassword] = useState(undefined);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -25,12 +25,12 @@ const PasswordPicker = props => {
         <InputLabel htmlFor="adornment-password">{props.label}</InputLabel>
         <Input
           autoFocus={props.autofocus}
-          multiline
           fullWidth
           id="adornment-password"
           type={showPassword ? 'text' : 'password'}
           value={props.password}
           onChange={res => props.setPassword(res.target.value)}
+          onKeyPress={props.onKeyPress}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
