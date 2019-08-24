@@ -53,7 +53,7 @@ const OnboardingItem = props => {
                     img_url={cover_image}
                     title={`Introducing myself to TravelFeed: ${name}`}
                     // permlink={permlink}
-                    readtime={{ words: 0, text: '0 min' }}
+                    readtime={{ words: 0, text: '0 min read' }}
                     content={post}
                     tags={tags}
                   />

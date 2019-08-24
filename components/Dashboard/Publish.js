@@ -173,7 +173,7 @@ const PostEditor = props => {
   );
   const readingtime = content
     ? readingTime(sanitized)
-    : { words: 0, text: '0 min' };
+    : { words: 0, text: '0 min read' };
 
   const checklist = [
     {
