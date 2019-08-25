@@ -8,15 +8,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const {
-  MAPBOX_TOKEN,
-  GMAPS_API_KEY,
-  RECAPTCHA_SITE_KEY,
-  CLOUDINARY_CLOUD_NAME,
-  ROOTURL,
-  GRAPHQL_URL,
-} = process.env;
-
 module.exports = withImages(
   withOffline(
     withCSS(
@@ -26,12 +17,12 @@ module.exports = withImages(
           return config;
         },
         env: {
-          MAPBOX_TOKEN,
-          GMAPS_API_KEY,
-          RECAPTCHA_SITE_KEY,
-          CLOUDINARY_CLOUD_NAME,
-          ROOTURL,
-          GRAPHQL_URL,
+          MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
+          GMAPS_API_KEY: process.env.GMAPS_API_KEY,
+          RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
+          CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+          ROOTURL: process.env.ROOTURL,
+          GRAPHQL_URL: process.env.GRAPHQL_URL,
         },
         analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
         analyzeBrowser: ['browser', 'both'].includes(
