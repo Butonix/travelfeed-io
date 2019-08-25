@@ -79,7 +79,7 @@ const OnboardStart = props => {
           mutation={ONBOARD_START}
           variables={{
             email,
-            newsletter,
+            isNewsletter: newsletter,
             referrer,
             captcha,
           }}
