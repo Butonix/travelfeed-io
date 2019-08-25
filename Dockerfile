@@ -10,6 +10,14 @@ RUN npm install
 # Copying source files
 COPY . .
 
+# Set build args
+ARG MAPBOX_TOKEN
+ARG GMAPS_API_KEY
+ARG RECAPTCHA_SITE_KEY
+ARG CLOUDINARY_CLOUD_NAME
+ARG ROOTURL
+ARG GRAPHQL_URL
+
 # Building the app
 RUN npm run build
 
