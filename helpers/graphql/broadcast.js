@@ -36,8 +36,26 @@ export const POST = gql`
 `;
 
 export const CUSTOM_JSON = gql`
-  mutation customJson($payload: String!) {
-    customJson(payload: $payload) {
+  mutation customJson($id: String!, $payload: String!) {
+    customJson(id: $id, payload: $payload) {
+      success
+      message
+    }
+  }
+`;
+
+export const FOLLOW = gql`
+  mutation follow($following: String!) {
+    follow(following: $following) {
+      success
+      message
+    }
+  }
+`;
+
+export const UNFOLLOW = gql`
+  mutation unfollow($following: String!) {
+    unfollow(following: $following) {
       success
       message
     }
