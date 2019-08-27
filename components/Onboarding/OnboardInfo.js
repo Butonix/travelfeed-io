@@ -234,6 +234,7 @@ const OnboardInfo = props => {
             <EditorPreview
               hideAuthorProfile
               fullsize
+              author="null"
               img_url={cover_image}
               title={`Introducing myself to TravelFeed: ${name}`}
               // permlink={permlink}
@@ -310,38 +311,35 @@ const OnboardInfo = props => {
                 {activeStep === steps.length ? (
                   <div>{!mutatetTriggered && mutateNow()}</div>
                 ) : (
-                  <div>
-                    <Typography className={classes.instructions}>
-                      {getStepContent(activeStep)}
-                    </Typography>
+                  <>
                     <div>
-                      <div className="text-right pt-2">
-                        <Button
-                          disabled={activeStep === 0}
-                          onClick={handleBack}
-                          className={classes.backButton}
-                        >
-                          Back
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={handleNext}
-                          disabled={
-                            (activeStep === 1 &&
-                              (readingtime.words < 251 || tags.length < 1)) ||
-                            (activeStep === 0 &&
-                              (!name ||
-                                !about ||
-                                !cover_image ||
-                                !profile_image))
-                          }
-                        >
-                          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                        </Button>
-                      </div>
+                      <Typography className={classes.instructions}>
+                        {getStepContent(activeStep)}
+                      </Typography>
                     </div>
-                  </div>
+                    <div className="w-100 text-right pt-2">
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        className={classes.backButton}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                        disabled={
+                          (activeStep === 1 &&
+                            (readingtime.words < 251 || tags.length < 1)) ||
+                          (activeStep === 0 &&
+                            (!name || !about || !cover_image || !profile_image))
+                        }
+                      >
+                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                      </Button>
+                    </div>
+                  </>
                 )}
               </div>
             </>

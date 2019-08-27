@@ -282,11 +282,13 @@ const OnboardCreate = props => {
                 {activeStep === steps.length ? (
                   <div>{!mutatetTriggered && mutateNow()}</div>
                 ) : (
-                  <div>
-                    <Typography className={classes.instructions}>
-                      {getStepContent(activeStep)}
-                    </Typography>
-                    <div className="text-right">
+                  <>
+                    <div>
+                      <Typography className={classes.instructions}>
+                        {getStepContent(activeStep)}
+                      </Typography>
+                    </div>
+                    <div className="w-100 text-right">
                       <Button
                         disabled={activeStep === 0}
                         onClick={handleBack}
@@ -311,7 +313,7 @@ const OnboardCreate = props => {
                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                       </Button>
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
             </>
