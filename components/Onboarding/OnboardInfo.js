@@ -232,6 +232,7 @@ const OnboardInfo = props => {
               Your post
             </Typography>
             <EditorPreview
+              hideAuthorProfile
               fullsize
               img_url={cover_image}
               title={`Introducing myself to TravelFeed: ${name}`}

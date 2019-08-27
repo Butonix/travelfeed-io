@@ -74,9 +74,9 @@ const PostContent = props => {
       />
       <CardContent>
         {props.content}
-        <hr />
         {props.latitude && (
           <div className="fullwidth">
+            <hr />
             <div className="text-center">
               <Typography variant="h5" className="p-2">
                 Post Location:
@@ -90,19 +90,27 @@ const PostContent = props => {
                 },
               }}
             />
-            <hr />
           </div>
         )}
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-6 col-md-9 col-sm12">
-              <PostAuthorProfile author={props.author} />
+        {!props.hideAuthorProfile && (
+          <>
+            <hr />
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-lg-6 col-md-9 col-sm12">
+                  <PostAuthorProfile author={props.author} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </CardContent>
     </Fragment>
   );
+};
+
+PostContent.defaultProps = {
+  hideAuthorProfile: false,
 };
 
 PostContent.propTypes = {
@@ -115,6 +123,7 @@ PostContent.propTypes = {
   longitude: PropTypes.number.isRequired,
   readtime: PropTypes.objectOf(PropTypes.any).isRequired,
   appIcon: PropTypes.func.isRequired,
+  hideAuthorProfile: PropTypes.bool,
 };
 
 export default PostContent;

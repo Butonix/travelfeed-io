@@ -29,7 +29,7 @@ const AuthorProfileHeader = props => {
         <div className="row justify-content-center text-center">
           <div className="col-12 p-0" style={{ marginTop: '-115px' }}>
             <AuthorProfileImage
-              image={props.profile_image}
+              image={props.data.profile_image}
               user={props.data.name}
             />
           </div>
