@@ -6,7 +6,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import React, { useState } from 'react';
+import Cookie from 'js-cookie';
+import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import {
   GoogleReCaptcha,
@@ -51,8 +52,8 @@ const CssTextField = withStyles({
 
 const OnboardStart = props => {
   const classes = useStyles();
-  const { referrer } = props;
 
+  const [referrer, setReferrer] = useState(undefined);
   const [email, setEmail] = useState(undefined);
   const [newsletter, setNewsletter] = useState(false);
   const [tos, setTos] = useState(false);
@@ -60,6 +61,14 @@ const OnboardStart = props => {
   const [isTosValid, setTosValid] = useState(true);
   const [mutate, setMutate] = useState(false);
   const [captcha, setCaptcha] = useState(undefined);
+
+  useEffect(() => {
+    if (props.referrer) {
+      setReferrer(props.referrer);
+    } else {
+      setReferrer(Cookie.get('referrer'));
+    }
+  }, [props]);
 
   const handleEmailChange = () => event => {
     setEmail(event.target.value);

@@ -2,8 +2,9 @@
 import Button from '@material-ui/core/Button';
 import { indigo, teal } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
+import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import Head from '../../components/Header/Head';
@@ -12,11 +13,17 @@ import OnboardStart from '../../components/Onboarding/OnboardStart';
 import { GET_TF_STATS } from '../../helpers/graphql/stats';
 
 const JoinPage = props => {
+  const [referrer, setReferrer] = useState(undefined);
+
   useEffect(() => {
     ReactPiwik.push(['trackGoal', 1]);
-  });
-
-  const { referrer } = props;
+    if (props.referrer) {
+      Cookie.set('referrer', props.referrer);
+      setReferrer(props.referrer);
+    } else {
+      setReferrer(Cookie.get('referrer'));
+    }
+  }, [props]);
 
   return (
     <Fragment>
