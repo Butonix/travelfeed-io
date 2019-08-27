@@ -25,31 +25,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CssTextField = withStyles({
-  root: {
-    '& label': {
-      color: 'white',
-    },
-    '& label.Mui-focused': {
-      color: 'white',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white',
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white',
-      },
-      '&:hover fieldset': {
-        borderColor: 'white',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white',
-      },
-    },
-  },
-})(TextField);
-
 const OnboardStart = props => {
   const classes = useStyles();
 
@@ -69,6 +44,33 @@ const OnboardStart = props => {
       setReferrer(Cookie.get('referrer'));
     }
   }, [props]);
+
+  const CssTextField = props.isWhite
+    ? withStyles({
+        root: {
+          '& label': {
+            color: 'white',
+          },
+          '& label.Mui-focused': {
+            color: 'white',
+          },
+          '& .MuiInput-underline:after': {
+            borderBottomColor: 'white',
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'white',
+            },
+            '&:hover fieldset': {
+              borderColor: 'white',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'white',
+            },
+          },
+        },
+      })(TextField)
+    : TextField;
 
   const handleEmailChange = () => event => {
     setEmail(event.target.value);
@@ -116,14 +118,18 @@ const OnboardStart = props => {
                 <FormGroup>
                   <FormControl required error={!isTosValid}>
                     <CssTextField
-                      InputProps={{
-                        classes: {
-                          input: classes.root,
-                        },
-                      }}
+                      InputProps={
+                        props.isWhite
+                          ? {
+                              classes: {
+                                input: classes.root,
+                              },
+                            }
+                          : undefined
+                      }
                       id="custom-css-outlined-input"
                       autoFocus
-                      className={classes.margin}
+                      className={props.isWhite ? classes.margin : undefined}
                       label="Email"
                       type="email"
                       name="email"
@@ -141,8 +147,8 @@ const OnboardStart = props => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        color="inherit"
-                        className={classes.root}
+                        color={props.isWhite ? 'inherit' : 'primary'}
+                        className={props.isWhite ? classes.root : undefined}
                         checked={newsletter}
                         onChange={() => setNewsletter(!newsletter)}
                       />
@@ -153,8 +159,8 @@ const OnboardStart = props => {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          color="inherit"
-                          className={classes.root}
+                          color={props.isWhite ? 'inherit' : 'primary'}
+                          className={props.isWhite ? classes.root : undefined}
                           checked={tos}
                           onChange={() => setTos(!tos)}
                         />
@@ -187,7 +193,7 @@ const OnboardStart = props => {
                   <GoogleReCaptcha onVerify={token => setCaptcha(token)} />
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color={props.isWhite ? 'secondary' : 'primary'}
                     onClick={submit()}
                   >
                     Sign Up

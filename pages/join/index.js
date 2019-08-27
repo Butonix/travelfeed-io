@@ -138,7 +138,7 @@ const JoinPage = props => {
                   <Typography gutterBottom variant="h3">
                     Join TravelFeed now!
                   </Typography>
-                  <OnboardStart referrer={referrer} />
+                  <OnboardStart isWhite referrer={referrer} />
                 </div>
               </div>
             </>

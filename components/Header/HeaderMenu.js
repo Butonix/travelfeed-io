@@ -21,7 +21,6 @@ import MapIcon from '@material-ui/icons/Map';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVert from '@material-ui/icons/MoreVert';
 import ProfileIcon from '@material-ui/icons/Person';
-import SignUpIcon from '@material-ui/icons/PersonAdd';
 import TermsIcon from '@material-ui/icons/Toc';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -146,16 +145,6 @@ class HeaderMenu extends Component {
                             this.setState({ clickAwayListener: true })
                           }
                         />
-                        <Link color="textPrimary" href="/join" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <SignUpIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Join Now" />
-                            </MenuItem>
-                          </a>
-                        </Link>
                         <Divider />
                       </div>
                       <Link color="textPrimary" href="/about/privacy" passHref>
