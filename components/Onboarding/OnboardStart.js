@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -204,6 +205,12 @@ const OnboardStart = props => {
                   disabled={!captcha}
                 >
                   Sign Up
+                  {data.loading && (
+                    <>
+                      {' '}
+                      <CircularProgress className="ml-2" size={24} />
+                    </>
+                  )}
                 </Button>
               </FormGroup>
             </>
