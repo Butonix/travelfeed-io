@@ -6,6 +6,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import owasp from 'owasp-password-strength-test';
 import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import steem from 'steem';
@@ -17,6 +18,10 @@ import EasyLogin from './EasyLogin';
 import PasswordPicker from './PasswordPicker';
 import SteemKeys from './SteemKeys';
 import UsernamePicker from './UsernamePicker';
+
+owasp.config({
+  maxLength: 72,
+});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,6 +48,8 @@ const OnboardCreate = props => {
   const [passPhraseConfirm, setPassPhraseConfirm] = useState(undefined);
   const [password, setPassword] = useState(undefined);
   const [passwordConfirm, setPasswordConfirm] = useState(undefined);
+
+  const pwstrength = password ? owasp.test(password) : {};
 
   const getPubKeys = () => {
     const roles = ['active', 'owner', 'posting', 'memo'];
@@ -123,6 +130,7 @@ const OnboardCreate = props => {
               </FormLabel>
               <div className="pb-2">
                 <EasyLogin
+                  pwstrength={pwstrength}
                   password={password}
                   setPassword={setPassword}
                   passwordConfirm={passwordConfirm}
@@ -305,8 +313,8 @@ const OnboardCreate = props => {
                           (activeStep === 2 &&
                             (!password ||
                               password !== passwordConfirm ||
-                              password.length < 10 ||
-                              password.length > 72)) ||
+                              (pwstrength.errors &&
+                                pwstrength.errors.length > 0))) ||
                           (activeStep === 4 && passPhrase !== passPhraseConfirm)
                         }
                       >
