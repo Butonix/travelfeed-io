@@ -9,10 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Cookie from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
-import {
-  GoogleReCaptcha,
-  GoogleReCaptchaProvider,
-} from 'react-google-recaptcha-v3';
+import ReCAPTCHA from 'react-google-recaptcha';
 import isEmail from 'validator/lib/isEmail';
 import { RECAPTCHA_SITE_KEY } from '../../config';
 import { ONBOARD_START } from '../../helpers/graphql/onboarding';
@@ -86,124 +83,133 @@ const OnboardStart = props => {
 
   return (
     <>
-      <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
-        <Mutation
-          mutation={ONBOARD_START}
-          variables={{
-            email,
-            isNewsletter: newsletter,
-            referrer,
-            captcha,
-          }}
-        >
-          {(onboardStart, data) => {
-            if (mutate) onboardStart();
-            setMutate(false);
-            if (
-              data &&
-              data.data &&
-              data.data.onboardStart &&
-              data.data.onboardStart.success
-            ) {
-              return 'Welcome to TravelFeed! We just sent you an email. Follow the instructions to create your TravelFeed account!';
-            }
+      <Mutation
+        mutation={ONBOARD_START}
+        variables={{
+          email,
+          isNewsletter: newsletter,
+          referrer,
+          captcha,
+        }}
+      >
+        {(onboardStart, data) => {
+          if (mutate) onboardStart();
+          setMutate(false);
+          if (
+            data &&
+            data.data &&
+            data.data.onboardStart &&
+            data.data.onboardStart.success
+          ) {
             return (
-              <>
-                {data && data.data && data.data.onboardStart && (
-                  <CustomSnackbar
-                    variant="error"
-                    message={`${data.data.onboardStart.message}. Reload the page to try again.`}
+              <CustomSnackbar
+                variant="success"
+                message="Welcome to TravelFeed! We just sent you an email. Follow the instructions to create your TravelFeed account!"
+              />
+            );
+          }
+          return (
+            <>
+              {data && data.data && data.data.onboardStart && (
+                <CustomSnackbar
+                  variant="error"
+                  message={`${data.data.onboardStart.message}. Reload the page to try again.`}
+                />
+              )}
+              <FormGroup>
+                <FormControl required error={!isTosValid}>
+                  <CssTextField
+                    InputProps={
+                      props.isWhite
+                        ? {
+                            classes: {
+                              input: classes.root,
+                            },
+                          }
+                        : undefined
+                    }
+                    id="custom-css-outlined-input"
+                    autoFocus
+                    className={props.isWhite ? classes.margin : undefined}
+                    label="Email"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    margin="normal"
+                    variant="outlined"
+                    value={email}
+                    onChange={handleEmailChange()}
+                    error={!isMailValid}
                   />
-                )}
-                <FormGroup>
-                  <FormControl required error={!isTosValid}>
-                    <CssTextField
-                      InputProps={
-                        props.isWhite
-                          ? {
-                              classes: {
-                                input: classes.root,
-                              },
-                            }
-                          : undefined
-                      }
-                      id="custom-css-outlined-input"
-                      autoFocus
-                      className={props.isWhite ? classes.margin : undefined}
-                      label="Email"
-                      type="email"
-                      name="email"
-                      autoComplete="email"
-                      margin="normal"
-                      variant="outlined"
-                      value={email}
-                      onChange={handleEmailChange()}
-                      error={!isMailValid}
+                  {!isMailValid && (
+                    <FormHelperText>A valid email is required</FormHelperText>
+                  )}
+                </FormControl>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color={props.isWhite ? 'inherit' : 'primary'}
+                      className={props.isWhite ? classes.root : undefined}
+                      checked={newsletter}
+                      onChange={() => setNewsletter(!newsletter)}
                     />
-                    {!isMailValid && (
-                      <FormHelperText>A valid email is required</FormHelperText>
-                    )}
-                  </FormControl>
+                  }
+                  label="Subscribe to the TravelFeed newsletter and never miss any news about feature updates, competitions and our upcoming airdrop and token sale"
+                />
+                <FormControl required error={!isTosValid}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         color={props.isWhite ? 'inherit' : 'primary'}
                         className={props.isWhite ? classes.root : undefined}
-                        checked={newsletter}
-                        onChange={() => setNewsletter(!newsletter)}
+                        checked={tos}
+                        onChange={() => setTos(!tos)}
                       />
                     }
-                    label="Subscribe to the TravelFeed newsletter and never miss any news about feature updates, competitions and our upcoming airdrop and token sale"
+                    label={
+                      <>
+                        I have read and accept the{' '}
+                        <Link href="/about/tos" passHref>
+                          <a>terms of service</a>
+                        </Link>
+                        , the{' '}
+                        <Link href="/about/privacy" passHref>
+                          <a>privacy policy</a>{' '}
+                        </Link>{' '}
+                        and the{' '}
+                        <Link href="/about/cookies" passHref>
+                          <a>cookie policy</a>
+                        </Link>{' '}
+                        (required)
+                      </>
+                    }
                   />
-                  <FormControl required error={!isTosValid}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color={props.isWhite ? 'inherit' : 'primary'}
-                          className={props.isWhite ? classes.root : undefined}
-                          checked={tos}
-                          onChange={() => setTos(!tos)}
-                        />
-                      }
-                      label={
-                        <>
-                          I have read and accept the{' '}
-                          <Link href="/about/tos" passHref>
-                            <a>terms of service</a>
-                          </Link>
-                          , the{' '}
-                          <Link href="/about/privacy" passHref>
-                            <a>privacy policy</a>{' '}
-                          </Link>{' '}
-                          and the{' '}
-                          <Link href="/about/cookies" passHref>
-                            <a>cookie policy</a>
-                          </Link>{' '}
-                          (required)
-                        </>
-                      }
-                    />
-                    {!isTosValid && (
-                      <FormHelperText>
-                        You need to accept our terms of service, privacy policy
-                        and cookie policy to continue
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                  <GoogleReCaptcha onVerify={token => setCaptcha(token)} />
-                  <Button
-                    variant="contained"
-                    color={props.isWhite ? 'secondary' : 'primary'}
-                    onClick={submit()}
-                  >
-                    Sign Up
-                  </Button>
-                </FormGroup>
-              </>
-            );
-          }}
-        </Mutation>
-      </GoogleReCaptchaProvider>
+                  {!isTosValid && (
+                    <FormHelperText>
+                      You need to accept our terms of service, privacy policy
+                      and cookie policy to continue
+                    </FormHelperText>
+                  )}
+                </FormControl>
+                <div className="pb-2">
+                  <ReCAPTCHA
+                    sitekey={RECAPTCHA_SITE_KEY}
+                    onChange={token => setCaptcha(token)}
+                  />
+                </div>
+                <Button
+                  variant="contained"
+                  color={props.isWhite ? 'secondary' : 'primary'}
+                  onClick={submit()}
+                  disabled={!captcha}
+                >
+                  Sign Up
+                </Button>
+              </FormGroup>
+            </>
+          );
+        }}
+      </Mutation>
     </>
   );
 };
