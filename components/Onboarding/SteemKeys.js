@@ -49,7 +49,11 @@ const SteemKeys = props => {
   ];
 
   const handleTxtSave = () => {
-    const blob = new Blob([JSON.stringify(keyList)], {
+    let dltext = '';
+    keyList.forEach(k => {
+      dltext += `${k.name}: ${k.description}\n${k.value}\n\n`;
+    });
+    const blob = new Blob([dltext], {
       type: 'text/plain;charset=utf-8',
     });
     saveAs(blob, 'travelfeed_steem_private_keys.txt');

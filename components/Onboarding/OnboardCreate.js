@@ -176,7 +176,9 @@ const OnboardCreate = props => {
           <>
             <FormLabel component="legend" className="pb-2">
               To confirm that you have stored your Steem passphrase securely,
-              please reenter it below.
+              please reenter it below. Remember, if you ever loose your
+              passphrase, <strong>we cannot recover it</strong> and you will
+              loose access to your account and all funds on it permanently!
             </FormLabel>
             <div className="pb-2">
               <PasswordPicker
