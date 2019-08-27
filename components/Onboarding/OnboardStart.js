@@ -16,6 +16,7 @@ import isEmail from 'validator/lib/isEmail';
 import { RECAPTCHA_SITE_KEY } from '../../config';
 import { ONBOARD_START } from '../../helpers/graphql/onboarding';
 import Link from '../../lib/Link';
+import CustomSnackbar from '../Dashboard/Notifications/CustomSnackbar';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -87,14 +88,22 @@ const OnboardStart = props => {
           {(onboardStart, data) => {
             if (mutate) onboardStart();
             setMutate(false);
-            if (data && data.data && data.data.onboardStart) {
-              if (data.data.onboardStart.success) {
-                return 'Welcome to TravelFeed! We just sent you an email. Follow the instructions to create your TravelFeed account!';
-              }
-              return data.data.onboardStart.message;
+            if (
+              data &&
+              data.data &&
+              data.data.onboardStart &&
+              data.data.onboardStart.success
+            ) {
+              return 'Welcome to TravelFeed! We just sent you an email. Follow the instructions to create your TravelFeed account!';
             }
             return (
               <>
+                {data && data.data && data.data.onboardStart && (
+                  <CustomSnackbar
+                    variant="error"
+                    message={`${data.data.onboardStart.message}. Reload the page to try again.`}
+                  />
+                )}
                 <FormGroup>
                   <FormControl required error={!isTosValid}>
                     <CssTextField
@@ -129,7 +138,7 @@ const OnboardStart = props => {
                         onChange={() => setNewsletter(!newsletter)}
                       />
                     }
-                    label="Subscribe to the TravelFeed newsletter"
+                    label="Subscribe to the TravelFeed newsletter and never miss any news about feature updates, competitions and our upcoming airdrop and token sale"
                   />
                   <FormControl required error={!isTosValid}>
                     <FormControlLabel
@@ -171,7 +180,6 @@ const OnboardStart = props => {
                     variant="contained"
                     color="secondary"
                     onClick={submit()}
-                    disabled={!captcha}
                   >
                     Sign Up
                   </Button>
