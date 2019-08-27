@@ -49,6 +49,8 @@ const OnboardingItem = props => {
                     Post
                   </Typography>
                   <EditorPreview
+                    hideAuthorProfile
+                    author="null"
                     fullsize
                     img_url={cover_image}
                     title={`Introducing myself to TravelFeed: ${name}`}

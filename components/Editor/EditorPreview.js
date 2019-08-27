@@ -27,9 +27,9 @@ const EditorPreview = props => {
           <Card>
             <PostContent
               hideAuthorProfile={props.hideAuthorProfile}
-              author={getUser()}
+              author={props.author}
               permlink={props.permlink}
-              display_name={getUser()}
+              display_name={props.author}
               readtime={props.readtime}
               content={
                 <div
@@ -49,6 +49,7 @@ const EditorPreview = props => {
 };
 
 EditorPreview.defaultProps = {
+  author: getUser(),
   img_url: '',
   content: '',
   title: '',
@@ -65,6 +66,7 @@ EditorPreview.propTypes = {
   permlink: PropTypes.string,
   latitude: PropTypes.number,
   longitude: PropTypes.number,
+  author: PropTypes.string,
 };
 
 export default EditorPreview;
