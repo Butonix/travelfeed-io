@@ -47,7 +47,7 @@ const LoginDialog = props => {
           <div className="row">
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
               <DialogTitle className="text-center" id="form-dialog-title">
-                Login with TravelFeed
+                Login with TravelFeed EasyLogin
               </DialogTitle>
               <DialogContent className="text-center">
                 <EasyLoginButton />
