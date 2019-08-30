@@ -121,15 +121,15 @@ const OnboardInfo = props => {
           <>
             <FormLabel component="legend">
               Now it is time to complete your TravelFeed profile. Select your
-              display name, slogan, cover image and profile image to proceed
-              with setting up your account. They can all be changed later.
+              blog name, slogan, cover image and profile image to proceed with
+              setting up your account. They can all be changed later.
             </FormLabel>
             <TextField
-              label="Display name"
+              label="Blog name"
               inputProps={{
                 maxLength: 20,
               }}
-              placeholder="Your display name"
+              placeholder="A cool name for your blog"
               margin="normal"
               value={name}
               onChange={res => setName(res.target.value)}
@@ -137,11 +137,11 @@ const OnboardInfo = props => {
             />
             <TextField
               multiline
-              label="Profile description"
+              label="Blog slogan"
               inputProps={{
                 maxLength: 160,
               }}
-              placeholder="Profile description"
+              placeholder="Your one-line biography goes here"
               margin="normal"
               value={about}
               onChange={res => setAbout(res.target.value)}

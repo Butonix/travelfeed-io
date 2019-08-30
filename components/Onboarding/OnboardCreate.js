@@ -90,10 +90,10 @@ const OnboardCreate = props => {
             <FormLabel component="legend">
               {(username && (
                 <span>
-                  You have chosen the username <strong>{username}</strong>
+                  You have chosen the username @<strong>{username}</strong>
                 </span>
               )) ||
-                'Choose a username below. Your username cannot be changed once your account has been created!'}
+                'Choose a username below. Unlike your blog name, your username cannot be changed once your account has been created!'}
             </FormLabel>
             <div className="pb-3">
               <UsernamePicker

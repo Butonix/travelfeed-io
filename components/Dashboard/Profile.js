@@ -220,11 +220,11 @@ class Profile extends Component {
                         {/* Todo: Find out what the blockchain imposed 
                         length limits are for each field */}
                         <TextField
-                          label="Name"
+                          label="Blog name"
                           inputProps={{
                             maxLength: 20,
                           }}
-                          placeholder="Your display name"
+                          placeholder="A cool name for your blog"
                           margin="normal"
                           value={this.state.name}
                           onChange={this.handleEditorChange_name}
@@ -232,11 +232,11 @@ class Profile extends Component {
                         />
                         <TextField
                           multiline
-                          label="Profile description"
+                          label="Blog slogan"
                           inputProps={{
                             maxLength: 160,
                           }}
-                          placeholder="Profile description"
+                          placeholder="Your one-line biography goes here"
                           margin="normal"
                           value={this.state.about}
                           onChange={this.handleEditorChange_about}
@@ -247,7 +247,7 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 30,
                           }}
-                          placeholder="Your location"
+                          placeholder="Where are you based?"
                           margin="normal"
                           value={this.state.location}
                           onChange={this.handleEditorChange_location}
@@ -258,7 +258,7 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 100,
                           }}
-                          placeholder="Your website"
+                          placeholder="Link to your website"
                           margin="normal"
                           value={this.state.website}
                           onChange={this.handleEditorChange_website}
@@ -356,9 +356,9 @@ class Profile extends Component {
                       content={
                         <Fragment>
                           <p>
-                            After you update your profile, it can take several
-                            minutes for your changes to be visible on your
-                            profile page.
+                            After you update your profile, it can take up to an
+                            hour for your changes to be visible on your profile
+                            page.
                           </p>
                           {updatebtn}
                           <Link
