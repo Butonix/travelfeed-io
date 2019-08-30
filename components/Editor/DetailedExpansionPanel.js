@@ -1,4 +1,6 @@
+import Divider from '@material-ui/core/Divider';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { makeStyles } from '@material-ui/core/styles';
@@ -116,6 +118,12 @@ const DetailedExpansionPanel = props => {
             </div>
           </div>
         </ExpansionPanelDetails>
+        {props.actions && (
+          <>
+            <Divider />
+            <ExpansionPanelActions>{props.actions}</ExpansionPanelActions>
+          </>
+        )}
       </ExpansionPanel>
     </div>
   );
@@ -134,6 +142,7 @@ DetailedExpansionPanel.propTypes = {
   withBg: PropTypes.bool,
   title: PropTypes.string.isRequired,
   selector: PropTypes.func.isRequired,
+  actions: PropTypes.func,
   helper: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   fullWidth: PropTypes.bool,

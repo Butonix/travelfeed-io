@@ -4,6 +4,10 @@ const withImages = require('next-images');
 // https://github.com/zeit/next-plugins/tree/master/packages/next-bundle-analyzer
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 module.exports = withImages(
   withOffline(
     withCSS(
@@ -11,6 +15,14 @@ module.exports = withImages(
         webpack(config) {
           config.node = { fs: 'empty' };
           return config;
+        },
+        env: {
+          MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
+          GMAPS_API_KEY: process.env.GMAPS_API_KEY,
+          RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
+          CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+          ROOTURL: process.env.ROOTURL,
+          GRAPHQL_URL: process.env.GRAPHQL_URL,
         },
         analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
         analyzeBrowser: ['browser', 'both'].includes(

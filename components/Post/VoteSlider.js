@@ -1,6 +1,6 @@
 // Todo: Tooltip with individual voters over total miles
-
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
@@ -19,10 +19,10 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
-import { vote } from '../../helpers/actions';
 import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import VoteButton from './VoteButton';
 
 class VoteSlider extends Component {
   state = {
@@ -62,6 +62,17 @@ class VoteSlider extends Component {
     }
   }
 
+  pastVote = res => {
+    if (!res.success) this.newNotification(res);
+    else
+      this.setState(prevState => ({
+        hasVoted: true,
+        totalmiles: prevState.totalmiles + prevState.weight,
+      }));
+    this.setState({ loading: undefined });
+    this.collapseVoteBar();
+  };
+
   progress = () => {
     const { loading } = this.state;
     if (loading < 100) {
@@ -74,23 +85,6 @@ class VoteSlider extends Component {
   setWeight = (event, value) => {
     this.setState({ weight: value });
   };
-
-  votePost(author, permlink) {
-    const weight = this.state.weight * 1000;
-    this.setState({ loading: 0 });
-    return vote(author, permlink, weight).then(res => {
-      if (res) {
-        if (!res.success) this.newNotification(res);
-        else
-          this.setState(prevState => ({
-            hasVoted: true,
-            totalmiles: prevState.totalmiles + prevState.weight,
-          }));
-        this.setState({ loading: undefined });
-        this.collapseVoteBar();
-      }
-    });
-  }
 
   expandVoteBar() {
     this.setState({ voteExpanded: true });
@@ -200,30 +194,27 @@ class VoteSlider extends Component {
     if (this.props.mode !== 'gridcard') {
       if (this.state.user != null) {
         actions.push(
-          <Fragment>
-            <Tooltip title="Reply" placement="bottom">
-              <IconButton
-                aria-label="Reply"
-                onClick={() => this.expandCommentBar()}
-              >
-                <CommentIcon className="mr" />
-              </IconButton>
-            </Tooltip>
-            {numberreplies}
-          </Fragment>,
+          <Typography color="textSecondary" component="span">
+            <Button
+              onClick={() => this.expandCommentBar()}
+              size="small"
+              color="inherit"
+            >
+              <CommentIcon className="mr pr-1 mr-1" />
+              {numberreplies} Comment
+            </Button>
+          </Typography>,
         );
       } else {
         actions.push(
-          <Fragment>
-            <Link color="textPrimary" href="/join" passHref>
-              <Tooltip title="Login to reply" placement="bottom">
-                <IconButton aria-label="Reply">
-                  <CommentIcon className="mr" />
-                </IconButton>
-              </Tooltip>
+          <Typography color="textSecondary" component="span">
+            <Link color="textSecondary" href="/join" passHref>
+              <Button size="small" color="inherit">
+                <CommentIcon className="mr pr-1 mr-1" />
+                {numberreplies} Comment
+              </Button>
             </Link>
-            {numberreplies}
-          </Fragment>,
+          </Typography>,
         );
       }
     }
@@ -246,16 +237,18 @@ class VoteSlider extends Component {
     if (this.props.handleClick !== undefined) {
       if (this.props.isEdit === true) {
         actions.push(
-          <Tooltip title="Edit" placement="bottom">
-            <IconButton
-              aria-label="Edit"
+          <Typography color="textSecondary">
+            <Button
               onClick={() => {
                 this.props.handleClick();
               }}
+              size="small"
+              color="inherit"
             >
-              <EditIcon className="mr" />
-            </IconButton>
-          </Tooltip>,
+              <EditIcon className="mr pr-1 mr-1" />
+              Edit
+            </Button>
+          </Typography>,
         );
       }
     }
@@ -351,15 +344,13 @@ class VoteSlider extends Component {
                 <Divider variant="middle" />
                 <CardActions>
                   <Tooltip title="Upvote now" placement="bottom">
-                    <IconButton
-                      aria-label="Upvote"
-                      onClick={() =>
-                        this.votePost(this.props.author, this.props.permlink)
-                      }
-                      color="primary"
-                    >
-                      <FlightIcon className="mr" />
-                    </IconButton>
+                    <VoteButton
+                      author={this.props.author}
+                      permlink={this.props.permlink}
+                      weight={this.state.weight}
+                      pastVote={success => this.pastVote(success)}
+                      setLoading={() => this.setState({ loading: 0 })}
+                    />
                   </Tooltip>
                   <div className="pr-2">{weightIndicator}</div>
                   <Slider
@@ -394,7 +385,7 @@ class VoteSlider extends Component {
                 parent_author={this.props.author}
                 parent_permlink={this.props.permlink}
                 onClose={() => this.collapseCommentBar()}
-                onCommentEdit={this.props.onCommentAdd}
+                onCommentAdd={this.props.onCommentAdd}
               />
             </div>
             <Tooltip title="Close" placement="bottom">

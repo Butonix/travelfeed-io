@@ -11,7 +11,9 @@ dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
 const SubHeader = props => {
   const { created_at, readtime, location } = props;
-  const createdAt = dayjs(created_at);
+  let createdAt;
+  if (!created_at) createdAt = dayjs();
+  else createdAt = dayjs(created_at);
 
   const country =
     location.country_code !== null

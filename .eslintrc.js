@@ -17,9 +17,12 @@ module.exports = {
     'prefer-object-spread': ['off'],
     'react/jsx-props-no-spreading': ['off'],
     'react/forbid-prop-types': ['off'],
+    'react/require-default-props': ['off'],
     // Next js needs empty <a> inside Link
     'jsx-a11y/anchor-is-valid': ['off'],
     'jsx-a11y/href-no-hash': ['off'],
+    'react/no-unused-state': ['off'],
+    'react/state-in-constructor': ['off'],
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
     'max-len': [
       'warn',

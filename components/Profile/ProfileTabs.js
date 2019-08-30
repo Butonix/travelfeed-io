@@ -57,6 +57,7 @@ const FullWidthTabs = props => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [tabs, setTabs] = React.useState(false);
 
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -80,58 +81,55 @@ const FullWidthTabs = props => {
           aria-label="full width tabs example"
         >
           <Tab label="Blog" {...a11yProps(0)} />
-          <Tab label="Map" {...a11yProps(1)} />
-          <Tab label="Badges" {...a11yProps(2)} />
+          {tabs && <Tab label="Map" {...a11yProps(1)} />}
+          {tabs && <Tab label="Badges" {...a11yProps(2)} />}
         </Tabs>
       </AppBar>
-      <Query
-        query={GET_AUTHOR_POST_LOCATIONS}
-        variables={{ author, limit: Infinity }}
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
       >
-        {({ data }) => {
-          const country_codes = [];
-          if (data && data.posts) {
-            data.posts.forEach(d => {
-              if (
-                d.country_code &&
-                country_codes.indexOf(d.country_code) === -1
-              )
-                country_codes.push(d.country_code);
-            });
-            if (country_codes.length > 0) {
-              return (
-                <Query
-                  query={GET_GEOJSON}
-                  variables={{ countryList: country_codes }}
-                >
-                  {res => {
-                    let dataLayer;
-                    if (res.data && res.data.geojson) {
-                      const features = JSON.parse(res.data.geojson.features);
-                      dataLayer = {
-                        type: 'FeatureCollection',
-                        features,
-                      };
-                      return (
-                        <>
-                          <SwipeableViews
-                            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                            index={value}
-                            onChangeIndex={handleChangeIndex}
-                          >
-                            <TabPanel
-                              value={value}
-                              index={0}
-                              dir={theme.direction}
-                            >
-                              <div className="container pt-3">
-                                <PostGrid
-                                  query={{ author, limit: 12 }}
-                                  grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
-                                  cardHeight={140}
-                                />
-                              </div>
-                            </TabPanel>
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          <div className="container pt-3">
+            <PostGrid
+              query={{ author, limit: 12 }}
+              grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
+              cardHeight={140}
+            />
+          </div>
+        </TabPanel>
+        <Query
+          query={GET_AUTHOR_POST_LOCATIONS}
+          variables={{ author, limit: Infinity }}
+        >
+          {({ data }) => {
+            const country_codes = [];
+            if (data && data.posts) {
+              data.posts.forEach(d => {
+                if (
+                  d.country_code &&
+                  country_codes.indexOf(d.country_code) === -1
+                )
+                  country_codes.push(d.country_code);
+              });
+              if (country_codes.length > 0) {
+                return (
+                  <Query
+                    query={GET_GEOJSON}
+                    variables={{ countryList: country_codes }}
+                  >
+                    {res => {
+                      let dataLayer;
+                      if (res.data && res.data.geojson) {
+                        setTabs(true);
+                        const features = JSON.parse(res.data.geojson.features);
+                        dataLayer = {
+                          type: 'FeatureCollection',
+                          features,
+                        };
+                        return (
+                          <>
                             <div
                               index={1}
                               style={{ height: '500px', widht: '100%' }}
@@ -160,19 +158,19 @@ const FullWidthTabs = props => {
                                 />
                               </div>
                             </TabPanel>
-                          </SwipeableViews>
-                        </>
-                      );
-                    }
-                    return <></>;
-                  }}
-                </Query>
-              );
+                          </>
+                        );
+                      }
+                      return <></>;
+                    }}
+                  </Query>
+                );
+              }
             }
-          }
-          return <></>;
-        }}
-      </Query>
+            return <></>;
+          }}
+        </Query>
+      </SwipeableViews>
     </div>
   );
 };

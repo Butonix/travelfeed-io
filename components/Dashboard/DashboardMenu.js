@@ -19,6 +19,7 @@ import DraftIcon from '@material-ui/icons/FileCopy';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ProfileIcon from '@material-ui/icons/Person';
+import UserAddIcon from '@material-ui/icons/PersonAdd';
 import RepliesIcon from '@material-ui/icons/Reply';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/styles';
@@ -26,6 +27,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactPiwik from 'react-piwik';
+import { getRoles } from '../../helpers/token';
 import Link from '../../lib/Link';
 import HeaderMenu from '../Header/HeaderMenu';
 
@@ -97,7 +99,7 @@ const styles = theme => ({
   },
 });
 class Dashboard extends Component {
-  state = { open: this.props.open === 'true', variant: 'permanent' };
+  state = { open: this.props.open === 'true', variant: 'permanent', roles: [] };
 
   static async getInitialProps(props) {
     const { page } = props.query;
@@ -112,6 +114,10 @@ class Dashboard extends Component {
     } else {
       this.setState({ open: true, variant: 'permanent' });
     }
+    const roles = getRoles();
+    this.setState({
+      roles,
+    });
   }
 
   handleLogout = () => {
@@ -354,6 +360,31 @@ class Dashboard extends Component {
             </a>
           </Link>
         </List>
+        {this.state.roles && this.state.roles.indexOf('curator') !== -1 && (
+          <>
+            <Divider />
+            <List>
+              <Link
+                color="textPrimary"
+                href={`/dashboard/onboarding?open=${this.state.open}`}
+                as="/dashboard/onboarding"
+                passHref
+              >
+                <a>
+                  <ListItem
+                    selected={this.props.active === 'onboarding'}
+                    button
+                  >
+                    <ListItemIcon>
+                      <UserAddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Onboarding" />
+                  </ListItem>
+                </a>
+              </Link>
+            </List>
+          </>
+        )}
       </Drawer>
     );
 

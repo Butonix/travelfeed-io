@@ -16,13 +16,20 @@ const EditorPreview = props => {
     <div>
       <Grid container spacing={0} alignItems="center" justify="center">
         <PostTitle img_url={props.img_url} title={props.title} />
-        <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
+        <Grid
+          item
+          lg={props.fullsize ? 12 : 7}
+          md={props.fullsize ? 12 : 8}
+          sm={props.fullsize ? 12 : 11}
+          xs={12}
+          className="pb-4"
+        >
           <Card>
             <PostContent
-              author={getUser()}
+              hideAuthorProfile={props.hideAuthorProfile}
+              author={props.author}
               permlink={props.permlink}
-              display_name={getUser()}
-              created_at={Date.now()}
+              display_name={props.author}
               readtime={props.readtime}
               content={
                 <div
@@ -42,6 +49,7 @@ const EditorPreview = props => {
 };
 
 EditorPreview.defaultProps = {
+  author: getUser(),
   img_url: '',
   content: '',
   title: '',
@@ -58,6 +66,7 @@ EditorPreview.propTypes = {
   permlink: PropTypes.string,
   latitude: PropTypes.number,
   longitude: PropTypes.number,
+  author: PropTypes.string,
 };
 
 export default EditorPreview;

@@ -49,6 +49,10 @@ const parseBody = (body, options) => {
     /<hr \/><center>View this post <a href="https:\/\/travelfeed\.io\/@.*">on the TravelFeed dApp<\/a> for the best experience\.<\/center>/g,
     '',
   );
+  parsedBody = parsedBody.replace(
+    /---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./gi,
+    '',
+  );
   // Remove dclick ads
   parsedBody = parsedBody.replace(/\[!\[dclick-imagead]\(h.*\)]\(.*\)/g, '');
   parsedBody = parsedBody.replace(

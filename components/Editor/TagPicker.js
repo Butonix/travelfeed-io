@@ -162,7 +162,7 @@ const TagPicker = props => {
       selectedItem.length &&
       !inputValue.length &&
       event.key === 'Backspace' &&
-      selectedItem[selectedItem.length - 1] !== props.defaultTag
+      props.defaultTags.indexOf(selectedItem[selectedItem.length - 1]) === -1
     ) {
       props.onTagChange(selectedItem.slice(0, selectedItem.length - 1));
     }
@@ -184,7 +184,10 @@ const TagPicker = props => {
         .replace(/,/g, '')
         .replace(/\s/g, '');
 
-      if (selectedItem.indexOf(item) === -1 && item !== props.defaultTag) {
+      if (
+        selectedItem.indexOf(item) === -1 &&
+        props.defaultTags.indexOf(item) === -1
+      ) {
         props.onTagChange([...selectedItem, item]);
         setInputValue('');
       }
@@ -193,7 +196,7 @@ const TagPicker = props => {
 
   const handleChange = item => {
     //  If 10 Tags already, don't autocomplete
-    if (selectedItem.length < 10 && item !== props.defaultTag) {
+    if (selectedItem.length < 10 && props.defaultTags.indexOf(item) === -1) {
       if (selectedItem.indexOf(item) === -1) {
         props.onTagChange([...selectedItem, item]);
         setInputValue('');
@@ -236,12 +239,14 @@ const TagPicker = props => {
                   InputProps: getInputProps({
                     startAdornment: (
                       <Fragment>
-                        <Chip
-                          key={props.defaultTag}
-                          tabIndex={-1}
-                          label={props.defaultTag}
-                          className={classes.chip}
-                        />
+                        {props.defaultTags.map(item => (
+                          <Chip
+                            key={item}
+                            tabIndex={-1}
+                            label={item}
+                            className={classes.chip}
+                          />
+                        ))}
                         {selectedItem.map(item => (
                           <Chip
                             key={item}
@@ -316,7 +321,7 @@ TagPicker.propTypes = {
   value: PropTypes.arrayOf(PropTypes.string).isRequired,
   recommendations: PropTypes.arrayOf(PropTypes.string).isRequired,
   onTagChange: PropTypes.func.isRequired,
-  defaultTag: PropTypes.string.isRequired,
+  defaultTags: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(TagPicker);
