@@ -92,7 +92,7 @@ const OnboardInfo = props => {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You need to write more than 250 words
+          {'  '}You need to write more than 250 words in English
         </span>
       ),
       hide: readingtime.words > 250,
