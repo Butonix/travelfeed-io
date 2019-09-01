@@ -21,6 +21,7 @@ import PostCommentItem from './PostCommentItem';
 import PostComments from './PostComments';
 import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
+import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
 import VoteSlider from './VoteSlider';
 
@@ -235,31 +236,44 @@ class SinglePost extends Component {
                 />
               );
               card = (
-                <div ref={this.myInput}>
-                  <Card>
-                    <PostContent
-                      author={data.post.author}
-                      appIcon={appIcon}
-                      permlink={data.post.permlink}
-                      display_name={data.post.display_name}
-                      created_at={data.post.created_at}
-                      readtime={readtime}
-                      content={bodycontent}
-                      latitude={data.post.latitude}
-                      longitude={data.post.longitude}
-                    />
-                    <VoteSlider
-                      author={data.post.author}
-                      permlink={data.post.permlink}
-                      votes={data.post.votes}
-                      total_votes={data.post.total_votes}
-                      tags={data.post.tags}
-                      depth={data.post.depth}
-                      mode="post"
-                      onCommentAdd={this.onCommentAdd}
-                    />
-                  </Card>
-                </div>
+                <>
+                  <div ref={this.myInput}>
+                    <Card>
+                      <PostContent
+                        author={data.post.author}
+                        appIcon={appIcon}
+                        permlink={data.post.permlink}
+                        display_name={data.post.display_name}
+                        created_at={data.post.created_at}
+                        readtime={readtime}
+                        content={bodycontent}
+                        latitude={data.post.latitude}
+                        longitude={data.post.longitude}
+                      />
+                      <VoteSlider
+                        author={data.post.author}
+                        permlink={data.post.permlink}
+                        votes={data.post.votes}
+                        total_votes={data.post.total_votes}
+                        tags={data.post.tags}
+                        depth={data.post.depth}
+                        mode="post"
+                        onCommentAdd={this.onCommentAdd}
+                      />
+                    </Card>
+                  </div>
+                  <div className="pt-2">
+                    <Card>
+                      <PostSocialShares
+                        author={data.post.author}
+                        permlink={data.post.permlink}
+                        tags={data.post.tags}
+                        title={data.post.title}
+                        img_url={data.post.img_url}
+                      />
+                    </Card>
+                  </div>
+                </>
               );
             }
             // Don't load comment area  if there are no comments
