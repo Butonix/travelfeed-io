@@ -6,6 +6,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from '@material-ui/core/IconButton';
 import React, { Fragment } from 'react';
+import { Mutation } from 'react-apollo';
+import { CONTEST_SOCIAL } from '../../helpers/graphql/contest';
 
 const PostSocialShares = props => {
   const link = `https://travelfeed.io/@${props.author}/${props.permlink}`;
@@ -59,20 +61,28 @@ const PostSocialShares = props => {
 
   return (
     <Fragment>
-      <div className="text-center">
-        {social.map(s => {
-          return (
-            <a
-              href={s.link}
-              title={s.name}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >
-              <IconButton>{s.icon}</IconButton>
-            </a>
-          );
-        })}
-      </div>
+      <Mutation mutation={CONTEST_SOCIAL}>
+        {(
+          contestSocial,
+          // eslint-disable-next-line no-shadow
+        ) => (
+          <div className="text-center">
+            {social.map(s => {
+              return (
+                <a
+                  onClick={contestSocial}
+                  href={s.link}
+                  title={s.name}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+                  <IconButton>{s.icon}</IconButton>
+                </a>
+              );
+            })}
+          </div>
+        )}
+      </Mutation>
     </Fragment>
   );
 };
