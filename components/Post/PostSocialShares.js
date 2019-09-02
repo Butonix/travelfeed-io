@@ -61,28 +61,30 @@ const PostSocialShares = props => {
 
   return (
     <Fragment>
-      <Mutation mutation={CONTEST_SOCIAL}>
-        {(
-          contestSocial,
-          // eslint-disable-next-line no-shadow
-        ) => (
-          <div className="text-center">
-            {social.map(s => {
-              return (
-                <a
-                  onClick={contestSocial}
-                  href={s.link}
-                  title={s.name}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                >
-                  <IconButton>{s.icon}</IconButton>
-                </a>
-              );
-            })}
-          </div>
-        )}
-      </Mutation>
+      <div className="p-1">
+        <Mutation mutation={CONTEST_SOCIAL}>
+          {(
+            contestSocial,
+            // eslint-disable-next-line no-shadow
+          ) => (
+            <div className="text-center">
+              {social.map(s => {
+                return (
+                  <a
+                    onClick={contestSocial}
+                    href={s.link}
+                    title={s.name}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                  >
+                    <IconButton>{s.icon}</IconButton>
+                  </a>
+                );
+              })}
+            </div>
+          )}
+        </Mutation>
+      </div>
     </Fragment>
   );
 };

@@ -40,7 +40,11 @@ const PostContent = props => {
           <Fragment>
             <span>{props.appIcon}</span>
             <BookmarkIcon author={props.author} permlink={props.permlink} />
-            <CuratorMenu author={props.author} permlink={props.permlink} />
+            <CuratorMenu
+              author={props.author}
+              permlink={props.permlink}
+              isTf={props.isTf}
+            />
           </Fragment>
         }
         title={

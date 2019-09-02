@@ -242,6 +242,10 @@ class SinglePost extends Component {
                       <PostContent
                         author={data.post.author}
                         appIcon={appIcon}
+                        isTf={
+                          data.post.app &&
+                          data.post.app.split('/')[0] === 'travelfeed'
+                        }
                         permlink={data.post.permlink}
                         display_name={data.post.display_name}
                         created_at={data.post.created_at}
