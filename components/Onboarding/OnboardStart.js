@@ -130,7 +130,7 @@ const OnboardStart = props => {
                         : undefined
                     }
                     id="custom-css-outlined-input"
-                    autoFocus
+                    autoFocus={props.autoFocus}
                     className={props.isWhite ? classes.margin : undefined}
                     label="Email"
                     type="email"
@@ -219,6 +219,10 @@ const OnboardStart = props => {
       </Mutation>
     </>
   );
+};
+
+OnboardStart.defaultProps = {
+  autoFocus: true,
 };
 
 export default OnboardStart;
