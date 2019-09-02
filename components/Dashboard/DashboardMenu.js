@@ -360,6 +360,24 @@ class Dashboard extends Component {
             </a>
           </Link>
         </List>
+        <Divider />
+        <List>
+          <Link
+            color="textPrimary"
+            href={`/dashboard/contest?open=${this.state.open}`}
+            as="/dashboard/contest"
+            passHref
+          >
+            <a>
+              <ListItem selected={this.props.active === 'contest'} button>
+                <ListItemIcon>
+                  <UserAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Steemfest" />
+              </ListItem>
+            </a>
+          </Link>
+        </List>
         {this.state.roles && this.state.roles.indexOf('curator') !== -1 && (
           <>
             <Divider />
