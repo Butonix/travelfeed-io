@@ -3,11 +3,10 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
-import { CONTEST_GET } from '../../helpers/graphql/contest';
 import { getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 import OptIn from './Contest/OptIn';
+import RaffleTickets from './Contest/RaffleTickets';
 import ReferAFriend from './Contest/ReferAFriend';
 
 const Onboarding = () => {
@@ -99,21 +98,7 @@ const Onboarding = () => {
           />
         </Grid>
         <Grid item className="p-1" lg={12} md={12} sm={12} xs={12}>
-          <HeaderCard
-            title="Your Raffle Tickets"
-            background={teal[600]}
-            content={
-              <Query query={CONTEST_GET}>
-                {({ data }) => {
-                  if (data && data.contestGet) {
-                    console.log(data);
-                    return <>There is data</>;
-                  }
-                  return 'Loading...';
-                }}
-              </Query>
-            }
-          />
+          <RaffleTickets />
         </Grid>
       </Grid>
     </Fragment>

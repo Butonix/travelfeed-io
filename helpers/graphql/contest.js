@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 export const CONTEST_GET = gql`
   query contestGet {
     contestGet {
-      user
       type
       tickets
     }
