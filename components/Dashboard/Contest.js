@@ -71,9 +71,9 @@ const Contest = props => {
                   <p>
                     Before you can start earning tickets, you first need to opt
                     in. Each raffle ticket gives you a chance to participate in
-                    the final draw to win a ticket to Steemfest including
-                    accommodation. You can earn raffle tickets by using
-                    TravelFeed:
+                    the final draw on October 18th to win a ticket to Steemfest
+                    including accommodation. You can earn raffle tickets until
+                    October 17th by using and promoting TravelFeed:
                   </p>
                   <ul>
                     <li>
