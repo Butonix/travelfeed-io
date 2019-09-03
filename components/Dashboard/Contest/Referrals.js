@@ -1,33 +1,32 @@
-import { teal } from '@material-ui/core/colors';
+import { cyan } from '@material-ui/core/colors';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import dayjs from 'dayjs';
 import React from 'react';
 import { Query } from 'react-apollo';
-import { CONTEST_GET } from '../../../helpers/graphql/contest';
+import { REFERRALS } from '../../../helpers/graphql/contest';
 import HeaderCard from '../../General/HeaderCard';
 
-const RaffleTickets = () => {
+const Referrals = () => {
   return (
     <>
-      <Query query={CONTEST_GET}>
+      <Query query={REFERRALS}>
         {({ data }) => {
-          if (data && data.contestGet) {
+          if (data && data.referrals) {
             let count = 0;
-            data.contestGet.forEach(c => {
-              count += c.tickets;
+            data.referrals.forEach(c => {
+              count += 1;
             });
             return (
               <HeaderCard
                 title={
                   count
-                    ? `Your have ${count} Raffle Ticket${count > 1 ? 's' : ''}`
-                    : 'You have no Raffle Tickets yet'
+                    ? `Your have Referred ${count} User${count > 1 ? 's' : ''}`
+                    : "You haven't Referred Anyone yet"
                 }
-                background={teal[600]}
+                background={cyan[600]}
                 content={
                   <>
                     <div
@@ -40,19 +39,13 @@ const RaffleTickets = () => {
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell>Type</TableCell>
-                            <TableCell>Tickets</TableCell>
-                            <TableCell>Date</TableCell>
+                            <TableCell>Username</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {data.contestGet.map((c, i) => (
+                          {data.referrals.map((c, i) => (
                             <TableRow hover key={i}>
-                              <TableCell>{c.type}</TableCell>
-                              <TableCell>{c.tickets}</TableCell>
-                              <TableCell>
-                                {dayjs(c.date).format('MMMM DD YYYY')}
-                              </TableCell>
+                              <TableCell>{c}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -70,4 +63,4 @@ const RaffleTickets = () => {
   );
 };
 
-export default RaffleTickets;
+export default Referrals;

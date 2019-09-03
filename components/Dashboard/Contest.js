@@ -12,6 +12,7 @@ import HeaderCard from '../General/HeaderCard';
 import OptIn from './Contest/OptIn';
 import RaffleTickets from './Contest/RaffleTickets';
 import ReferAFriend from './Contest/ReferAFriend';
+import Referrals from './Contest/Referrals';
 
 const Contest = props => {
   const newNotification = notification => {
@@ -175,6 +176,9 @@ const Contest = props => {
         </Grid>
         <Grid item className="p-1" lg={12} md={12} sm={12} xs={12}>
           <RaffleTickets />
+        </Grid>
+        <Grid item className="p-1" lg={12} md={12} sm={12} xs={12}>
+          <Referrals />
         </Grid>
       </Grid>
     </Fragment>

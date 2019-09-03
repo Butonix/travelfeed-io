@@ -63,8 +63,8 @@ const OptIn = () => {
                         <HeaderCard
                           title={
                             (optedIn &&
-                              'You are participating in the Steemfest contest') ||
-                            'Opt in to participate'
+                              'You are Participating in the Steemfest Contest') ||
+                            'Opt in to Participate'
                           }
                           background={(optedIn && green[600]) || red[600]}
                           content={

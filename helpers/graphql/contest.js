@@ -11,6 +11,12 @@ export const CONTEST_GET = gql`
   }
 `;
 
+export const REFERRALS = gql`
+  query referrals {
+    referrals
+  }
+`;
+
 export const CONTEST_SOCIAL = gql`
   mutation contestSocial {
     contestSocial {
@@ -36,7 +42,7 @@ export const CONTEST_OPT_IN = gql`
 `;
 
 export const REFERRAL_MAIL = gql`
-  mutation referralMail($email: String!, $message: String!) {
+  mutation referralMail($email: String!, $message: String) {
     referralMail(email: $email, message: $message) {
       success
       message
