@@ -107,7 +107,7 @@ const Contest = props => {
                       contest - on and off Steem. Send us the link{' '}
                       <Typography display="inline" color="primary">
                         <a
-                          href="https://steemfest.com/"
+                          href="https://discord.gg/jWWu73H"
                           rel="noopener noreferrer nofollow"
                           target="_blank"
                         >
