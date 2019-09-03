@@ -10,6 +10,7 @@ import { REFERRAL_MAIL } from '../../../helpers/graphql/contest';
 const ReferAFriend = props => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [querying, setQuerying] = useState(false);
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -35,13 +36,17 @@ const ReferAFriend = props => {
           // eslint-disable-next-line no-shadow
           { data, loading },
         ) => {
-          if (loading) return <CircularProgress />;
-          if (data && data.referralMail) {
+          if (loading) {
+            setQuerying(true);
+            return <CircularProgress />;
+          }
+          if (data && data.referralMail && querying) {
             if (data.referralMail.success) {
               setEmail('');
               setMessage('');
             }
             newNotification(data.referralMail);
+            setQuerying(false);
           }
           return (
             <>
@@ -67,7 +72,7 @@ const ReferAFriend = props => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={referralMail}
+                  onClick={email ? referralMail : undefined}
                   disabled={!isEmail(email)}
                 >
                   Invite
