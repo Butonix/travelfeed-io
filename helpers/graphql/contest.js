@@ -6,6 +6,7 @@ export const CONTEST_GET = gql`
     contestGet {
       type
       tickets
+      date
     }
   }
 `;

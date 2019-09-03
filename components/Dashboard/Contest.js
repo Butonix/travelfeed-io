@@ -26,14 +26,8 @@ const Contest = props => {
 
   return (
     <Fragment>
-      <Grid
-        container
-        spacing={0}
-        alignItems="center"
-        justify="center"
-        className="pt-4 pb-4 p-2"
-      >
-        <Grid item className="p-1" lg={12} md={12} sm={12} xs={12}>
+      <Grid container spacing={0} justify="center" className="pt-4 pb-4 p-2">
+        <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
           <HeaderCard
             title="How to Participate"
             background={teal[600]}
@@ -41,58 +35,75 @@ const Contest = props => {
               <>
                 <Typography className="pt-4">
                   <p>
-                    By using TravelFeed, you can earn raffle tickets. These
-                    raffle tickets give you a chance to participate in the final
-                    drawing to win a ticket + accomodation to Steemfest
-                    sponsored by{' '}
+                    In cooperation with{' '}
                     <Link
                       as="/@blocktrades"
                       href="/blog?author=blocktrades"
                       passHref
                     >
                       <a>@blocktrades</a>
-                    </Link>
-                    .{' '}
+                    </Link>{' '}
+                    and{' '}
+                    <Link
+                      as="/@anomadsoul"
+                      href="/blog?author=anomadsoul"
+                      passHref
+                    >
+                      <a>@anomadsoul</a>
+                    </Link>{' '}
+                    we are giving away a ticket to Steemfest including
+                    accommodation. Steemfest is the awesome yearly conference of
+                    the global Steem community and will be attended by many
+                    TravelFeed users, including the team. Steemfest is held from
+                    November 6th to November 10th 2019 in Bangkok, refer to the{' '}
                     <Typography display="inline" color="primary">
                       <a
                         href="https://steemfest.com/"
                         rel="noopener noreferrer nofollow"
                         target="_blank"
                       >
-                        Steemfest
+                        official website
                       </a>
                     </Typography>{' '}
-                    is held from November 6th to November 10th 2019 in Bangkok.
+                    for more information.
+                  </p>
+                  <p>
+                    Before you can start earning tickets, you first need to opt
+                    in. Each raffle ticket gives you a chance to participate in
+                    the final draw to win a ticket to Steemfest including
+                    accommodation. You can earn raffle tickets by using
+                    TravelFeed:
                   </p>
                   <ul>
                     <li>
-                      10 tickets for an article which is one of the 5 articles
-                      per day which receive a full upvote from us and will be
-                      featured on our front page<sup>*</sup>
+                      10 tickets for posting an article which is one of the 5
+                      articles per day which are chosen by our curation team to
+                      be featured on our front page<sup>*</sup>
                     </li>
                     <li>
-                      3 tickets for an article we chose as honorable mention
-                      (50% upvote)<sup>*</sup>
+                      3 tickets for each article that we highlight as honorable
+                      mention<sup>*</sup>
                     </li>
                     <li>
-                      {' '}
                       50/40/30 tickets for the 1st/2nd/3rd weekly winner,
                       announced every Friday
                       <sup>*</sup>
                     </li>
                     <li>
-                      Up to 3 tickets per day for sharing TravelFeed posts on
-                      social media using the share buttons below posts
+                      1 ticket for sharing a TravelFeed post on social media
+                      using the share buttons below posts (limited to 3 tickets
+                      per day)
                     </li>
                     <li>
                       Referral program: 20 tickets for each new user
-                      (non-Steemian) or 10 tickets for each new Steemian signed
-                      up via your referral link. On top of that, you earn 10% of
-                      the tickets earned for posting by each user you refer.
+                      (non-Steemian signed up through EasySignUp) or 2 tickets
+                      for each new Steemian signed up via your referral link. On
+                      top of that, you earn 10% of the tickets earned for
+                      posting by users referred by you.
                     </li>
                     <li>
-                      20 tickets for good posts promoting TravelFeed and the
-                      giveaway - on and off Steem. Send us the link{' '}
+                      20 tickets for good posts promoting TravelFeed and/or this
+                      contest - on and off Steem. Send us the link{' '}
                       <Typography display="inline" color="primary">
                         <a
                           href="https://steemfest.com/"
@@ -106,8 +117,13 @@ const Contest = props => {
                     </li>
                   </ul>
                   <p>
-                    <sup>*</sup> Only posts authored through TravelFeed.io are
+                    <sup>*</sup> Only posts posted through TravelFeed.io are
                     eligible, not posts using only the tag.
+                  </p>
+                  <p>
+                    Users blacklisted from TravelFeed before or during the
+                    contest will not be able to participate in the final draw.
+                    Tickets are not transferable.
                   </p>
                 </Typography>
               </>
@@ -116,43 +132,46 @@ const Contest = props => {
         </Grid>
         <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
           <OptIn />
-        </Grid>
-        <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
-          <HeaderCard
-            title="Refer a Friend"
-            background={indigo[600]}
-            content={
-              <>
-                <FormLabel component="legend" className="pt-4">
-                  Refer your friends to TravelFeed and earn raffle tickets! Fill
-                  out the form to send an email to your friends to invite them:
-                </FormLabel>
-                <ReferAFriend />
-                <FormLabel component="legend" className="pt-4">
-                  Or use your referral link:
-                </FormLabel>
-                <div>
-                  <CopyToClipboard
-                    text={`https://travelfeed.io/join?ref=${getUser()}`}
-                    onCopy={() =>
-                      newNotification({
-                        success: true,
-                        message: 'Copied your referral link to your clipboard',
-                      })
-                    }
-                  >
-                    <TextField
-                      variant="filled"
-                      fullWidth
-                      margin="dense"
-                      multiline
-                      value={`https://travelfeed.io/join?ref=${getUser()}`}
-                    />
-                  </CopyToClipboard>
-                </div>
-              </>
-            }
-          />
+          <div className="pt-2">
+            {' '}
+            <HeaderCard
+              title="Refer a Friend"
+              background={indigo[600]}
+              content={
+                <>
+                  <FormLabel component="legend" className="pt-4">
+                    Refer your friends to TravelFeed and earn raffle tickets!
+                    Fill out the form to send an email to your friends to invite
+                    them:
+                  </FormLabel>
+                  <ReferAFriend />
+                  <FormLabel component="legend" className="pt-4">
+                    Or use your referral link:
+                  </FormLabel>
+                  <div>
+                    <CopyToClipboard
+                      text={`https://travelfeed.io/join?ref=${getUser()}`}
+                      onCopy={() =>
+                        newNotification({
+                          success: true,
+                          message:
+                            'Copied your referral link to your clipboard',
+                        })
+                      }
+                    >
+                      <TextField
+                        variant="filled"
+                        fullWidth
+                        margin="dense"
+                        multiline
+                        value={`https://travelfeed.io/join?ref=${getUser()}`}
+                      />
+                    </CopyToClipboard>
+                  </div>
+                </>
+              }
+            />
+          </div>
         </Grid>
         <Grid item className="p-1" lg={12} md={12} sm={12} xs={12}>
           <RaffleTickets />

@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green, red } from '@material-ui/core/colors';
 import FormLabel from '@material-ui/core/FormLabel';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import {
@@ -9,6 +10,18 @@ import {
   CONTEST_OPT_IN,
 } from '../../../helpers/graphql/contest';
 import HeaderCard from '../../General/HeaderCard';
+
+const redTheme = createMuiTheme({
+  palette: {
+    primary: red,
+  },
+});
+
+const greenTheme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
 
 const OptIn = () => {
   const [optedIn, setOptedIn] = useState(undefined);
@@ -58,16 +71,20 @@ const OptIn = () => {
                             <>
                               <FormLabel component="legend" className="pt-4">
                                 {(optedIn &&
-                                  'If you cannot attend Steemfest, you can opt out of the contest.') ||
-                                  'Opt in to participate in the Steemfest contest. By participating you agree that the ticket can only be used by yourself and not be sold.'}
+                                  'By participating, you agree that the ticket can only be used by yourself and not be sold. If you cannot attend Steemfest, you can opt out of the contest by clicking the button below.') ||
+                                  'Click the button to opt in to participate in the Steemfest contest. By participating, you agree that the ticket can only be used by yourself and not be sold.'}
                               </FormLabel>
-                              <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={contestOptIn}
+                              <MuiThemeProvider
+                                theme={(optedIn && redTheme) || greenTheme}
                               >
-                                {(optedIn && 'Opt Out') || 'Opt In'}
-                              </Button>
+                                <Button
+                                  color="primary"
+                                  variant="contained"
+                                  onClick={contestOptIn}
+                                >
+                                  {(optedIn && 'Opt Out') || 'Opt In'}
+                                </Button>{' '}
+                              </MuiThemeProvider>
                             </>
                           }
                         />

@@ -1,12 +1,8 @@
-import Grid from '@material-ui/core/Grid';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import Contest from '../../components/Dashboard/Contest';
-import NotFound from '../../components/General/NotFound';
 import Head from '../../components/Header/Head';
-import Header from '../../components/Header/Header';
-import { getRoles, getUser } from '../../helpers/token';
 
 class ContestPage extends Component {
   static async getInitialProps(props) {
@@ -22,29 +18,6 @@ class ContestPage extends Component {
       },
     );
     const { open } = this.props;
-    if (
-      getUser() === null ||
-      !getUser() ||
-      getRoles().indexOf('curator') === -1
-    ) {
-      return (
-        <Fragment>
-          <Header />
-          <Grid
-            container
-            spacing={0}
-            alignItems="center"
-            justify="center"
-            className="pt-4 pb-4"
-            style={{ paddingLeft: '75px' }}
-          >
-            <Grid item lg={7} md={8} sm={11} xs={12}>
-              <NotFound statusCode="logged_out" />
-            </Grid>
-          </Grid>
-        </Fragment>
-      );
-    }
     return (
       <Fragment>
         <Head title="TravelBlog: Steemfest Contest - TravelFeed: The Travel Community" />
