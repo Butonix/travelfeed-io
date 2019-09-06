@@ -24,8 +24,8 @@ const RaffleTickets = () => {
               <HeaderCard
                 title={
                   count
-                    ? `Your have ${count} Raffle Ticket${count > 1 ? 's' : ''}`
-                    : 'You have no Raffle Tickets yet'
+                    ? `Your have ${count} Raffle Entr${count > 1 ? 'ies' : 'y'}`
+                    : 'You have no Raffle Entries yet'
                 }
                 background={teal[600]}
                 content={
@@ -41,7 +41,7 @@ const RaffleTickets = () => {
                         <TableHead>
                           <TableRow>
                             <TableCell>Type</TableCell>
-                            <TableCell>Tickets</TableCell>
+                            <TableCell>Entries</TableCell>
                             <TableCell>Date</TableCell>
                           </TableRow>
                         </TableHead>

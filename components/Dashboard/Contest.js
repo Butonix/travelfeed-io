@@ -69,41 +69,41 @@ const Contest = props => {
                     for more information.
                   </p>
                   <p>
-                    Before you can start earning tickets, you first need to opt
-                    in. Each raffle ticket gives you a chance to participate in
+                    Before you can start earning entries, you first need to opt
+                    in. Each raffle entry gives you a chance to participate in
                     the final draw on October 18th to win a ticket to Steemfest
-                    including accommodation. You can earn raffle tickets until
+                    including accommodation. You can earn raffle entries until
                     October 17th by using and promoting TravelFeed:
                   </p>
                   <ul>
                     <li>
-                      10 tickets for posting an article which is one of the 5
+                      10 entries for posting an article which is one of the 5
                       articles per day which are chosen by our curation team to
                       be featured on our front page<sup>*</sup>
                     </li>
                     <li>
-                      3 tickets for each article that we highlight as honorable
+                      3 entries for each article that we highlight as honorable
                       mention<sup>*</sup>
                     </li>
                     <li>
-                      50/40/30 tickets for the 1st/2nd/3rd weekly winner,
+                      50/40/30 entries for the 1st/2nd/3rd weekly winner,
                       announced every Friday
                       <sup>*</sup>
                     </li>
                     <li>
-                      1 ticket for sharing a TravelFeed post on social media
-                      using the share buttons below posts (limited to 3 tickets
+                      1 entry for sharing a TravelFeed post on social media
+                      using the share buttons below posts (limited to 3 entries
                       per day)
                     </li>
                     <li>
-                      Referral program: 20 tickets for each new user
-                      (non-Steemian signed up through EasySignUp) or 2 tickets
+                      Referral program: 20 entries for each new user
+                      (non-Steemian signed up through EasySignUp) or 2 entries
                       for each new Steemian signed up via your referral link. On
-                      top of that, you earn 10% of the tickets earned for
+                      top of that, you earn 10% of the entries earned for
                       posting by users referred by you.
                     </li>
                     <li>
-                      20 tickets for good posts promoting TravelFeed and/or this
+                      20 entries for good posts promoting TravelFeed and/or this
                       contest - on and off Steem. Send us the link{' '}
                       <Typography display="inline" color="primary">
                         <a
@@ -114,7 +114,7 @@ const Contest = props => {
                           on our Discord
                         </a>
                       </Typography>{' '}
-                      to claim your tickets!
+                      to claim your entries!
                     </li>
                   </ul>
                   <p>
@@ -124,7 +124,7 @@ const Contest = props => {
                   <p>
                     Users blacklisted from TravelFeed before or during the
                     contest will not be able to participate in the final draw.
-                    Tickets are not transferable.
+                    Entries and tickets are not transferable.
                   </p>
                 </Typography>
               </>
@@ -141,7 +141,7 @@ const Contest = props => {
               content={
                 <>
                   <FormLabel component="legend" className="pt-4">
-                    Refer your friends to TravelFeed and earn raffle tickets!
+                    Refer your friends to TravelFeed and earn raffle entries!
                     Fill out the form to send an email to your friends to invite
                     them:
                   </FormLabel>
