@@ -9,6 +9,7 @@ import React, { Component, Fragment } from 'react';
 import { getRoles } from '../../helpers/token';
 import AuthorBlacklist from './Actions/AuthorBlacklist';
 import CustomJson from './Actions/CustomJson';
+import JsonAndContest from './Actions/JsonAndContest';
 import JsonAndMutate from './Actions/JsonAndMutate';
 import PostBlacklist from './Actions/PostBlacklist';
 
@@ -35,7 +36,7 @@ class PostMenu extends Component {
 
   render() {
     const { roles, menuopen } = this.state;
-    const { author, permlink } = this.props;
+    const { author, permlink, isTf } = this.props;
     if (roles && roles.indexOf('curator') !== -1) {
       return (
         <Fragment>
@@ -59,20 +60,42 @@ class PostMenu extends Component {
               >
                 <Paper>
                   <MenuList>
-                    <CustomJson
-                      author={author}
-                      permlink={permlink}
-                      action="curate"
-                      title="Are you sure that you want to curate this post?"
-                      desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
-                    />
-                    <CustomJson
-                      author={author}
-                      permlink={permlink}
-                      action="honour"
-                      title="Are you sure that you want to honour this post?"
-                      desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
-                    />
+                    {// Give contest rewards only if post has been posted through TravelFeed
+                    (isTf && (
+                      <>
+                        <JsonAndContest
+                          author={author}
+                          permlink={permlink}
+                          action="curate"
+                          title="Are you sure that you want to curate this post?"
+                          desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
+                        />
+                        <JsonAndContest
+                          author={author}
+                          permlink={permlink}
+                          action="honour"
+                          title="Are you sure that you want to honour this post?"
+                          desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
+                        />
+                      </>
+                    )) || (
+                      <>
+                        <CustomJson
+                          author={author}
+                          permlink={permlink}
+                          action="curate"
+                          title="Are you sure that you want to curate this post?"
+                          desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
+                        />
+                        <CustomJson
+                          author={author}
+                          permlink={permlink}
+                          action="honour"
+                          title="Are you sure that you want to honour this post?"
+                          desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
+                        />
+                      </>
+                    )}
                     <JsonAndMutate
                       author={author}
                       permlink={permlink}

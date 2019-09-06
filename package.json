@@ -1,6 +1,6 @@
 {
   "name": "travelfeed-io",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "repository": "https://github.com/travelfeed-io/travelfeed-io",
   "description": "The TravelFeed dApp. Powered by Node, Express, React, Next and the Steem Blockchain.",
   "main": "index.js",
@@ -78,6 +78,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.5",
     "react-google-recaptcha": "^2.0.0-rc.1",

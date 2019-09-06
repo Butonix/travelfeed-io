@@ -1,10 +1,11 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
+import Cookie from 'js-cookie';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../../helpers/graphql/token';
 import { setAccessToken } from '../../helpers/token';
@@ -15,6 +16,11 @@ const EasyLoginButton = props => {
   const [usernameOrEmail, setUsernameOrEmail] = useState(undefined);
   const [password, setPassword] = useState(undefined);
   const [mutate, setMutate] = useState(false);
+  const [referrer, setReferrer] = useState(undefined);
+
+  useEffect(() => {
+    setReferrer(Cookie.get('referrer'));
+  });
 
   const handleUsernameEmailInput = () => event => {
     setUsernameOrEmail(event.target.value);
@@ -78,6 +84,7 @@ const EasyLoginButton = props => {
                       usernameOrEmail,
                       password,
                       acceptTos: true,
+                      referrer,
                     }}
                   >
                     {(acceptTos, { data: mutatedata }) => {

@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid';
+import Cookie from 'js-cookie';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -11,9 +12,11 @@ import { setAccessToken, setScToken } from '../helpers/token';
 
 const LoginPage = props => {
   const [loaded, setLoaded] = useState(false);
+  const [referrer, setReferrer] = useState(undefined);
 
   useEffect(() => {
     setLoaded(true);
+    setReferrer(Cookie.get('referrer'));
   });
 
   const { sc_token, expires_in } = props.sc;
@@ -67,6 +70,7 @@ const LoginPage = props => {
                         variables={{
                           sc_token,
                           acceptTos: true,
+                          referrer,
                         }}
                       >
                         {// eslint-disable-next-line no-shadow
