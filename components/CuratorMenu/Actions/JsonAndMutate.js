@@ -32,7 +32,7 @@ class JsonAndMutate extends React.Component {
       permlink: this.props.permlink,
       action: this.props.action,
     };
-    customJson(payload).then(result => {
+    customJson(payload, 'travelfeed').then(result => {
       this.newNotification(result);
     });
   };

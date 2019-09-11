@@ -3,12 +3,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green, red } from '@material-ui/core/colors';
 import FormLabel from '@material-ui/core/FormLabel';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Router from 'next/router';
 import React, { useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
+import { customJson } from '../../../helpers/actions';
 import {
   CONTEST_IS_OPTED_IN,
   CONTEST_OPT_IN,
 } from '../../../helpers/graphql/contest';
+import { getRoles } from '../../../helpers/token';
 import HeaderCard from '../../General/HeaderCard';
 
 const redTheme = createMuiTheme({
@@ -26,6 +29,27 @@ const greenTheme = createMuiTheme({
 const OptIn = () => {
   const [optedIn, setOptedIn] = useState(undefined);
   const [querying, setQuerying] = useState(false);
+  const [transactionId, setTransactionId] = useState(undefined);
+  const [mutating, setMutating] = useState(false);
+
+  const broadcastJson = () => {
+    setQuerying(true);
+    const roles = getRoles();
+    if (roles && roles.indexOf('easylogin') === -1) {
+      const payload = {
+        contest: 'sf4',
+      };
+      const id = optedIn ? 'tf_contest_opt_out' : 'tf_contest_opt_in';
+      customJson(payload, id).then(result => {
+        if (result && result.transactionId)
+          setTransactionId(result.transactionId);
+        else setQuerying(false);
+      });
+    } else {
+      // If easylogin is used, the custom json is broadcasted by the API
+      setTransactionId('easylogin');
+    }
+  };
 
   return (
     <>
@@ -39,6 +63,7 @@ const OptIn = () => {
                   mutation={CONTEST_OPT_IN}
                   variables={{
                     optedIn: !optedIn,
+                    transactionId,
                   }}
                 >
                   {(
@@ -46,16 +71,18 @@ const OptIn = () => {
                     // eslint-disable-next-line no-shadow
                     { data, loading },
                   ) => {
-                    if (
-                      data &&
-                      data.contestOptIn &&
-                      data.contestOptIn.success
-                    ) {
-                      if (querying) setOptedIn(!optedIn);
+                    if (transactionId && !mutating && querying) {
+                      setMutating(true);
+                      contestOptIn();
+                    }
+                    if (data && data.contestOptIn) {
+                      if (querying && data.contestOptIn.success)
+                        setOptedIn(!optedIn);
+                      // Hard reset to remove cached data - otherwise opting in/out again is buggy
+                      Router.push(`/dashboard/contest`);
                       setQuerying(false);
                     }
                     if (loading) {
-                      setQuerying(true);
                       return <CircularProgress />;
                     }
                     return (
@@ -77,13 +104,15 @@ const OptIn = () => {
                               <MuiThemeProvider
                                 theme={(optedIn && redTheme) || greenTheme}
                               >
-                                <Button
-                                  color="primary"
-                                  variant="contained"
-                                  onClick={contestOptIn}
-                                >
-                                  {(optedIn && 'Opt Out') || 'Opt In'}
-                                </Button>{' '}
+                                {(!querying && (
+                                  <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={broadcastJson}
+                                  >
+                                    {(optedIn && 'Opt Out') || 'Opt In'}
+                                  </Button>
+                                )) || <CircularProgress />}
                               </MuiThemeProvider>
                             </>
                           }

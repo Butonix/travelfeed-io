@@ -33,8 +33,8 @@ export const CONTEST_IS_OPTED_IN = gql`
 `;
 
 export const CONTEST_OPT_IN = gql`
-  mutation contestOptIn($optedIn: Boolean!) {
-    contestOptIn(optedIn: $optedIn) {
+  mutation contestOptIn($optedIn: Boolean!, $transactionId: String) {
+    contestOptIn(optedIn: $optedIn, transactionId: $transactionId) {
       success
       message
     }

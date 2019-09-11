@@ -178,10 +178,9 @@ export const unfollow = async unfollowing => {
   });
 };
 
-export const customJson = async payload => {
+export const customJson = async (payload, id) => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  const id = 'travelfeed';
   const requiredAuths = [];
   const requiredPostingAuths = [author];
   const json = JSON.stringify(payload);
@@ -205,6 +204,7 @@ export const customJson = async payload => {
           resolve({
             success: true,
             message: 'Curation action was broadcasted sucessfully',
+            transactionId: res.result.id,
           });
         }
       },
