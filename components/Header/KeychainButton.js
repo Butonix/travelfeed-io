@@ -60,7 +60,7 @@ const KeychainButton = props => {
   };
 
   const handleKeychainClick = () => {
-    if (username.length > 2) handleLogin();
+    if (username && username.length > 2) handleLogin();
     else
       newNotification({
         success: false,
