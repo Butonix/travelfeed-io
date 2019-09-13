@@ -57,7 +57,7 @@ export const post = args => {
     ];
     let ops;
     if (commentOptions && commentOptions !== '') {
-      ops = [commentop, ['comment_options', commentOptions]];
+      ops = [commentop, ['comment_options', JSON.parse(commentOptions)]];
     } else ops = [commentop];
     api.broadcast(ops, (err, res) => {
       if (err) {
