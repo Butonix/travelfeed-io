@@ -54,8 +54,6 @@ const AuthorProfile = props => {
                     <div className="col-12 pt-3">
                       <FollowButton
                         author={data.profile.name}
-                        isFollowed={data.profile.isFollowed}
-                        isIgnored={data.profile.isIgnored}
                         btnstyle="solid"
                       />
                     </div>

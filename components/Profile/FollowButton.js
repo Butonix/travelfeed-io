@@ -20,9 +20,8 @@ const FollowButton = props => {
   const [changing, setChanging] = useState(false);
 
   useEffect(() => {
-    setFollowed(props.isFollowed);
     setMounted(true);
-  }, [props]);
+  }, []);
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -83,6 +82,7 @@ const FollowButton = props => {
             return <Fragment />;
           }
           if (data && data.profile && !isLoaded) {
+            setFollowed(data.profile.isFollowed);
             setLoaded(true);
           }
           return (
@@ -172,14 +172,12 @@ const FollowButton = props => {
 
 FollowButton.defaultProps = {
   btnstyle: 'default',
-  isFollowed: false,
 };
 
 FollowButton.propTypes = {
   author: PropTypes.string.isRequired,
   btnstyle: PropTypes.string,
   enqueueSnackbar: PropTypes.func.isRequired,
-  isFollowed: PropTypes.bool,
 };
 
 export default withSnackbar(FollowButton);

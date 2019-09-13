@@ -63,12 +63,7 @@ const PostAuthorProfile = props => {
                 <p className="p-2">{data.profile.about}</p>
               </Fragment>
               <div>
-                <FollowButton
-                  author={data.profile.name}
-                  isFollowed={data.profile.isFollowed}
-                  isIgnored={data.profile.isIgnored}
-                  btnstyle="default"
-                />
+                <FollowButton author={data.profile.name} btnstyle="default" />
               </div>
             </div>
           );
