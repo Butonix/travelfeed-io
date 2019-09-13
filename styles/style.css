@@ -109,6 +109,9 @@ a:hover {
   margin-left: -24px;
   margin-right: -24px;
 }
+.postcontent table img {
+  width: 100% !important;
+}
 .postcontent iframe {
   width: calc(100% + 48px);
   margin-left: -24px;
