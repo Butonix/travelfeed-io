@@ -163,7 +163,7 @@ const parseBody = (body, options) => {
                   imgMatches[1],
                   options.cardWidth,
                   undefined,
-                  undefined,
+                  'fit',
                   'webp',
                 )}"
                 data-sizes="100w">
@@ -177,6 +177,7 @@ const parseBody = (body, options) => {
               imgMatches[1],
               options.cardWidth,
               undefined,
+              'fit',
             )}"
             data-sizes="100w">
             </picture>

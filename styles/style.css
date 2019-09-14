@@ -40,9 +40,10 @@
 }
 
 figcaption {
+  margin-left: 24px;
+  margin-right: 24px;
   text-align: center;
   font-style: italic;
-  margin-top: -15px;
   font-size: 0.8em;
 }
 
@@ -102,12 +103,26 @@ a:hover {
   text-decoration: underline !important;
   color: #1e88e5;
 }
-.postcontent img,
+.postcontent figure {
+  margin-left: -24px;
+  margin-right: -24px;
+}
+.postcontent img {
+  max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .fullwidth {
   width: calc(100% + 48px) !important;
   padding: 20px 0;
   margin-left: -24px;
   margin-right: -24px;
+}
+
+.postcontent table img {
+  width: 100% !important;
+  margin-left: 0px;
 }
 .postcontent iframe {
   width: calc(100% + 48px);
