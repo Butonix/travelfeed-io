@@ -120,8 +120,7 @@ a:hover {
   margin-right: -24px;
 }
 .postcontent table img {
-  width: 100% !important;
-  margin-left: 0px;
+  max-width: 85% !important;
 }
 .postcontent iframe {
   width: calc(100% + 48px);
