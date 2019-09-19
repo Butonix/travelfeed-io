@@ -97,7 +97,7 @@
     "speakingurl": "^14.0.1",
     "steem": "^0.7.6",
     "steem-content-renderer": "^2.1.1",
-    "steemconnect": "^3.0.3",
+    "steemconnect": "git+https://github.com/travelfeed-io/steemconnect.js.git",
     "styled-jsx": "^3.2.1",
     "supercluster": "^6.0.2",
     "turndown": "^5.0.3",

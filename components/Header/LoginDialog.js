@@ -7,9 +7,11 @@ import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
+import Router from 'next/router';
+import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { getLoginURL } from '../../helpers/token';
+import api from '../../helpers/steemConnectAPI';
 import ScLogo from '../../images/steemconnect.svg';
 import EasyLoginButton from './EasyLoginButton';
 import HrCaption from './HrCaption';
@@ -18,8 +20,39 @@ import KeychainButton from './KeychainButton';
 const LoginDialog = props => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
   const { open, handleClose } = props;
+
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      const { enqueueSnackbar } = props;
+      enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
+  const handleLogin = () => {
+    const params = {};
+
+    api.login(params, (err, token) => {
+      if (token) {
+        Router.push({
+          pathname: '/login',
+          query: { access_token: token, expires_in: 604800 },
+        });
+        handleClose();
+      }
+      if (err) {
+        newNotification({
+          success: false,
+          message: `Could not login: ${err}`,
+        });
+      }
+    });
+  };
+
   return (
     <Fragment>
       <Dialog
@@ -75,21 +108,19 @@ const LoginDialog = props => {
                 <div className="container">
                   <div className="row pt-4">
                     <div className="col-12 pb-2">
-                      <a href={getLoginURL}>
-                        <Button
-                          fullsize
-                          onClick={handleClose}
-                          color="secondary"
-                          variant="contained"
-                          size="large"
-                        >
-                          <img
-                            src={ScLogo}
-                            alt="Login with Steemconnect"
-                            height={30}
-                          />
-                        </Button>
-                      </a>
+                      <Button
+                        fullsize
+                        onClick={handleLogin}
+                        color="secondary"
+                        variant="contained"
+                        size="large"
+                      >
+                        <img
+                          src={ScLogo}
+                          alt="Login with Steemconnect"
+                          height={30}
+                        />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -118,6 +149,7 @@ const LoginDialog = props => {
 LoginDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
-export default LoginDialog;
+export default withSnackbar(LoginDialog);
