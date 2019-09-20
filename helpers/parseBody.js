@@ -135,7 +135,8 @@ const parseBody = (body, options) => {
         if (options.lazy === false) {
           parsedBody = parsedBody.replace(
             imgMatches[0],
-            `<figure><img ${
+            `<figure><img className="loaded"
+            ${
               imgMatches[2] && !options.hideimgcaptions
                 ? `alt=${imgMatches[2]}`
                 : ''
