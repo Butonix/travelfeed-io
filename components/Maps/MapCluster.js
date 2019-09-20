@@ -215,7 +215,7 @@ MapCluster.propTypes = {
   showControls: PropTypes.bool,
   position: PropTypes.string,
   height: PropTypes.string,
-  data: PropTypes.objectOf(PropTypes.any).isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default MapCluster;
