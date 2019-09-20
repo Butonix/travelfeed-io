@@ -1,5 +1,8 @@
 FROM node:10-alpine
 
+# Install git which is required for installing packages
+RUN apk add --no-cache git
+
 # Setting working directory. All the paths will be relative to WORKDIR
 WORKDIR /usr/src/app
 
