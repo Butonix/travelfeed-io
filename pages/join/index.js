@@ -138,6 +138,12 @@ const JoinPage = props => {
                   <Typography gutterBottom variant="h3">
                     Join TravelFeed now!
                   </Typography>
+                  <Typography gutterBottom variant="body1">
+                    If you already have a Steem account, simply login by
+                    clicking the "login" button on the top. If you don't have a
+                    Steem account yet, enter your email address below and we
+                    will set you up with a free account!
+                  </Typography>
                   <OnboardStart autoFocus={false} isWhite referrer={referrer} />
                 </div>
               </div>
