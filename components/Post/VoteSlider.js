@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/AddComment';
@@ -13,7 +14,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import FlightVotedIcon from '@material-ui/icons/Flight';
 import FlightIcon from '@material-ui/icons/FlightTakeoff';
 import LinkIcon from '@material-ui/icons/Link';
-import Slider from '@material-ui/lab/Slider';
 import dynamic from 'next/dynamic';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -267,7 +267,7 @@ class VoteSlider extends Component {
               </div>
               <style jsx>{`
                 .actionli::after {
-                  content: '\u2022';
+                  content: '•';
                   color: #ccc;
                   top: 1px;
                 }

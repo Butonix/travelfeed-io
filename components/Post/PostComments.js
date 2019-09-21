@@ -31,9 +31,14 @@ class PostComments extends Component {
           }}
         >
           {({ data, fetchMore }) => {
-            if (data.posts && data.posts.length < 10 && this.state.hasMore)
+            if (
+              data &&
+              data.posts &&
+              data.posts.length < 10 &&
+              this.state.hasMore
+            )
               this.setState({ hasMore: false });
-            if (data.posts) {
+            if (data && data.posts) {
               return (
                 <InfiniteScroll
                   initialLoad={false}
