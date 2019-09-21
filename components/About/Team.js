@@ -8,14 +8,14 @@ const Team = () => {
       name: 'Julian Peters',
       username: 'jpphotography',
       photo:
-        'https://cdn.steemitimages.com/DQmUC6HomeCNoEgqx37YJym5mnn1vY4QuhAT6bzEDZbqkbo/profile.jpg',
+        'https://cdn.steemitimages.com/DQmZvY5pAzUa9qdwfErTDF24bUvEi3d8bzsRXCDcXZVhy2j/tf-profile%20copy.jpg',
       content: 'Lead Developer and Business Development Manager',
     },
     {
       name: 'Jürgen Horn',
       username: 'for91days',
       photo:
-        'http://hanoi.for91days.com/wp-content/uploads/sites/22/2017/10/01-Tuev-Sued-Valencia-DSC07559.jpg',
+        'https://cdn.steemitimages.com/DQmRypQ18Qx3jLqkKcePHQBwvQimasg7CfNXFdDusfMbSHr/01--TF-Portrait-DSC00898.jpg',
       content: 'Curation-Team Coordinator and Community Manager',
     },
   ];
@@ -115,21 +115,23 @@ const Team = () => {
               </div>
             );
           })}
-          <div className="col-12 text-center pt-4">
-            <Typography variant="h4">International</Typography>
-          </div>
-          {international.map(member => {
-            return (
-              <div className="col-xl-4 col-lg-4 col-md-6 col-12">
-                <TeamMember
-                  name={member.name}
-                  username={member.username}
-                  photo={member.photo}
-                  content={member.content}
-                />
-              </div>
-            );
-          })}
+          {
+            //   <div className="col-12 text-center pt-4">
+            //     <Typography variant="h4">International</Typography>
+            //   </div>
+            //   {international.map(member => {
+            //     return (
+            //       <div className="col-xl-4 col-lg-4 col-md-6 col-12">
+            //         <TeamMember
+            //           name={member.name}
+            //           username={member.username}
+            //           photo={member.photo}
+            //           content={member.content}
+            //         />
+            //       </div>
+            //     );
+            //   })}
+          }
         </div>
       </div>
     </Fragment>
