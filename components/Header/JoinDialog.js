@@ -46,7 +46,7 @@ const JoinDialog = props => {
             community and follow your favourite authors.
           </FormLabel>
           <OnboardStart />
-          <HrCaption text="Already have an account?" />
+          <HrCaption text="Already have a Steem account?" />
           <div className="pb-3">
             <Typography
               color="primary"
