@@ -100,90 +100,87 @@ const ProfileTabs = props => {
               )
                 country_codes.push(d.country_code);
             });
-            if (country_codes.length > 0) {
-              return (
-                <Query
-                  query={GET_GEOJSON}
-                  variables={{ countryList: country_codes }}
-                >
-                  {res => {
-                    let dataLayer;
-                    if (res.data && res.data.geojson) {
-                      const features = JSON.parse(res.data.geojson.features);
-                      dataLayer = {
-                        type: 'FeatureCollection',
-                        features,
-                      };
-                      return (
-                        <>
-                          <TabPanel value={value} index={0}>
-                            <div className="container pt-3">
-                              <PostGrid
-                                query={{ author, limit: 12 }}
-                                grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
-                                cardHeight={140}
-                              />
-                            </div>
-                          </TabPanel>
-                          <TabPanel value={value} index={1}>
-                            <div className="w-100">
-                              <div style={{ overflowX: 'hidden' }}>
+          }
+          return (
+            <Query
+              query={GET_GEOJSON}
+              variables={{ countryList: country_codes }}
+            >
+              {res => {
+                let dataLayer;
+                if (res.data && res.data.geojson) {
+                  const features = JSON.parse(res.data.geojson.features);
+                  dataLayer = {
+                    type: 'FeatureCollection',
+                    features,
+                  };
+                  return (
+                    <>
+                      <TabPanel value={value} index={0}>
+                        <div className="container pt-3">
+                          <PostGrid
+                            query={{ author, limit: 12 }}
+                            grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
+                            cardHeight={140}
+                          />
+                        </div>
+                      </TabPanel>
+                      <TabPanel value={value} index={1}>
+                        <div className="w-100">
+                          <div style={{ overflowX: 'hidden' }}>
+                            <div
+                              style={{
+                                flexDirection: 'row',
+                                transition: 'all 0s ease 0s',
+                                direction: 'ltr',
+                                display: 'flex',
+                                willChange: 'transform',
+                                transform: 'translate(0%, 0px)',
+                              }}
+                            >
+                              <div
+                                aria-hidden="false"
+                                style={{
+                                  width: '100%',
+                                  flexShrink: 0,
+                                  overflow: 'auto',
+                                }}
+                              >
                                 <div
-                                  style={{
-                                    flexDirection: 'row',
-                                    transition: 'all 0s ease 0s',
-                                    direction: 'ltr',
-                                    display: 'flex',
-                                    willChange: 'transform',
-                                    transform: 'translate(0%, 0px)',
-                                  }}
+                                  style={{ height: '500px', width: '100%' }}
+                                  className="w-100 p-0 m-0"
                                 >
-                                  <div
-                                    aria-hidden="false"
-                                    style={{
-                                      width: '100%',
-                                      flexShrink: 0,
-                                      overflow: 'auto',
-                                    }}
-                                  >
-                                    <div
-                                      style={{ height: '500px', width: '100%' }}
-                                      className="w-100 p-0 m-0"
-                                    >
-                                      <MapCluster
-                                        dataLayer={dataLayer}
-                                        showControls={false}
-                                        height="530px"
-                                        className="w-100 h-100"
-                                        data={data.posts}
-                                        dark={theme.palette.type === 'dark'}
-                                      />
-                                    </div>
-                                  </div>
+                                  <MapCluster
+                                    dataLayer={dataLayer}
+                                    showControls={false}
+                                    height="530px"
+                                    className="w-100 h-100"
+                                    data={data.posts}
+                                    dark={theme.palette.type === 'dark'}
+                                  />
                                 </div>
                               </div>
                             </div>
-                          </TabPanel>
-                          <TabPanel value={value} index={2}>
-                            <div className="container pt-2 pb-4">
-                              <Badges
-                                countryCodes={country_codes}
-                                regions={res.data.geojson.regions}
-                                budget={res.data.geojson.budget}
-                                totalPosts={data.posts.length}
-                              />
-                            </div>
-                          </TabPanel>
-                        </>
-                      );
-                    }
-                    return <></>;
-                  }}
-                </Query>
-              );
-            }
-          }
-          return <></>;
+                          </div>
+                        </div>
+                      </TabPanel>
+                      <TabPanel value={value} index={2}>
+                        <div className="container pt-2 pb-4">
+                          <Badges
+                            countryCodes={country_codes}
+                            regions={res.data.geojson.regions}
+                            budget={res.data.geojson.budget}
+                            totalPosts={data.posts.length}
+                          />
+                        </div>
+                      </TabPanel>
+                    </>
+                  );
+                }
+                return <></>;
+              }}
+            </Query>
+          );
         }}
       </Query>
     </div>
