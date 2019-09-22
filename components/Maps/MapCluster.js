@@ -35,8 +35,8 @@ class MapCluster extends Component {
   mapRef = React.createRef();
 
   componentDidMount() {
-    const width = document.getElementById('container').clientWidth;
-    const height = document.getElementById('container').clientHeight - 30;
+    const width = document.body.clientWidth;
+    const height = 500;
     this.setState({
       viewport: {
         width,

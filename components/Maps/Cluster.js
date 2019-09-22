@@ -50,7 +50,7 @@ class Cluster extends PureComponent {
     this.props.map.on('moveend', this.recalculate);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const shouldUpdate =
       newProps.minZoom !== this.props.minZoom ||
       newProps.maxZoom !== this.props.maxZoom ||

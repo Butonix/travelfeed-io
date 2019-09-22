@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 
 const ProfileTabs = props => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(1); //TODO: 0
+  const [value, setValue] = React.useState(0);
   const theme = useTheme();
 
   const handleChange = (event, newValue) => {
@@ -126,18 +126,42 @@ const ProfileTabs = props => {
                             </div>
                           </TabPanel>
                           <TabPanel value={value} index={1}>
-                            <div
-                              style={{ height: '500px', width: '100%' }}
-                              className="w-100 p-0 m-0"
-                            >
-                              <MapCluster
-                                dataLayer={dataLayer}
-                                showControls={false}
-                                height="530px"
-                                className="w-100 h-100"
-                                data={data.posts}
-                                dark={theme.palette.type === 'dark'}
-                              />
+                            <div className="w-100">
+                              <div style={{ overflowX: 'hidden' }}>
+                                <div
+                                  style={{
+                                    flexDirection: 'row',
+                                    transition: 'all 0s ease 0s',
+                                    direction: 'ltr',
+                                    display: 'flex',
+                                    willChange: 'transform',
+                                    transform: 'translate(0%, 0px)',
+                                  }}
+                                >
+                                  <div
+                                    aria-hidden="false"
+                                    style={{
+                                      width: '100%',
+                                      flexShrink: 0,
+                                      overflow: 'auto',
+                                    }}
+                                  >
+                                    <div
+                                      style={{ height: '500px', width: '100%' }}
+                                      className="w-100 p-0 m-0"
+                                    >
+                                      <MapCluster
+                                        dataLayer={dataLayer}
+                                        showControls={false}
+                                        height="530px"
+                                        className="w-100 h-100"
+                                        data={data.posts}
+                                        dark={theme.palette.type === 'dark'}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </TabPanel>
                           <TabPanel value={value} index={2}>

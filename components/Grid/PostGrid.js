@@ -22,14 +22,14 @@ class PostGrid extends Component {
     postslength: this.props.query.limit,
   };
 
-  noMore() {
-    this.setState({ hasMore: false });
-  }
-
   // When switching between different props, e.g. feed/featured/created/ the
   // count needs to be reset
   UNSAFE_componentWillReceiveProps() {
     this.setState({ postslength: this.props.query.limit });
+  }
+
+  noMore() {
+    this.setState({ hasMore: false });
   }
 
   render() {
