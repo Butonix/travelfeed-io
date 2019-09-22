@@ -26,6 +26,7 @@ const MapPage = () => {
               <Map
                 data={data && data.places}
                 dark={theme.palette.type === 'dark'}
+                getHeightFromContainer
               />
             );
           }

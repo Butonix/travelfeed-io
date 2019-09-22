@@ -36,7 +36,9 @@ class MapCluster extends Component {
 
   componentDidMount() {
     const width = document.body.clientWidth;
-    const height = 500;
+    const height = this.props.getHeightFromContainer
+      ? document.getElementById('container').clientHeight
+      : 500;
     this.setState({
       viewport: {
         width,
