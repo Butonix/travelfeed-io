@@ -155,7 +155,7 @@ const ProfileTabs = props => {
                                     showControls={false}
                                     height="530px"
                                     className="w-100 h-100"
-                                    data={data.posts}
+                                    data={data && data.posts}
                                     dark={theme.palette.type === 'dark'}
                                   />
                                 </div>
@@ -170,7 +170,7 @@ const ProfileTabs = props => {
                             countryCodes={country_codes}
                             regions={res.data.geojson.regions}
                             budget={res.data.geojson.budget}
-                            totalPosts={data.posts.length}
+                            totalPosts={data && data.posts.length}
                           />
                         </div>
                       </TabPanel>

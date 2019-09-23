@@ -32,6 +32,12 @@ const PublishBtn = props => {
           newNotification(res);
           setLoading(undefined);
           props.pastPublish(res);
+        } else {
+          newNotification({
+            success: false,
+            message: 'Post could not be published',
+          });
+          setLoading(undefined);
         }
       });
     }

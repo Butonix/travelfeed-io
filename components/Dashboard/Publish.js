@@ -14,7 +14,7 @@ import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
-import { APP_VERSION, ROOTURL } from '../../config';
+import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
@@ -372,11 +372,14 @@ const PostEditor = props => {
         });
       }
     });
+    setCompleted(true);
   };
 
   if (completed && success) {
-    const url = `${ROOTURL}/@${user}/${permlink}`;
-    Router.push(url);
+    setTimeout(() => {}, 5000);
+    Router.push({
+      pathname: '/dashboard/posts',
+    });
   }
 
   return (
@@ -628,7 +631,6 @@ const PostEditor = props => {
                               <Button
                                 onClick={() => {
                                   if (readingtime.words > 0 || title !== '') {
-                                    setSaved(false);
                                     newNotification({
                                       message: 'Draft has been saved',
                                       success: true,
