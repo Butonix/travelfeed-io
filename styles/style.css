@@ -34,6 +34,11 @@
   color: inherit !important;
 }
 
+/* Bring editor notification to front */
+.cdx-notifies {
+  z-index: 9999 !important;
+}
+
 /* Progress bar */
 #nprogress .bar {
   background: #3849ab !important;
