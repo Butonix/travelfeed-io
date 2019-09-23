@@ -5,7 +5,6 @@
 export const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
 export const GMAPS_API_KEY = process.env.GMAPS_API_KEY;
 export const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY;
-export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 export const ROOTURL = process.env.ROOTURL;
 export const GRAPHQL_URL = process.env.GRAPHQL_URL;
 
