@@ -1,35 +1,52 @@
-import { CLOUDINARY_CLOUD_NAME } from '../config';
+import { GraphQLClient } from 'graphql-request';
+import Cookie from 'js-cookie';
 
-const unsignedUploadPreset = 'ml_default';
+const endpoint = 'http://localhost:4000/';
 
-// *********** Upload file to Cloudinary ******************** //
-// https://codepen.io/team/Cloudinary/pen/QgpyOK
-const uploadFile = (file, user) => {
-  const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`;
-  const xhr = new XMLHttpRequest();
-  const fd = new FormData();
-  xhr.open('POST', url, true);
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-  fd.append('upload_preset', unsignedUploadPreset);
-  fd.append('tags', user); // Optional - add tag for image admin in Cloudinary
-  fd.append('file', file);
-  xhr.send(fd);
+const authorization = Cookie.get('access_token');
 
-  // https://gomakethings.com/promise-based-xhr/
-  return new Promise((resolve, reject) => {
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState !== 4) return;
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // File uploaded successfully
-        const response = JSON.parse(xhr.responseText);
-        const uploadUrl = response.secure_url;
-        resolve(uploadUrl);
-      } else {
-        // If failed
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject('brokenimg');
-      }
-    };
+const graphQLClient = new GraphQLClient(endpoint, {
+  headers: {
+    authorization,
+  },
+});
+
+const uploadFile = file => {
+  // TODO: Resize image before uploading
+
+  // Reject non-image files
+  if (file.type.split('/')[0] !== 'image') return;
+
+  const query = `{
+    imageUploadLink(filename: "${file.name}", size: ${file.size}) {
+      success
+      uploadUrl
+      fileName
+    }
+  }`;
+
+  // eslint-disable-next-line consistent-return
+  return graphQLClient.request(query).then(data => {
+    if (!data || !data.imageUploadLink || !data.imageUploadLink.success) {
+      return;
+    }
+    const { fileName, uploadUrl } = data.imageUploadLink;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', uploadUrl, true);
+    xhr.setRequestHeader('Content-Type', file.type);
+    xhr.send(file); // `file` is a File object here
+
+    // eslint-disable-next-line consistent-return
+    return new Promise(resolve => {
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState !== 4) return;
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          // File uploaded successfully
+          resolve(`https://img.travelfeed.io/${fileName}`);
+        }
+      };
+    });
   });
 };
 
