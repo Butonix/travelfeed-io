@@ -19,11 +19,6 @@
   z-index: 9999;
 }
 
-/* Markdown/html editor */
-.CodeMirror {
-  height: 100% !important;
-  min-height: 300px;
-}
 /* Editor inline menu */
 .duDjGM {
   padding-bottom: 14px !important;
@@ -141,14 +136,6 @@ a:hover {
   margin-right: -24px;
   padding: 20px 0;
 }
-/* Disabled for causing problems with the editor - todo: investigate if these styles are needed for proper post rendering */
-/* .postcontent span {
-  width: calc(100% + 24px);
-  margin-left: -12px;
-  margin-right: -12px;
-  outline: 0;
-  border: 0;
-} */
 
 #editorjs-container,
 .custom-html-style,
@@ -160,16 +147,12 @@ a:hover {
 }
 
 /* Editor js */
-
 #editorjs-container img,
 #editorjs-container iframe,
 .html-wrap iframe, /* Markdown editor */
 .editorjs-container img {
-  /* overwrite .postcontent styles */
-  width: 100% !important;
-  padding: 0 !important;
-  margin-left: 0px !important;
-  margin-right: 0px !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .image-tool__caption {
