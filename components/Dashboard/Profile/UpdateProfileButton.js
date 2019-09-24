@@ -39,10 +39,18 @@ const UpdateProfileButton = props => {
         setChanging(false);
       });
     } else {
-      accountUpdate(user, profile).then(res => {
-        if (res) newNotification(res);
-        setChanging(false);
-      });
+      // FIXME: This is only a temp fix for a Steemconnect bug https://github.com/bonustrack/steemconnect.js/issues/73
+      //   This is a regular account_update, therefore requiring the active key and writing to
+      //   json_metadata, not to posting_json_metadata
+      // eslint-disable-next-line no-lonely-if
+      if (window && window.steem_keychain) {
+        accountUpdate(user, profile).then(res => {
+          if (res) newNotification(res);
+          setChanging(false);
+        });
+      } else {
+        props.linkBuilder();
+      }
     }
   };
 
