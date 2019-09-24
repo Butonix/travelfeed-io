@@ -1,11 +1,19 @@
 import Typography from '@material-ui/core/Typography';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Query } from 'react-apollo';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
+import { getAccount } from '../../helpers/steem';
 import Link from '../../lib/Link';
 import FollowButton from './FollowButton';
 
 const PostAuthorProfile = props => {
+  const [displayName, setDisplayName] = useState(props.author);
+  const [about, setAbout] = useState('');
+
+  getAccount(props.author).then(profile => {
+    setDisplayName(profile.name);
+    if (profile.about) setAbout(profile.about);
+  });
   return (
     <Fragment>
       <Query query={GET_SHORT_PROFILE} variables={props}>
@@ -21,15 +29,15 @@ const PostAuthorProfile = props => {
               <div className="pb-2">
                 <Link
                   color="textPrimary"
-                  as={`/@${data.profile.name}`}
-                  href={`/blog?author=${data.profile.name}`}
+                  as={`/@${props.author}`}
+                  href={`/blog?author=${props.author}`}
                   passHref
                 >
                   <a>
                     <img
                       style={{ cursor: 'pointer' }}
-                      src={`https://steemitimages.com/u/${data.profile.name}/avatar/medium`}
-                      alt={data.profile.name}
+                      src={`https://steemitimages.com/u/${props.author}/avatar/medium`}
+                      alt={props.author}
                       width="80"
                       height="80"
                       className="rounded-circle"
@@ -41,16 +49,16 @@ const PostAuthorProfile = props => {
                 <div>
                   <Link
                     color="textPrimary"
-                    as={`/@${data.profile.name}`}
-                    href={`/blog?author=${data.profile.name}`}
+                    as={`/@${props.author}`}
+                    href={`/blog?author=${props.author}`}
                     passHref
                   >
                     <a>
                       <Typography variant="h6" className="textPrimary cpointer">
-                        {data.profile.display_name}
+                        {displayName}
                       </Typography>
                       <Typography color="textSecondary" variant="subtitle">
-                        @{data.profile.name}
+                        @{props.author}
                       </Typography>
                     </a>
                   </Link>
@@ -60,10 +68,10 @@ const PostAuthorProfile = props => {
                     </p>
                   )}
                 </div>
-                <p className="p-2">{data.profile.about}</p>
+                <p className="p-2">{about}</p>
               </Fragment>
               <div>
-                <FollowButton author={data.profile.name} btnstyle="default" />
+                <FollowButton author={props.author} btnstyle="default" />
               </div>
             </div>
           );

@@ -212,6 +212,56 @@ export const customJson = async (payload, id) => {
   });
 };
 
+export const accountUpdate = (account, posting_json_metadata) => {
+  const ops = [
+    [
+      'account_update2',
+      {
+        account,
+        json_metadata: '',
+        posting_json_metadata,
+      },
+    ],
+  ];
+
+  return new Promise(resolve => {
+    if (window && window.steem_keychain) {
+      window.steem_keychain.requestBroadcast(account, ops, 'posting', res => {
+        if (res.success) {
+          resolve({
+            success: true,
+            message: 'Profile was updated successfully',
+          });
+        } else {
+          resolve({
+            success: false,
+            message: `Profile could not be updated: ${res.message}`,
+          });
+        }
+      });
+    } else {
+      api.setAccessToken(getScToken());
+      api.broadcast(ops, (err, res) => {
+        if (err) {
+          resolve({
+            success: false,
+            message: `Profile could not be updated: ${(typeof err ===
+              'string' &&
+              `: ${err}`) ||
+              (err.error_description && `: ${err.error_description}`)}`,
+          });
+        }
+        if (res) {
+          resolve({
+            success: true,
+            message: 'Profile was updated successfully',
+          });
+        }
+      });
+    }
+  });
+};
+
 export const broadcastActiveUser = async () => {
   api.setAccessToken(getScToken());
   const author = getUser();
