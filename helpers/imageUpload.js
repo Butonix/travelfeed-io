@@ -1,21 +1,11 @@
 import loadImage from 'blueimp-load-image';
-import { GraphQLClient } from 'graphql-request';
-import Cookie from 'js-cookie';
+import { IMAGE_UPLOAD_LINK } from './graphql/upload';
+import graphQLClient from './graphQLClient';
 
 // prevent ssr problems due to missing window on server
 let dataURLtoBlob;
 const isWindow = typeof window !== 'undefined';
 if (isWindow) dataURLtoBlob = require('blueimp-canvas-to-blob');
-
-const endpoint = 'http://localhost:4000/';
-
-const authorization = Cookie.get('access_token');
-
-const graphQLClient = new GraphQLClient(endpoint, {
-  headers: {
-    authorization,
-  },
-});
 
 const blobToFile = (theBlob, fileName) => {
   // https://stackoverflow.com/questions/27159179/how-to-convert-blob-to-file-in-javascript
@@ -31,16 +21,13 @@ const upload = file => {
 
   // eslint-disable-next-line consistent-return
   return new Promise(resolve => {
-    const query = `{
-    imageUploadLink(filename: "${file.name}", size: ${file.size}) {
-      success
-      uploadUrl
-      fileName
-    }
-  }`;
+    const variables = {
+      filename: file.name,
+      size: file.size,
+    };
 
     // eslint-disable-next-line consistent-return
-    graphQLClient.request(query).then(data => {
+    graphQLClient(IMAGE_UPLOAD_LINK, variables).then(data => {
       if (!data || !data.imageUploadLink || !data.imageUploadLink.success) {
         return;
       }
