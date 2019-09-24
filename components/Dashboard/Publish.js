@@ -10,21 +10,17 @@ import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import graphQLClient from '../../helpers/graphQLClient';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
 import parseBody from '../../helpers/parseBody';
-import {
-  getImageList,
-  getLinkList,
-  getMentionList,
-} from '../../helpers/parsePostContents';
+import { getImageList, getLinkList, getMentionList } from '../../helpers/parsePostContents';
 import postExists from '../../helpers/postExists';
 import { invalidPermlink } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
@@ -56,7 +52,6 @@ const PostEditor = props => {
   const [location, setLocation] = useState(undefined);
   const [locationCategory, setLocationCategory] = useState(undefined);
   const [codeEditor, setCodeEditor] = useState(false);
-  const [saved, setSaved] = useState(true);
   const [featuredImage, setFeaturedImage] = useState(undefined);
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
@@ -70,6 +65,7 @@ const PostEditor = props => {
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [tagRecommendations, setTagRecommendations] = useState([]);
   const [publishThis, setPublishThis] = useState(undefined);
+  const [saved, setSaved] = useState(true);
 
   const editMode = props.edit.editmode === 'true';
 
@@ -77,6 +73,57 @@ const PostEditor = props => {
   if (!primaryTag) {
     defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
   }
+
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
+  const sanitized = sanitize(
+    parseBody(codeEditor ? content : json2md(content), {
+      lazy: false,
+      hideimgcaptions: true,
+    }),
+    { allowedTags: [] },
+  );
+  const readingtime = content
+    ? readingTime(sanitized)
+    : { words: 0, text: '0 min read' };
+
+  const saveDraft = options => {
+    if ((readingtime.words > 0 || title !== '') && !editMode) {
+      const variables = {
+        id,
+        title,
+        body: codeEditor ? content : JSON.stringify(content),
+        json: JSON.stringify({
+          tags,
+          location,
+          locationCategory,
+          featuredImage,
+          beneficiaries,
+          poweredUp,
+          language,
+          permlink,
+        }),
+        isCodeEditor: codeEditor,
+      };
+
+      graphQLClient(SAVE_DRAFT, variables).then(data => {
+        if (
+          (options && options.showNotification) ||
+          (data && data.addDraft && !data.addDraft.success)
+        ) {
+          newNotification(data.addDraft);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     if (
@@ -90,8 +137,6 @@ const PostEditor = props => {
           ? JSON.parse(props.edit.json)
           : undefined;
       if (props.edit.title) setTitle(props.edit.title);
-      if (props.edit.permlink && props.edit.permlink !== 'undefined')
-        setPermlink(props.edit.permlink);
       if (props.edit.body) {
         setContent(
           props.edit.isCodeEditor === 'false'
@@ -112,6 +157,7 @@ const PostEditor = props => {
         if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
         if (json.poweredUp) setPoweredUp(json.poweredUp);
         if (json.language) setLanguage(json.language);
+        if (json.permlink) setPermlink(json.permlink);
       }
       if (props.edit.id) setId(props.edit.id);
     }
@@ -138,16 +184,6 @@ const PostEditor = props => {
     setContent(value);
   };
 
-  const newNotification = notification => {
-    if (notification !== undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      props.enqueueSnackbar(notification.message, { variant });
-    }
-  };
-
   const changeEditorMode = () => {
     if (!codeEditor) setContent(json2md(content));
     else {
@@ -163,17 +199,6 @@ const PostEditor = props => {
     }
     setCodeEditor(!codeEditor);
   };
-
-  const sanitized = sanitize(
-    parseBody(codeEditor ? content : json2md(content), {
-      lazy: false,
-      hideimgcaptions: true,
-    }),
-    { allowedTags: [] },
-  );
-  const readingtime = content
-    ? readingTime(sanitized)
-    : { words: 0, text: '0 min read' };
 
   const checklist = [
     {
@@ -382,316 +407,276 @@ const PostEditor = props => {
     });
   }
 
+  if (!saved) {
+    setSaved(true);
+    setTagRecommendations(categoryFinder(sanitized));
+    saveDraft();
+  }
+
   return (
     <Fragment>
-      <Mutation
-        mutation={SAVE_DRAFT}
-        variables={{
-          id,
-          title,
-          body: codeEditor ? content : JSON.stringify(content),
-          json: JSON.stringify({
-            tags,
-            location,
-            locationCategory,
-            featuredImage,
-            beneficiaries,
-            poweredUp,
-            language,
-          }),
-          isCodeEditor: codeEditor,
-        }}
-      >
-        {saveDraft => {
-          if (!saved) {
-            setTagRecommendations(categoryFinder(sanitized));
-            if ((readingtime.words > 0 || title !== '') && !editMode) {
-              saveDraft();
-            }
-            setSaved(true);
-          }
-          return (
-            <div className="container-fluid p-4">
-              <div className="row">
-                <div className="col-12 p-1">
-                  <Card>
-                    <CardContent>
-                      <TitleEditor data={title} onChange={setTitle} />
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="col-xl-12 col-md-12 p-1">
-                  <Card>
-                    <CardContent>
-                      <div>
-                        {(codeEditor && mounted && (
-                          <Fragment>
-                            <HtmlEditor data={content} onChange={setContent} />
-                          </Fragment>
-                        )) || (
-                          <div>
-                            {mounted && (
-                              <EasyEditor
-                                onChange={handleEditorChange}
-                                data={content}
-                              />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-right">
-                        <SwitchEditorModeButton
-                          switchMode={() => changeEditorMode()}
-                          codeEditor={codeEditor}
+      <div className="container-fluid p-4">
+        <div className="row">
+          <div className="col-12 p-1">
+            <Card>
+              <CardContent>
+                <TitleEditor data={title} onChange={setTitle} />
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-xl-12 col-md-12 p-1">
+            <Card>
+              <CardContent>
+                <div>
+                  {(codeEditor && mounted && (
+                    <Fragment>
+                      <HtmlEditor data={content} onChange={setContent} />
+                    </Fragment>
+                  )) || (
+                    <div>
+                      {mounted && (
+                        <EasyEditor
+                          onChange={handleEditorChange}
+                          data={content}
                         />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="col-12 p-1">
-                  <DetailedExpansionPanel
-                    expanded
-                    title="Featured Image"
-                    description="The featured image will be used as the post thumbail and as background at the top of your post"
-                    helper="We recommend selecting an image that is not in your post."
-                    value={featuredImage ? 'Uploaded' : 'None'}
-                    selector={
-                      <FeaturedImageUpload
-                        featuredImage={featuredImage}
-                        setFeaturedImage={setFeaturedImage}
-                        placeholder="By default, the first image in your post is used. To choose a custom featured image, drag 'n' drop an image here, or click to select one!"
-                      />
-                    }
-                  />
-                </div>
-                <div className="col-12 p-1">
-                  <DetailedExpansionPanel
-                    expanded
-                    title="Location"
-                    description="Drag the marker, use the search field or click on the GPS icon to pick a location"
-                    helper="The location you set makes it easier for readers to find your post and gives you a chance for extra rewards."
-                    value={
-                      location &&
-                      `${location.latitude}, ${location.longitude} ${
-                        locationCategory ? `[${locationCategory}]` : ''
-                      }`
-                    }
-                    selector={
-                      <div className="w-100">
-                        <LocationPicker
-                          dark={theme.palette.type === 'dark'}
-                          locationCategory={locationCategory}
-                          setLocationCategory={setLocationCategory}
-                          setLocation={setLocation}
-                          value={location}
-                        />
-                      </div>
-                    }
-                  />
-                </div>
-                {editMode === false && (
-                  <div className="col-12 p-1">
-                    <DetailedExpansionPanel
-                      title="Language"
-                      description="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read"
-                      helper="The use of automated translation tools is not allowed. Currently, only English posts are displayed on TravelFeed, but we are working on introducing new languages soon. Currently, only English and Polish posts are curated - if you would like to run a curation team for your language, please contact us."
-                      value={
-                        languages.find(lang => lang.code === language).name
-                      }
-                      selector={
-                        <LanguageSelector
-                          onChange={setLanguage}
-                          value={language}
-                        />
-                      }
-                    />
-                  </div>
-                )}
-                <div className="col-12 p-1">
-                  <DetailedExpansionPanel
-                    expanded
-                    title="Tags"
-                    description="You can set up to 10 custom tags here. Only lowercase letters, numbers and dashes are permitted"
-                    helper="The first tag is set automatically based on your language selection. Selected tribe tags are highlighted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags."
-                    value={`${defaultTag}${tags &&
-                      tags.map((t, i) => `${i > 0 ? ' ' : ', '}${t}`)}`}
-                    selector={
-                      <TagPicker
-                        recommendations={tagRecommendations}
-                        defaultTags={[defaultTag]}
-                        value={tags}
-                        onTagChange={handleTagClick}
-                      />
-                    }
-                  />
-                </div>
-                {!editMode && (
-                  <Fragment>
-                    <div className="col-12 p-1">
-                      <DetailedExpansionPanel
-                        title="Payout Options"
-                        description="Choose how to receive your reward"
-                        helper="This is an advanced option for experienced Steem-users."
-                        value={
-                          poweredUp
-                            ? '100% Steem Power'
-                            : '50% liquid SBD/STEEM and 50% Steem Power'
-                        }
-                        selector={
-                          <PayoutTypeSelector
-                            onChange={setPoweredUp}
-                            value={poweredUp}
-                          />
-                        }
-                      />
+                      )}
                     </div>
-                    <div className="col-12 p-1">
-                      <DetailedExpansionPanel
-                        title={
-                          !permlinkValid ? (
-                            <span>
-                              <WarnIcon />
-                              {'  '}Permlink
-                            </span>
-                          ) : (
-                            'Permlink'
-                          )
-                        }
-                        description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
-                        helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
-                        value={`https://travelfeed.io/@${user}/${permlink ||
-                          getSlug(title)}`}
-                        selector={
-                          <PermlinkInput
-                            onChange={pl => {
-                              setPermlink(pl);
-                              setPermlinkValid(true);
-                            }}
-                            data={permlink}
-                            placeholder={getSlug(title)}
-                          />
-                        }
-                      />
-                    </div>
-                    <div className="col-12 p-1">
-                      <DetailedExpansionPanel
-                        title="Beneficiaries"
-                        description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here. Remember to click on + to add the beneficiary."
-                        helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
-                        value={
-                          beneficiaries.length === 0
-                            ? 'None'
-                            : `${beneficiaries.length} Beneficiar${
-                                beneficiaries.length === 1 ? 'y' : 'ies'
-                              } set`
-                        }
-                        selector={
-                          <BeneficiaryInput
-                            onChange={setBeneficiaries}
-                            value={beneficiaries}
-                          />
-                        }
-                      />
-                    </div>
-                  </Fragment>
-                )}
-                <div className="col-12 p-1">
-                  <DetailedExpansionPanel
-                    withBg
-                    noPadding
-                    fullWidth
-                    title="Preview"
-                    value="See how your post will look on TravelFeed"
-                    selector={
-                      <EditorPreview
-                        img_url={featuredImage}
-                        title={title}
-                        permlink={permlink}
-                        readtime={readingtime}
-                        content={codeEditor ? content : json2md(content)}
-                        latitude={location ? location.latitude : undefined}
-                        longitude={location ? location.longitude : undefined}
-                        tags={tags}
-                      />
-                    }
+                  )}
+                </div>
+                <div className="text-right">
+                  <SwitchEditorModeButton
+                    switchMode={() => changeEditorMode()}
+                    codeEditor={codeEditor}
                   />
                 </div>
-                <div className="col-12 p-1">
-                  <DetailedExpansionPanel
-                    fullWidth
-                    expanded
-                    title="Publish"
-                    value="Publish your post"
-                    selector={
-                      <Fragment>
-                        <Checks checklist={checklist} />
-                        <div className="row">
-                          <div className="col-6">
-                            {!editMode && (
-                              <Button
-                                onClick={() => {
-                                  if (readingtime.words > 0 || title !== '') {
-                                    newNotification({
-                                      message: 'Draft has been saved',
-                                      success: true,
-                                    });
-                                  } else {
-                                    newNotification({
-                                      message:
-                                        'There is nothing to save. Enter a title or start writing!',
-                                      success: false,
-                                    });
-                                  }
-                                }}
-                                variant="contained"
-                                color="secondary"
-                              >
-                                <span>
-                                  Save Draft <SaveIcon />
-                                </span>
-                              </Button>
-                            )}
-                          </div>
-                          <div className="col-6 text-right">
-                            {(!success && (
-                              <PublishBtn
-                                publishThis={publishThis}
-                                pastPublish={res => pastPublish(res)}
-                                triggerPublish={triggerPublish}
-                                label={
-                                  (editMode && (
-                                    <span>
-                                      Update Post <EditIcon />
-                                    </span>
-                                  )) || (
-                                    <span>
-                                      Publish Now
-                                      <PublishIcon />
-                                    </span>
-                                  )
-                                }
-                              />
-                            )) || (
-                              <Button
-                                className="mt-1"
-                                variant="contained"
-                                color="primary"
-                                disabled
-                              >
-                                Published
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </Fragment>
-                    }
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              expanded
+              title="Featured Image"
+              description="The featured image will be used as the post thumbail and as background at the top of your post"
+              helper="We recommend selecting an image that is not in your post."
+              value={featuredImage ? 'Uploaded' : 'None'}
+              selector={
+                <FeaturedImageUpload
+                  featuredImage={featuredImage}
+                  setFeaturedImage={setFeaturedImage}
+                  placeholder="By default, the first image in your post is used. To choose a custom featured image, drag 'n' drop an image here, or click to select one!"
+                />
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              expanded
+              title="Location"
+              description="Drag the marker, use the search field or click on the GPS icon to pick a location"
+              helper="The location you set makes it easier for readers to find your post and gives you a chance for extra rewards."
+              value={
+                location &&
+                `${location.latitude}, ${location.longitude} ${
+                  locationCategory ? `[${locationCategory}]` : ''
+                }`
+              }
+              selector={
+                <div className="w-100">
+                  <LocationPicker
+                    dark={theme.palette.type === 'dark'}
+                    locationCategory={locationCategory}
+                    setLocationCategory={setLocationCategory}
+                    setLocation={setLocation}
+                    value={location}
                   />
                 </div>
-              </div>
+              }
+            />
+          </div>
+          {editMode === false && (
+            <div className="col-12 p-1">
+              <DetailedExpansionPanel
+                title="Language"
+                description="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read"
+                helper="The use of automated translation tools is not allowed. Currently, only English posts are displayed on TravelFeed, but we are working on introducing new languages soon. Currently, only English and Polish posts are curated - if you would like to run a curation team for your language, please contact us."
+                value={languages.find(lang => lang.code === language).name}
+                selector={
+                  <LanguageSelector onChange={setLanguage} value={language} />
+                }
+              />
             </div>
-          );
-        }}
-      </Mutation>
+          )}
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              expanded
+              title="Tags"
+              description="You can set up to 10 custom tags here. Only lowercase letters, numbers and dashes are permitted"
+              helper="The first tag is set automatically based on your language selection. Selected tribe tags are highlighted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags."
+              value={`${defaultTag}${tags &&
+                tags.map((t, i) => `${i > 0 ? ' ' : ', '}${t}`)}`}
+              selector={
+                <TagPicker
+                  recommendations={tagRecommendations}
+                  defaultTags={[defaultTag]}
+                  value={tags}
+                  onTagChange={handleTagClick}
+                />
+              }
+            />
+          </div>
+          {!editMode && (
+            <Fragment>
+              <div className="col-12 p-1">
+                <DetailedExpansionPanel
+                  title="Payout Options"
+                  description="Choose how to receive your reward"
+                  helper="This is an advanced option for experienced Steem-users."
+                  value={
+                    poweredUp
+                      ? '100% Steem Power'
+                      : '50% liquid SBD/STEEM and 50% Steem Power'
+                  }
+                  selector={
+                    <PayoutTypeSelector
+                      onChange={setPoweredUp}
+                      value={poweredUp}
+                    />
+                  }
+                />
+              </div>
+              <div className="col-12 p-1">
+                <DetailedExpansionPanel
+                  title={
+                    !permlinkValid ? (
+                      <span>
+                        <WarnIcon />
+                        {'  '}Permlink
+                      </span>
+                    ) : (
+                      'Permlink'
+                    )
+                  }
+                  description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
+                  helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                  value={`https://travelfeed.io/@${user}/${permlink ||
+                    getSlug(title)}`}
+                  selector={
+                    <PermlinkInput
+                      onChange={pl => {
+                        setPermlink(pl);
+                        setPermlinkValid(true);
+                      }}
+                      data={permlink}
+                      placeholder={getSlug(title)}
+                    />
+                  }
+                />
+              </div>
+              <div className="col-12 p-1">
+                <DetailedExpansionPanel
+                  title="Beneficiaries"
+                  description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here. Remember to click on + to add the beneficiary."
+                  helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
+                  value={
+                    beneficiaries.length === 0
+                      ? 'None'
+                      : `${beneficiaries.length} Beneficiar${
+                          beneficiaries.length === 1 ? 'y' : 'ies'
+                        } set`
+                  }
+                  selector={
+                    <BeneficiaryInput
+                      onChange={setBeneficiaries}
+                      value={beneficiaries}
+                    />
+                  }
+                />
+              </div>
+            </Fragment>
+          )}
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              withBg
+              noPadding
+              fullWidth
+              title="Preview"
+              value="See how your post will look on TravelFeed"
+              selector={
+                <EditorPreview
+                  img_url={featuredImage}
+                  title={title}
+                  permlink={permlink}
+                  readtime={readingtime}
+                  content={codeEditor ? content : json2md(content)}
+                  latitude={location ? location.latitude : undefined}
+                  longitude={location ? location.longitude : undefined}
+                  tags={tags}
+                />
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              fullWidth
+              expanded
+              title="Publish"
+              value="Publish your post"
+              selector={
+                <Fragment>
+                  <Checks checklist={checklist} />
+                  <div className="row">
+                    <div className="col-6">
+                      {!editMode && (
+                        <Button
+                          onClick={() => {
+                            saveDraft({ showNotification: true });
+                          }}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          <span>
+                            Save Draft <SaveIcon />
+                          </span>
+                        </Button>
+                      )}
+                    </div>
+                    <div className="col-6 text-right">
+                      {(!success && (
+                        <PublishBtn
+                          publishThis={publishThis}
+                          pastPublish={res => pastPublish(res)}
+                          triggerPublish={triggerPublish}
+                          label={
+                            (editMode && (
+                              <span>
+                                Update Post <EditIcon />
+                              </span>
+                            )) || (
+                              <span>
+                                Publish Now
+                                <PublishIcon />
+                              </span>
+                            )
+                          }
+                        />
+                      )) || (
+                        <Button
+                          className="mt-1"
+                          variant="contained"
+                          color="primary"
+                          disabled
+                        >
+                          Published
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </Fragment>
+              }
+            />
+          </div>
+        </div>
+      </div>
     </Fragment>
   );
 };
