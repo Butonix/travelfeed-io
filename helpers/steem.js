@@ -5,9 +5,18 @@ export const getAccount = username => {
   return steem.api.getAccountsAsync([username]).then(account => {
     if (account.length < 1) return { name: username };
 
-    const { posting_json_metadata } = account[0];
+    const { posting_json_metadata, json_metadata } = account[0];
 
-    const json = JSON.parse(posting_json_metadata);
+    let json = {};
+    try {
+      json = JSON.parse(posting_json_metadata);
+    } catch {
+      try {
+        json = JSON.parse(json_metadata);
+      } catch {
+        return { name: username };
+      }
+    }
     const { profile } = json;
     const {
       name,
