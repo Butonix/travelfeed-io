@@ -42,7 +42,7 @@ const HtmlEditor = props => {
   };
 
   return (
-    <div style={{ height: '600px', fontFamily: 'Roboto' }}>
+    <div style={{ height: '600px' }}>
       <MdEditor
         config={{
           imageAccept: 'image/*',
@@ -51,7 +51,8 @@ const HtmlEditor = props => {
             md: true,
             html: showHtml,
           },
-          synchScroll: true,
+          synchScroll: false,
+          htmlClass: 'postcontent',
         }}
         value={data}
         renderHTML={text =>
