@@ -5,14 +5,17 @@ import Typography from '@material-ui/core/Typography';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
 import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
+import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
+import { GMAPS_API_KEY } from '../../config';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
 import LoginButton from './LoginButton';
+import MobileGeocoderButton from './MobileGeocoderButton';
 
 const styles = () => ({
   root: {
@@ -64,11 +67,17 @@ class Header extends Component {
     );
     return (
       <Fragment>
+        <NextHead>
+          <script
+            type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
+          />
+        </NextHead>
         <div style={{ flexGrow: 1 }}>
           <AppBar position="fixed" color="secondary" className={classes.root}>
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
-                <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-9">
+                <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-10">
                   <Link color="textPrimary" href="/" passHref>
                     <a style={{ flexGrow: 1 }} className="textPrimary">
                       <Typography
@@ -122,7 +131,14 @@ class Header extends Component {
                 <div
                   className={`my-auto ${(this.state.user &&
                     'col-xl-2 col-lg-2 col-md-2') ||
-                    'col-xl-1 col-lg-1 col-md-2'} col-3 text-right`}
+                    'col-xl-1 col-lg-1 col-md-2'} col-2 d-xl-none d-lg-none d-md-none d-sm-none text-right`}
+                >
+                  <MobileGeocoderButton />
+                </div>
+                <div
+                  className={`my-auto ${(this.state.user &&
+                    'col-xl-2 col-lg-2 col-md-2') ||
+                    'col-xl-1 col-lg-1 col-md-2'} col-3 d-none d-xl-block d-lg-block d-md-block d-sm-block text-right`}
                 >
                   <HeaderMenu
                     isDashboard={false}

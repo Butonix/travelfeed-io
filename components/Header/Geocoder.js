@@ -11,17 +11,16 @@ import { withStyles } from '@material-ui/styles';
 import MUIPlacesAutocomplete, {
   geocodeBySuggestion,
 } from 'mui-places-autocomplete';
-import NextHead from 'next/head';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
-import { GMAPS_API_KEY } from '../../config';
+import React, { Component } from 'react';
 
 // https://stackoverflow.com/questions/49040092/material-ui-v1-input-focus-style-override
 const styles = theme => ({
-  input: {
+  input: props => ({
     borderRadius: theme.shape.borderRadius,
-    width: '100%',
+    width: props.width || '100%',
+    height: (props.width && '65px') || '100%',
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
@@ -29,13 +28,13 @@ const styles = theme => ({
     color: 'white',
     padding: '5px',
     transition: 'width 0.3s',
-  },
-  // Separate this part into it's own CSS class
-  inputFocused: {
-    width: '120%',
+  }),
+  inputFocused: props => ({
+    // Separate this part into it's own CSS class
+    width: props.width || '120%',
     backgroundColor: fade(theme.palette.common.white, 0.25),
     transition: 'width 0.3s',
-  },
+  }),
 });
 
 class Geocoder extends Component {
@@ -85,16 +84,11 @@ class Geocoder extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Fragment>
-        <NextHead>
-          <script
-            type="text/javascript"
-            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
-          />
-        </NextHead>
+      <>
         <MUIPlacesAutocomplete
           textFieldProps={{
             InputProps: {
+              autoFocus: this.props.autoFocus,
               placeholder: 'Search for a place',
               className: classes.input,
               classes: { focused: classes.inputFocused },
@@ -107,9 +101,9 @@ class Geocoder extends Component {
             },
           }}
           onSuggestionSelected={this.onSuggestionSelected}
-          renderTarget={() => <div />}
+          renderTarget={() => <></>}
         />
-      </Fragment>
+      </>
     );
   }
 }
