@@ -25,13 +25,14 @@ const Notifications = () => {
                     <CircularProgress />
                   </div>
                 )}
-                {(error || data.posts === null) && (
+                {(error || (data && data.posts === null)) && (
                   <p>Error: Could not load notifications.</p>
                 )}
-                {data.posts && data.posts.length === 0 && (
+                {data && data.posts && data.posts.length === 0 && (
                   <p>No notifications.</p>
                 )}
-                {data.posts &&
+                {data &&
+                  data.posts &&
                   data.posts.length > 0 &&
                   data.posts.map(post => {
                     return post.curation_score >= 9000 ? (
