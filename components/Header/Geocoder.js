@@ -70,9 +70,10 @@ class Geocoder extends Component {
         if (!bounds) {
           bounds = result.geometry.viewport;
         }
-        console.log(bounds);
+        const bound1 = bounds[Object.keys(bounds)[1]];
+        const bound2 = bounds[Object.keys(bounds)[0]];
         Router.push(
-          `/location?location_box=${bounds.da.g},${bounds.ha.g},${bounds.da.h},${bounds.ha.h}&formatted_address=${result.formatted_address}${args}`,
+          `/location?location_box=${bound1.g},${bound2.g},${bound1.h},${bound2.h}&formatted_address=${result.formatted_address}${args}`,
         );
       })
       .catch(err => {
