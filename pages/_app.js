@@ -7,7 +7,6 @@ import App, { Container } from 'next/app';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 import { SnackbarProvider } from 'notistack';
-import NProgress from 'nprogress';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
@@ -32,16 +31,11 @@ const Piwik = new ReactPiwik({
   phpFilename: 'matomo.php',
 });
 
-NProgress.configure({ showSpinner: false });
-
 Router.events.on('routeChangeStart', () => {
-  NProgress.start();
   if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
   ReactPiwik.push(['setDocumentTitle', document.title]);
   ReactPiwik.push(['trackPageView']);
 });
-Router.events.on('routeChangeComplete', () => NProgress.done());
-Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
