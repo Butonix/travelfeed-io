@@ -15,6 +15,7 @@ const BookmarkIcon = props => {
   return (
     <Fragment>
       <Query
+        fetchPolicy="network-only"
         query={IS_BOOKMARKED}
         variables={{
           author: props.author,
