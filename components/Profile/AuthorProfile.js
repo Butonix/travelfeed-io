@@ -29,11 +29,8 @@ const AuthorProfile = props => {
   return (
     <Fragment>
       <Query query={GET_SHORT_PROFILE} variables={{ author: name }}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return <Header />;
-          }
-          if (error || data.profile === null) {
+        {({ data, error }) => {
+          if (error || (data && data.profile === null)) {
             return (
               <Fragment>
                 <Header />
@@ -42,7 +39,11 @@ const AuthorProfile = props => {
             );
           }
 
-          const { isBlacklisted, isCurator } = data.profile;
+          let { isBlacklisted, isCurator } = false;
+          if (data && data.profile) {
+            isBlacklisted = data.profile.isBlacklisted;
+            isCurator = data.profile.isCurator;
+          }
 
           return (
             <Fragment>

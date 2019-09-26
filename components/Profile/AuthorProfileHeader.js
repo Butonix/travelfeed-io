@@ -11,12 +11,10 @@ const AuthorProfileHeader = props => {
   const cover_image =
     props.data.cover_image && props.data.cover_image !== ''
       ? imageProxy(props.data.cover_image, 1500)
-      : imageProxy(
-          'https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv',
-          1500,
-        );
+      : '';
   const divStyle = {
-    backgroundImage: `url(${cover_image})`,
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0,0.5)),
+    url("${cover_image}")`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
