@@ -15,6 +15,7 @@ import Link from '../../lib/Link';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
 import LoginButton from './LoginButton';
+import MenuDrawer from './MenuDrawer';
 import MobileGeocoderButton from './MobileGeocoderButton';
 
 const styles = () => ({
@@ -77,7 +78,10 @@ class Header extends Component {
           <AppBar position="fixed" color="secondary" className={classes.root}>
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
-                <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-10">
+                <div className="my-auto col-2 d-xl-none d-lg-none d-md-none d-sm-none">
+                  <MenuDrawer handleLogout={this.handleLogout} />
+                </div>
+                <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-8">
                   <Link color="textPrimary" href="/" passHref>
                     <a style={{ flexGrow: 1 }} className="textPrimary">
                       <Typography
@@ -128,11 +132,7 @@ class Header extends Component {
                     <LoginButton />
                   </div>
                 )}
-                <div
-                  className={`my-auto ${(this.state.user &&
-                    'col-xl-2 col-lg-2 col-md-2') ||
-                    'col-xl-1 col-lg-1 col-md-2'} col-2 d-xl-none d-lg-none d-md-none d-sm-none text-right`}
-                >
+                <div className="my-auto col-2 d-xl-none d-lg-none d-md-none d-sm-none">
                   <MobileGeocoderButton />
                 </div>
                 <div

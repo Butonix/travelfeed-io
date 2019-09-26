@@ -1,3 +1,4 @@
+import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -50,12 +51,21 @@ class LogoutButton extends Component {
             this.setState({ open: true });
           }
           return (
-            <MenuItem onClick={revokeToken}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </MenuItem>
+            (this.props.listItem && (
+              <ListItem onClick={revokeToken}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            )) || (
+              <MenuItem onClick={revokeToken}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </MenuItem>
+            )
           );
         }}
       </Mutation>

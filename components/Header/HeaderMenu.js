@@ -11,6 +11,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import PublishIcon from '@material-ui/icons/Create';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import DestinationsIcon from '@material-ui/icons/Explore';
@@ -20,7 +21,6 @@ import PrivacyIcon from '@material-ui/icons/Lock';
 import MapIcon from '@material-ui/icons/Map';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVert from '@material-ui/icons/MoreVert';
-import ProfileIcon from '@material-ui/icons/Person';
 import TermsIcon from '@material-ui/icons/Toc';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -263,7 +263,7 @@ class HeaderMenu extends Component {
                         <a>
                           <MenuItem>
                             <ListItemIcon>
-                              <ProfileIcon />
+                              <BookmarkIcon />
                             </ListItemIcon>
                             <ListItemText primary="Bookmarks" />
                           </MenuItem>

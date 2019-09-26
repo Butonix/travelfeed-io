@@ -34,11 +34,7 @@ const MobileGeocoderButton = () => {
         }
           `}</style>
         </>
-      )) || (
-        <IconButton onClick={toggleShow}>
-          <SearchIcon className="text-light" />
-        </IconButton>
-      )}
+      )) || <SearchIcon onClick={toggleShow} className="text-light" />}
     </>
   );
 };
