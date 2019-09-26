@@ -150,26 +150,27 @@ class MapCluster extends Component {
                   />
                 )}
               >
-                {this.props.data.map((point, i) => {
-                  if (point.longitude !== null) {
-                    return (
-                      <Marker
-                        key={i}
-                        longitude={point.longitude}
-                        latitude={point.latitude}
-                        author={point.author}
-                        permlink={point.permlink}
-                        title={point.title}
-                        img_url={point.img_url}
-                      >
-                        <MarkerSmall
-                          size={20}
-                          onClick={() => this.setState({ popupInfo: point })}
-                        />{' '}
-                      </Marker>
-                    );
-                  }
-                })}
+                {this.props.data &&
+                  this.props.data.map((point, i) => {
+                    if (point.longitude !== null) {
+                      return (
+                        <Marker
+                          key={i}
+                          longitude={point.longitude}
+                          latitude={point.latitude}
+                          author={point.author}
+                          permlink={point.permlink}
+                          title={point.title}
+                          img_url={point.img_url}
+                        >
+                          <MarkerSmall
+                            size={20}
+                            onClick={() => this.setState({ popupInfo: point })}
+                          />{' '}
+                        </Marker>
+                      );
+                    }
+                  })}
               </Cluster>
             </>
           )}
