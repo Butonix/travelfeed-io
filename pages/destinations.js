@@ -62,7 +62,7 @@ class DestinationsPage extends Component {
             (subdivision && `${subdivision}`) ||
             countryName}`}
         />
-        <div className="container">
+        <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
             query={{
               limit: 9,
@@ -77,6 +77,14 @@ class DestinationsPage extends Component {
             poststyle="grid"
           />
         </div>
+        <style>{`
+        @media (max-width: 992px) {
+          #containerInvisibleOnMobile {
+            padding: 0;
+            margin: 0;
+          }
+        }
+        `}</style>
       </Fragment>
     );
   }

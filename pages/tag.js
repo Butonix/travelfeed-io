@@ -55,7 +55,7 @@ class TagPage extends Component {
           tags={this.props.tags}
           selection={this.props.selection}
         />
-        <div className="container">
+        <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
             query={{
               tags: this.props.tags,
@@ -68,6 +68,14 @@ class TagPage extends Component {
             poststyle="grid"
           />
         </div>
+        <style>{`
+        @media (max-width: 992px) {
+          #containerInvisibleOnMobile {
+            padding: 0;
+            margin: 0;
+          }
+        }
+        `}</style>
       </Fragment>
     );
   }

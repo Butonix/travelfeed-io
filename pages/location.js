@@ -41,7 +41,7 @@ class LocationPage extends Component {
           title={this.props.formatted_address}
           countrySlug={slugFromCC(this.props.country_code)}
         />
-        <div className="container">
+        <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
             query={{
               location_box: this.props.location_box,
@@ -54,6 +54,14 @@ class LocationPage extends Component {
             poststyle="grid"
           />
         </div>
+        <style>{`
+        @media (max-width: 992px) {
+          #containerInvisibleOnMobile {
+            padding: 0;
+            margin: 0;
+          }
+        }
+        `}</style>
       </Fragment>
     );
   }
