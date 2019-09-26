@@ -8,18 +8,19 @@ import Link from '../../lib/Link';
 
 const DestinationHeader = props => {
   const { query, countrySlug, title } = props;
+
   return (
     <Fragment>
       <Query query={GET_LOCATION_DETAILS} variables={query}>
-        {({ data }) => {
-          if (data && data.locationDetails) {
+        {({ data, loading }) => {
+          if (loading || (data && data && data.locationDetails)) {
             return (
               <Fragment>
                 <div
                   className="w-100"
                   style={{
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.5)),
-                      url("${data.locationDetails.image}")`,
+                      url("${(data && data.locationDetails.image) || ''}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
@@ -73,7 +74,7 @@ const DestinationHeader = props => {
                                 passHref
                               >
                                 <a className="text-light font-weight-bold">
-                                  {data.locationDetails.subtitle ||
+                                  {(data && data.locationDetails.subtitle) ||
                                     nameFromSlug(countrySlug)}
                                 </a>
                               </Link>
@@ -95,9 +96,18 @@ const DestinationHeader = props => {
                             textShadow: '1px 1px 10px black',
                           }}
                         >
-                          <em>{data.locationDetails.description}</em>
+                          <em>
+                            {(data && data.locationDetails.description) || (
+                              <>
+                                <br />
+                                <br />
+                              </>
+                            )}
+                          </em>
                         </p>
-                        {data.locationDetails.sublocations &&
+                        {data &&
+                          data.locationDetails.sublocations &&
+                          data &&
                           data.locationDetails.sublocations.length > 1 && (
                             <div className="row p-2 justify-content-md-center">
                               <div className="col-12">
@@ -110,50 +120,51 @@ const DestinationHeader = props => {
                                   Popular destinations:
                                 </h4>
                               </div>
-                              {data.locationDetails.sublocations.map(
-                                (location, index) => {
-                                  //   limit results
-                                  if (index > 11) {
-                                    return <Fragment />;
-                                  }
-                                  return (
-                                    <div
-                                      key={`${countrySlug}_${
-                                        location.subdivision
-                                          ? location.subdivision
-                                          : `${query.subdivision}_${location.city}`
-                                      }`}
-                                      className="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 text-center"
-                                    >
-                                      <Link
-                                        color="textPrimary"
-                                        href={`/destinations?country=${countrySlug}&subdivision=${
+                              {data &&
+                                data.locationDetails.sublocations.map(
+                                  (location, index) => {
+                                    //   limit results
+                                    if (index > 11) {
+                                      return <Fragment />;
+                                    }
+                                    return (
+                                      <div
+                                        key={`${countrySlug}_${
                                           location.subdivision
                                             ? location.subdivision
-                                            : `${query.subdivision}&city=${location.city}`
+                                            : `${query.subdivision}_${location.city}`
                                         }`}
-                                        as={`/destinations/${countrySlug}/${
-                                          location.subdivision
-                                            ? location.subdivision
-                                            : `${query.subdivision}/${location.city}`
-                                        }`}
-                                        passHref
+                                        className="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 text-center"
                                       >
-                                        <a
-                                          className="text-light"
-                                          style={{
-                                            textShadow: '1px 1px 10px black',
-                                          }}
+                                        <Link
+                                          color="textPrimary"
+                                          href={`/destinations?country=${countrySlug}&subdivision=${
+                                            location.subdivision
+                                              ? location.subdivision
+                                              : `${query.subdivision}&city=${location.city}`
+                                          }`}
+                                          as={`/destinations/${countrySlug}/${
+                                            location.subdivision
+                                              ? location.subdivision
+                                              : `${query.subdivision}/${location.city}`
+                                          }`}
+                                          passHref
                                         >
-                                          {location.city
-                                            ? location.city
-                                            : location.subdivision}
-                                        </a>
-                                      </Link>
-                                    </div>
-                                  );
-                                },
-                              )}
+                                          <a
+                                            className="text-light"
+                                            style={{
+                                              textShadow: '1px 1px 10px black',
+                                            }}
+                                          >
+                                            {location.city
+                                              ? location.city
+                                              : location.subdivision}
+                                          </a>
+                                        </Link>
+                                      </div>
+                                    );
+                                  },
+                                )}
                             </div>
                           )}
                       </div>
@@ -163,14 +174,14 @@ const DestinationHeader = props => {
                     className="text-mutedlight text-right pr-1"
                     style={{ fontSize: '0.8rem' }}
                   >
-                    {data.locationDetails.url && (
+                    {data && data.locationDetails.url && (
                       <span>
                         Description by{' '}
                         <a
                           className="text-mutedlight text-decoration-underline"
                           target="_blank"
                           rel="nofollow noreferrer noopener"
-                          href={data.locationDetails.url}
+                          href={data && data.locationDetails.url}
                         >
                           Wikipedia
                         </a>{' '}
@@ -179,38 +190,41 @@ const DestinationHeader = props => {
                           className="text-mutedlight text-decoration-underline"
                           target="_blank"
                           rel="nofollow noreferrer noopener"
-                          href={data.locationDetails.license}
+                          href={data && data.locationDetails.license}
                         >
                           CC BY-SA 3.0
                         </a>
                         .{' '}
                       </span>
                     )}
-                    {data.locationDetails.attribution && (
+                    {data && data.locationDetails.attribution && (
                       <span>
                         Photo:{' '}
-                        {(data.locationDetails.unsplashUser && (
+                        {(data && data.locationDetails.unsplashUser && (
                           <a
                             className="text-mutedlight text-decoration-underline"
                             target="_blank"
                             rel="nofollow noreferrer noopener"
-                            href={`https://unsplash.com/@${data.locationDetails.unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
+                            href={`https://unsplash.com/@${data &&
+                              data.locationDetails
+                                .unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
                           >
-                            {data.locationDetails.attribution}
+                            {data && data.locationDetails.attribution}
                           </a>
                         )) || (
                           <Link
                             color="textPrimary"
-                            as={`/@${data.locationDetails.attribution}`}
-                            href={`/blog?author=${data.locationDetails.attribution}`}
+                            as={`/@${data && data.locationDetails.attribution}`}
+                            href={`/blog?author=${data &&
+                              data.locationDetails.attribution}`}
                             passHref
                           >
                             <a className="text-mutedlight text-decoration-underline">
-                              @{data.locationDetails.attribution}
+                              @{data && data.locationDetails.attribution}
                             </a>
                           </Link>
                         )}{' '}
-                        {data.locationDetails.unsplashUser && (
+                        {data && data.locationDetails.unsplashUser && (
                           <span>
                             /{' '}
                             <a
