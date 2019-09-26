@@ -69,7 +69,15 @@ const uploadFile = async localfile => {
           resimg.style.display = 'none'; // Make sure the image is hidden
           document.body.appendChild(resimg);
           const img = document.getElementById(imgId);
-          const { height, width } = img;
+          const { height, width, naturalWidth } = img;
+          // don't resize images smaller than the allowed size
+          if (naturalWidth < 1920) {
+            upload(localfile)
+              .then(result => {
+                resolve(result);
+              })
+              .catch(() => reject(new Error('Image could not be uploaded')));
+          }
           const canvas = document.createElement('canvas'); // Dynamically Create a Canvas Element
           canvas.id = canvasId; // Give the canvas an id
           canvas.width = width; // Set the width of the Canvas
@@ -82,7 +90,9 @@ const uploadFile = async localfile => {
           const durl = c.toDataURL(localfile.type); // This will save your image as a
           const blob = await dataURLtoBlob(durl);
           // jpeg file in the base64 format.
-          const resfile = await blobToFile(blob, localfile.name);
+          let resfile = await blobToFile(blob, localfile.name);
+          // Upload original file instead if the resizing saves less than 25%
+          if (resfile.size > localfile.size * 0.75) resfile = localfile;
           c.parentNode.removeChild(c);
           img.parentNode.removeChild(img);
 
