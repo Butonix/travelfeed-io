@@ -37,6 +37,13 @@ const styles = theme => ({
   }),
 });
 
+const createAutocompleteRequest = inputValue => {
+  return {
+    input: inputValue,
+    types: ['(regions)'],
+  };
+};
+
 class Geocoder extends Component {
   // eslint-disable-next-line class-methods-use-this
   onSuggestionSelected(suggestion) {
@@ -101,6 +108,7 @@ class Geocoder extends Component {
             },
           }}
           onSuggestionSelected={this.onSuggestionSelected}
+          createAutocompleteRequest={createAutocompleteRequest}
           renderTarget={() => <></>}
         />
       </>
