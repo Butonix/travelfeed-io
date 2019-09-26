@@ -41,6 +41,7 @@ const createAutocompleteRequest = inputValue => {
   return {
     input: inputValue,
     types: ['(regions)'],
+    language: 'en',
   };
 };
 
