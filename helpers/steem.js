@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import steem from 'steem';
+import { STEEM_API } from '../config';
+
+steem.api.setOptions({ url: STEEM_API });
 
 export const getAccount = username => {
   return steem.api.getAccountsAsync([username]).then(account => {
@@ -50,3 +53,5 @@ export const getAccount = username => {
     };
   });
 };
+
+export default steem;
