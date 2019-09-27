@@ -9,7 +9,7 @@ class IsCurated extends Component {
     if (this.props.curation_score > 8000) {
       return (
         <Fragment>
-          <IconButton>
+          <IconButton disabled>
             <CurateIcon onClick={this.handleClickOpen} />
           </IconButton>
         </Fragment>
@@ -18,7 +18,7 @@ class IsCurated extends Component {
     if (this.props.curation_score > 4000) {
       return (
         <Fragment>
-          <IconButton>
+          <IconButton disabled>
             <HonourIcon onClick={this.handleClickOpen} />
           </IconButton>
         </Fragment>

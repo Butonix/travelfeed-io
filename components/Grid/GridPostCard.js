@@ -1,9 +1,10 @@
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -13,6 +14,20 @@ import Link from '../../lib/Link';
 import IsCurated from '../Post/IsCurated';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
+import ProfileAvatar from '../Profile/ProfileAvatar';
+import ProfileName from '../Profile/ProfileName';
+
+const styles = () => ({
+  card: {
+    borderRadius: 16,
+  },
+  cardHeader: {
+    padding: 12,
+  },
+  iconButton: {
+    padding: 0,
+  },
+});
 
 class GridPostCard extends Component {
   constructor(props) {
@@ -46,6 +61,8 @@ class GridPostCard extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     // Prevent SSR
     const BookmarkIcon = dynamic(() => import('../Post/BookmarkIcon'), {
       ssr: false,
@@ -77,12 +94,14 @@ class GridPostCard extends Component {
         this.props.post.app.split('/')[0] === 'travelfeed'
       ) {
         appIcon = (
-          <img
-            width="25"
-            alt="TravelFeed"
-            className="mr-1"
-            src="https://travelfeed.io/favicon.ico"
-          />
+          <IconButton disabled className={classes.iconButton}>
+            <img
+              width="25"
+              alt="TravelFeed"
+              className="mr-1"
+              src="https://travelfeed.io/favicon.ico"
+            />
+          </IconButton>
         );
       }
       action = (
@@ -93,44 +112,19 @@ class GridPostCard extends Component {
       );
     }
     return (
-      <Card key={this.props.post.permlink} className="m-2">
+      <Card
+        key={this.props.post.permlink}
+        className={`mb-0 mt-2 mr-2 ml-2 ${classes.card}`}
+      >
         <CardHeader
-          avatar={
-            <Link
-              color="textPrimary"
-              as={`/@${this.props.post.author}`}
-              href={`/blog?author=${this.props.post.author}`}
-              passHref
-            >
-              <a>
-                <Avatar
-                  style={{ cursor: 'pointer' }}
-                  src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
-                  alt={this.props.post.author}
-                />
-              </a>
-            </Link>
-          }
+          className={classes.cardHeader}
+          avatar={<ProfileAvatar author={this.props.post.author} />}
           action={<Fragment>{action}</Fragment>}
           title={
-            <Link
-              color="textPrimary"
-              as={`/@${this.props.post.author}`}
-              href={`/blog?author=${this.props.post.author}`}
-              passHref
-            >
-              <a className="textPrimary cpointer">
-                <strong>{this.props.post.display_name}</strong>
-                <Typography
-                  color="textSecondary"
-                  variant="subtitle"
-                  display="inline"
-                >
-                  {' '}
-                  @{this.props.post.author}
-                </Typography>
-              </a>
-            </Link>
+            <ProfileName
+              author={this.props.post.author}
+              displayName={this.props.post.display_name}
+            />
           }
           subheader={
             <SubHeader
@@ -224,4 +218,4 @@ GridPostCard.propTypes = {
   isBookmark: PropTypes.bool,
 };
 
-export default GridPostCard;
+export default withStyles(styles)(GridPostCard);

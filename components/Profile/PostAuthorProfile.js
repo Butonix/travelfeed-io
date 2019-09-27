@@ -11,7 +11,7 @@ const PostAuthorProfile = props => {
   const [about, setAbout] = useState('');
 
   getAccount(props.author).then(profile => {
-    setDisplayName(profile.name);
+    setDisplayName(profile.display_name);
     if (profile.about) setAbout(profile.about);
   });
   return (
@@ -23,9 +23,6 @@ const PostAuthorProfile = props => {
           }
           return (
             <div className="text-center">
-              <Typography variant="h5" className="p-2">
-                Written by:
-              </Typography>
               <div className="pb-2">
                 <Link
                   color="textPrimary"

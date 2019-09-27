@@ -7,7 +7,7 @@ import Link from '../../lib/Link';
 
 const JoinNow = () => {
   return (
-    <div className="text-center pt-3">
+    <div className="text-center pt-2">
       <Card>
         <CardContent>
           <Typography

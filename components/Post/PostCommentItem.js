@@ -1,8 +1,6 @@
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
@@ -13,6 +11,8 @@ import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
+import ProfileAvatar from '../Profile/ProfileAvatar';
+import ProfileName from '../Profile/ProfileName';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
@@ -171,22 +171,7 @@ class PostCommentItem extends Component {
           id={this.props.post.permlink}
         >
           <CardHeader
-            avatar={
-              <Link
-                color="textPrimary"
-                as={`/@${this.props.post.author}`}
-                href={`/blog?author=${this.props.post.author}`}
-                passHref
-              >
-                <a>
-                  <Avatar
-                    className="cpointer"
-                    src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
-                    alt={this.props.post.author}
-                  />
-                </a>
-              </Link>
-            }
+            avatar={<ProfileAvatar author={this.props.post.author} />}
             action={
               <Fragment>
                 {appIcon}
@@ -201,24 +186,10 @@ class PostCommentItem extends Component {
               </Fragment>
             }
             title={
-              <Link
-                color="textPrimary"
-                as={`/@${this.props.post.author}`}
-                href={`/blog?author=${this.props.post.author}`}
-                passHref
-              >
-                <a className="textPrimary cpointer">
-                  <strong>{this.props.post.display_name}</strong>
-                  <Typography
-                    color="textSecondary"
-                    variant="subtitle"
-                    display="inline"
-                  >
-                    {' '}
-                    @{this.props.post.author}
-                  </Typography>
-                </a>
-              </Link>
+              <ProfileName
+                author={this.props.post.author}
+                displayName={this.props.post.display_name}
+              />
             }
             subheader={<SubHeader created_at={this.props.post.created_at} />}
           />
