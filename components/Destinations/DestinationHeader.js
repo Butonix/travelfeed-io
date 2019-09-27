@@ -30,7 +30,7 @@ const DestinationHeader = props => {
                     <div className="row h-100" style={{ minHeight: '500px' }}>
                       <div className="col-12 my-auto">
                         <h5
-                          className="text-center"
+                          className="text-center pt-3"
                           style={{
                             textShadow: '1px 1px 10px #343A40',
                           }}
