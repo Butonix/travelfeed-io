@@ -2,7 +2,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
@@ -23,9 +22,6 @@ const styles = () => ({
   },
   cardHeader: {
     padding: 12,
-  },
-  iconButton: {
-    padding: 0,
   },
 });
 
@@ -88,26 +84,12 @@ class GridPostCard extends Component {
         />
       );
     } else {
-      let appIcon = <Fragment />;
-      if (
-        this.props.post.app &&
-        this.props.post.app.split('/')[0] === 'travelfeed'
-      ) {
-        appIcon = (
-          <IconButton disabled className={classes.iconButton}>
-            <img
-              width="25"
-              alt="TravelFeed"
-              className="mr-1"
-              src="https://travelfeed.io/favicon.ico"
-            />
-          </IconButton>
-        );
-      }
       action = (
         <Fragment>
-          {appIcon}
-          <IsCurated curation_score={this.props.post.curation_score} />
+          <IsCurated
+            app={this.props.post.app}
+            curationScore={this.props.post.curation_score}
+          />
         </Fragment>
       );
     }
