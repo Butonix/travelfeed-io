@@ -12,6 +12,7 @@ import JoinNow from '../components/Sidebar/JoinNow';
 import LegalNotice from '../components/Sidebar/LegalNotice';
 import NavSide from '../components/Sidebar/NavSide';
 import SocialLinks from '../components/Sidebar/SocialLinks';
+import capitalize from '../helpers/capitalize';
 import { getUser } from '../helpers/token';
 
 class HomePage extends Component {
@@ -84,14 +85,18 @@ class HomePage extends Component {
         ssr: false,
       },
     );
+    const labels = ['new', 'taking Off', 'discover', 'featured', 'feed'];
+    const active = labels[selection];
     return (
       <Fragment>
         <Head
           title={`${title} - TravelFeed: The Travel Community`}
           description="Discover the best travel content on TravelFeed, the world-wide travel community!"
         />
-        <Header />
-        <HomeOrderBySelect selection={selection} showFeed={user} />
+        <Header active={active} subheader={capitalize(active)} />
+        <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
+          <HomeOrderBySelect selection={selection} showFeed={user} />
+        </div>
         <div className="container">
           <div className="row">
             <div className="col-xl-3 d-xl-block d-none">

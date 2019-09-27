@@ -15,7 +15,7 @@ const BookmarksPage = () => {
 
   return (
     <Fragment>
-      <Header subheader="Bookmarks" />
+      <Header subheader="Bookmarks" active="bookmarks" />
       <Head title="Bookmarks - TravelFeed: The Travel Community" />
       {(user === null && <></>) ||
         (user && (

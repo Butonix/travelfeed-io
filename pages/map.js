@@ -12,7 +12,7 @@ const MapPage = () => {
   const title = 'Map';
   return (
     <Fragment>
-      <Header subheader={title} />
+      <Header subheader={title} active="map" />
       <Head title={`${title} - TravelFeed: The Travel Community`} />
       {
         // Fetches all posts with a location and a minimum upvote of 50%.

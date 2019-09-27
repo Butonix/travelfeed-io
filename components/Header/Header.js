@@ -50,7 +50,7 @@ class Header extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, active } = this.props;
     const DestinationsNav = dynamic(
       () => import('../Destinations/DestinationsNav'),
       {
@@ -79,7 +79,10 @@ class Header extends Component {
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
                 <div className="my-auto col-2 col-sm-1 d-xl-none d-lg-none d-md-none">
-                  <MenuDrawer handleLogout={this.handleLogout} />
+                  <MenuDrawer
+                    active={active}
+                    handleLogout={this.handleLogout}
+                  />
                 </div>
                 <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-8 col-sm-10">
                   <Link color="textPrimary" href="/" passHref>

@@ -38,7 +38,7 @@ class CookiesPage extends Component {
     const title = 'Cookies';
     return (
       <Fragment>
-        <Header subheader={title} />
+        <Header subheader={title} active="cookies" />
         <Head title={`${title} - TravelFeed: The Travel Community`} />
         <AboutSelect selection={3} />
         <Grid

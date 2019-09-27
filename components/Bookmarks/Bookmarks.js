@@ -28,9 +28,6 @@ class Bookmarks extends Component {
     const { hasMore, postslength } = this.state;
     return (
       <Fragment>
-        <div className="text-center pt-4">
-          <h1>Bookmarks</h1>
-        </div>
         <Query
           query={GET_BOOKMARKS}
           variables={{ limit: 9 }}

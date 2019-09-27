@@ -36,7 +36,7 @@ class DestinationsPage extends Component {
             title="Destinations - TravelFeed: The Travel Community"
             description="Discover the best travel destinations on TravelFeed."
           />
-          <Header />
+          <Header subheader="Destinations" active="destinations" />
           <DestinationsContent />
         </Fragment>
       );
@@ -53,14 +53,11 @@ class DestinationsPage extends Component {
             subdivision ||
             countryName} on TravelFeed.`}
         />
-        <Header />
+        <Header subheader={title} active="destinations" />
         <DestinationHeader
           countrySlug={country}
           query={{ country_code, subdivision, city }}
-          title={`${(suburb && `${suburb}, ${city}`) ||
-            (city && `${city}`) ||
-            (subdivision && `${subdivision}`) ||
-            countryName}`}
+          title={title}
         />
         <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
