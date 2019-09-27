@@ -31,7 +31,11 @@ class Bookmarks extends Component {
         <div className="text-center pt-4">
           <h1>Bookmarks</h1>
         </div>
-        <Query query={GET_BOOKMARKS} variables={{ limit: 9 }}>
+        <Query
+          query={GET_BOOKMARKS}
+          variables={{ limit: 9 }}
+          fetchPolicy="network-only"
+        >
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (
@@ -90,7 +94,6 @@ class Bookmarks extends Component {
                   spacing={0}
                   alignItems="center"
                   justify="center"
-                  className="p-3"
                 >
                   {data.bookmarks.length > 0 &&
                     data.bookmarks.map(post => {
