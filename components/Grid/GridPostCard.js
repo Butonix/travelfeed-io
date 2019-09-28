@@ -93,6 +93,13 @@ class GridPostCard extends Component {
         </Fragment>
       );
     }
+    const cardImage = imageProxy(
+      this.props.post.img_url,
+      this.state.cardWidth,
+      this.props.cardHeight,
+      undefined,
+      'webp',
+    );
     return (
       <Card
         key={this.props.post.permlink}
@@ -132,6 +139,8 @@ class GridPostCard extends Component {
             this.props.post.display_name,
           )}&img_url=${encodeURIComponent(
             this.props.post.img_url,
+          )}&lazy_img_url=${encodeURIComponent(
+            cardImage,
           )}&created_at=${encodeURIComponent(
             this.props.post.created_at,
           )}&depth=0`}
@@ -146,13 +155,7 @@ class GridPostCard extends Component {
                       className="lazyImage"
                       height={this.props.cardHeight}
                       type="image/webp"
-                      data-srcset={`${imageProxy(
-                        this.props.post.img_url,
-                        this.state.cardWidth,
-                        this.props.cardHeight,
-                        undefined,
-                        'webp',
-                      )}`}
+                      data-srcset={`${cardImage}`}
                       data-sizes="100w"
                     />
                     <img
@@ -162,9 +165,8 @@ class GridPostCard extends Component {
                       className="lazy"
                       src={`${imageProxy(
                         this.props.post.img_url,
-                        10,
-                        10,
-                        'fit',
+                        this.state.cardWidth * 0.1,
+                        this.props.cardHeight * 0.1,
                       )}`}
                       data-src={`${imageProxy(
                         this.props.post.img_url,

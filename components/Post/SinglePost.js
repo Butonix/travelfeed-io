@@ -8,6 +8,7 @@ import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import LazyLoad from 'vanilla-lazyload';
+import { imageProxy } from '../../helpers/getImage';
 import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
@@ -93,6 +94,7 @@ class SinglePost extends Component {
       body,
       display_name,
       img_url,
+      lazy_img_url,
       created_at,
       depth,
     } = this.props.post;
@@ -347,7 +349,13 @@ class SinglePost extends Component {
                 <Header subheader={display_name} />
                 <div style={{ position: 'relative' }}>
                   {depth === 0 && img_url && (
-                    <PostImageHeader backgroundImage={img_url} />
+                    <PostImageHeader
+                      lazyImage={
+                        lazy_img_url ||
+                        imageProxy(img_url, undefined, 10, 'fit')
+                      }
+                      backgroundImage={img_url}
+                    />
                   )}
                   <div className="w-100" style={{ position: 'relative' }}>
                     <Grid

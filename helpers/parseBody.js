@@ -172,7 +172,7 @@ const parseBody = (body, options) => {
                 src="${imageProxy(
                   imgMatches[1],
                   undefined,
-                  10,
+                  50,
                   'fit',
                 )}" data-src="${imageProxy(
               imgMatches[1],

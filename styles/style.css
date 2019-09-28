@@ -44,8 +44,8 @@ figcaption {
 
 /* Image lazy loading fade effect */
 .lazy {
-  transition: opacity 0.5s;
-  opacity: 0.2;
+  transition: opacity 0.3s;
+  opacity: 0.8;
 }
 .lazy.loaded {
   opacity: 1;

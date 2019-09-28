@@ -11,6 +11,7 @@ class PostPage extends Component {
       body,
       display_name,
       img_url,
+      lazy_img_url,
       created_at,
       depth,
     } = props.query;
@@ -21,6 +22,7 @@ class PostPage extends Component {
       body,
       display_name,
       img_url,
+      lazy_img_url,
       created_at,
       depth,
     };
