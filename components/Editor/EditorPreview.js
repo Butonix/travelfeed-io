@@ -26,7 +26,7 @@ const EditorPreview = props => {
         >
           <Card>
             <PostContent
-              hideAuthorProfile={props.hideAuthorProfile}
+              hideAuthorProfile
               author={props.author}
               permlink={props.permlink}
               display_name={props.author}

@@ -32,7 +32,6 @@ const OnboardStart = props => {
   const [tos, setTos] = useState(false);
   const [isMailValid, setMailValid] = useState(true);
   const [isTosValid, setTosValid] = useState(true);
-  const [mutate, setMutate] = useState(false);
   const [captcha, setCaptcha] = useState(undefined);
 
   useEffect(() => {
@@ -72,14 +71,7 @@ const OnboardStart = props => {
 
   const handleEmailChange = () => event => {
     setEmail(event.target.value);
-  };
-
-  const submit = () => () => {
-    const validateMail = email ? isEmail(email) : false;
-    const validateTos = tos;
-    setMailValid(validateMail);
-    setTosValid(validateTos);
-    if (validateMail && validateTos) setMutate(true);
+    if (event.target.value) setMailValid(isEmail(event.target.value));
   };
 
   return (
@@ -94,8 +86,6 @@ const OnboardStart = props => {
         }}
       >
         {(onboardStart, data) => {
-          if (mutate) onboardStart();
-          setMutate(false);
           if (
             data &&
             data.data &&
@@ -164,7 +154,11 @@ const OnboardStart = props => {
                         color={props.isWhite ? 'inherit' : 'primary'}
                         className={props.isWhite ? classes.root : undefined}
                         checked={tos}
-                        onChange={() => setTos(!tos)}
+                        error={!isTosValid}
+                        onChange={() => {
+                          setTos(!tos);
+                          setTosValid(!tos);
+                        }}
                       />
                     }
                     label={
@@ -201,8 +195,8 @@ const OnboardStart = props => {
                 <Button
                   variant="contained"
                   color={props.isWhite ? 'secondary' : 'primary'}
-                  onClick={submit()}
-                  disabled={!captcha}
+                  onClick={onboardStart}
+                  disabled={!captcha || !email || !isMailValid || !isTosValid}
                 >
                   Sign Up
                   {data.loading && (

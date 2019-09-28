@@ -5,7 +5,6 @@ import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 import Table from '@editorjs/table';
 import uploadFile from '../../../helpers/imageUpload';
-import { getUser } from '../../../helpers/token';
 import Embed from './tools/embed/index';
 import Quote from './tools/quote/index';
 
@@ -22,7 +21,7 @@ export default {
       // https://github.com/editor-js/image
       uploader: {
         uploadByFile(file) {
-          return uploadFile(file, getUser()).then(res => {
+          return uploadFile(file).then(res => {
             return new Promise(resolve => {
               resolve({
                 success: 1,

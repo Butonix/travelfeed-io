@@ -78,4 +78,7 @@ export const setCookieConsent = consent => {
 export const deleteCookieConsent = () => {
   Cookie.remove('cookie_consent');
 };
+export const getInfoToken = () => Cookie.get('info_token');
+export const setInfoToken = token => Cookie.set('info_token', token);
+
 export const getLoginURL = api.getLoginURL();

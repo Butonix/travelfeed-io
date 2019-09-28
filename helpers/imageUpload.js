@@ -1,6 +1,7 @@
 import loadImage from 'blueimp-load-image';
 import { IMAGE_UPLOAD_LINK } from './graphql/upload';
 import graphQLClient from './graphQLClient';
+import { getInfoToken } from './token';
 
 // prevent ssr problems due to missing window on server
 let dataURLtoBlob;
@@ -21,9 +22,12 @@ const upload = file => {
 
   // eslint-disable-next-line consistent-return
   return new Promise(resolve => {
+    const infoToken = getInfoToken();
+
     const variables = {
       filename: file.name,
       size: file.size,
+      infoToken,
     };
 
     // eslint-disable-next-line consistent-return

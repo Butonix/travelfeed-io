@@ -15,6 +15,7 @@ import categoryFinder from '../../helpers/categoryFinder';
 import { ONBOARD_INFO } from '../../helpers/graphql/onboarding';
 import json2md from '../../helpers/json2md';
 import parseBody from '../../helpers/parseBody';
+import { setInfoToken } from '../../helpers/token';
 import Link from '../../lib/Link';
 import Checks from '../Editor/Checks';
 import EasyEditor from '../Editor/EasyEditor';
@@ -46,10 +47,6 @@ const OnboardInfo = props => {
   const [profile_image, setProfileImage] = useState(undefined);
   const [cover_image, setCoverImage] = useState(undefined);
   const [activeStep, setActiveStep] = React.useState(0);
-  const [post, setPost] = useState(undefined);
-  const [accountMetadata, setAccountMetadata] = useState(undefined);
-  const [mutate, setMutate] = useState(false);
-  const [mutatetTriggered, setMutateTriggered] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagRecommendations, setTagRecommendations] = useState([]);
 
@@ -171,6 +168,13 @@ const OnboardInfo = props => {
               Now it is time write your first TravelFeed post! In this post you
               should introduce yourself to the TravelFeed community.
             </FormLabel>
+            <FormLabel component="legend">
+              <em>
+                Tip: Don't forget to add some images to your post! You can drag
+                'n' drop them into the editor or add images and other elements
+                using the + symbol.
+              </em>
+            </FormLabel>
             <EasyEditor onChange={handleEditorChange} data={content} />
             <TagPicker
               recommendations={tagRecommendations}
@@ -259,16 +263,9 @@ const OnboardInfo = props => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   }
 
-  const mutateNow = () => {
-    setPost(json2md(content));
-    setAccountMetadata(
-      JSON.stringify({ name, about, cover_image, profile_image }),
-    );
-    setMutate(true);
-    setMutateTriggered(true);
-  };
-
   const { infoToken } = props;
+
+  setInfoToken(infoToken);
 
   return (
     <>
@@ -276,14 +273,17 @@ const OnboardInfo = props => {
         mutation={ONBOARD_INFO}
         variables={{
           infoToken,
-          post,
+          post: json2md(content),
           tags,
-          accountMetadata,
+          accountMetadata: JSON.stringify({
+            name,
+            about,
+            cover_image,
+            profile_image,
+          }),
         }}
       >
         {(onboardInformation, data) => {
-          if (mutate) onboardInformation();
-          setMutate(false);
           if (data && data.data && data.data.onboardInformation) {
             if (data.data.onboardInformation.success) {
               return (
@@ -308,9 +308,7 @@ const OnboardInfo = props => {
                 ))}
               </Stepper>
               <div>
-                {activeStep === steps.length ? (
-                  <div>{!mutatetTriggered && mutateNow()}</div>
-                ) : (
+                {
                   <>
                     <div>
                       <Typography className={classes.instructions}>
@@ -328,7 +326,11 @@ const OnboardInfo = props => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleNext}
+                        onClick={
+                          activeStep === steps.length - 1
+                            ? onboardInformation
+                            : handleNext
+                        }
                         disabled={
                           (activeStep === 1 &&
                             (readingtime.words < 251 || tags.length < 1)) ||
@@ -340,7 +342,7 @@ const OnboardInfo = props => {
                       </Button>
                     </div>
                   </>
-                )}
+                }
               </div>
             </>
           );

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import uploadFile from '../../helpers/imageUpload';
 import parseBody from '../../helpers/parseBody';
-import { getUser } from '../../helpers/token';
 
 const MdEditor = dynamic(() => import('react-markdown-editor-lite'), {
   ssr: false,
@@ -22,7 +21,7 @@ const HtmlEditor = props => {
   }, []);
 
   const handleImageUpload = (file, callback) => {
-    return uploadFile(file, getUser()).then(res => {
+    return uploadFile(file).then(res => {
       return callback(res);
     });
   };
