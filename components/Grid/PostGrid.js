@@ -152,6 +152,8 @@ class PostGrid extends Component {
                               payout: post.payout,
                               country_code: post.country_code,
                               subdivision: post.subdivision,
+                              json: post.json,
+                              category: post.category,
                             }}
                             id={`${post.author}-${post.permlink}`}
                             mode="edit"

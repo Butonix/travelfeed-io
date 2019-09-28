@@ -122,6 +122,8 @@ class PostListItem extends Component {
                         cleanBody,
                       )}&isCodeEditor=${encodeURIComponent(
                         this.props.post.isCodeEditor,
+                      )}&jsonMeta=${encodeURIComponent(
+                        this.props.isDraftMode ? '' : this.props.post.json,
                       )}&json=${this.props.post.json ||
                         JSON.stringify({
                           tags: this.props.post.tags,
@@ -130,6 +132,7 @@ class PostListItem extends Component {
                             longitude: this.props.post.longitude,
                           },
                           featuredImage: this.props.post.img_url,
+                          category: this.props.post.category,
                         })}&editmode=${(this.props.isDraftMode && 'false') ||
                         'true'}`}
                       as="/dashboard/publish"

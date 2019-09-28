@@ -71,6 +71,8 @@ export const GET_POSTS = gql`
       children
       latitude
       longitude
+      json
+      category
     }
   }
 `;

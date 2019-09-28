@@ -20,7 +20,11 @@ import graphQLClient from '../../helpers/graphQLClient';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
 import parseBody from '../../helpers/parseBody';
-import { getImageList, getLinkList, getMentionList } from '../../helpers/parsePostContents';
+import {
+  getImageList,
+  getLinkList,
+  getMentionList,
+} from '../../helpers/parsePostContents';
 import postExists from '../../helpers/postExists';
 import { invalidPermlink } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
@@ -66,6 +70,7 @@ const PostEditor = props => {
   const [tagRecommendations, setTagRecommendations] = useState([]);
   const [publishThis, setPublishThis] = useState(undefined);
   const [saved, setSaved] = useState(true);
+  const [meta, setMeta] = useState({});
 
   const editMode = props.edit.editmode === 'true';
 
@@ -132,6 +137,10 @@ const PostEditor = props => {
         props.edit.constructor === Object
       )
     ) {
+      const jsonMeta = props.edit.jsonMeta
+        ? JSON.parse(props.edit.jsonMeta)
+        : undefined;
+      if (jsonMeta) setMeta(jsonMeta);
       const json =
         props.edit.json && props.edit.json !== 'undefined'
           ? JSON.parse(props.edit.json)
@@ -146,8 +155,9 @@ const PostEditor = props => {
         if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
       }
       if (json) {
+        if (editMode && json.category) setPrimaryTag(json.category);
         if (json.tags && json.tags.length > 0) {
-          if (editMode) setPrimaryTag(json.tags.splice(0, 1));
+          if (editMode && !json.category) setPrimaryTag(json.tags.splice(0, 1));
           setTags(json.tags);
         }
         if (json.location && json.location.longitude && json.location.latitude)
@@ -335,7 +345,7 @@ const PostEditor = props => {
         if (featuredImage) imageList = [featuredImage].concat(imageList);
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
-        const metadata = {};
+        const metadata = meta;
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
