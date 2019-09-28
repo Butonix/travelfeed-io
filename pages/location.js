@@ -43,6 +43,7 @@ class LocationPage extends Component {
         />
         <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
+            active="destination"
             query={{
               location_box: this.props.location_box,
               country_code: this.props.country_code,

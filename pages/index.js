@@ -109,6 +109,7 @@ class HomePage extends Component {
             </div>
             <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 p-0">
               <PostGrid
+                active={active}
                 query={{
                   orderby,
                   min_curation_score,

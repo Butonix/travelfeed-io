@@ -61,6 +61,7 @@ class DestinationsPage extends Component {
         />
         <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
+            active="destination"
             query={{
               limit: 9,
               orderby: 'curation_score DESC, total_votes DESC',

@@ -12,6 +12,8 @@ import sanitize from 'sanitize-html';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import parseBody from '../../helpers/parseBody';
 import { regExcerpt } from '../../helpers/regex';
+import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import PostCommentItem from '../Post/PostCommentItem';
 import GridPostCard from './GridPostCard';
 import PostListItem from './PostListItem';
@@ -223,13 +225,42 @@ class PostGrid extends Component {
                         </Grid>
                       );
                     })}
-                  {data.posts &&
-                    data.posts.length === 0 &&
-                    this.props.poststyle === 'grid' && (
-                      <Card className="mt-5" key="noposts">
-                        <CardContent>No posts found</CardContent>
-                      </Card>
-                    )}
+                  {data.posts && data.posts.length === 0 && (
+                    <Card className="m-5" key="noposts">
+                      <CardContent>
+                        {(this.props.active === 'feed' &&
+                          'Start following your favorite authors to fill your feed!') ||
+                          (this.props.active === 'blog' &&
+                            `${
+                              this.props.query.author === getUser()
+                                ? `You haven't`
+                                : `${this.props.query.author} hasn't`
+                            } started blogging yet.`) ||
+                          ([
+                            'new',
+                            'taking Off',
+                            'discover',
+                            'featured',
+                          ].indexOf(this.props.active) === -1 && (
+                            <>
+                              <span>
+                                No posts found about this{' '}
+                                {this.props.active === 'destination'
+                                  ? 'destination'
+                                  : 'topic'}
+                                .{' '}
+                              </span>
+                              {getUser() && (
+                                <Link href="/dashboard/publish" passHref>
+                                  <a>Create one now!</a>
+                                </Link>
+                              )}
+                            </>
+                          )) ||
+                          'No posts found. This could be a connection problem.'}
+                      </CardContent>
+                    </Card>
+                  )}
                 </Grid>
               </InfiniteScroll>
             );
