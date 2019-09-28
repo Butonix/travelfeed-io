@@ -18,7 +18,11 @@ const PostPreview = props => {
       <Link
         color="textPrimary"
         as={`/@${props.author}/${props.permlink}`}
-        href={`/post?author=${props.author}&permlink=${props.permlink}`}
+        href={`/post?author=${props.author}&permlink=${
+          props.permlink
+        }&depth=0&img_url=${encodeURIComponent(
+          props.img_url,
+        )}&title=${encodeURIComponent(props.title)}`}
         passHref
       >
         <a>

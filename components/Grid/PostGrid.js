@@ -189,6 +189,7 @@ class PostGrid extends Component {
                           <GridPostCard
                             cardHeight={this.props.cardHeight}
                             post={{
+                              body: post.body,
                               author: post.author,
                               display_name: post.display_name,
                               permlink: post.permlink,

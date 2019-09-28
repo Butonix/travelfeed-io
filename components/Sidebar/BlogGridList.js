@@ -45,7 +45,11 @@ const BlogGridList = () => {
                             <Link
                               color="textPrimary"
                               as={`/@${post.author}/${post.permlink}`}
-                              href={`/post?author=${post.author}&permlink=${post.permlink}`}
+                              href={`/post?author=${post.author}&permlink=${
+                                post.permlink
+                              }&depth=0&title=${encodeURIComponent(
+                                post.title,
+                              )}&display_name=TravelFeed`}
                               passHref
                             >
                               <a>

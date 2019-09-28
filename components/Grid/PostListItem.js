@@ -62,7 +62,19 @@ class PostListItem extends Component {
       <Link
         color="textPrimary"
         as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-        href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
+        href={`/post?author=${this.props.post.author}&permlink=${
+          this.props.post.permlink
+        }&title=${encodeURIComponent(
+          this.props.post.title,
+        )}&body=${encodeURIComponent(
+          this.props.post.body,
+        )}&display_name=${encodeURIComponent(
+          this.props.post.display_name,
+        )}&img_url=${encodeURIComponent(
+          this.props.post.img_url,
+        )}&created_at=${encodeURIComponent(
+          this.props.post.created_at,
+        )}&depth=0`}
         passHref
       >
         <a className="textPrimary">

@@ -69,28 +69,67 @@ class SinglePost extends Component {
   };
 
   render() {
+    let children = 0;
+    let is_travelfeed,
+      is_blacklisted,
+      is_nsfw,
+      app,
+      root_title,
+      tags,
+      latitude,
+      longitude,
+      votes,
+      total_votes,
+      post_id,
+      parent_author,
+      parent_permlink,
+      root_author,
+      root_permlink;
+
+    let {
+      author,
+      permlink,
+      title,
+      body,
+      display_name,
+      img_url,
+      created_at,
+      depth,
+    } = this.props.post;
+    if (depth) depth = parseInt(depth, 10);
+    if (!body) body = '';
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
-          {({ data, loading, error }) => {
-            if (loading) {
-              return (
-                <Fragment>
-                  <Header />
-                  <Grid
-                    container
-                    spacing={0}
-                    alignItems="center"
-                    justify="center"
-                    className="pt-4 pb-4"
-                  >
-                    <Grid item lg={7} md={8} sm={12} xs={12} />
-                  </Grid>
-                </Fragment>
-              );
+          {({ data, error }) => {
+            if (data) {
+              is_travelfeed = data.post.is_travelfeed;
+              depth = data.post.depth;
+              is_blacklisted = data.post.is_blacklisted;
+              is_nsfw = data.post.is_nsfw;
+              app = data.post.app;
+              root_title = data.post.root_title;
+              tags = data.post.tags;
+              latitude = data.post.latitude;
+              longitude = data.post.longitude;
+              votes = data.post.votes;
+              total_votes = data.post.total_votes;
+              post_id = data.post.post_id;
+              children = data.post.children;
+              parent_author = data.post.parent_author;
+              parent_permlink = data.post.parent_permlink;
+              root_author = data.post.root_author;
+              root_permlink = data.post.root_permlink;
+              author = data.post.author;
+              permlink = data.post.permlink;
+              title = data.post.title;
+              body = data.post.body;
+              display_name = data.post.display_name;
+              img_url = data.post.img_url;
+              created_at = data.post.created_at;
             }
             // 404 for error and if post does not exist
-            if (error || data.post === null) {
+            if (error || (data && data.post === null)) {
               return (
                 <Fragment>
                   <Header />
@@ -111,15 +150,15 @@ class SinglePost extends Component {
             // Don't render invalid posts but return Steempeak link
             // Todo: Display NSFW posts for logged in users based on
             // prefererences
-            if (!data.post.is_travelfeed && data.post.depth === 0) {
-              const url = `https://steempeak.com/@${data.post.author}/${data.post.permlink}`;
+            if (data && data.post && !is_travelfeed && depth === 0) {
+              const url = `https://steempeak.com/@${author}/${permlink}`;
               return <InvalidPost url={url} />;
             }
             // If comment, render comment component
             let card = <Fragment />;
             let head = <Fragment />;
             // Render post
-            const htmlBody = parseBody(data.post.body, {
+            const htmlBody = parseBody(body, {
               cardWidth: this.state.cardWidth,
             });
             const bodyText = { __html: htmlBody };
@@ -130,9 +169,9 @@ class SinglePost extends Component {
                 dangerouslySetInnerHTML={bodyText}
               />
             );
-            const isBacklisted = data.post.is_blacklisted;
-            const isNSFW = data.post.is_nsfw;
-            if (data.post.is_blacklisted || data.post.is_nsfw) {
+            const isBacklisted = is_blacklisted;
+            const isNSFW = is_nsfw;
+            if (is_blacklisted || is_nsfw) {
               bodycontent = (
                 <Query query={GET_SETTINGS}>
                   {({ data, loading, error }) => {
@@ -163,17 +202,15 @@ class SinglePost extends Component {
             }
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
-            const excerpt = `${sanitized.substring(0, 180)}[...] by ${
-              data.post.author
-            }`;
+            const excerpt = `${sanitized.substring(0, 180)}[...] by ${author}`;
             // Set the canonical URL to steemit.com by default to avoid
             // duplicate content SEO problems
-            let canonicalUrl = `https://steemit.com/travelfeed/@${data.post.author}/${data.post.permlink}`;
+            let canonicalUrl = `https://steemit.com/travelfeed/@${author}/${permlink}`;
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored
             // through the dApp
-            if (data.post.app && data.post.app.split('/')[0] === 'travelfeed') {
-              canonicalUrl = `https://travelfeed.io/@${data.post.author}/${data.post.permlink}`;
+            if (app && app.split('/')[0] === 'travelfeed') {
+              canonicalUrl = `https://travelfeed.io/@${author}/${permlink}`;
               appIcon = (
                 <img
                   alt="TravelFeed"
@@ -183,17 +220,17 @@ class SinglePost extends Component {
                 />
               );
             }
-            if (data.post.depth > 0) {
+            if (depth > 0) {
               head = (
                 <Head
-                  title={`Re: ${data.post.root_title} - TravelFeed`}
+                  title={`Re: ${root_title} - TravelFeed`}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}
                   type={{
                     type: 'article',
-                    published_time: data.post.created_at,
-                    author: data.post.display_name,
-                    tags: data.post.tags,
+                    published_time: created_at,
+                    author: display_name,
+                    tags,
                   }}
                 />
               );
@@ -201,21 +238,21 @@ class SinglePost extends Component {
                 <PostCommentItem
                   loadreplies={false}
                   post={{
-                    post_id: data.post.post_id,
-                    body: data.post.body,
-                    created_at: data.post.created_at,
-                    children: data.post.children,
-                    author: data.post.author,
-                    display_name: data.post.display_name,
-                    permlink: data.post.permlink,
-                    depth: data.post.depth,
-                    total_votes: data.post.total_votes,
-                    votes: data.post.votes,
-                    parent_author: data.post.parent_author,
-                    parent_permlink: data.post.parent_permlink,
-                    root_author: data.post.root_author,
-                    root_permlink: data.post.root_permlink,
-                    root_title: data.post.root_title,
+                    post_id,
+                    body,
+                    created_at,
+                    children,
+                    author,
+                    display_name,
+                    permlink,
+                    depth,
+                    total_votes,
+                    votes,
+                    parent_author,
+                    parent_permlink,
+                    root_author,
+                    root_permlink,
+                    root_title,
                   }}
                   title
                 />
@@ -223,15 +260,15 @@ class SinglePost extends Component {
             } else {
               head = (
                 <Head
-                  title={`${data.post.title} - TravelFeed`}
-                  image={data.post.img_url}
+                  title={`${title} - TravelFeed`}
+                  image={img_url}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}
                   type={{
                     type: 'article',
-                    published_time: data.post.created_at,
-                    author: data.post.display_name,
-                    tags: data.post.tags,
+                    published_time: created_at,
+                    author: display_name,
+                    tags,
                   }}
                 />
               );
@@ -240,41 +277,42 @@ class SinglePost extends Component {
                   <div ref={this.myInput}>
                     <Card>
                       <PostContent
-                        author={data.post.author}
+                        author={author}
                         appIcon={appIcon}
-                        isTf={
-                          data.post.app &&
-                          data.post.app.split('/')[0] === 'travelfeed'
-                        }
-                        permlink={data.post.permlink}
-                        display_name={data.post.display_name}
-                        created_at={data.post.created_at}
+                        isTf={app && app.split('/')[0] === 'travelfeed'}
+                        permlink={permlink}
+                        display_name={display_name}
+                        created_at={created_at}
                         readtime={readtime}
                         content={bodycontent}
-                        latitude={data.post.latitude}
-                        longitude={data.post.longitude}
+                        latitude={latitude}
+                        longitude={longitude}
                       />
-                      <VoteSlider
-                        author={data.post.author}
-                        permlink={data.post.permlink}
-                        votes={data.post.votes}
-                        total_votes={data.post.total_votes}
-                        tags={data.post.tags}
-                        depth={data.post.depth}
-                        mode="post"
-                        onCommentAdd={this.onCommentAdd}
-                      />
+                      {data && data.post && (
+                        <VoteSlider
+                          author={author}
+                          permlink={permlink}
+                          votes={votes}
+                          total_votes={total_votes}
+                          tags={tags}
+                          depth={depth}
+                          mode="post"
+                          onCommentAdd={this.onCommentAdd}
+                        />
+                      )}
                     </Card>
                   </div>
                   <div className="pt-2">
                     <Card>
-                      <PostSocialShares
-                        author={data.post.author}
-                        permlink={data.post.permlink}
-                        tags={data.post.tags}
-                        title={data.post.title}
-                        img_url={data.post.img_url}
-                      />
+                      {data && data.post && (
+                        <PostSocialShares
+                          author={author}
+                          permlink={permlink}
+                          tags={tags}
+                          title={title}
+                          img_url={img_url}
+                        />
+                      )}
                     </Card>
                   </div>
                 </>
@@ -282,7 +320,7 @@ class SinglePost extends Component {
             }
             // Don't load comment area  if there are no comments
             let comments = <Fragment />;
-            if (data.post.children !== 0) {
+            if (children !== 0) {
               comments = (
                 <Fragment>
                   <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -292,7 +330,7 @@ class SinglePost extends Component {
                     />
                   </Grid>
                   <PostComments
-                    post_id={data.post.post_id}
+                    post_id={post_id}
                     orderby={this.state.orderby || 'total_votes'}
                     orderdir={this.state.orderdir || 'DESC'}
                     ismain
@@ -306,10 +344,10 @@ class SinglePost extends Component {
                   <link rel="preconnect" href="https://maps.gstatic.com" />
                 </NextHead>
                 {head}
-                <Header subheader={data.post.display_name} />
+                <Header subheader={display_name} />
                 <div style={{ position: 'relative' }}>
-                  {data.post.depth === 0 && (
-                    <PostImageHeader backgroundImage={data.post.img_url} />
+                  {depth === 0 && img_url && (
+                    <PostImageHeader backgroundImage={img_url} />
                   )}
                   <div className="w-100" style={{ position: 'relative' }}>
                     <Grid
@@ -319,10 +357,8 @@ class SinglePost extends Component {
                       justify="center"
                     >
                       <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
-                        {data.post.depth === 0 && (
-                          <PostTitle title={data.post.title} />
-                        )}
-                        {data.post.depth !== 0 && (
+                        {depth === 0 && <PostTitle title={title} />}
+                        {depth !== 0 && (
                           <div className="container">
                             <div
                               className="row"
