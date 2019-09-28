@@ -100,6 +100,25 @@ class GridPostCard extends Component {
       undefined,
       'webp',
     );
+    let titleUri = '';
+    let bodyUri = '';
+    let displayNameUri = '';
+    try {
+      titleUri = encodeURIComponent(this.props.post.title);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      bodyUri = encodeURIComponent(this.props.post.body);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      displayNameUri = encodeURIComponent(this.props.post.display_name);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+
     return (
       <Card
         key={this.props.post.permlink}
@@ -131,13 +150,7 @@ class GridPostCard extends Component {
           as={`/@${this.props.post.author}/${this.props.post.permlink}`}
           href={`/post?author=${this.props.post.author}&permlink=${
             this.props.post.permlink
-          }&title=${encodeURIComponent(
-            this.props.post.title,
-          )}&body=${encodeURIComponent(
-            this.props.post.body,
-          )}&display_name=${encodeURIComponent(
-            this.props.post.display_name,
-          )}&img_url=${encodeURIComponent(
+          }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
             this.props.post.img_url,
           )}&lazy_img_url=${encodeURIComponent(
             cardImage,

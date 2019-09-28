@@ -150,6 +150,12 @@ class PostsTable extends React.Component {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(n => {
                       const isSelected = this.isSelected(n.id);
+                      let titleUri = '';
+                      try {
+                        titleUri = encodeURIComponent(n.title);
+                      } catch {
+                        console.warn('Could not encode URI');
+                      }
                       return (
                         <TableRow
                           hover
@@ -164,9 +170,7 @@ class PostsTable extends React.Component {
                             <Link
                               color="textPrimary"
                               as={`/@${n.author}/${n.permlink}`}
-                              href={`/post?author=${n.author}&permlink=${
-                                n.permlink
-                              }&depth=0&title=${encodeURIComponent(n.title)}`}
+                              href={`/post?author=${n.author}&permlink=${n.permlink}&depth=0&title=${titleUri}`}
                               passHref
                             >
                               <a>{n.title}</a>

@@ -95,6 +95,12 @@ class PostListItem extends Component {
       this.props.post.country_code !== null
         ? nameFromCC(this.props.post.country_code)
         : undefined;
+    let titleUri = '';
+    try {
+      titleUri = encodeURIComponent(this.props.post.title);
+    } catch {
+      console.warn('Could not encode URI');
+    }
     const content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
@@ -128,9 +134,7 @@ class PostListItem extends Component {
                         this.props.post.id
                       }&permlink=${encodeURIComponent(
                         this.props.post.permlink,
-                      )}&title=${encodeURIComponent(
-                        this.props.post.title,
-                      )}&body=${encodeURIComponent(
+                      )}&title=${titleUri}&body=${encodeURIComponent(
                         cleanBody,
                       )}&isCodeEditor=${encodeURIComponent(
                         this.props.post.isCodeEditor,

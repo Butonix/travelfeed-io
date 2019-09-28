@@ -14,6 +14,12 @@ const Skeleton = dynamic(() => import('react-loading-skeleton'), {
 
 const PostPreview = props => {
   const imgUrl = props.img_url ? imageProxy(props.img_url, 100, 100) : '';
+  let titleUri = '';
+  try {
+    titleUri = encodeURIComponent(post.title);
+  } catch {
+    console.warn('Could not encode URI');
+  }
   return (
     <div key={props.author + props.permlink}>
       <Link
@@ -23,9 +29,7 @@ const PostPreview = props => {
           props.permlink
         }&depth=0&img_url=${encodeURIComponent(
           props.img_url,
-        )}&title=${encodeURIComponent(
-          props.title,
-        )}&lazy_img_url=${encodeURIComponent(imgUrl)}`}
+        )}&title=${titleUri}&lazy_img_url=${encodeURIComponent(imgUrl)}`}
         passHref
       >
         <a>
