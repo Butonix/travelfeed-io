@@ -33,7 +33,7 @@ const EditorPreview = props => {
               readtime={props.readtime}
               content={
                 <div
-                  className="textPrimary postcontent"
+                  className="textPrimary postcontent postCardContent"
                   // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={htmlBody}
                 />

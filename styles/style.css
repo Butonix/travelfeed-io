@@ -8,6 +8,26 @@
     max-width: 100%;
   }
 }
+@media (min-width: 576px) {
+  /* Bootstrap sm */
+  .pull-right {
+    position: relative;
+    width: 50%;
+    float: right;
+    padding: 5px 0 5px 20px;
+  }
+  .pull-left {
+    position: relative;
+    max-width: 50%;
+    float: left;
+    padding: 5px 20px 5px 0;
+  }
+  .pull-left figure,
+  .pull-right figure {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+}
 
 .mapboxgl-popup-content {
   padding: 0 !important;
@@ -39,7 +59,7 @@ figcaption {
   margin-right: 24px;
   text-align: center;
   font-style: italic;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 /* Image lazy loading fade effect */
@@ -88,6 +108,15 @@ a,
 a:hover {
   text-decoration: none !important;
   color: inherit;
+}
+.postCardContent {
+  overflow: hidden;
+  padding: 16px;
+}
+sup {
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9em;
 }
 .postcontent a,
 .ablue {

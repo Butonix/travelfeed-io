@@ -152,7 +152,7 @@ class SinglePost extends Component {
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div
-                className="textPrimary postcontent"
+                className="textPrimary postcontent postCardContent"
                 dangerouslySetInnerHTML={bodyText}
               />
             );
@@ -178,7 +178,7 @@ class SinglePost extends Component {
                     }
                     return (
                       <div
-                        className="textPrimary postcontent"
+                        className="textPrimary postcontent postCardContent"
                         // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={bodyText}
                       />
@@ -349,7 +349,7 @@ class SinglePost extends Component {
                       alignItems="center"
                       justify="center"
                     >
-                      <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
+                      <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
                         {depth === 0 && <PostTitle title={title} />}
                         {depth !== 0 && (
                           <div className="container">

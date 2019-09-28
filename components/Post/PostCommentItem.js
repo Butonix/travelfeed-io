@@ -1,5 +1,4 @@
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
@@ -146,7 +145,10 @@ class PostCommentItem extends Component {
     }
     let cardcontent = (
       // eslint-disable-next-line react/no-danger
-      <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
+      <div
+        className="postcontent postCardContent"
+        dangerouslySetInnerHTML={bodyText}
+      />
     );
     if (this.state.showEditor) {
       const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
@@ -193,10 +195,10 @@ class PostCommentItem extends Component {
             }
             subheader={<SubHeader created_at={this.props.post.created_at} />}
           />
-          <CardContent>
+          <>
             {title}
             {cardcontent}
-          </CardContent>
+          </>
           <VoteSlider
             author={this.props.post.author}
             permlink={this.props.post.permlink}

@@ -1,4 +1,3 @@
-import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
@@ -44,7 +43,7 @@ const PostContent = props => {
           />
         }
       />
-      <CardContent>
+      <>
         {props.content}
         {props.latitude && (
           <div className="fullwidth">
@@ -85,7 +84,7 @@ const PostContent = props => {
             </div>
           </>
         )}
-      </CardContent>
+      </>
     </Fragment>
   );
 };
