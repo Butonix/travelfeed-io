@@ -117,7 +117,10 @@ const ProfileTabs = props => {
                   return (
                     <>
                       <TabPanel value={value} index={0}>
-                        <div className="container pt-3">
+                        <div
+                          className="container pt-3"
+                          id="containerInvisibleOnMobile"
+                        >
                           <PostGrid
                             active="blog"
                             query={{ author, limit: 12 }}
@@ -125,6 +128,14 @@ const ProfileTabs = props => {
                             cardHeight={140}
                           />
                         </div>
+                        <style>{`
+                        @media (max-width: 992px) {
+                          #containerInvisibleOnMobile {
+                            padding: 0;
+                            margin: 0;
+                          }
+                        }
+                        `}</style>
                       </TabPanel>
                       <TabPanel value={value} index={1}>
                         <div className="w-100">
