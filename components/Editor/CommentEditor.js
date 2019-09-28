@@ -73,7 +73,7 @@ const CommentEditor = props => {
     <Fragment>
       <Editor
         uploadImage={file => {
-          return uploadFile(file, getUser()).then(res => {
+          return uploadFile(file).then(res => {
             return res;
           });
         }}
