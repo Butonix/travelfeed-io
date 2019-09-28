@@ -60,14 +60,9 @@ export default function SwipeableTemporaryDrawer(props) {
   };
 
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+  const [open, setOpen] = useState(false);
 
-  const toggleDrawer = (side, open) => event => {
+  const toggleDrawer = state => event => {
     if (
       event &&
       event.type === 'keydown' &&
@@ -76,7 +71,7 @@ export default function SwipeableTemporaryDrawer(props) {
       return;
     }
 
-    setState({ ...state, [side]: open });
+    setOpen(state);
   };
 
   const feedList = [
@@ -133,7 +128,7 @@ export default function SwipeableTemporaryDrawer(props) {
     });
   }
 
-  const sideList = side => (
+  const sideList = () => (
     <div className={classes.list} role="presentation">
       {(user && (
         <>
@@ -172,8 +167,14 @@ export default function SwipeableTemporaryDrawer(props) {
       )}
       <Divider />
       <List>
-        {feedList.map((el, index) => (
-          <Link color="textPrimary" href={el.href} as={el.as} passHref>
+        {feedList.map(el => (
+          <Link
+            color="textPrimary"
+            href={el.href}
+            as={el.as}
+            onClick={toggleDrawer(false)}
+            passHref
+          >
             <a>
               <ListItem selected={active === el.label} button key={el.label}>
                 <ListItemIcon>{el.icon}</ListItemIcon>
@@ -192,7 +193,7 @@ export default function SwipeableTemporaryDrawer(props) {
             icon: <DiscoverIcon />,
           },
           { label: 'map', link: '/map', icon: <MapIcon /> },
-        ].map((el, index) => (
+        ].map(el => (
           <Link color="textPrimary" href={el.link} passHref>
             <a>
               <ListItem selected={active === el.label} button key={el.label}>
@@ -218,7 +219,7 @@ export default function SwipeableTemporaryDrawer(props) {
                 link: '/dashboard/publish',
                 icon: <PublishIcon />,
               },
-            ].map((el, index) => (
+            ].map(el => (
               <Link color="textPrimary" href={el.link} passHref>
                 <a>
                   <ListItem button key={el.label}>
@@ -233,7 +234,7 @@ export default function SwipeableTemporaryDrawer(props) {
         </>
       )}
       <List>
-        {legalList.map((el, index) => (
+        {legalList.map(el => (
           <Link color="textPrimary" href={el.href} as={el.as} passHref>
             <a>
               <ListItem selected={active === el.label} button key={el.label}>
@@ -251,13 +252,13 @@ export default function SwipeableTemporaryDrawer(props) {
 
   return (
     <div>
-      <MenuIcon onClick={toggleDrawer('left', true)} className="text-light" />
+      <MenuIcon onClick={toggleDrawer(true)} className="text-light" />
       <SwipeableDrawer
-        open={state.left}
-        onClose={toggleDrawer('left', false)}
-        onOpen={toggleDrawer('left', true)}
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
       >
-        {sideList('left')}
+        {sideList()}
       </SwipeableDrawer>
     </div>
   );
