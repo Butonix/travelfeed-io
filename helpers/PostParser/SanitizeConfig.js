@@ -162,7 +162,13 @@ export default ({
       const { src } = attribs;
       if (!/^(https?:)?\/\//i.test(src)) {
         sanitizeErrors.push('An image in this post did not save properly.');
-        return { tagName: 'img', attribs: { src: 'brokenimg.jpg' } };
+        return {
+          tagName: 'img',
+          attribs: {
+            src:
+              'https://img.travelfeed.io/jpphotography%2F20190928T203805590Z-brokenimg.png',
+          },
+        };
       }
 
       const atts = { src };
