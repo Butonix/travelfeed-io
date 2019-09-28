@@ -1,4 +1,6 @@
 import { teal } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
@@ -94,13 +96,28 @@ class MapCluster extends Component {
           <Popup
             offsetLeft={popupInfo.posts === undefined ? 0 : 3}
             offsetTop={popupInfo.posts === undefined ? 0 : 8}
+            closeButton={false}
             captureScroll
             anchor="top"
             longitude={popupInfo.longitude}
             latitude={popupInfo.latitude}
             closeOnClick
-            onClose={() => this.setState({ popupInfo: undefined })}
+            // onClose={() => this.setState({ popupInfo: undefined })}
           >
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                zIndex: 9999,
+              }}
+            >
+              <IconButton
+                onClick={() => this.setState({ popupInfo: undefined })}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
             <MapCard info={popupInfo} />
           </Popup>
         </>

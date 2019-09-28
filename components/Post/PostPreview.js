@@ -13,6 +13,7 @@ const Skeleton = dynamic(() => import('react-loading-skeleton'), {
 });
 
 const PostPreview = props => {
+  const imgUrl = props.img_url ? imageProxy(props.img_url, 100, 100) : '';
   return (
     <div key={props.author + props.permlink}>
       <Link
@@ -22,7 +23,9 @@ const PostPreview = props => {
           props.permlink
         }&depth=0&img_url=${encodeURIComponent(
           props.img_url,
-        )}&title=${encodeURIComponent(props.title)}`}
+        )}&title=${encodeURIComponent(
+          props.title,
+        )}&lazy_img_url=${encodeURIComponent(imgUrl)}`}
         passHref
       >
         <a>
@@ -33,11 +36,7 @@ const PostPreview = props => {
                   <div
                     className="col-3 my-auto"
                     style={{
-                      backgroundImage: `url(${imageProxy(
-                        props.img_url,
-                        100,
-                        100,
-                      )})`,
+                      backgroundImage: `url(${imgUrl})`,
                       backgroundColor: '#ccc',
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'center center',
