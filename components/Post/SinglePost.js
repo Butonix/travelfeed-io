@@ -132,22 +132,7 @@ class SinglePost extends Component {
             }
             // 404 for error and if post does not exist
             if (error || (data && data.post === null)) {
-              return (
-                <Fragment>
-                  <Header />
-                  <Grid
-                    container
-                    spacing={0}
-                    alignItems="center"
-                    justify="center"
-                    className="pt-4 pb-4"
-                  >
-                    <Grid item lg={7} md={8} sm={11} xs={12}>
-                      <NotFound statusCode={404} />
-                    </Grid>
-                  </Grid>
-                </Fragment>
-              );
+              return <NotFound statusCode={404} />;
             }
             // Don't render invalid posts but return Steempeak link
             // Todo: Display NSFW posts for logged in users based on

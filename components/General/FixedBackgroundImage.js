@@ -10,8 +10,12 @@ const FixedBackgroundImage = props => {
   const [opacity, setOpacity] = useState(0);
   const [webpSupport, setWebpSupport] = useState(undefined);
 
-  useEffect(async () => {
-    const webp = await supportsWebp();
+  useEffect(() => {
+    const getWebpSupport = async () => {
+      const webp = await supportsWebp();
+      return webp;
+    };
+    const webp = getWebpSupport();
     setWebpSupport(webp);
     setWindowWidth((Math.ceil(window.innerWidth / 640) + 1) * 640);
     setOpacity(1);

@@ -1,4 +1,3 @@
-import Grid from '@material-ui/core/Grid';
 import Cookie from 'js-cookie';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
@@ -23,93 +22,64 @@ const LoginPage = props => {
   return (
     <>
       <Header />
-      <Grid
-        container
-        spacing={0}
-        alignItems="center"
-        justify="center"
-        className="pt-4 pb-4"
-        style={{ paddingLeft: '75px' }}
-      >
-        <Grid item lg={7} md={8} sm={11} xs={12}>
-          <>
-            <Query
-              query={GET_LOGIN_TOKEN}
-              variables={{
-                sc_token,
-              }}
-            >
-              {({ data, loading }) => {
-                if (loading || !loaded) {
-                  return (
-                    <>
-                      <Header />
-                      <Grid
-                        container
-                        spacing={0}
-                        alignItems="center"
-                        justify="center"
-                        className="pt-4 pb-4"
-                        style={{ paddingLeft: '75px' }}
-                      >
-                        <Grid item lg={7} md={8} sm={11} xs={12} />
-                      </Grid>
-                    </>
-                  );
-                }
-                if (data) {
-                  // If tos are not accepted, display tos dialogue
-                  if (
-                    data &&
-                    data.login &&
-                    data.login.hasAcceptedTos === false
-                  ) {
-                    return (
-                      <Mutation
-                        mutation={ACCEPT_TOS}
-                        variables={{
-                          sc_token,
-                          acceptTos: true,
-                          referrer,
-                        }}
-                      >
-                        {// eslint-disable-next-line no-shadow
-                        (acceptTos, data) => {
-                          // If successful
-                          if (
-                            data &&
-                            data.data &&
-                            data.data.login.hasAcceptedTos
-                          ) {
-                            if (data.data.login.jwt)
-                              setAccessToken(data.data.login.jwt, expires_in);
-                            else return <NotFound statusCode="invalid_login" />;
-                            if (sc_token) setScToken(sc_token, expires_in);
-                            Router.replace('/dashboard');
-                            return <></>;
-                          }
-                          return <LoginDialog acceptTos={acceptTos} />;
-                        }}
-                      </Mutation>
-                    );
-                  }
-                  if (sc_token) setScToken(sc_token, expires_in);
-                  if (data.login.jwt) {
-                    setAccessToken(data.login.jwt, expires_in);
-                    Router.replace('/dashboard');
-                  } else return <NotFound statusCode="invalid_login" />;
-                  return '';
-                }
+      <>
+        <Query
+          query={GET_LOGIN_TOKEN}
+          variables={{
+            sc_token,
+          }}
+        >
+          {({ data, loading }) => {
+            if (loading || !loaded) {
+              return (
+                <>
+                  <Header />
+                </>
+              );
+            }
+            if (data) {
+              // If tos are not accepted, display tos dialogue
+              if (data && data.login && data.login.hasAcceptedTos === false) {
                 return (
-                  <>
-                    <NotFound statusCode={404} />
-                  </>
+                  <Mutation
+                    mutation={ACCEPT_TOS}
+                    variables={{
+                      sc_token,
+                      acceptTos: true,
+                      referrer,
+                    }}
+                  >
+                    {// eslint-disable-next-line no-shadow
+                    (acceptTos, data) => {
+                      // If successful
+                      if (data && data.data && data.data.login.hasAcceptedTos) {
+                        if (data.data.login.jwt)
+                          setAccessToken(data.data.login.jwt, expires_in);
+                        else return <NotFound statusCode="invalid_login" />;
+                        if (sc_token) setScToken(sc_token, expires_in);
+                        Router.replace('/dashboard');
+                        return <></>;
+                      }
+                      return <LoginDialog acceptTos={acceptTos} />;
+                    }}
+                  </Mutation>
                 );
-              }}
-            </Query>
-          </>
-        </Grid>
-      </Grid>
+              }
+              if (sc_token) setScToken(sc_token, expires_in);
+              if (data.login.jwt) {
+                setAccessToken(data.login.jwt, expires_in);
+                Router.replace('/dashboard');
+              } else return <NotFound statusCode="invalid_login" />;
+              return '';
+            }
+            return (
+              <>
+                <NotFound statusCode="invalid_login" />
+              </>
+            );
+          }}
+        </Query>
+      </>
     </>
   );
 };

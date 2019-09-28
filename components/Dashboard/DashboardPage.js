@@ -1,4 +1,3 @@
-import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../../helpers/token';
 import NotFound from '../General/NotFound';
@@ -24,20 +23,7 @@ const DashboardPage = props => {
         <DashboardMenu
           active={props.label}
           content={
-            (!user && (
-              <Grid
-                container
-                spacing={0}
-                alignItems="center"
-                justify="center"
-                className="pt-4 pb-4"
-              >
-                <Grid item lg={7} md={8} sm={11} xs={12}>
-                  <NotFound statusCode="logged_out" />
-                </Grid>
-              </Grid>
-            )) ||
-            props.content
+            (!user && <NotFound statusCode="logged_out" />) || props.content
           }
           open={open}
         />
