@@ -92,7 +92,7 @@ const LoginButton = props => {
         )) || (
           <>
             <Button
-              color="secondary"
+              color={props.usePrimaryBtn ? 'primary' : 'secondary'}
               variant="contained"
               className={`ml-1 p-2 ${classes.whitebutton}`}
               onClick={handleJoinClickOpen}

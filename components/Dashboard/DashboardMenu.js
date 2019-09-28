@@ -28,9 +28,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactPiwik from 'react-piwik';
-import { getRoles } from '../../helpers/token';
+import { getRoles, getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import HeaderMenu from '../Header/HeaderMenu';
+import LoginButton from '../Header/LoginButton';
 
 const drawerWidth = 200;
 
@@ -99,8 +100,13 @@ const styles = theme => ({
     flexGrow: 1,
   },
 });
-class Dashboard extends Component {
-  state = { open: this.props.open === 'true', variant: 'permanent', roles: [] };
+class DashboardMenu extends Component {
+  state = {
+    open: this.props.open === 'true',
+    variant: 'permanent',
+    roles: [],
+    user: null,
+  };
 
   static async getInitialProps(props) {
     const { page } = props.query;
@@ -116,8 +122,10 @@ class Dashboard extends Component {
       this.setState({ open: true, variant: 'permanent' });
     }
     const roles = getRoles();
+    const user = getUser();
     this.setState({
       roles,
+      user,
     });
   }
 
@@ -145,7 +153,13 @@ class Dashboard extends Component {
       >
         <div className="container-fluid" style={{ height: '65px' }}>
           <div className="row h-100">
-            <div className="my-auto col-xl-11 col-lg-11 col-md-10 col-sm-9 col-9">
+            <div
+              className={`my-auto ${
+                this.state.user === undefined
+                  ? 'col-xl-8 col-lg-8'
+                  : 'col-xl-11 col-lg-11'
+              } col-md-10 col-sm-9 col-9`}
+            >
               <Toolbar disableGutters={!this.state.open}>
                 <IconButton
                   color="inherit"
@@ -173,6 +187,11 @@ class Dashboard extends Component {
                 </Link>
               </Toolbar>
             </div>
+            {this.state.user === undefined && (
+              <div className="my-auto col-xl-3 col-lg-3 d-md-none d-sm-none d-none d-xl-block d-lg-block text-right">
+                <LoginButton usePrimaryBtn />
+              </div>
+            )}
             <div
               className={`my-auto 
                     'col-xl-1 col-lg-1 col-md-2 col-sm-3'} col-3 text-right`}
@@ -417,12 +436,12 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.defaultProps = {
+DashboardMenu.defaultProps = {
   query: undefined,
   open: undefined,
 };
 
-Dashboard.propTypes = {
+DashboardMenu.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.objectOf(PropTypes.string),
@@ -431,4 +450,4 @@ Dashboard.propTypes = {
   open: PropTypes.string,
 };
 
-export default withStyles(styles, { withTheme: true })(Dashboard);
+export default withStyles(styles, { withTheme: true })(DashboardMenu);
