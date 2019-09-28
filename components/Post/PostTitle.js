@@ -12,7 +12,8 @@ const PostTitle = props => {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
           backgroundSize: 'cover',
-          height: props.img_url ? '300px' : '500px',
+          minHeight: props.img_url ? '300px' : '500px',
+          padding: '10px',
         }}
       >
         <div className="text-center col my-auto">
