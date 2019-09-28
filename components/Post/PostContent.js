@@ -24,7 +24,9 @@ const PostContent = props => {
         action={
           <Fragment>
             <span>{props.appIcon}</span>
-            <BookmarkIcon author={props.author} permlink={props.permlink} />
+            {!props.hideAuthorProfile && (
+              <BookmarkIcon author={props.author} permlink={props.permlink} />
+            )}
             <CuratorMenu
               author={props.author}
               permlink={props.permlink}
