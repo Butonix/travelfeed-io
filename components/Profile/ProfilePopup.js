@@ -1,4 +1,7 @@
+// FIXME: Profile Popup feature is currently removed since
+// the timers used to open and close the popup create a very buggy experience
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +27,7 @@ const ProfilePopup = props => {
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [openTimer, setOpenTimer] = useState(false);
+  const [openTimer, setOpenTimer] = useState(undefined);
   const [closeTimer, setCloseTimer] = useState(false);
 
   const startOpenTimer = e => {
@@ -34,26 +37,31 @@ const ProfilePopup = props => {
       setOpenTimer(
         setTimeout(() => {
           setOpen(true);
-        }, 500),
+          setOpenTimer(undefined);
+        }, 400),
       );
     }
   };
 
-  const clearOpenTimer = () => {
-    clearTimeout(openTimer);
+  const startCloseTimer = () => {
+    if (!closeTimer)
+      setCloseTimer(
+        setTimeout(() => {
+          setOpen(false);
+          setCloseTimer(undefined);
+        }, 1000),
+      );
   };
 
-  const startCloseTimer = e => {
-    setAnchorEl(anchorEl ? null : e.currentTarget);
-    setCloseTimer(
-      setTimeout(() => {
-        setOpen(false);
-      }, 500),
-    );
+  const clearOpenTimer = () => {
+    clearTimeout(openTimer);
+    setOpenTimer(undefined);
+    startCloseTimer();
   };
 
   const clearCloseTimer = () => {
     clearTimeout(closeTimer);
+    setCloseTimer(undefined);
   };
 
   return (
@@ -73,26 +81,28 @@ const ProfilePopup = props => {
               boundariesElement: 'scrollParent',
             },
           }}
+          transition
         >
-          <ClickAwayListener onClickAway={() => setOpen(false)}>
-            <Paper
-              id={id}
-              className={classes.root}
-              onMouseLeave={startCloseTimer}
-              onBlur={startCloseTimer}
-              onMouseEnter={clearCloseTimer}
-            >
-              <PostAuthorProfile author={author} />
-            </Paper>
-          </ClickAwayListener>
+          {({ TransitionProps }) => (
+            <Fade {...TransitionProps} timeout={1000}>
+              <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <Paper
+                  id={id}
+                  className={classes.root}
+                  onMouseLeave={startCloseTimer}
+                  onMouseOver={clearCloseTimer}
+                >
+                  <PostAuthorProfile author={author} />
+                </Paper>
+              </ClickAwayListener>
+            </Fade>
+          )}
         </Popper>
       </>
       <div
         style={{ position: 'relative' }}
         onMouseOver={startOpenTimer}
-        onFocus={startOpenTimer}
-        onMouseOut={clearOpenTimer}
-        onBlur={clearOpenTimer}
+        onMouseLeave={clearOpenTimer}
       >
         {props.component}
       </div>
