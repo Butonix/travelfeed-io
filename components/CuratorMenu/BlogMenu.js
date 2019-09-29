@@ -1,81 +1,35 @@
-import Grow from '@material-ui/core/Grow';
-import IconButton from '@material-ui/core/IconButton';
-import MenuList from '@material-ui/core/MenuList';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import CuratorIcon from '@material-ui/icons/MoreVert';
-import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getRoles } from '../../helpers/token';
 import AuthorBlacklist from './Actions/AuthorBlacklist';
 import ChangeRoles from './Actions/ChangeRoles';
+import CuratorMenu from './CuratorMenu';
 
-class BlogMenu extends Component {
-  state = {
-    roles: [],
-    menuopen: false,
-  };
+const BlogMenu = props => {
+  const [roles, setRoles] = useState(undefined);
 
-  componentDidMount() {
-    const roles = getRoles();
-    this.setState({
-      roles,
-    });
-  }
+  useEffect(() => {
+    setRoles(getRoles());
+  }, []);
 
-  handleToggle = () => {
-    this.setState(state => ({ menuopen: !state.menuopen }));
-  };
+  const isCurator = roles && roles.indexOf('curator') !== -1;
+  const isAdmin = roles && roles.indexOf('admin') !== -1;
 
-  handleClose = () => {
-    this.setState({ menuopen: false });
-  };
+  const { author } = props;
 
-  render() {
-    const { roles, menuopen } = this.state;
-    const { author, isCurator } = this.props;
-    if (roles && roles.indexOf('curator') !== -1) {
-      return (
-        <Fragment>
-          <IconButton onClick={this.handleToggle}>
-            <CuratorIcon className="textPrimary" />
-          </IconButton>
-          <Popper
-            open={menuopen}
-            anchorEl={this.anchorEl}
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list-grow"
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom',
-                }}
-              >
-                <Paper>
-                  <MenuList>
-                    <AuthorBlacklist author={author} />
-                    {roles.indexOf('admin') !== -1 && (
-                      <ChangeRoles author={author} isCurator={isCurator} />
-                    )}
-                  </MenuList>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </Fragment>
-      );
-    }
-    return <Fragment />;
-  }
-}
-
-BlogMenu.propTypes = {
-  author: PropTypes.string.isRequired,
-  isCurator: PropTypes.bool.isRequired,
+  return (
+    <>
+      {isCurator && (
+        <CuratorMenu
+          component={
+            <>
+              <AuthorBlacklist author={author} />
+              {isAdmin && <ChangeRoles author={author} isCurator={isCurator} />}
+            </>
+          }
+        />
+      )}
+    </>
+  );
 };
 
 export default BlogMenu;

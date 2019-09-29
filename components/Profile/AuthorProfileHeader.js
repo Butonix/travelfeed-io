@@ -2,7 +2,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import Typography from '@material-ui/core/Typography';
 import React, { Fragment } from 'react';
 import { imageProxy } from '../../helpers/getImage';
-import CuratorMenu from '../CuratorMenu/BlogMenu';
+import BlogMenu from '../CuratorMenu/BlogMenu';
 import AuthorProfileImage from './AuthorProfileImage';
 
 const AuthorProfileHeader = props => {
@@ -57,10 +57,7 @@ const AuthorProfileHeader = props => {
             <Typography variant="subtitle1" className="textSecondary pt-2">
               {about}
             </Typography>
-            <CuratorMenu
-              author={props.data.name}
-              isCurator={props.data.isCurator}
-            />
+            <BlogMenu author={props.data.name} />
           </div>
           {props.moreContent}
         </div>

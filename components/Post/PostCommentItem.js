@@ -9,7 +9,7 @@ import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
-import CuratorMenu from '../CuratorMenu/CommentMenu';
+import CommentMenu from '../CuratorMenu/CommentMenu';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
 import PostComments from './PostComments';
@@ -181,7 +181,7 @@ class PostCommentItem extends Component {
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
                 />
-                <CuratorMenu
+                <CommentMenu
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
                 />

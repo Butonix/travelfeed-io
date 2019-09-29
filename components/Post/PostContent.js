@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import CuratorMenu from '../CuratorMenu/PostMenu';
+import PostMenu from '../CuratorMenu/PostMenu';
 import PostMap from '../Maps/PostMap';
 import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import ProfileAvatar from '../Profile/ProfileAvatar';
@@ -26,7 +26,7 @@ const PostContent = props => {
             {!props.hideAuthorProfile && (
               <BookmarkIcon author={props.author} permlink={props.permlink} />
             )}
-            <CuratorMenu
+            <PostMenu
               author={props.author}
               permlink={props.permlink}
               isTf={props.isTf}
