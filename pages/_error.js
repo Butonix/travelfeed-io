@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import NotFound from '../components/General/NotFound';
+import ErrorPage from '../components/General/ErrorPage';
 import Header from '../components/Header/Header';
 
 export default class Error extends React.Component {
@@ -16,7 +16,7 @@ export default class Error extends React.Component {
     return (
       <Fragment>
         <Header />
-        <NotFound statusCode={statusCode} />
+        <ErrorPage statusCode={statusCode} />
       </Fragment>
     );
   }

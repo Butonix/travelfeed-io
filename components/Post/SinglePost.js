@@ -13,7 +13,7 @@ import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
-import NotFound from '../General/NotFound';
+import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
 import OrderBySelect from './OrderBySelect';
@@ -131,7 +131,7 @@ class SinglePost extends Component {
             }
             // 404 for error and if post does not exist
             if (error || (data && data.post === null)) {
-              return <NotFound statusCode={404} />;
+              return <ErrorPage statusCode={404} />;
             }
             // Don't render invalid posts but return Steempeak link
             // Todo: Display NSFW posts for logged in users based on
@@ -141,7 +141,7 @@ class SinglePost extends Component {
               return (
                 <>
                   <Header />
-                  <NotFound statusCode="invalid_post" url={url} />
+                  <ErrorPage statusCode="invalid_post" url={url} />
                 </>
               );
             }

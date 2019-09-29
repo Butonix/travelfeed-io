@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import NotFound from '../components/General/NotFound';
+import ErrorPage from '../components/General/ErrorPage';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 
@@ -24,8 +24,8 @@ class ExitPage extends Component {
           justify="center"
           className="pt-4 pb-4"
         >
-          {(url === 'undefined' && <NotFound statusCode={404} />) || (
-            <NotFound statusCode="exit_url" url={url} />
+          {(url === 'undefined' && <ErrorPage statusCode={404} />) || (
+            <ErrorPage statusCode="exit_url" url={url} />
           )}
         </Grid>
       </Fragment>

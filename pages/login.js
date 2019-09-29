@@ -3,7 +3,7 @@ import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
-import NotFound from '../components/General/NotFound';
+import ErrorPage from '../components/General/ErrorPage';
 import Header from '../components/Header/Header';
 import LoginDialog from '../components/Login/LoginDialog';
 import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../helpers/graphql/token';
@@ -55,7 +55,7 @@ const LoginPage = props => {
                       if (data && data.data && data.data.login.hasAcceptedTos) {
                         if (data.data.login.jwt)
                           setAccessToken(data.data.login.jwt, expires_in);
-                        else return <NotFound statusCode="invalid_login" />;
+                        else return <ErrorPage statusCode="invalid_login" />;
                         if (sc_token) setScToken(sc_token, expires_in);
                         Router.replace('/dashboard');
                         return <></>;
@@ -69,12 +69,12 @@ const LoginPage = props => {
               if (data.login.jwt) {
                 setAccessToken(data.login.jwt, expires_in);
                 Router.replace('/dashboard');
-              } else return <NotFound statusCode="invalid_login" />;
+              } else return <ErrorPage statusCode="invalid_login" />;
               return '';
             }
             return (
               <>
-                <NotFound statusCode="invalid_login" />
+                <ErrorPage statusCode="invalid_login" />
               </>
             );
           }}

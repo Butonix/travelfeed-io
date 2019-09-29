@@ -10,7 +10,7 @@ import Link from '../../lib/Link';
 import Head from '../Header/Head';
 import FixedBackgroundImage from './FixedBackgroundImage';
 
-const NotFound = props => {
+const ErrorPage = props => {
   const { statusCode } = props;
 
   let error = {
@@ -139,8 +139,8 @@ const NotFound = props => {
   );
 };
 
-NotFound.propTypes = {
+ErrorPage.propTypes = {
   statusCode: PropTypes.number.isRequired,
 };
 
-export default NotFound;
+export default ErrorPage;

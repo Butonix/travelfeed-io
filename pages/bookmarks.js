@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import Bookmarks from '../components/Bookmarks/Bookmarks';
-import NotFound from '../components/General/NotFound';
+import ErrorPage from '../components/General/ErrorPage';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import { getUser } from '../helpers/token';
@@ -31,7 +31,7 @@ const BookmarksPage = () => {
         }
         `}</style>
           </>
-        )) || <NotFound statusCode="logged_out" />}
+        )) || <ErrorPage statusCode="logged_out" />}
     </Fragment>
   );
 };

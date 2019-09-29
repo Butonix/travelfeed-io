@@ -3,9 +3,9 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Query } from 'react-apollo';
+import ErrorPage from '../../components/General/ErrorPage';
 import FixedBackgroundImage from '../../components/General/FixedBackgroundImage';
 import HeaderCard from '../../components/General/HeaderCard';
-import NotFound from '../../components/General/NotFound';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import OnboardCreate from '../../components/Onboarding/OnboardCreate';
@@ -58,7 +58,7 @@ const RegisterCreatePage = props => {
                   />
                 </Grid>
               </Grid>
-            )) || <NotFound statusCode={404} />}
+            )) || <ErrorPage statusCode={404} />}
           </>
         }
       />

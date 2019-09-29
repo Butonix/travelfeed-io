@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../../helpers/token';
-import NotFound from '../General/NotFound';
+import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import DashboardMenu from './DashboardMenu';
 
@@ -23,7 +23,7 @@ const DashboardPage = props => {
         <DashboardMenu
           active={props.label}
           content={
-            (!user && <NotFound statusCode="logged_out" />) || props.content
+            (!user && <ErrorPage statusCode="logged_out" />) || props.content
           }
           open={open}
         />

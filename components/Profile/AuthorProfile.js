@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
-import NotFound from '../General/NotFound';
+import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
 import AuthorProfileBar from './AuthorProfileBar';
@@ -34,7 +34,7 @@ const AuthorProfile = props => {
             return (
               <Fragment>
                 <Header />
-                <NotFound statusCode={404} />
+                <ErrorPage statusCode={404} />
               </Fragment>
             );
           }

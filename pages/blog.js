@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import NotFound from '../components/General/NotFound';
+import ErrorPage from '../components/General/ErrorPage';
 import Header from '../components/Header/Header';
 import AuthorProfile from '../components/Profile/AuthorProfile';
 import ProfileTabs from '../components/Profile/ProfileTabs';
@@ -56,7 +56,7 @@ class BlogPage extends Component {
         )) || (
           <>
             <Header />
-            <NotFound statusCode={404} />
+            <ErrorPage statusCode={404} />
           </>
         )}
       </Fragment>
