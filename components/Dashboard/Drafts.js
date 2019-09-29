@@ -29,7 +29,7 @@ class Drafts extends Component {
     const user = getUser();
     return (
       <Fragment>
-        <div className="text-center pt-1" />
+        <div className="text-center pt-1 pb-3" />
         <Query
           fetchPolicy="network-only"
           query={GET_DRAFTS}

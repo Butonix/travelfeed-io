@@ -137,7 +137,7 @@ class PostCommentItem extends Component {
             <Link
               color="textPrimary"
               as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
-              href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}`}
+              href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}&depth=0`}
               passHref
             >
               <a>

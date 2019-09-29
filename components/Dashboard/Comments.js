@@ -5,7 +5,7 @@ import PostGrid from '../Grid/PostGrid';
 const Comments = () => {
   return (
     <Fragment>
-      <div className="pt-1">
+      <div className="pt-1 pb-3">
         <PostGrid
           query={{ author: getUser(), is_comment: true, limit: 8 }}
           grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}

@@ -30,12 +30,13 @@ const DestinationHeader = props => {
                     <div className="row h-100" style={{ minHeight: '500px' }}>
                       <div className="col-12 my-auto">
                         <Typography
-                          variant="h3"
+                          variant="h6"
+                          align="center"
                           className="text-light font-weight-bold"
                           style={{
                             textShadow: '1px 1px 20px #343A40',
                           }}
-                          component="h1"
+                          component="h5"
                         >
                           {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
                           (query.city && (
@@ -85,6 +86,7 @@ const DestinationHeader = props => {
                         <Typography
                           gutterBottom
                           variant="h2"
+                          component="h1"
                           className="text-light font-weight-bold text-center"
                           style={{
                             textShadow: '1px 1px 10px #343A40',

@@ -118,7 +118,7 @@ const ProfileTabs = props => {
                     <>
                       <TabPanel value={value} index={0}>
                         <div
-                          className="container pt-3"
+                          className="container pt-1 pb-2"
                           id="containerInvisibleOnMobile"
                         >
                           <PostGrid

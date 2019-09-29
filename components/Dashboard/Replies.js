@@ -5,7 +5,7 @@ import PostGrid from '../Grid/PostGrid';
 const Replies = () => {
   return (
     <Fragment>
-      <div className="pt-1">
+      <div className="pt-1 pb-3">
         <PostGrid
           query={{
             parent_author: getUser(),
