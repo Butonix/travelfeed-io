@@ -22,6 +22,7 @@ import { Query } from 'react-apollo';
 import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import SliderTags from './SliderTags';
 import VoteButton from './VoteButton';
 
 class VoteSlider extends Component {
@@ -115,12 +116,14 @@ class VoteSlider extends Component {
   render() {
     const actions = [];
     let sliderstyle = {};
-    let rowitem1 = 'col-5 p-0';
-    let rowitem2 = 'col-7 text-right p-0 my-auto pr-2';
+    let rowitem1 =
+      'col-xl-4 col-lg-5 col-md-5 col-sm-12 col-12 order-xl-1 order-lg-1 order-md-1 order-sm-2 order-2 p-0';
+    let rowitem2 =
+      'col-xl-8 col-lg-7 col-md-7 col-sm-12 col-12 order-2 order-xl-2 order-lg-2 order-md-2 order-sm-1 order-1 my-auto taglist p-3';
     if (this.props.mode === 'gridcard') {
       sliderstyle = { fontSize: '0.6rem' };
-      rowitem1 = 'col-6 p-0';
-      rowitem2 = 'col-6 p-0 text-right my-auto pr-2';
+      rowitem1 = 'col-6 p-0 order-1';
+      rowitem2 = 'col-6 p-0 text-right my-auto pr-2 order-2';
     } else if (this.props.mode === 'comment') {
       rowitem1 = 'col-12 p-0';
       rowitem2 = 'd-none';
@@ -168,6 +171,7 @@ class VoteSlider extends Component {
         >
           <Box
             fontSize={16}
+            className="pl-1"
             color="text.icon"
             fontWeight="fontWeightBold"
             component="span"
@@ -258,7 +262,15 @@ class VoteSlider extends Component {
           <Divider variant="middle" />
           <div className="container-fluid">
             <div className="row">
+              <SliderTags
+                sliderstyle={sliderstyle}
+                classes={rowitem2}
+                tags={this.props.tags}
+              />
               <div className={rowitem1}>
+                <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
+                  <Divider />
+                </div>
                 <CardActions disableSpacing>
                   {actions.map(action => {
                     return <div className="actionli">{action}</div>;
@@ -275,28 +287,6 @@ class VoteSlider extends Component {
                   content: '';
                 }
               `}</style>
-              <div className={rowitem2}>
-                {this.props.tags.map(tag => {
-                  return (
-                    <Link
-                      color="textPrimary"
-                      as={`/favorites/${tag}`}
-                      href={`/tag?orderby=total_votes&tags=${tag}`}
-                      key={tag}
-                      passHref
-                    >
-                      <a>
-                        <span
-                          className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
-                          style={sliderstyle}
-                        >
-                          {tag.toUpperCase()}
-                        </span>
-                      </a>
-                    </Link>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </Fragment>
@@ -322,10 +312,7 @@ class VoteSlider extends Component {
     if (this.state.voteExpanded === true) {
       cardFooter = (
         <Query query={GET_VOTE_WEIGHTS}>
-          {({ data, loading, error }) => {
-            if (loading || error) {
-              return <Fragment />;
-            }
+          {({ data }) => {
             // set default vote weight based on preferences if not voted
             if (data && !this.state.loaded && !this.state.hasVoted) {
               if (this.props.depth === 0)
@@ -336,11 +323,23 @@ class VoteSlider extends Component {
               if (this.props.depth > 0)
                 this.setState({
                   loaded: true,
-                  weight: data.preferences.defaultCommentsVoteWeight,
+                  weight:
+                    (data &&
+                      data.preferences &&
+                      data.preferences.defaultCommentsVoteWeight) ||
+                    5,
                 });
             }
             return (
               <Fragment>
+                <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
+                  <Divider variant="middle" />
+                  <SliderTags
+                    sliderstyle={sliderstyle}
+                    classes={rowitem2}
+                    tags={this.props.tags}
+                  />
+                </div>
                 <Divider variant="middle" />
                 <CardActions>
                   <Tooltip title="Upvote now" placement="bottom">
