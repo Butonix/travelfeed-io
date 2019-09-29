@@ -191,7 +191,7 @@ class GridPostCard extends Component {
                   </picture>
                 )}
               <CardContent>
-                <Typography gutterBottom variant="h5">
+                <Typography gutterBottom variant="h6" component="h2">
                   {this.props.post.title}
                 </Typography>
                 <Typography component="p">

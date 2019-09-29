@@ -1,5 +1,6 @@
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
@@ -126,7 +127,9 @@ class PostCommentItem extends Component {
           className={`border p-3 mb-2 
         ${classNames(classes.areabg)}`}
         >
-          <h4>{`Re: ${this.props.post.root_title}`}</h4>
+          <Typography gutterBottom variant="h6" component="h4">
+            {`Re: ${this.props.post.root_title}`}
+          </Typography>
           <div>
             <Link
               color="textPrimary"

@@ -115,7 +115,7 @@ class PostListItem extends Component {
         <div className={colsize}>
           <CardContent>
             <div className="pr-2 pl-2 pb-2">
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography gutterBottom variant="h6" component="h2">
                 {this.props.post.title || 'Untitled'}
               </Typography>
               <Typography component="p">

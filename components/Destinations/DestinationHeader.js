@@ -29,11 +29,13 @@ const DestinationHeader = props => {
                   <div className="container h-100">
                     <div className="row h-100" style={{ minHeight: '500px' }}>
                       <div className="col-12 my-auto">
-                        <h5
-                          className="text-center pt-3"
+                        <Typography
+                          variant="h3"
+                          className="text-light font-weight-bold"
                           style={{
-                            textShadow: '1px 1px 10px #343A40',
+                            textShadow: '1px 1px 20px #343A40',
                           }}
+                          component="h1"
                         >
                           {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
                           (query.city && (
@@ -79,7 +81,7 @@ const DestinationHeader = props => {
                                 </a>
                               </Link>
                             ))}
-                        </h5>
+                        </Typography>
                         <Typography
                           gutterBottom
                           variant="h2"
@@ -111,14 +113,18 @@ const DestinationHeader = props => {
                           data.locationDetails.sublocations.length > 1 && (
                             <div className="row p-2 justify-content-md-center">
                               <div className="col-12">
-                                <h4
-                                  className="text-center text-light"
+                                <Typography
+                                  variant="h4"
+                                  className="text-light font-weight-bold"
                                   style={{
                                     textShadow: '1px 1px 10px #343A40',
                                   }}
+                                  align="center"
+                                  component="h3"
+                                  gutterBottom
                                 >
-                                  Popular destinations:
-                                </h4>
+                                  Popular destinations
+                                </Typography>
                               </div>
                               {data &&
                                 data.locationDetails.sublocations.map(

@@ -23,6 +23,7 @@ const PostTitle = props => {
             style={{
               textShadow: '1px 1px 20px #343A40',
             }}
+            component="h1"
           >
             {props.title}
           </Typography>

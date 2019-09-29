@@ -50,7 +50,7 @@ class DestinationsMobile extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList className="text-center">
                         <MenuItem>
-                          <h4>Europe</h4>
+                          <Typography variant="h6">Europe</Typography>
                         </MenuItem>
                         <DestinationCountryColumn
                           onClick={this.props.closeDest}
@@ -61,7 +61,7 @@ class DestinationsMobile extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
-                          <h4>Asia</h4>
+                          <Typography variant="h6">Asia</Typography>
                         </MenuItem>
                         <DestinationCountryColumn
                           onClick={this.props.closeDest}
@@ -72,7 +72,7 @@ class DestinationsMobile extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
-                          <h4>World</h4>
+                          <Typography variant="h6">World</Typography>
                         </MenuItem>
                         <DestinationCountryColumn
                           onClick={this.props.closeDest}
@@ -90,7 +90,7 @@ class DestinationsMobile extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
-                          <h4>Europe</h4>
+                          <Typography variant="h6">Europe</Typography>
                         </MenuItem>
                         <DestinationCityColumn
                           onClick={this.props.closeDest}
@@ -101,7 +101,7 @@ class DestinationsMobile extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
-                          <h4>Asia</h4>
+                          <Typography variant="h6">Asia</Typography>
                         </MenuItem>
                         <DestinationCityColumn
                           onClick={this.props.closeDest}
@@ -112,7 +112,7 @@ class DestinationsMobile extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
-                          <h4>World</h4>
+                          <Typography variant="h6">World</Typography>
                         </MenuItem>
                         <DestinationCityColumn
                           onClick={this.props.closeDest}
