@@ -1,9 +1,14 @@
 import grey from '@material-ui/core/colors/grey';
 import Paper from '@material-ui/core/Paper';
+import { useTheme } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const SmallBox = props => {
+  const theme = useTheme();
+  console.log(theme);
+  const { borderRadius } = theme.shape;
+
   const { title, value, iconColor, boxColor, prefix } = props;
   const { Icon } = props;
   const styles = {
@@ -12,6 +17,7 @@ const SmallBox = props => {
       marginLeft: 80,
       height: 70,
       backgroundColor: boxColor,
+      borderRadius: `0 ${borderRadius}px ${borderRadius}px 0`,
     },
     text: {
       fontSize: 15,
@@ -32,6 +38,7 @@ const SmallBox = props => {
       width: 80,
       textAlign: 'center',
       backgroundColor: iconColor,
+      borderRadius: `${borderRadius}px 0 0 ${borderRadius}px`,
     },
     icon: {
       height: 38,
