@@ -57,6 +57,7 @@ class TagPage extends Component {
         />
         <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
+            active="topic"
             query={{
               tags: this.props.tags,
               orderby: this.props.orderby,

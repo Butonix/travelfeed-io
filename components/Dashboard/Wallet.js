@@ -10,7 +10,7 @@ import RecentEarnings from './Stats/RecentEarningsChart';
 const Wallet = () => {
   return (
     <Fragment>
-      <Grid container spacing={0} className="p-1 pt-3" justify="center">
+      <Grid container spacing={0} className="p-1" justify="center">
         <Query query={GET_USER_STATS}>
           {({ data, loading, error }) => {
             if (loading || error || data.userstats === null) {

@@ -65,7 +65,9 @@ const PostContent = props => {
         )}
         {!props.hideAuthorProfile && (
           <>
-            <hr />
+            <div className="postCardContent">
+              <hr />
+            </div>
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-lg-6 col-md-9 col-sm12">
@@ -77,7 +79,9 @@ const PostContent = props => {
                     >
                       Written by
                     </Typography>
-                    <PostAuthorProfile author={props.author} />
+                    <div className="pb-3">
+                      <PostAuthorProfile author={props.author} />
+                    </div>
                   </div>
                 </div>
               </div>

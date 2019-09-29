@@ -18,6 +18,9 @@ import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
 
 const styles = theme => ({
+  card: {
+    borderRadius: 16,
+  },
   areabg: {
     background: theme.palette.background.light,
   },
@@ -169,9 +172,9 @@ class PostCommentItem extends Component {
       );
     }
     return (
-      <Fragment>
+      <div className="pt-2 pr-2 pl-2">
         <Card
-          className="mb-3"
+          className={classes.card}
           style={{ marginLeft: debth }}
           id={this.props.post.permlink}
         >
@@ -236,7 +239,7 @@ class PostCommentItem extends Component {
           />
         )}
         {children}
-      </Fragment>
+      </div>
     );
   }
 }

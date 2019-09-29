@@ -425,16 +425,16 @@ const PostEditor = props => {
 
   return (
     <Fragment>
-      <div className="container-fluid p-4">
+      <div className="container-fluid pt-1 pb-2">
         <div className="row">
-          <div className="col-12 p-1">
+          <div className="col-12 pt-2 pl-2 pr-2">
             <Card>
               <CardContent>
                 <TitleEditor data={title} onChange={setTitle} />
               </CardContent>
             </Card>
           </div>
-          <div className="col-xl-12 col-md-12 p-1">
+          <div className="col-xl-12 col-md-12 pt-2 pl-2 pr-2">
             <Card>
               <CardContent>
                 <div>
@@ -462,7 +462,7 @@ const PostEditor = props => {
               </CardContent>
             </Card>
           </div>
-          <div className="col-12 p-1">
+          <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               expanded
               title="Featured Image"
@@ -478,7 +478,7 @@ const PostEditor = props => {
               }
             />
           </div>
-          <div className="col-12 p-1">
+          <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               expanded
               title="Location"
@@ -504,7 +504,7 @@ const PostEditor = props => {
             />
           </div>
           {editMode === false && (
-            <div className="col-12 p-1">
+            <div className="col-12 pt-2 pl-2 pr-2">
               <DetailedExpansionPanel
                 title="Language"
                 description="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read"
@@ -516,7 +516,7 @@ const PostEditor = props => {
               />
             </div>
           )}
-          <div className="col-12 p-1">
+          <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               expanded
               title="Tags"
@@ -536,7 +536,7 @@ const PostEditor = props => {
           </div>
           {!editMode && (
             <Fragment>
-              <div className="col-12 p-1">
+              <div className="col-12 pt-2 pl-2 pr-2">
                 <DetailedExpansionPanel
                   title="Payout Options"
                   description="Choose how to receive your reward"
@@ -554,7 +554,7 @@ const PostEditor = props => {
                   }
                 />
               </div>
-              <div className="col-12 p-1">
+              <div className="col-12 pt-2 pl-2 pr-2">
                 <DetailedExpansionPanel
                   title={
                     !permlinkValid ? (
@@ -582,7 +582,7 @@ const PostEditor = props => {
                   }
                 />
               </div>
-              <div className="col-12 p-1">
+              <div className="col-12 pt-2 pl-2 pr-2">
                 <DetailedExpansionPanel
                   title="Beneficiaries"
                   description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here. Remember to click on + to add the beneficiary."
@@ -604,7 +604,7 @@ const PostEditor = props => {
               </div>
             </Fragment>
           )}
-          <div className="col-12 p-1">
+          <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               withBg
               noPadding
@@ -625,7 +625,7 @@ const PostEditor = props => {
               }
             />
           </div>
-          <div className="col-12 p-1">
+          <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               fullWidth
               expanded

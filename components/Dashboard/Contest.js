@@ -27,7 +27,7 @@ const Contest = props => {
 
   return (
     <Fragment>
-      <Grid container spacing={0} justify="center" className="pt-4 pb-4 p-2">
+      <Grid container spacing={0} justify="center" className="p-1">
         <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
           <HeaderCard
             title="How to Participate"

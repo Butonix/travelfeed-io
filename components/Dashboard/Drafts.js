@@ -29,7 +29,7 @@ class Drafts extends Component {
     const user = getUser();
     return (
       <Fragment>
-        <div className="text-center pt-4" />
+        <div className="text-center pt-1" />
         <Query
           fetchPolicy="network-only"
           query={GET_DRAFTS}
@@ -83,29 +83,23 @@ class Drafts extends Component {
                   alignItems="center"
                   justify="center"
                 >
-                  {data.drafts.length > 0 &&
-                    data.drafts.map(draft => {
-                      const htmlBody = parseBody(
-                        draft.isCodeEditor === false
-                          ? json2md(JSON.parse(draft.body))
-                          : draft.body,
-                        {},
-                      );
-                      const sanitized = sanitize(htmlBody, {
-                        allowedTags: [],
-                      });
-                      const readtime = readingTime(sanitized);
-                      const excerpt = regExcerpt(sanitized);
-                      return (
-                        <Grid
-                          item
-                          lg={8}
-                          md={10}
-                          sm={11}
-                          xs={12}
-                          key={draft.id}
-                        >
+                  <Grid item lg={8} md={10} sm={11} xs={12}>
+                    {data.drafts.length > 0 &&
+                      data.drafts.map(draft => {
+                        const htmlBody = parseBody(
+                          draft.isCodeEditor === false
+                            ? json2md(JSON.parse(draft.body))
+                            : draft.body,
+                          {},
+                        );
+                        const sanitized = sanitize(htmlBody, {
+                          allowedTags: [],
+                        });
+                        const readtime = readingTime(sanitized);
+                        const excerpt = regExcerpt(sanitized);
+                        return (
                           <PostListItem
+                            key={draft.id}
                             post={{
                               author: user,
                               body: draft.body,
@@ -120,12 +114,12 @@ class Drafts extends Component {
                             }}
                             id={draft.id}
                             isDraftMode
-                          />{' '}
-                        </Grid>
-                      );
-                    })}
+                          />
+                        );
+                      })}
+                  </Grid>
                   {data.drafts && data.drafts.length === 0 && (
-                    <Card className="mt-5">
+                    <Card className="mt-2">
                       <CardContent>
                         You don&apos;t have any drafts yet.
                       </CardContent>

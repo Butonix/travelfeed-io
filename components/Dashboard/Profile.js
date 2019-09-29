@@ -81,7 +81,7 @@ const Profile = () => {
   };
 
   return (
-    <Grid container spacing={0} justify="center" className="pt-3 p-1">
+    <Grid container spacing={0} justify="center" className="p-1">
       <Grid item lg={7} md={8} sm={11} xs={12} className="p-1">
         <HeaderCard
           title="Edit your Profile"

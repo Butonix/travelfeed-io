@@ -20,6 +20,9 @@ import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
 const styles = theme => ({
+  card: {
+    borderRadius: 16,
+  },
   areabg: {
     background: theme.palette.background.light,
   },
@@ -216,8 +219,10 @@ class PostListItem extends Component {
       </div>
     );
     return (
-      <div className="p-1 pb-3">
-        <Card key={this.props.post.permlink}>{content}</Card>
+      <div className="pt-2 pr-2 pl-2">
+        <Card className={classes.card} key={this.props.post.permlink}>
+          {content}
+        </Card>
       </div>
     );
   }
