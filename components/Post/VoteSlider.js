@@ -184,7 +184,11 @@ class VoteSlider extends Component {
     let numberreplies = '';
     if (this.props.children !== 0)
       numberreplies = (
-        <Typography component="div" display="inline" className="pr-2">
+        <Typography
+          component="div"
+          display="inline"
+          className="pr-2 d-none d-xl-block d-lg-block d-md-block d-sm-block"
+        >
           <Box
             fontSize={16}
             color="text.icon"
@@ -268,9 +272,12 @@ class VoteSlider extends Component {
                 tags={this.props.tags}
               />
               <div className={rowitem1}>
-                <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
-                  <Divider />
-                </div>
+                {this.props.mode !== 'gridcard' &&
+                  this.props.mode !== 'comment' && (
+                    <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
+                      <Divider />
+                    </div>
+                  )}
                 <CardActions disableSpacing>
                   {actions.map(action => {
                     return <div className="actionli">{action}</div>;
@@ -332,14 +339,17 @@ class VoteSlider extends Component {
             }
             return (
               <Fragment>
-                <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
-                  <Divider variant="middle" />
-                  <SliderTags
-                    sliderstyle={sliderstyle}
-                    classes={rowitem2}
-                    tags={this.props.tags}
-                  />
-                </div>
+                {this.props.mode !== 'gridcard' &&
+                  this.props.mode !== 'comment' && (
+                    <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
+                      <Divider variant="middle" />
+                      <SliderTags
+                        sliderstyle={sliderstyle}
+                        classes={rowitem2}
+                        tags={this.props.tags}
+                      />
+                    </div>
+                  )}
                 <Divider variant="middle" />
                 <CardActions>
                   <Tooltip title="Upvote now" placement="bottom">

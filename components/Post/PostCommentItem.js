@@ -86,9 +86,9 @@ class PostCommentItem extends Component {
         />
       );
     }
-    let debth = 0;
+    let depth = 0;
     if (this.props.post.depth > 1 && this.props.loadreplies === true) {
-      debth = `${String(this.props.post.depth * 10)}px`;
+      depth = `${String(this.props.post.depth * 10)}px`;
     }
     let title = <Fragment />;
     let appIcon = <Fragment />;
@@ -172,10 +172,10 @@ class PostCommentItem extends Component {
       );
     }
     return (
-      <div className="pt-2 pr-2 pl-2">
+      <div>
         <Card
           className={classes.card}
-          style={{ marginLeft: debth }}
+          style={{ marginLeft: depth }}
           id={this.props.post.permlink}
         >
           <CardHeader

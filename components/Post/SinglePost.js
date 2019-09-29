@@ -239,27 +239,29 @@ class SinglePost extends Component {
                 />
               );
               card = (
-                <PostCommentItem
-                  loadreplies={false}
-                  post={{
-                    post_id,
-                    body,
-                    created_at,
-                    children,
-                    author,
-                    display_name,
-                    permlink,
-                    depth,
-                    total_votes,
-                    votes,
-                    parent_author,
-                    parent_permlink,
-                    root_author,
-                    root_permlink,
-                    root_title,
-                  }}
-                  title
-                />
+                <div className="pt-2 pr-2 pl-2">
+                  <PostCommentItem
+                    loadreplies={false}
+                    post={{
+                      post_id,
+                      body,
+                      created_at,
+                      children,
+                      author,
+                      display_name,
+                      permlink,
+                      depth,
+                      total_votes,
+                      votes,
+                      parent_author,
+                      parent_permlink,
+                      root_author,
+                      root_permlink,
+                      root_title,
+                    }}
+                    title
+                  />
+                </div>
               );
             } else {
               head = (
@@ -333,12 +335,14 @@ class SinglePost extends Component {
                       selection={this.state.title || 'Most miles'}
                     />
                   </Grid>
-                  <PostComments
-                    post_id={post_id}
-                    orderby={this.state.orderby || 'total_votes'}
-                    orderdir={this.state.orderdir || 'DESC'}
-                    ismain
-                  />
+                  <div className="pr-2 pl-2">
+                    <PostComments
+                      post_id={post_id}
+                      orderby={this.state.orderby || 'total_votes'}
+                      orderdir={this.state.orderdir || 'DESC'}
+                      ismain
+                    />
+                  </div>
                 </Fragment>
               );
             }
@@ -368,16 +372,6 @@ class SinglePost extends Component {
                     >
                       <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
                         {depth === 0 && <PostTitle title={title} />}
-                        {depth !== 0 && (
-                          <div className="container">
-                            <div
-                              className="row"
-                              style={{
-                                height: '50px',
-                              }}
-                            />
-                          </div>
-                        )}
                         {card}
                       </Grid>
                       <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
@@ -391,22 +385,24 @@ class SinglePost extends Component {
                             xs={12}
                             className="pb-2"
                           >
-                            <PostCommentItem
-                              post={{
-                                body: this.state.userComment.body,
-                                created_at: new Date(),
-                                children: 0,
-                                author: getUser(),
-                                display_name: '',
-                                permlink: this.state.userComment.permlink,
-                                depth: this.props.post.depth + 1,
-                                total_votes: 0,
-                                votes: '',
-                                parent_author: '',
-                                parent_permlink: '',
-                                root_title: '',
-                              }}
-                            />
+                            <div className="pt-2 pr-2 pl-2">
+                              <PostCommentItem
+                                post={{
+                                  body: this.state.userComment.body,
+                                  created_at: new Date(),
+                                  children: 0,
+                                  author: getUser(),
+                                  display_name: '',
+                                  permlink: this.state.userComment.permlink,
+                                  depth: this.props.post.depth + 1,
+                                  total_votes: 0,
+                                  votes: '',
+                                  parent_author: '',
+                                  parent_permlink: '',
+                                  root_title: '',
+                                }}
+                              />
+                            </div>
                           </Grid>
                         )}
                         {comments}

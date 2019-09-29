@@ -88,24 +88,26 @@ class PostComments extends Component {
                         xs={12}
                         key={post.post_id}
                       >
-                        <PostCommentItem
-                          post={{
-                            post_id: post.post_id,
-                            body: post.body,
-                            created_at: post.created_at,
-                            children: post.children,
-                            author: post.author,
-                            display_name: post.display_name,
-                            permlink: post.permlink,
-                            depth: post.depth,
-                            total_votes: post.total_votes,
-                            votes: post.votes,
-                            parent_author: post.parent_author,
-                            parent_permlink: post.parent_permlink,
-                          }}
-                          orderby={this.props.orderby}
-                          orderdir={this.props.orderdir}
-                        />
+                        <div className="pt-2">
+                          <PostCommentItem
+                            post={{
+                              post_id: post.post_id,
+                              body: post.body,
+                              created_at: post.created_at,
+                              children: post.children,
+                              author: post.author,
+                              display_name: post.display_name,
+                              permlink: post.permlink,
+                              depth: post.depth,
+                              total_votes: post.total_votes,
+                              votes: post.votes,
+                              parent_author: post.parent_author,
+                              parent_permlink: post.parent_permlink,
+                            }}
+                            orderby={this.props.orderby}
+                            orderdir={this.props.orderdir}
+                          />
+                        </div>
                       </Grid>
                     ))}
                 </InfiniteScroll>

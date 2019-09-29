@@ -163,28 +163,30 @@ class PostGrid extends Component {
                         );
                       } else if (this.props.poststyle === 'comment') {
                         card = (
-                          <PostCommentItem
-                            post={{
-                              post_id: post.post_id,
-                              body: post.body,
-                              created_at: post.created_at,
-                              children: post.children,
-                              author: post.author,
-                              display_name: post.display_name,
-                              permlink: post.permlink,
-                              depth: post.depth,
-                              total_votes: post.total_votes,
-                              votes: post.votes,
-                              parent_author: post.parent_author,
-                              parent_permlink: post.parent_permlink,
-                              root_author: post.root_author,
-                              root_permlink: post.root_permlink,
-                              root_title: post.root_title,
-                              tags: 'travelfeed',
-                            }}
-                            loadreplies={false}
-                            title
-                          />
+                          <div className="pt-2 pr-2 pl-2">
+                            <PostCommentItem
+                              post={{
+                                post_id: post.post_id,
+                                body: post.body,
+                                created_at: post.created_at,
+                                children: post.children,
+                                author: post.author,
+                                display_name: post.display_name,
+                                permlink: post.permlink,
+                                depth: post.depth,
+                                total_votes: post.total_votes,
+                                votes: post.votes,
+                                parent_author: post.parent_author,
+                                parent_permlink: post.parent_permlink,
+                                root_author: post.root_author,
+                                root_permlink: post.root_permlink,
+                                root_title: post.root_title,
+                                tags: 'travelfeed',
+                              }}
+                              loadreplies={false}
+                              title
+                            />
+                          </div>
                         );
                       } else {
                         card = (
