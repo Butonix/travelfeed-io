@@ -1,3 +1,5 @@
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -28,12 +30,16 @@ const Notifications = () => {
                       </div>
                     )}
                     {(error || (data && data.posts === null)) && (
-                      <div className="p-3 text-center">
-                        Error: Could not load notifications.
-                      </div>
+                      <Card className="mt-5 m-2 text-center">
+                        <CardContent>
+                          Error: Could not load notifications.
+                        </CardContent>
+                      </Card>
                     )}
                     {data && data.posts && data.posts.length === 0 && (
-                      <div className="p-3 text-center">No notifications.</div>
+                      <Card className="mt-5 m-2 text-center">
+                        <CardContent>No notifications.</CardContent>
+                      </Card>
                     )}
                     {data &&
                       data.posts &&

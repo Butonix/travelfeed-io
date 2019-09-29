@@ -242,18 +242,19 @@ class PostGrid extends Component {
                           ].indexOf(this.props.active) === -1 && (
                             <>
                               <span>
-                                No posts found
                                 {(this.props.active === 'destination' &&
-                                  ' about this destination') ||
+                                  'No posts found about this destination') ||
                                   (this.props.active === 'topic' &&
-                                    ' about this topic')}
-                                {'. '}
+                                    'No posts found about this topic')}
+                                {`There's nothing here yet.`}
                               </span>
-                              {getUser() && (
-                                <Link href="/dashboard/publish" passHref>
-                                  <a>Create one now!</a>
-                                </Link>
-                              )}
+                              {getUser() &&
+                                (this.props.active === 'destination' ||
+                                  this.props.active === 'topic') && (
+                                  <Link href="/dashboard/publish" passHref>
+                                    <a>Create one now!</a>
+                                  </Link>
+                                )}
                             </>
                           )) ||
                           'No posts found. This could be a connection problem.'}

@@ -117,14 +117,14 @@ class Drafts extends Component {
                           />
                         );
                       })}
+                    {data.drafts && data.drafts.length === 0 && (
+                      <Card className="mt-2 text-center">
+                        <CardContent>
+                          You don&apos;t have any drafts yet.
+                        </CardContent>
+                      </Card>
+                    )}
                   </Grid>
-                  {data.drafts && data.drafts.length === 0 && (
-                    <Card className="mt-2">
-                      <CardContent>
-                        You don&apos;t have any drafts yet.
-                      </CardContent>
-                    </Card>
-                  )}
                 </Grid>
               </InfiniteScroll>
             );

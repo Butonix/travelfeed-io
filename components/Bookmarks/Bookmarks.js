@@ -46,7 +46,8 @@ class Bookmarks extends Component {
             if (error || data.bookmarks === null) {
               return (
                 <div className="text-center">
-                  You don't have any bookmarks yet.
+                  You don't have any bookmarks yet. Click the bookmark icon on
+                  the top right of a post to bookmark it.
                 </div>
               );
             }
@@ -142,9 +143,10 @@ class Bookmarks extends Component {
                       );
                     })}
                   {data.bookmarks && data.bookmarks.length === 0 && (
-                    <Card className="mt-5">
+                    <Card className="mt-5 m-2">
                       <CardContent>
-                        You don't have any bookmarks yet.
+                        You don't have any bookmarks yet. Click the bookmark
+                        icon on the top right of a post to bookmark it.
                       </CardContent>
                     </Card>
                   )}
