@@ -267,6 +267,7 @@ class VoteSlider extends Component {
           <div className="container-fluid">
             <div className="row">
               <SliderTags
+                cutTags={this.props.mode === 'gridcard'}
                 sliderstyle={sliderstyle}
                 classes={rowitem2}
                 tags={this.props.tags}
@@ -344,6 +345,7 @@ class VoteSlider extends Component {
                     <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
                       <Divider variant="middle" />
                       <SliderTags
+                        cutTags={this.props.mode === 'gridcard'}
                         sliderstyle={sliderstyle}
                         classes={rowitem2}
                         tags={this.props.tags}

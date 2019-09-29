@@ -123,10 +123,6 @@ class PostGrid extends Component {
                         title.length > 85
                           ? `${title.substring(0, 81)}[...]`
                           : title;
-                      const tags =
-                        post.tags && post.tags.length > 1
-                          ? [post.tags[1]]
-                          : ['travelfeed'];
                       const excerpt = regExcerpt(sanitized);
                       let card = <Fragment />;
                       if (this.props.poststyle === 'list') {
@@ -204,7 +200,7 @@ class PostGrid extends Component {
                               excerpt,
                               votes: post.votes,
                               total_votes: post.total_votes,
-                              tags,
+                              tags: post.tags,
                               curation_score: post.curation_score,
                               app: post.app,
                               depth: post.depth,
