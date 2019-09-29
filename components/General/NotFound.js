@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Link from '../../lib/Link';
@@ -33,6 +34,63 @@ const NotFound = props => {
       message:
         'The login credentials you provided are not valid. Please log in again.',
     };
+  else if (statusCode === 'exit_url')
+    error = {
+      title: 'Warning: External Link',
+      message:
+        'This is an external link. Please check it carefully before proceeding.',
+      footer: (
+        <>
+          <div className="text-center pb-3">
+            <em>{props.url}</em>
+          </div>
+          <Button
+            onClick={() => Router.back()}
+            color="primary"
+            variant="outlined"
+            className="m-1"
+          >
+            Go back
+          </Button>
+          <a
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+            href={props.url}
+          >
+            <Button color="primary" variant="contained" className="m-1">
+              Visit this Website
+            </Button>
+          </a>
+        </>
+      ),
+    };
+  else if (statusCode === 'invalid_post')
+    error = {
+      title: 'Not a TravelFeed Post',
+      message:
+        'This is not a valid TravelFeed post, but it does exist on the Steem blockchain. Proceed to Steempeak to view the post anyway?',
+      footer: (
+        <>
+          <Button
+            onClick={() => Router.back()}
+            color="primary"
+            variant="outlined"
+            className="m-1"
+          >
+            Go back
+          </Button>
+          <a
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+            href={props.url}
+          >
+            <Button color="primary" variant="contained" className="m-1">
+              View on Steempeak
+            </Button>
+          </a>
+        </>
+      ),
+    };
   return (
     <>
       <FixedBackgroundImage
@@ -40,7 +98,6 @@ const NotFound = props => {
         component={
           <>
             <Head title={`${error.title} | TravelFeed`} />
-
             <Grid
               container
               spacing={0}
@@ -60,13 +117,15 @@ const NotFound = props => {
                         {error.message}
                       </Typography>
                       <div className="pt-2">
-                        <Link href="/" passHref>
-                          <a>
-                            <Button color="primary" variant="contained">
-                              Back to Homepage
-                            </Button>
-                          </a>
-                        </Link>
+                        {(error.footer && error.footer) || (
+                          <Link href="/" passHref>
+                            <a>
+                              <Button color="primary" variant="contained">
+                                Back to Homepage
+                              </Button>
+                            </a>
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </CardContent>

@@ -13,7 +13,6 @@ import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
-import InvalidPost from '../General/InvalidPost';
 import NotFound from '../General/NotFound';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
@@ -139,7 +138,12 @@ class SinglePost extends Component {
             // prefererences
             if (data && data.post && !is_travelfeed && depth === 0) {
               const url = `https://steempeak.com/@${author}/${permlink}`;
-              return <InvalidPost url={url} />;
+              return (
+                <>
+                  <Header />
+                  <NotFound statusCode="invalid_post" url={url} />
+                </>
+              );
             }
             // If comment, render comment component
             let card = <Fragment />;
