@@ -17,7 +17,9 @@ class PostMap extends Component {
     return (
       // Important! Always set the container height explicitly
       <Fragment>
-        <div style={{ height: '250px', width: '100%' }}>
+        <div
+          style={{ height: '250px', width: '100%', padding: '0 24px 0 24px' }}
+        >
           <GoogleMapReact
             bootstrapURLKeys={{
               key: GMAPS_API_KEY,

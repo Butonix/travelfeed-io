@@ -21,7 +21,7 @@ import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
 const styles = theme => ({
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
   },
   areabg: {
     background: theme.palette.background.light,

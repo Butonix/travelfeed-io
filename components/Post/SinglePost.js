@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/styles';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -24,6 +25,12 @@ import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
 import VoteSlider from './VoteSlider';
+
+const styles = () => ({
+  card: {
+    borderRadius: 12,
+  },
+});
 
 class SinglePost extends Component {
   constructor(props) {
@@ -69,6 +76,8 @@ class SinglePost extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     let children = 0;
     let is_travelfeed,
       is_blacklisted,
@@ -270,7 +279,7 @@ class SinglePost extends Component {
               card = (
                 <>
                   <div ref={this.myInput}>
-                    <Card>
+                    <Card className={classes.card}>
                       <PostContent
                         author={author}
                         appIcon={appIcon}
@@ -298,7 +307,7 @@ class SinglePost extends Component {
                     </Card>
                   </div>
                   <div className="pt-2">
-                    <Card>
+                    <Card className={classes.card}>
                       {data && data.post && (
                         <PostSocialShares
                           author={author}
@@ -418,4 +427,4 @@ SinglePost.propTypes = {
   post: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
 };
 
-export default SinglePost;
+export default withStyles(styles)(SinglePost);

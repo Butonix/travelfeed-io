@@ -6,7 +6,6 @@ import React from 'react';
 
 const SmallBox = props => {
   const theme = useTheme();
-  console.log(theme);
   const { borderRadius } = theme.shape;
 
   const { title, value, iconColor, boxColor, prefix } = props;

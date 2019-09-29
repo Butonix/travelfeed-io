@@ -18,7 +18,7 @@ import ProfileName from '../Profile/ProfileName';
 
 const styles = () => ({
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
   },
   cardHeader: {
     padding: 12,

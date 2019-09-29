@@ -86,7 +86,6 @@ class PostComments extends Component {
                         md={12}
                         sm={12}
                         xs={12}
-                        className="pb-2"
                         key={post.post_id}
                       >
                         <PostCommentItem

@@ -19,7 +19,7 @@ import VoteSlider from './VoteSlider';
 
 const styles = theme => ({
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
   },
   areabg: {
     background: theme.palette.background.light,
@@ -88,7 +88,7 @@ class PostCommentItem extends Component {
     }
     let debth = 0;
     if (this.props.post.depth > 1 && this.props.loadreplies === true) {
-      debth = `${String(this.props.post.depth * 20)}px`;
+      debth = `${String(this.props.post.depth * 10)}px`;
     }
     let title = <Fragment />;
     let appIcon = <Fragment />;
