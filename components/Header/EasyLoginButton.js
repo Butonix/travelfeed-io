@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import Cookie from 'js-cookie';
-import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -72,7 +71,8 @@ const EasyLoginButton = props => {
               if (data.login.hasAcceptedTos) {
                 if (data.login.jwt) {
                   setAccessToken(data.login.jwt, 604800);
-                  Router.replace('/dashboard');
+                  // Force hard reload on login to update apollo context with new access token
+                  window.open('/dashboard', '_self', undefined, true);
                   return <CircularProgress />;
                 }
               }
@@ -96,7 +96,7 @@ const EasyLoginButton = props => {
                         ) {
                           if (mutatedata.login.jwt) {
                             setAccessToken(mutatedata.login.jwt, 604800);
-                            Router.replace('/dashboard');
+                            window.open('/dashboard', '_self', undefined, true);
                             return <CircularProgress />;
                           }
                           newNotification({

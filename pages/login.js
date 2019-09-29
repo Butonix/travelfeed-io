@@ -1,5 +1,4 @@
 import Cookie from 'js-cookie';
-import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
@@ -57,7 +56,8 @@ const LoginPage = props => {
                           setAccessToken(data.data.login.jwt, expires_in);
                         else return <ErrorPage statusCode="invalid_login" />;
                         if (sc_token) setScToken(sc_token, expires_in);
-                        Router.replace('/dashboard');
+                        // Force hard reload on login to update apollo context with new access token
+                        window.open('/dashboard', '_self', undefined, true);
                         return <></>;
                       }
                       return <LoginDialog acceptTos={acceptTos} />;
@@ -68,7 +68,7 @@ const LoginPage = props => {
               if (sc_token) setScToken(sc_token, expires_in);
               if (data.login.jwt) {
                 setAccessToken(data.login.jwt, expires_in);
-                Router.replace('/dashboard');
+                window.open('/dashboard', '_self', undefined, true);
               } else return <ErrorPage statusCode="invalid_login" />;
               return '';
             }
