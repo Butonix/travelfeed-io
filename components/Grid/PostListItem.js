@@ -143,7 +143,8 @@ class PostListItem extends Component {
                         this.props.post.isCodeEditor,
                       )}&jsonMeta=${encodeURIComponent(
                         this.props.isDraftMode ? '' : this.props.post.json,
-                      )}&json=${this.props.post.json ||
+                      )}&json=${(this.props.isDraftMode &&
+                        this.props.post.json) ||
                         JSON.stringify({
                           tags: this.props.post.tags,
                           location: {
