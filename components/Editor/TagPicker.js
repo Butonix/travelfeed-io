@@ -10,7 +10,10 @@ import Downshift from 'downshift';
 import deburr from 'lodash.deburr';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
+import { photoTags, removeTags } from '../../config';
 import { allSpecialChars } from '../../helpers/regex';
+
+const blacklistTags = removeTags.concat(photoTags);
 
 const styles = theme => ({
   root: {
@@ -61,7 +64,6 @@ const suggestions = [
   { label: 'photography' },
   { label: 'foodoftheworld' },
   { label: 'traveladvice' },
-  { label: 'photofeed' },
   { label: 'introduceyourself' },
   { label: 'birds' },
   { label: 'contest' },
@@ -75,10 +77,6 @@ const suggestions = [
   { label: 'marketfriday' },
   { label: 'sports' },
   { label: 'transportation' },
-  { label: 'palnet' },
-  { label: 'creativecoin' },
-  { label: 'neoxian' },
-  { label: 'sct' },
 ];
 
 const renderInput = inputProps => {
@@ -251,12 +249,7 @@ const TagPicker = props => {
                           <Chip
                             key={item}
                             color={
-                              [
-                                'palnet',
-                                'creativecoin',
-                                'sct',
-                                'neoxian',
-                              ].indexOf(item) > -1
+                              blacklistTags.indexOf(item) > -1
                                 ? 'primary'
                                 : 'secondary'
                             }

@@ -55,7 +55,7 @@ class TagPage extends Component {
           tags={this.props.tags}
           selection={this.props.selection}
         />
-        <div className="container" id="containerInvisibleOnMobile">
+        <div className="container pb-2" id="containerInvisibleOnMobile">
           <PostGrid
             active="topic"
             query={{

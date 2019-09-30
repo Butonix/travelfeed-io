@@ -59,7 +59,7 @@ class DestinationsPage extends Component {
           query={{ country_code, subdivision, city }}
           title={title}
         />
-        <div className="container" id="containerInvisibleOnMobile">
+        <div className="container pb-2" id="containerInvisibleOnMobile">
           <PostGrid
             active="destination"
             query={{
