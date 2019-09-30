@@ -19,6 +19,7 @@ import CookieIcon from '@material-ui/icons/GroupWork';
 import PrivacyIcon from '@material-ui/icons/Lock';
 import MapIcon from '@material-ui/icons/Map';
 import MenuIcon from '@material-ui/icons/Menu';
+import NewIcon from '@material-ui/icons/Restore';
 import SettingsIcon from '@material-ui/icons/Settings';
 import FeaturedIcon from '@material-ui/icons/Star';
 import TermsIcon from '@material-ui/icons/Toc';
@@ -77,26 +78,22 @@ export default function SwipeableTemporaryDrawer(props) {
   const feedList = [
     {
       label: 'featured',
-      as: '/featured',
-      href: '/?orderby=featured',
+      link: '/',
       icon: <FeaturedIcon />,
     },
     {
       label: 'taking Off',
-      as: '/hot',
-      href: '/?orderby=sc_hot',
-      icon: <DiscoverIcon />,
-    },
-    {
-      label: 'new',
-      as: '/created',
-      href: '/?orderby=created_at',
+      link: '/hot',
       icon: <HotIcon />,
     },
     {
+      label: 'new',
+      link: '/created',
+      icon: <NewIcon />,
+    },
+    {
       label: 'discover',
-      as: '/discover',
-      href: '/?orderby=random',
+      link: '/discover',
       icon: <DiscoverIcon />,
     },
   ];
@@ -116,14 +113,12 @@ export default function SwipeableTemporaryDrawer(props) {
     });
     feedList.unshift({
       label: 'feed',
-      as: '/feed',
-      href: '/?orderby=feed',
+      link: '/feed',
       icon: <FeedIcon />,
     });
     feedList.push({
       label: 'bookmarks',
-      href: '/bookmarks',
-      as: '/bookmarks',
+      link: '/bookmarks',
       icon: <BookmarkIcon />,
     });
   }
@@ -168,13 +163,7 @@ export default function SwipeableTemporaryDrawer(props) {
       <Divider />
       <List>
         {feedList.map(el => (
-          <Link
-            color="textPrimary"
-            href={el.href}
-            as={el.as}
-            onClick={toggleDrawer(false)}
-            passHref
-          >
+          <Link color="textPrimary" href={el.link} passHref>
             <a>
               <ListItem selected={active === el.label} button key={el.label}>
                 <ListItemIcon>{el.icon}</ListItemIcon>

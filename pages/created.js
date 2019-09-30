@@ -1,15 +1,15 @@
 import React from 'react';
 import Feed from '../components/Feed/Feed';
 
-const FeaturedFeed = () => {
+const CreatedFeed = () => {
   return (
     <Feed
-      active="featured"
-      selection={3}
-      min_curation_score={9000}
+      active="new"
+      selection={0}
+      min_curation_score={0}
       orderby="created_at"
     />
   );
 };
 
-export default FeaturedFeed;
+export default CreatedFeed;
