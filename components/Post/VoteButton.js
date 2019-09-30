@@ -1,5 +1,6 @@
 import IconButton from '@material-ui/core/IconButton';
 import FlightIcon from '@material-ui/icons/FlightTakeoff';
+import { withSnackbar } from 'notistack';
 import React from 'react';
 import { vote } from '../../helpers/actions';
 import { VOTE } from '../../helpers/graphql/broadcast';
@@ -10,6 +11,16 @@ const VoteButton = props => {
   const { author, permlink, pastVote, setLoading } = props;
   const weight = props.weight * 1000;
 
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
   const votePost = () => {
     setLoading();
     const roles = getRoles();
@@ -19,10 +30,20 @@ const VoteButton = props => {
         permlink,
         weight,
       };
-      graphQLClient(VOTE, variables).then(res => {
-        if (res && res.vote) pastVote(res.vote);
-        setLoading(false);
-      });
+      graphQLClient(VOTE, variables)
+        .then(res => {
+          if (res && res.vote) pastVote(res.vote);
+          setLoading(false);
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
       vote(author, permlink, weight).then(res => {
         if (res) {
@@ -39,4 +60,4 @@ const VoteButton = props => {
   );
 };
 
-export default VoteButton;
+export default withSnackbar(VoteButton);

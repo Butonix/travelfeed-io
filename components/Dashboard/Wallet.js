@@ -12,10 +12,7 @@ const Wallet = () => {
     <Fragment>
       <Grid container spacing={0} className="p-1" justify="center">
         <Query query={GET_USER_STATS}>
-          {({ data, loading, error }) => {
-            if (loading || error || data.userstats === null) {
-              return <Fragment />;
-            }
+          {({ data }) => {
             return (
               <Fragment>
                 <Grid item className="p-1" lg={6} md={6} sm={11} xs={12}>
@@ -24,11 +21,13 @@ const Wallet = () => {
                     background={green[600]}
                     content={
                       <Fragment>
-                        <p>
-                          You have earned a total of{' '}
-                          <strong>${data.userstats.total_payout}</strong> with
-                          your TravelBlog so far.
-                        </p>
+                        {data && data.userstats && (
+                          <p>
+                            You have earned a total of{' '}
+                            <strong>${data.userstats.total_payout}</strong> with
+                            your TravelBlog so far.
+                          </p>
+                        )}
                       </Fragment>
                     }
                   />
@@ -63,10 +62,14 @@ const Wallet = () => {
                     title="Monthly Earnings"
                     background={teal[600]}
                     content={
-                      <RecentEarnings
-                        color={teal[400]}
-                        recentPayouts={data.userstats.recent_payouts}
-                      />
+                      <>
+                        {data && data.userstats && (
+                          <RecentEarnings
+                            color={teal[400]}
+                            recentPayouts={data.userstats.recent_payouts}
+                          />
+                        )}
+                      </>
                     }
                   />
                 </Grid>

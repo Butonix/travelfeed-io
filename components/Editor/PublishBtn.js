@@ -24,13 +24,23 @@ const PublishBtn = props => {
   const publishComment = () => {
     const roles = getRoles();
     if (roles && roles.indexOf('easylogin') !== -1) {
-      graphQLClient(POST, props.publishThis).then(res => {
-        if (res && res.post) {
-          newNotification(res.post);
-          props.pastPublish(res.post);
-        }
-        setLoading(false);
-      });
+      graphQLClient(POST, props.publishThis)
+        .then(res => {
+          if (res && res.post) {
+            newNotification(res.post);
+            props.pastPublish(res.post);
+          }
+          setLoading(false);
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
       post(props.publishThis).then(res => {
         if (res) {

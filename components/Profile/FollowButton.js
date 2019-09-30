@@ -45,11 +45,21 @@ const FollowButton = props => {
     const roles = getRoles();
     if (roles && roles.indexOf('easylogin') !== -1) {
       const variables = { following: props.author };
-      graphQLClient(isFollowed ? UNFOLLOW : FOLLOW, variables).then(res => {
-        if (res && (res.follow || res.unfollow)) {
-          pastBroadcast(res.follow || res.unfollow);
-        }
-      });
+      graphQLClient(isFollowed ? UNFOLLOW : FOLLOW, variables)
+        .then(res => {
+          if (res && (res.follow || res.unfollow)) {
+            pastBroadcast(res.follow || res.unfollow);
+          }
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isFollowed) {

@@ -73,143 +73,147 @@ const Settings = props => {
             content={
               <Query fetchPolicy="network-only" query={GET_SETTINGS}>
                 {({ data }) => {
-                  if (data) {
-                    if (loaded === false && data && data.preferences) {
-                      setLoaded(true);
-                      setDefaultVoteWeight(data.preferences.defaultVoteWeight);
-                      setDefaultCommentsVoteWeight(
-                        data.preferences.defaultCommentsVoteWeight,
-                      );
-                      setShowNSFW(data.preferences.showNSFW);
-                      setUseTfBlacklist(data.preferences.useTfBlacklist);
-                      return <Fragment />;
-                    }
-                    return (
-                      <Mutation
-                        mutation={CHANGE_SETTINGS}
-                        variables={{
-                          defaultVoteWeight,
-                          defaultCommentsVoteWeight,
-                          showNSFW,
-                          useTfBlacklist,
-                        }}
-                      >
-                        {changeSettings => {
-                          if (data.loading && saved) {
-                            setSaved(false);
-                          }
-                          if (data.data && !saved) {
-                            newNotification({
-                              success: data.data.updatePreferences.success,
-                              message: data.data.updatePreferences.message,
-                            });
-                            setSaved(true);
-                          }
-                          return (
-                            <Fragment>
-                              <FormControl fullWidth>
-                                <FormGroup>
-                                  <FormControlLabel
-                                    labelPlacement="end"
-                                    control={
-                                      <Switch
-                                        checked={showNSFW}
-                                        onChange={handleCheckboxChange(
-                                          'showNSFW',
-                                        )}
-                                        onInput={changeSettings}
-                                        value="showNSFW"
-                                        color="primary"
-                                      />
-                                    }
-                                    label="Show NSFW posts"
-                                  />
-                                  <Divider />
-                                  <FormControlLabel
-                                    labelPlacement="end"
-                                    control={
-                                      <Switch
-                                        checked={useTfBlacklist}
-                                        onChange={handleCheckboxChange(
-                                          'useTfBlacklist',
-                                        )}
-                                        onInput={changeSettings}
-                                        value="useTfBlacklist"
-                                        color="primary"
-                                      />
-                                    }
-                                    label="Use TravelFeed Blacklist"
-                                  />
-                                  <Divider />
-                                  <FormControlLabel
-                                    labelPlacement="end"
-                                    control={
-                                      <Switch
-                                        checked={useDarkMode}
-                                        onChange={handleCheckboxChange(
-                                          'useDarkMode',
-                                        )}
-                                        onInput={changeSettings}
-                                        value="useDarkMode"
-                                        color="primary"
-                                      />
-                                    }
-                                    label="Use dark mode"
-                                  />
-                                  <Divider />
-                                  <TextField
-                                    select
-                                    label="Default miles weight for posts"
-                                    value={defaultVoteWeight}
-                                    onChange={value => {
-                                      setDefaultVoteWeight(value.target.value);
-                                      changeSettings({
-                                        variables: {
-                                          defaultVoteWeight: value.target.value,
-                                        },
-                                      });
-                                    }}
-                                    margin="normal"
-                                  >
-                                    {weights.map(w => (
-                                      <MenuItem key={w} value={w}>
-                                        {w}
-                                      </MenuItem>
-                                    ))}
-                                  </TextField>
-                                  <Divider />
-                                  <TextField
-                                    select
-                                    label="Default miles weight on comments"
-                                    value={defaultCommentsVoteWeight}
-                                    onChange={value => {
-                                      setDefaultCommentsVoteWeight(
-                                        value.target.value,
-                                      );
-                                      changeSettings({
-                                        variables: {
-                                          defaultCommentsVoteWeight:
-                                            value.target.value,
-                                        },
-                                      });
-                                    }}
-                                    margin="normal"
-                                  >
-                                    {weights.map(w => (
-                                      <MenuItem key={w} value={w}>
-                                        {w}
-                                      </MenuItem>
-                                    ))}
-                                  </TextField>
-                                </FormGroup>
-                              </FormControl>
-                            </Fragment>
-                          );
-                        }}
-                      </Mutation>
+                  if (loaded === false && data && data.preferences) {
+                    setLoaded(true);
+                    setDefaultVoteWeight(data.preferences.defaultVoteWeight);
+                    setDefaultCommentsVoteWeight(
+                      data.preferences.defaultCommentsVoteWeight,
                     );
+                    setShowNSFW(data.preferences.showNSFW);
+                    setUseTfBlacklist(data.preferences.useTfBlacklist);
+                    return <Fragment />;
                   }
-                  return <Fragment />;
+                  return (
+                    <Mutation
+                      mutation={CHANGE_SETTINGS}
+                      variables={{
+                        defaultVoteWeight,
+                        defaultCommentsVoteWeight,
+                        showNSFW,
+                        useTfBlacklist,
+                      }}
+                    >
+                      {(changeSettings, data) => {
+                        if (data && data.loading && saved) {
+                          setSaved(false);
+                        }
+                        if (data && data.error) {
+                          newNotification({
+                            success: false,
+                            message: 'Network Error. Are you online?',
+                          });
+                        }
+                        if (data && data.data && !saved) {
+                          newNotification({
+                            success: data.data.updatePreferences.success,
+                            message: data.data.updatePreferences.message,
+                          });
+                          setSaved(true);
+                        }
+                        return (
+                          <Fragment>
+                            <FormControl fullWidth>
+                              <FormGroup>
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={showNSFW}
+                                      onChange={handleCheckboxChange(
+                                        'showNSFW',
+                                      )}
+                                      onInput={changeSettings}
+                                      value="showNSFW"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Show NSFW posts"
+                                />
+                                <Divider />
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={useTfBlacklist}
+                                      onChange={handleCheckboxChange(
+                                        'useTfBlacklist',
+                                      )}
+                                      onInput={changeSettings}
+                                      value="useTfBlacklist"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Use TravelFeed Blacklist"
+                                />
+                                <Divider />
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={useDarkMode}
+                                      onChange={handleCheckboxChange(
+                                        'useDarkMode',
+                                      )}
+                                      // onInput={changeSettings}
+                                      // For now, dark mode is saved on the device only
+                                      value="useDarkMode"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Use dark mode"
+                                />
+                                <Divider />
+                                <TextField
+                                  select
+                                  label="Default miles weight for posts"
+                                  value={defaultVoteWeight}
+                                  onChange={value => {
+                                    setDefaultVoteWeight(value.target.value);
+                                    changeSettings({
+                                      variables: {
+                                        defaultVoteWeight: value.target.value,
+                                      },
+                                    });
+                                  }}
+                                  margin="normal"
+                                >
+                                  {weights.map(w => (
+                                    <MenuItem key={w} value={w}>
+                                      {w}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                                <Divider />
+                                <TextField
+                                  select
+                                  label="Default miles weight on comments"
+                                  value={defaultCommentsVoteWeight}
+                                  onChange={value => {
+                                    setDefaultCommentsVoteWeight(
+                                      value.target.value,
+                                    );
+                                    changeSettings({
+                                      variables: {
+                                        defaultCommentsVoteWeight:
+                                          value.target.value,
+                                      },
+                                    });
+                                  }}
+                                  margin="normal"
+                                >
+                                  {weights.map(w => (
+                                    <MenuItem key={w} value={w}>
+                                      {w}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                              </FormGroup>
+                            </FormControl>
+                          </Fragment>
+                        );
+                      }}
+                    </Mutation>
+                  );
                 }}
               </Query>
             }

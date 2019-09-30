@@ -43,10 +43,16 @@ class Drafts extends Component {
                 </div>
               );
             }
-            if (error || data.drafts === null) {
-              return <Fragment />;
+            if (error) {
+              return (
+                <Card className="m-5 text-center" key="noposts">
+                  <CardContent>
+                    {error && 'Network Error. Are you online?'}
+                  </CardContent>
+                </Card>
+              );
             }
-            if (data.drafts.length < 10 && hasMore)
+            if (data && data.drafts && data.drafts.length < 10 && hasMore)
               this.setState({ hasMore: false });
             return (
               <InfiniteScroll

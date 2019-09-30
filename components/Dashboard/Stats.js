@@ -35,51 +35,64 @@ const Stats = () => {
     <Fragment>
       <Grid container className="p-1" spacing={0} justify="center">
         <Query query={GET_USER_STATS}>
-          {({ data, loading, error }) => {
-            if (loading || error || data.userstats === null) {
-              return <Fragment />;
-            }
+          {({ data }) => {
             return (
               <Fragment>
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <SmallBox
-                    Icon={TotalPostsIcon}
-                    title="Total Posts"
-                    value={data.userstats.total_posts}
-                    iconColor={purple[600]}
-                    boxColor={purple[400]}
-                  />
-                </Grid>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <SmallBox
-                    Icon={TotalPayoutIcon}
-                    title="Total Earnings"
-                    value={data.userstats.total_payout}
-                    prefix="$"
-                    iconColor={cyan[800]}
-                    boxColor={cyan[600]}
-                  />
-                </Grid>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <SmallBox
-                    Icon={TotalFeaturedIcon}
-                    title="Featured Posts"
-                    value={data.userstats.total_featured}
-                    iconColor={orange[600]}
-                    boxColor={orange[400]}
-                  />
-                </Grid>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <SmallBox
-                    Icon={QualityIcon}
-                    title="Quality Score"
-                    value={calculateQualityScore(
-                      data.userstats.total_featured,
-                      data.userstats.total_posts,
+                  <>
+                    {data && data.userstats && (
+                      <SmallBox
+                        Icon={TotalPostsIcon}
+                        title="Total Posts"
+                        value={data.userstats.total_posts}
+                        iconColor={purple[600]}
+                        boxColor={purple[400]}
+                      />
                     )}
-                    iconColor={pink[600]}
-                    boxColor={pink[400]}
-                  />
+                  </>
+                </Grid>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
+                  <>
+                    {data && data.userstats && (
+                      <SmallBox
+                        Icon={TotalPayoutIcon}
+                        title="Total Earnings"
+                        value={data.userstats.total_payout}
+                        prefix="$"
+                        iconColor={cyan[800]}
+                        boxColor={cyan[600]}
+                      />
+                    )}
+                  </>
+                </Grid>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
+                  <>
+                    {data && data.userstats && (
+                      <SmallBox
+                        Icon={TotalFeaturedIcon}
+                        title="Featured Posts"
+                        value={data.userstats.total_featured}
+                        iconColor={orange[600]}
+                        boxColor={orange[400]}
+                      />
+                    )}
+                  </>
+                </Grid>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
+                  <>
+                    {data && data.userstats && (
+                      <SmallBox
+                        Icon={QualityIcon}
+                        title="Quality Score"
+                        value={calculateQualityScore(
+                          data.userstats.total_featured,
+                          data.userstats.total_posts,
+                        )}
+                        iconColor={pink[600]}
+                        boxColor={pink[400]}
+                      />
+                    )}
+                  </>
                 </Grid>
                 <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
                   <HeaderCard
@@ -163,10 +176,12 @@ const Stats = () => {
                       background={teal[600]}
                       content={
                         <div className="pt-3">
-                          <RecentEarnings
-                            color={teal[400]}
-                            recentPayouts={data.userstats.recent_payouts}
-                          />
+                          {data && data.userstats && (
+                            <RecentEarnings
+                              color={teal[400]}
+                              recentPayouts={data.userstats.recent_payouts}
+                            />
+                          )}
                         </div>
                       }
                     />
@@ -181,16 +196,13 @@ const Stats = () => {
             query={GET_DASHBOARD_POSTS}
             variables={{ author: getUser(), limit: 15 }}
           >
-            {({ data, loading, error }) => {
-              if (loading || error || data.post === null) {
-                return <Fragment />;
-              }
+            {({ data }) => {
               return (
                 <HeaderCard
                   noborder
                   title="Recent Posts"
                   background={indigo[600]}
-                  content={<PostsTable data={data.posts} />}
+                  content={<>{data && <PostsTable data={data.posts} />}</>}
                 />
               );
             }}
@@ -203,45 +215,44 @@ const Stats = () => {
               limit: 3,
             }}
           >
-            {({ data, loading, error }) => {
-              if (loading || error || data.post === null) {
-                return <Fragment />;
-              }
+            {({ data }) => {
               return (
                 <div className="mt-2">
                   <HeaderCard
                     title="Notifications"
                     background={lightGreen[600]}
                     content={
-                      (data.posts && data.posts.length === 0 && (
+                      (data && data.posts && data.posts.length === 0 && (
                         <div className="text-center">No notifications.</div>
                       )) ||
-                      data.posts.map(post => {
-                        return post.curation_score >= 9000 ? (
-                          <div
-                            key={post.title}
-                            className="d-flex justify-content-center p-2"
-                          >
-                            <CustomSnackbar
-                              variant="success"
-                              message={`Your post ${post.title}
+                      (data &&
+                        data.posts &&
+                        data.posts.map(post => {
+                          return post.curation_score >= 9000 ? (
+                            <div
+                              key={post.title}
+                              className="d-flex justify-content-center p-2"
+                            >
+                              <CustomSnackbar
+                                variant="success"
+                                message={`Your post ${post.title}
                         was selected to be featured on the front page! Keep
                         up the great work!`}
-                            />
-                          </div>
-                        ) : (
-                          <div
-                            key={post.title}
-                            className="d-flex justify-content-center p-2"
-                          >
-                            <CustomSnackbar
-                              variant="info"
-                              message={`Your post ${post.title}
+                              />
+                            </div>
+                          ) : (
+                            <div
+                              key={post.title}
+                              className="d-flex justify-content-center p-2"
+                            >
+                              <CustomSnackbar
+                                variant="info"
+                                message={`Your post ${post.title}
                         received a small vote by our curation team! Good job!`}
-                            />
-                          </div>
-                        );
-                      })
+                              />
+                            </div>
+                          );
+                        }))
                     }
                   />
                 </div>

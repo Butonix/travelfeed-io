@@ -43,12 +43,13 @@ class Bookmarks extends Component {
                 </Grid>
               );
             }
-            if (error || data.bookmarks === null) {
+            if (error) {
               return (
-                <div className="text-center">
-                  You don't have any bookmarks yet. Click the bookmark icon on
-                  the top right of a post to bookmark it.
-                </div>
+                <Card className="m-5 text-center" key="noposts">
+                  <CardContent>
+                    {error && 'Network Error. Are you online?'}
+                  </CardContent>
+                </Card>
               );
             }
             if (data.bookmarks.length < 9 && hasMore)

@@ -119,14 +119,29 @@ const PostEditor = props => {
         isCodeEditor: codeEditor,
       };
 
-      graphQLClient(SAVE_DRAFT, variables).then(data => {
-        if (
-          (options && options.showNotification) ||
-          (data && data.addDraft && !data.addDraft.success)
-        ) {
-          newNotification(data.addDraft);
-        }
-      });
+      graphQLClient(SAVE_DRAFT, variables)
+        .then(data => {
+          if (options && options.showNotification)
+            newNotification(data.addDraft);
+        })
+        .catch(err => {
+          if (options && options.showNotification)
+            newNotification({
+              success: false,
+              message:
+                err.message === 'Failed to fetch'
+                  ? 'Network Error. Are you online?'
+                  : `Draft could not be saved: ${err.message}`,
+            });
+        });
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (options && options.showNotification) {
+        newNotification({
+          success: false,
+          message: 'Cannot save empty draft',
+        });
+      }
     }
   };
 

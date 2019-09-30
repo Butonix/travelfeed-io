@@ -34,10 +34,20 @@ const UpdateProfileButton = props => {
       const variables = {
         profile,
       };
-      graphQLClient(ACCOUNT_UPDATE, variables).then(res => {
-        if (res && res.accountUpdate) newNotification(res.accountUpdate);
-        setChanging(false);
-      });
+      graphQLClient(ACCOUNT_UPDATE, variables)
+        .then(res => {
+          if (res && res.accountUpdate) newNotification(res.accountUpdate);
+          setChanging(false);
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
       // FIXME: This is only a temp fix for a Steemconnect bug https://github.com/bonustrack/steemconnect.js/issues/73
       //   This is a regular account_update, therefore requiring the active key and writing to

@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green, red } from '@material-ui/core/colors';
 import FormLabel from '@material-ui/core/FormLabel';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Query } from 'react-apollo';
 import { customJson } from '../../../helpers/actions';
@@ -30,17 +31,37 @@ const OptIn = () => {
   const [optedIn, setOptedIn] = useState(undefined);
   const [querying, setQuerying] = useState(false);
 
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
   const broadcast = transactionId => {
     const variables = {
       optedIn: !optedIn,
       transactionId,
     };
-    graphQLClient(CONTEST_OPT_IN, variables).then(res => {
-      if (res && res.contestOptIn) {
-        if (res.contestOptIn.success) setOptedIn(!optedIn);
-      }
-      setQuerying(false);
-    });
+    graphQLClient(CONTEST_OPT_IN, variables)
+      .then(res => {
+        if (res && res.contestOptIn) {
+          if (res.contestOptIn.success) setOptedIn(!optedIn);
+        }
+        setQuerying(false);
+      })
+      .catch(err => {
+        newNotification({
+          success: false,
+          message:
+            err.message === 'Failed to fetch'
+              ? 'Network Error. Are you online?'
+              : `Draft could not be saved: ${err.message}`,
+        });
+      });
   };
 
   const broadcastJson = () => {
@@ -113,4 +134,4 @@ const OptIn = () => {
   );
 };
 
-export default OptIn;
+export default withSnackbar(OptIn);
