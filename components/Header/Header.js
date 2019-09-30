@@ -5,11 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
 import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
-import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
-import { GMAPS_API_KEY } from '../../config';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import GeoCoder from './Geocoder';
@@ -68,12 +66,6 @@ class Header extends Component {
     );
     return (
       <Fragment>
-        <NextHead>
-          <script
-            type="text/javascript"
-            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
-          />
-        </NextHead>
         <div style={{ flexGrow: 1 }}>
           <AppBar position="fixed" color="secondary" className={classes.root}>
             <div className="container" style={{ height: '65px' }}>

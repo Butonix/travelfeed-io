@@ -13,7 +13,7 @@ import MUIPlacesAutocomplete, {
 } from 'mui-places-autocomplete';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
 // https://stackoverflow.com/questions/49040092/material-ui-v1-input-focus-style-override
 const styles = theme => ({
@@ -45,9 +45,9 @@ const createAutocompleteRequest = inputValue => {
   };
 };
 
-class Geocoder extends Component {
+const Geocoder = props => {
   // eslint-disable-next-line class-methods-use-this
-  onSuggestionSelected(suggestion) {
+  const onSuggestionSelected = suggestion => {
     // Once a suggestion has been selected by your consumer you can use the
     // utility geocoding
     // functions to get the latitude and longitude for the selected suggestion.
@@ -87,35 +87,33 @@ class Geocoder extends Component {
         // eslint-disable-next-line no-console
         console.log(err);
       });
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <>
-        <MUIPlacesAutocomplete
-          textFieldProps={{
-            InputProps: {
-              autoFocus: this.props.autoFocus,
-              placeholder: 'Search for a place',
-              className: classes.input,
-              classes: { focused: classes.inputFocused },
-              disableUnderline: true,
-              startAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon className="text-light ml-1 mr-3" />
-                </InputAdornment>
-              ),
-            },
-          }}
-          onSuggestionSelected={this.onSuggestionSelected}
-          createAutocompleteRequest={createAutocompleteRequest}
-          renderTarget={() => <></>}
-        />
-      </>
-    );
-  }
-}
+  const { classes } = props;
+  return (
+    <>
+      <MUIPlacesAutocomplete
+        textFieldProps={{
+          InputProps: {
+            autoFocus: props.autoFocus,
+            placeholder: 'Search for a place',
+            className: classes.input,
+            classes: { focused: classes.inputFocused },
+            disableUnderline: true,
+            startAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon className="text-light ml-1 mr-3" />
+              </InputAdornment>
+            ),
+          },
+        }}
+        onSuggestionSelected={onSuggestionSelected}
+        createAutocompleteRequest={createAutocompleteRequest}
+        renderTarget={() => <></>}
+      />
+    </>
+  );
+};
 
 Geocoder.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,

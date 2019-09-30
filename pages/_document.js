@@ -2,6 +2,7 @@ import { ServerStyleSheets } from '@material-ui/styles';
 import * as Sentry from '@sentry/node';
 import Document, { Head, Main, NextScript } from 'next/document';
 import React from 'react';
+import { GMAPS_API_KEY } from '../config';
 import theme from '../lib/theme';
 
 process.on('unhandledRejection', err => {
@@ -48,6 +49,10 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://steemitimages.com" />
           <link rel="preconnect" href="https://maps.googleapis.com" />
           <link rel="preconnect" href="https://matomo.travelfeed.io" />
+          <script
+            type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
+          />
         </Head>
         <body>
           <Main />

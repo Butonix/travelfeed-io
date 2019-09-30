@@ -1,7 +1,6 @@
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { GMAPS_API_KEY } from '../../config';
 import MapMarker from './Marker';
 
 class PostMap extends Component {
@@ -21,9 +20,7 @@ class PostMap extends Component {
           style={{ height: '250px', width: '100%', padding: '0 24px 0 24px' }}
         >
           <GoogleMapReact
-            bootstrapURLKeys={{
-              key: GMAPS_API_KEY,
-            }}
+            yesIWantToUseGoogleMapApiInternals
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
           >
