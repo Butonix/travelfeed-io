@@ -56,7 +56,7 @@ const AuthorProfile = props => {
                   username: name,
                 }}
               />
-              <Header subheader={display_name} />
+              <Header active="blog" subheader={display_name} />
               <AuthorProfileHeader
                 data={{
                   name,

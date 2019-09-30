@@ -359,7 +359,7 @@ class SinglePost extends Component {
                   <link rel="preconnect" href="https://maps.gstatic.com" />
                 </NextHead>
                 {head}
-                <Header subheader={display_name} />
+                <Header active="post" subheader={display_name} />
                 <div style={{ position: 'relative' }}>
                   {depth === 0 && img_url && (
                     <PostImageHeader

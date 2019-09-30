@@ -10,6 +10,7 @@ import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import BackButton from './BackButton';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
 import LoginButton from './LoginButton';
@@ -71,10 +72,14 @@ class Header extends Component {
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
                 <div className="my-auto col-2 col-sm-1 d-xl-none d-lg-none d-md-none">
-                  <MenuDrawer
-                    active={active}
-                    handleLogout={this.handleLogout}
-                  />
+                  {((active === 'post' || active === 'blog') && (
+                    <BackButton />
+                  )) || (
+                    <MenuDrawer
+                      active={active}
+                      handleLogout={this.handleLogout}
+                    />
+                  )}
                 </div>
                 <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-8 col-sm-10">
                   <Link color="textPrimary" href="/" passHref>
