@@ -39,60 +39,56 @@ const Stats = () => {
             return (
               <Fragment>
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <>
-                    {data && data.userstats && (
-                      <SmallBox
-                        Icon={TotalPostsIcon}
-                        title="Total Posts"
-                        value={data.userstats.total_posts}
-                        iconColor={purple[600]}
-                        boxColor={purple[400]}
-                      />
-                    )}
-                  </>
+                  <SmallBox
+                    Icon={TotalPostsIcon}
+                    title="Total Posts"
+                    value={
+                      data && data.userstats ? data.userstats.total_posts : ''
+                    }
+                    iconColor={purple[600]}
+                    boxColor={purple[400]}
+                  />
                 </Grid>
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <>
-                    {data && data.userstats && (
-                      <SmallBox
-                        Icon={TotalPayoutIcon}
-                        title="Total Earnings"
-                        value={data.userstats.total_payout}
-                        prefix="$"
-                        iconColor={cyan[800]}
-                        boxColor={cyan[600]}
-                      />
-                    )}
-                  </>
+                  <SmallBox
+                    Icon={TotalPayoutIcon}
+                    title="Total Earnings"
+                    value={
+                      data && data.userstats ? data.userstats.total_payout : ''
+                    }
+                    prefix="$"
+                    iconColor={cyan[800]}
+                    boxColor={cyan[600]}
+                  />
                 </Grid>
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <>
-                    {data && data.userstats && (
-                      <SmallBox
-                        Icon={TotalFeaturedIcon}
-                        title="Featured Posts"
-                        value={data.userstats.total_featured}
-                        iconColor={orange[600]}
-                        boxColor={orange[400]}
-                      />
-                    )}
-                  </>
+                  <SmallBox
+                    Icon={TotalFeaturedIcon}
+                    title="Featured Posts"
+                    value={
+                      data && data.userstats
+                        ? data.userstats.total_featured
+                        : ''
+                    }
+                    iconColor={orange[600]}
+                    boxColor={orange[400]}
+                  />
                 </Grid>
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
-                  <>
-                    {data && data.userstats && (
-                      <SmallBox
-                        Icon={QualityIcon}
-                        title="Quality Score"
-                        value={calculateQualityScore(
-                          data.userstats.total_featured,
-                          data.userstats.total_posts,
-                        )}
-                        iconColor={pink[600]}
-                        boxColor={pink[400]}
-                      />
-                    )}
-                  </>
+                  <SmallBox
+                    Icon={QualityIcon}
+                    title="Quality Score"
+                    value={
+                      data && data.userstats
+                        ? calculateQualityScore(
+                            data.userstats.total_featured,
+                            data.userstats.total_posts,
+                          )
+                        : ''
+                    }
+                    iconColor={pink[600]}
+                    boxColor={pink[400]}
+                  />
                 </Grid>
                 <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
                   <HeaderCard
