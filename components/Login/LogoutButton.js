@@ -3,7 +3,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
-import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -47,7 +46,7 @@ class LogoutButton extends Component {
               message: data.data.revokeToken.message,
             });
             this.props.handleLogout();
-            Router.push('/');
+            window.open('/', '_self');
             this.setState({ open: true });
           }
           return (
