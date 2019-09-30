@@ -112,7 +112,7 @@ class SinglePost extends Component {
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
           {({ data, error }) => {
-            if (data) {
+            if (data && data.post) {
               is_travelfeed = data.post.is_travelfeed;
               depth = data.post.depth;
               is_blacklisted = data.post.is_blacklisted;
@@ -139,9 +139,16 @@ class SinglePost extends Component {
               created_at = data.post.created_at;
             }
             // 404 for error and if post does not exist
-            if (error || (data && data.post === null)) {
-              return <ErrorPage statusCode={404} />;
+            if (data && data.post && data.post.post_id === null) {
+              return (
+                <>
+                  <Header />
+                  <ErrorPage statusCode={404} />
+                </>
+              );
             }
+            if (error && body === '')
+              body = 'Error: Could not load post. Are you online?';
             // Don't render invalid posts but return Steempeak link
             // Todo: Display NSFW posts for logged in users based on
             // prefererences

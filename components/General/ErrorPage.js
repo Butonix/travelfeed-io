@@ -23,6 +23,11 @@ const ErrorPage = props => {
       message:
         'You need to log in to view this page. Use the "Login" button on the top right to log in to your account.',
     };
+  else if (statusCode === 'network_error')
+    error = {
+      title: 'Network Error',
+      message: 'Are you online?',
+    };
   else if (statusCode === 404)
     error = {
       title: '404: Not Found',

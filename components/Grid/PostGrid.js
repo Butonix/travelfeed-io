@@ -48,9 +48,16 @@ class PostGrid extends Component {
                 </Grid>
               );
             }
-            if (error || data.posts === null) {
-              return <Fragment />;
+            if (error) {
+              return (
+                <Card className="m-5 text-center" key="noposts">
+                  <CardContent>
+                    {error && 'Network Error. Are you online?'}
+                  </CardContent>
+                </Card>
+              );
             }
+            if (data.posts === null) return <></>;
             if (
               data.posts.length < this.props.query.limit &&
               this.state.hasMore

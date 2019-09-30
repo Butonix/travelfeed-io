@@ -34,11 +34,10 @@ const AuthorProfile = props => {
             return (
               <Fragment>
                 <Header />
-                <ErrorPage statusCode={404} />
+                <ErrorPage statusCode={error ? 'network_error' : 404} />
               </Fragment>
             );
           }
-
           let { isBlacklisted, isCurator } = false;
           if (data && data.profile) {
             isBlacklisted = data.profile.isBlacklisted;
