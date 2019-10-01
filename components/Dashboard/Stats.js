@@ -106,51 +106,28 @@ const Stats = () => {
                         </p>
                         <ul>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/publish"
-                              passHref
-                            >
-                              <a>Write your next awesome travel post</a>
+                            <Link color="textPrimary" href="/dashboard/publish">
+                              Write your next awesome travel post
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/drafts"
-                              passHref
-                            >
-                              <a>
-                                Access your drafts and continue where you left
-                                off
-                              </a>
+                            <Link color="textPrimary" href="/dashboard/drafts">
+                              Access your drafts and continue where you left off
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/posts"
-                              passHref
-                            >
-                              <a>View and edit your published posts</a>
+                            <Link color="textPrimary" href="/dashboard/posts">
+                              View and edit your published posts
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/replies"
-                              passHref
-                            >
-                              <a>View and answer replies from your followers</a>
+                            <Link color="textPrimary" href="/dashboard/replies">
+                              View and answer replies from your followers
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/profile"
-                              passHref
-                            >
-                              <a>Edit your profile</a>
+                            <Link color="textPrimary" href="/dashboard/profile">
+                              Edit your profile
                             </Link>
                           </li>
                         </ul>
@@ -158,8 +135,8 @@ const Stats = () => {
                           To return to TravelFeed and discover other travel
                           blogs, you can always click on your profile icon on
                           the top right and select &quot;TravelFeed&quot; to{' '}
-                          <Link color="textPrimary" href="/" passHref>
-                            <a>return to the feed.</a>
+                          <Link color="textPrimary" href="/">
+                            return to the feed.
                           </Link>
                         </p>
                       </div>

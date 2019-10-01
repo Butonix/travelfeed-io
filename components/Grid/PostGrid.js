@@ -254,8 +254,8 @@ class PostGrid extends Component {
                                   this.props.active === 'topic') && (
                                   <>
                                     {' '}
-                                    <Link href="/dashboard/publish" passHref>
-                                      <a>Create one now!</a>
+                                    <Link href="/dashboard/publish">
+                                      Create one now!
                                     </Link>
                                   </>
                                 )}

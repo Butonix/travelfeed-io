@@ -188,8 +188,8 @@ const OnboardInfo = props => {
             <FormLabel component="legend" className="pt-3 pb-2">
               Need ideas for your introduction post? Watch this video by
               TravelFeed user{' '}
-              <Link as="/@coruscate" href="/blog?author=coruscate" passHref>
-                <a>@coruscate</a>
+              <Link as="/@coruscate" href="/blog?author=coruscate">
+                @coruscate
               </Link>
               .
             </FormLabel>

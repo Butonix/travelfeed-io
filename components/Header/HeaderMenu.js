@@ -113,25 +113,21 @@ class HeaderMenu extends Component {
                   >
                     <MenuList>
                       <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link color="textPrimary" href="/destinations" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <DestinationsIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Destinations" />
-                            </MenuItem>
-                          </a>
+                        <Link color="textPrimary" href="/destinations">
+                          <MenuItem>
+                            <ListItemIcon>
+                              <DestinationsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Destinations" />
+                          </MenuItem>
                         </Link>
-                        <Link color="textPrimary" href="/map" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <MapIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Map" />
-                            </MenuItem>
-                          </a>
+                        <Link color="textPrimary" href="/map">
+                          <MenuItem>
+                            <ListItemIcon>
+                              <MapIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Map" />
+                          </MenuItem>
                         </Link>
                         <Divider />
                       </div>
@@ -147,35 +143,29 @@ class HeaderMenu extends Component {
                         />
                         <Divider />
                       </div>
-                      <Link color="textPrimary" href="/about/privacy" passHref>
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <PrivacyIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Privacy" />
-                          </MenuItem>
-                        </a>
+                      <Link color="textPrimary" href="/about/privacy">
+                        <MenuItem>
+                          <ListItemIcon>
+                            <PrivacyIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Privacy" />
+                        </MenuItem>
                       </Link>
-                      <Link color="textPrimary" href="/about/terms" passHref>
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <TermsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Terms" />
-                          </MenuItem>
-                        </a>
+                      <Link color="textPrimary" href="/about/terms">
+                        <MenuItem>
+                          <ListItemIcon>
+                            <TermsIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Terms" />
+                        </MenuItem>
                       </Link>
-                      <Link color="textPrimary" href="/about/cookies" passHref>
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <CookieIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Cookies" />
-                          </MenuItem>
-                        </a>
+                      <Link color="textPrimary" href="/about/cookies">
+                        <MenuItem>
+                          <ListItemIcon>
+                            <CookieIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Cookies" />
+                        </MenuItem>
                       </Link>
                     </MenuList>
                   </ClickAwayListener>
@@ -223,85 +213,67 @@ class HeaderMenu extends Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
                       {(this.props.isDashboard && (
-                        <Link color="textPrimary" href="/" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <FeedIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="TravelFeed" />
-                            </MenuItem>
-                          </a>
+                        <Link color="textPrimary" href="/">
+                          <MenuItem>
+                            <ListItemIcon>
+                              <FeedIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="TravelFeed" />
+                          </MenuItem>
                         </Link>
                       )) || (
-                        <Link color="textPrimary" href="/dashboard" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <DashboardIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="TravelBlog" />
-                            </MenuItem>
-                          </a>
+                        <Link color="textPrimary" href="/dashboard">
+                          <MenuItem>
+                            <ListItemIcon>
+                              <DashboardIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="TravelBlog" />
+                          </MenuItem>
                         </Link>
                       )}
-                      <Link
-                        color="textPrimary"
-                        href="/dashboard/publish"
-                        passHref
-                      >
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <PublishIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="New Post" />
-                          </MenuItem>
-                        </a>
+                      <Link color="textPrimary" href="/dashboard/publish">
+                        <MenuItem>
+                          <ListItemIcon>
+                            <PublishIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="New Post" />
+                        </MenuItem>
                       </Link>
-                      <Link color="textPrimary" href="/bookmarks" passHref>
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <BookmarkIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Bookmarks" />
-                          </MenuItem>
-                        </a>
+                      <Link color="textPrimary" href="/bookmarks">
+                        <MenuItem>
+                          <ListItemIcon>
+                            <BookmarkIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Bookmarks" />
+                        </MenuItem>
                       </Link>
                       <Divider />
                       <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link color="textPrimary" href="/destinations" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <DestinationsIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Destinations" />
-                            </MenuItem>
-                          </a>
+                        <Link color="textPrimary" href="/destinations">
+                          <MenuItem>
+                            <ListItemIcon>
+                              <DestinationsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Destinations" />
+                          </MenuItem>
                         </Link>
-                        <Link color="textPrimary" href="/map" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <MapIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Map" />
-                            </MenuItem>
-                          </a>
+                        <Link color="textPrimary" href="/map">
+                          <MenuItem>
+                            <ListItemIcon>
+                              <MapIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Map" />
+                          </MenuItem>
                         </Link>
                         <Divider />
                       </div>
-                      <Link color="textPrimary" href="/about/privacy" passHref>
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <PrivacyIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Privacy" />
-                          </MenuItem>
-                        </a>
+                      <Link color="textPrimary" href="/about/privacy">
+                        <MenuItem>
+                          <ListItemIcon>
+                            <PrivacyIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Privacy" />
+                        </MenuItem>
                       </Link>
                       <Logout handleLogout={this.handleLogout} />
                     </MenuList>

@@ -79,7 +79,6 @@ class PostListItem extends Component {
         )}&created_at=${encodeURIComponent(
           this.props.post.created_at,
         )}&depth=0`}
-        passHref
       >
         <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">
@@ -155,7 +154,6 @@ class PostListItem extends Component {
                         })}&editmode=${(this.props.isDraftMode && 'false') ||
                         'true'}`}
                       as="/dashboard/publish"
-                      passHref
                     >
                       <Button className="p-0 pl-2 pr-2">
                         <span className="textPrimary pr-1">Edit</span>{' '}

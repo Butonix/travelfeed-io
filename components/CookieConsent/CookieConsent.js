@@ -40,7 +40,7 @@ class CookieConsent extends Component {
             We use cookies to improve your experience and to analyze how our
             site is used.
             <br />
-            <Link color="textPrimary" href="/about/cookies" passHref>
+            <Link color="textPrimary" href="/about/cookies">
               <a className="text-light text-decoration-underline">Learn more</a>
             </Link>
           </Typography>

@@ -229,13 +229,10 @@ const Profile = () => {
                   color="textPrimary"
                   as={`/@${getUser()}`}
                   href={`/blog?author=${getUser()}`}
-                  passHref
                 >
-                  <a>
-                    <Button color="primary" variant="outlined" className="ml-2">
-                      View your public profile
-                    </Button>
-                  </a>
+                  <Button color="primary" variant="outlined" className="ml-2">
+                    View your public profile
+                  </Button>
                 </Link>
               </Fragment>
             }

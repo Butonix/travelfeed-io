@@ -164,17 +164,9 @@ const OnboardStart = props => {
                     label={
                       <>
                         I have read and accept the{' '}
-                        <Link href="/about/tos" passHref>
-                          <a>terms of service</a>
-                        </Link>
-                        , the{' '}
-                        <Link href="/about/privacy" passHref>
-                          <a>privacy policy</a>{' '}
-                        </Link>{' '}
-                        and the{' '}
-                        <Link href="/about/cookies" passHref>
-                          <a>cookie policy</a>
-                        </Link>{' '}
+                        <Link href="/about/tos">terms of service</Link>, the{' '}
+                        <Link href="/about/privacy">privacy policy</Link> and
+                        the <Link href="/about/cookies">cookie policy</Link>{' '}
                         (required)
                       </>
                     }

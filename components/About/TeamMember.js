@@ -11,26 +11,23 @@ const TeamMember = props => {
         color="textPrimary"
         as={`/@${props.username}`}
         href={`/blog?author=${props.username}`}
-        passHref
       >
-        <a>
-          <Typography variant="h5" className="pt-4">
-            {props.name}
-          </Typography>
-          <Typography gutterBottom variant="h6">
-            @{props.username}
-          </Typography>
-          <div
-            className="mx-auto d-block pb-3"
-            style={{ maxHeight: '250px', maxWidth: '250px' }}
-          >
-            <img
-              className="rounded-circle w-100 h-100"
-              alt={props.name}
-              src={imageProxy(props.photo, 250, 250)}
-            />
-          </div>
-        </a>
+        <Typography variant="h5" className="pt-4">
+          {props.name}
+        </Typography>
+        <Typography gutterBottom variant="h6">
+          @{props.username}
+        </Typography>
+        <div
+          className="mx-auto d-block pb-3"
+          style={{ maxHeight: '250px', maxWidth: '250px' }}
+        >
+          <img
+            className="rounded-circle w-100 h-100"
+            alt={props.name}
+            src={imageProxy(props.photo, 250, 250)}
+          />
+        </div>
       </Link>
       <p>{props.content}</p>
     </div>

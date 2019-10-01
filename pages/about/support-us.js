@@ -133,9 +133,8 @@ const SupportUsPage = () => {
                     color="textPrimary"
                     as="/@travelfeed/tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
                     href="/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
-                    passHref
                   >
-                    <a>a simple tutorial</a>
+                    a simple tutorial
                   </Link>{' '}
                   explaining how to follow our curation trail.
                 </p>

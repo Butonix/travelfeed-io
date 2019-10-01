@@ -28,18 +28,15 @@ const PostAuthorProfile = props => {
                   color="textPrimary"
                   as={`/@${props.author}`}
                   href={`/blog?author=${props.author}`}
-                  passHref
                 >
-                  <a>
-                    <img
-                      style={{ cursor: 'pointer' }}
-                      src={`https://steemitimages.com/u/${props.author}/avatar/medium`}
-                      alt={props.author}
-                      width="80"
-                      height="80"
-                      className="rounded-circle"
-                    />
-                  </a>
+                  <img
+                    style={{ cursor: 'pointer' }}
+                    src={`https://steemitimages.com/u/${props.author}/avatar/medium`}
+                    alt={props.author}
+                    width="80"
+                    height="80"
+                    className="rounded-circle"
+                  />
                 </Link>
               </div>
               <Fragment>
@@ -48,16 +45,13 @@ const PostAuthorProfile = props => {
                     color="textPrimary"
                     as={`/@${props.author}`}
                     href={`/blog?author=${props.author}`}
-                    passHref
                   >
-                    <a>
-                      <Typography variant="h6" className="textPrimary cpointer">
-                        {displayName}
-                      </Typography>
-                      <Typography color="textSecondary" variant="subtitle">
-                        @{props.author}
-                      </Typography>
-                    </a>
+                    <Typography variant="h6" className="textPrimary cpointer">
+                      {displayName}
+                    </Typography>
+                    <Typography color="textSecondary" variant="subtitle">
+                      @{props.author}
+                    </Typography>
                   </Link>
                   {data.profile.isCurator && (
                     <p className="h5 pt-1">

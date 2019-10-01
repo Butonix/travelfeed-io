@@ -52,19 +52,16 @@ const BlogGridList = () => {
                               color="textPrimary"
                               as={`/@${post.author}/${post.permlink}`}
                               href={`/post?author=${post.author}&permlink=${post.permlink}&depth=0&title=${titleUri}&display_name=TravelFeed`}
-                              passHref
                             >
-                              <a>
-                                <CardActionArea className="pt-2 pb-2">
-                                  <div className="container-fluid">
-                                    <div className="row h-100">
-                                      <div className="col-12">
-                                        <ListItemText primary={post.title} />
-                                      </div>
+                              <CardActionArea className="pt-2 pb-2">
+                                <div className="container-fluid">
+                                  <div className="row h-100">
+                                    <div className="col-12">
+                                      <ListItemText primary={post.title} />
                                     </div>
                                   </div>
-                                </CardActionArea>
-                              </a>
+                                </div>
+                              </CardActionArea>
                             </Link>
                           </div>
                         </Fragment>

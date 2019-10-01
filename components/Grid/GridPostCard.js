@@ -157,47 +157,44 @@ class GridPostCard extends Component {
           )}&created_at=${encodeURIComponent(
             this.props.post.created_at,
           )}&depth=0`}
-          passHref
         >
-          <a>
-            <CardActionArea>
-              {this.props.post.img_url !== undefined &&
-                this.props.post.img_url !== '' && (
-                  <picture ref={this.myInput} className="lazyImage">
-                    <source
-                      className="lazyImage"
-                      height={this.props.cardHeight}
-                      type="image/webp"
-                      data-srcset={`${cardImage}`}
-                      data-sizes="100w"
-                    />
-                    <img
-                      height={this.props.cardHeight}
-                      width="100%"
-                      alt={this.props.post.title}
-                      className="lazy"
-                      src={`${imageProxy(
-                        this.props.post.img_url,
-                        this.state.cardWidth * 0.1,
-                        this.props.cardHeight * 0.1,
-                      )}`}
-                      data-src={`${imageProxy(
-                        this.props.post.img_url,
-                        this.state.cardWidth,
-                        this.props.cardHeight,
-                      )}`}
-                      data-sizes="100w"
-                    />
-                  </picture>
-                )}
-              <CardContent>
-                <Excerpt
-                  title={this.props.post.title}
-                  text={this.props.post.excerpt}
-                />
-              </CardContent>
-            </CardActionArea>
-          </a>
+          <CardActionArea>
+            {this.props.post.img_url !== undefined &&
+              this.props.post.img_url !== '' && (
+                <picture ref={this.myInput} className="lazyImage">
+                  <source
+                    className="lazyImage"
+                    height={this.props.cardHeight}
+                    type="image/webp"
+                    data-srcset={`${cardImage}`}
+                    data-sizes="100w"
+                  />
+                  <img
+                    height={this.props.cardHeight}
+                    width="100%"
+                    alt={this.props.post.title}
+                    className="lazy"
+                    src={`${imageProxy(
+                      this.props.post.img_url,
+                      this.state.cardWidth * 0.1,
+                      this.props.cardHeight * 0.1,
+                    )}`}
+                    data-src={`${imageProxy(
+                      this.props.post.img_url,
+                      this.state.cardWidth,
+                      this.props.cardHeight,
+                    )}`}
+                    data-sizes="100w"
+                  />
+                </picture>
+              )}
+            <CardContent>
+              <Excerpt
+                title={this.props.post.title}
+                text={this.props.post.excerpt}
+              />
+            </CardContent>
+          </CardActionArea>
         </Link>
         <VoteSlider
           author={this.props.post.author}

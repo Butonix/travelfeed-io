@@ -130,7 +130,7 @@ class VoteSlider extends Component {
     }
     let cardFooter = <Fragment />;
     let voteButton = (
-      <Link color="textPrimary" href="/join" passHref>
+      <Link color="textPrimary" href="/join">
         <Tooltip title="Log in to vote" placement="bottom">
           <IconButton aria-label="Upvote">
             <FlightIcon className="mr" />
@@ -216,7 +216,7 @@ class VoteSlider extends Component {
       } else {
         actions.push(
           <Typography color="textSecondary" component="span">
-            <Link color="textSecondary" href="/join" passHref>
+            <Link color="textSecondary" href="/join">
               <Button size="small" color="inherit">
                 <CommentIcon className="mr pr-1 mr-1" />
                 {numberreplies} Comment
@@ -232,7 +232,6 @@ class VoteSlider extends Component {
           color="textPrimary"
           as={`/@${this.props.author}/${this.props.permlink}`}
           href={`/post?author=${this.props.author}&permlink=${this.props.permlink}`}
-          passHref
         >
           <Tooltip title="Link to comment" placement="bottom">
             <IconButton aria-label="Link">

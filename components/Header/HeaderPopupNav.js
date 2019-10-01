@@ -85,28 +85,23 @@ class HeaderPopupNav extends Component {
                           text="Popular Places"
                           active={this.state.selection === 'Popular Places'}
                         />
-                        <Link color="textPrimary" href="/map" passHref>
-                          <a>
-                            <DestinationMenuItem
-                              onClick={this.props.closeDest}
-                              icon={<MapIcon />}
-                              text="Map"
-                            />
-                          </a>
+                        <Link color="textPrimary" href="/map">
+                          <DestinationMenuItem
+                            onClick={this.props.closeDest}
+                            icon={<MapIcon />}
+                            text="Map"
+                          />
                         </Link>
                         <Link
                           color="textPrimary"
                           href={`/destinations?country=${this.state.random}`}
                           as={`/destinations/${this.state.random}`}
-                          passHref
                         >
-                          <a>
-                            <DestinationMenuItem
-                              onClick={this.newRandom}
-                              icon={<RandomIcon />}
-                              text="Random Destination"
-                            />
-                          </a>
+                          <DestinationMenuItem
+                            onClick={this.newRandom}
+                            icon={<RandomIcon />}
+                            text="Random Destination"
+                          />
                         </Link>
                       </MenuList>
                     </div>

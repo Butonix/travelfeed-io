@@ -171,9 +171,8 @@ class PostsTable extends React.Component {
                               color="textPrimary"
                               as={`/@${n.author}/${n.permlink}`}
                               href={`/post?author=${n.author}&permlink=${n.permlink}&depth=0&title=${titleUri}`}
-                              passHref
                             >
-                              <a>{n.title}</a>
+                              {n.title}
                             </Link>
                           </TableCell>
                           <TableCell align="right">

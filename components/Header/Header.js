@@ -60,12 +60,10 @@ class Header extends Component {
       () => import('../Destinations/DestinationsNav'),
       {
         loading: () => (
-          <Link color="textPrimary" href="/destinations" passHref>
-            <a>
-              <Button color="default" className={classes.whitebutton}>
-                Destinations <DownIcon />
-              </Button>
-            </a>
+          <Link color="textPrimary" href="/destinations">
+            <Button color="default" className={classes.whitebutton}>
+              Destinations <DownIcon />
+            </Button>
           </Link>
         ),
         ssr: false,
@@ -103,7 +101,7 @@ class Header extends Component {
                     'col-6 col-sm-9') ||
                     'col-8 col-sm-10'}`}
                 >
-                  <Link color="textPrimary" href="/" passHref>
+                  <Link color="textPrimary" href="/">
                     <a style={{ flexGrow: 1 }} className="textPrimary">
                       <Typography
                         variant="h6"

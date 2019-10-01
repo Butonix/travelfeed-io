@@ -45,7 +45,6 @@ const DestinationHeader = props => {
                                 color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
-                                passHref
                               >
                                 <a className="text-light font-weight-bold">
                                   {nameFromSlug(countrySlug)}
@@ -58,7 +57,6 @@ const DestinationHeader = props => {
                                   color="textPrimary"
                                   as={`/destinations/${countrySlug}/${query.subdivision}`}
                                   href={`/destinations?country=${countrySlug}&subdivision=${query.subdivision}`}
-                                  passHref
                                 >
                                   <a className="text-light font-weight-bold">
                                     {query.subdivision}
@@ -74,7 +72,6 @@ const DestinationHeader = props => {
                                 color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
-                                passHref
                               >
                                 <a className="text-light font-weight-bold">
                                   {(data && data.locationDetails.subtitle) ||
@@ -156,7 +153,6 @@ const DestinationHeader = props => {
                                               ? location.subdivision
                                               : `${query.subdivision}/${location.city}`
                                           }`}
-                                          passHref
                                         >
                                           <a
                                             className="text-light"
@@ -225,7 +221,6 @@ const DestinationHeader = props => {
                             as={`/@${data && data.locationDetails.attribution}`}
                             href={`/blog?author=${data &&
                               data.locationDetails.attribution}`}
-                            passHref
                           >
                             <a className="text-mutedlight text-decoration-underline">
                               @{data && data.locationDetails.attribution}

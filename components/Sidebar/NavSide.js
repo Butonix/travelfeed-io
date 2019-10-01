@@ -28,71 +28,58 @@ const NavSide = () => {
         <div className="row">
           <div className="col-9">
             <MenuList>
-              <Link color="textPrimary" href="/dashboard" passHref>
-                <a>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <DashboardIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Dashboard" />
-                  </MenuItem>
-                </a>
+              <Link color="textPrimary" href="/dashboard">
+                <MenuItem>
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Dashboard" />
+                </MenuItem>
               </Link>
-              <Link color="textPrimary" href="/dashboard/publish" passHref>
-                <a>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <PublishIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Publish" />
-                  </MenuItem>
-                </a>
+              <Link color="textPrimary" href="/dashboard/publish">
+                <MenuItem>
+                  <ListItemIcon>
+                    <PublishIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Publish" />
+                </MenuItem>
               </Link>
-              <Link color="textPrimary" href="/dashboard/replies" passHref>
-                <a>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <RepliesIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Replies" />
-                  </MenuItem>
-                </a>
+              <Link color="textPrimary" href="/dashboard/replies">
+                <MenuItem>
+                  <ListItemIcon>
+                    <RepliesIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Replies" />
+                </MenuItem>
               </Link>
-              <Link color="textPrimary" href="/dashboard/drafts" passHref>
-                <a>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <DraftIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Drafts" />
-                  </MenuItem>
-                </a>
+              <Link color="textPrimary" href="/dashboard/drafts">
+                <MenuItem>
+                  <ListItemIcon>
+                    <DraftIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Drafts" />
+                </MenuItem>
               </Link>
               <Divider />
-              <Link color="textPrimary" href="/bookmarks" passHref>
-                <a>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <BookmarkIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Bookmarks" />
-                  </MenuItem>
-                </a>
+              <Link color="textPrimary" href="/bookmarks">
+                <MenuItem>
+                  <ListItemIcon>
+                    <BookmarkIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Bookmarks" />
+                </MenuItem>
               </Link>
               <Link
                 color="textPrimary"
                 as={`@${user}`}
                 href={`/blog?author=${user}`}
-                passHref
               >
-                <a>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <ProfileIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Profile" />
-                  </MenuItem>
-                </a>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ProfileIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile" />
+                </MenuItem>
               </Link>
             </MenuList>
           </div>

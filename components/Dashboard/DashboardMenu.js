@@ -172,7 +172,7 @@ class DashboardMenu extends Component {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Link color="textPrimary" href="/dashboard" passHref>
+                <Link color="textPrimary" href="/dashboard">
                   <a style={{ flexGrow: 1 }} className="text-light">
                     <Typography
                       variant="h6"
@@ -230,106 +230,85 @@ class DashboardMenu extends Component {
             color="textPrimary"
             href={`/dashboard?open=${this.state.open}`}
             as="/dashboard"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'dashboard'} button>
-                <ListItemIcon className={classNames(classes.listitem)}>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'dashboard'} button>
+              <ListItemIcon className={classNames(classes.listitem)}>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/publish?open=${this.state.open}`}
             as="/dashboard/publish"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'publish'} button>
-                <ListItemIcon>
-                  <PublishIcon />
-                </ListItemIcon>
-                <ListItemText primary="Publish" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'publish'} button>
+              <ListItemIcon>
+                <PublishIcon />
+              </ListItemIcon>
+              <ListItemText primary="Publish" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/drafts?open=${this.state.open}`}
             as="/dashboard/drafts"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'drafts'} button>
-                <ListItemIcon>
-                  <DraftIcon />
-                </ListItemIcon>
-                <ListItemText primary="Drafts" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'drafts'} button>
+              <ListItemIcon>
+                <DraftIcon />
+              </ListItemIcon>
+              <ListItemText primary="Drafts" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/posts?open=${this.state.open}`}
             as="/dashboard/posts"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'posts'} button>
-                <ListItemIcon>
-                  <PostsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Posts" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'posts'} button>
+              <ListItemIcon>
+                <PostsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Posts" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/comments?open=${this.state.open}`}
             as="/dashboard/comments"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'comments'} button>
-                <ListItemIcon>
-                  <CommentsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Comments" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'comments'} button>
+              <ListItemIcon>
+                <CommentsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Comments" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/replies?open=${this.state.open}`}
             as="/dashboard/replies"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'replies'} button>
-                <ListItemIcon>
-                  <RepliesIcon />
-                </ListItemIcon>
-                <ListItemText primary="Replies" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'replies'} button>
+              <ListItemIcon>
+                <RepliesIcon />
+              </ListItemIcon>
+              <ListItemText primary="Replies" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/notifications?open=${this.state.open}`}
             as="/dashboard/notifications"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'notifications'} button>
-                <ListItemIcon>
-                  <NotificationsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Notifications" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'notifications'} button>
+              <ListItemIcon>
+                <NotificationsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Notifications" />
+            </ListItem>
           </Link>
         </List>
         <Divider />
@@ -338,46 +317,37 @@ class DashboardMenu extends Component {
             color="textPrimary"
             href={`/dashboard/profile?open=${this.state.open}`}
             as="/dashboard/profile"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'profile'} button>
-                <ListItemIcon>
-                  <ProfileIcon />
-                </ListItemIcon>
-                <ListItemText primary="Profile" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'profile'} button>
+              <ListItemIcon>
+                <ProfileIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/wallet?open=${this.state.open}`}
             as="/dashboard/wallet"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'wallet'} button>
-                <ListItemIcon>
-                  <WalletIcon />
-                </ListItemIcon>
-                <ListItemText primary="Wallet" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'wallet'} button>
+              <ListItemIcon>
+                <WalletIcon />
+              </ListItemIcon>
+              <ListItemText primary="Wallet" />
+            </ListItem>
           </Link>
           <Link
             color="textPrimary"
             href={`/dashboard/settings?open=${this.state.open}`}
             as="/dashboard/settings"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'settings'} button>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'settings'} button>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </ListItem>
           </Link>
         </List>
         <Divider />
@@ -386,16 +356,13 @@ class DashboardMenu extends Component {
             color="textPrimary"
             href={`/dashboard/contest?open=${this.state.open}`}
             as="/dashboard/contest"
-            passHref
           >
-            <a>
-              <ListItem selected={this.props.active === 'contest'} button>
-                <ListItemIcon>
-                  <LabelIcon />
-                </ListItemIcon>
-                <ListItemText primary="Steemfest" />
-              </ListItem>
-            </a>
+            <ListItem selected={this.props.active === 'contest'} button>
+              <ListItemIcon>
+                <LabelIcon />
+              </ListItemIcon>
+              <ListItemText primary="Steemfest" />
+            </ListItem>
           </Link>
         </List>
         {this.state.roles && this.state.roles.indexOf('curator') !== -1 && (
@@ -406,19 +373,13 @@ class DashboardMenu extends Component {
                 color="textPrimary"
                 href={`/dashboard/onboarding?open=${this.state.open}`}
                 as="/dashboard/onboarding"
-                passHref
               >
-                <a>
-                  <ListItem
-                    selected={this.props.active === 'onboarding'}
-                    button
-                  >
-                    <ListItemIcon>
-                      <UserAddIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Onboarding" />
-                  </ListItem>
-                </a>
+                <ListItem selected={this.props.active === 'onboarding'} button>
+                  <ListItemIcon>
+                    <UserAddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Onboarding" />
+                </ListItem>
               </Link>
             </List>
           </>

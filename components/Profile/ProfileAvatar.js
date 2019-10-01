@@ -20,16 +20,13 @@ const ProfileAvatar = props => {
         color="textPrimary"
         as={`/@${author}`}
         href={`/blog?author=${author}`}
-        passHref
       >
-        <a>
-          <Avatar
-            className={classes.avatar}
-            style={{ cursor: 'pointer' }}
-            src={`https://steemitimages.com/u/${author}/avatar/small`}
-            alt={author}
-          />
-        </a>
+        <Avatar
+          className={classes.avatar}
+          style={{ cursor: 'pointer' }}
+          src={`https://steemitimages.com/u/${author}/avatar/small`}
+          alt={author}
+        />
       </Link>
     </>
   );

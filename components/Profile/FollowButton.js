@@ -146,7 +146,7 @@ const FollowButton = props => {
                   )}
                 </Fragment>
               )) || (
-                <Link color="textPrimary" href="/join" passHref>
+                <Link color="textPrimary" href="/join">
                   <Button
                     variant={variant}
                     size="small"

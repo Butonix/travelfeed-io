@@ -10,7 +10,6 @@ const ProfileName = props => {
       color="textPrimary"
       as={`/@${author}`}
       href={`/blog?author=${author}`}
-      passHref
     >
       <a className="textPrimary cpointer hoverline">
         <strong>{displayName}</strong>

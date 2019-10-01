@@ -19,16 +19,13 @@ const SliderTags = props => {
                 as={`/favorites/${tag}`}
                 href={`/tag?orderby=total_votes&tags=${tag}`}
                 key={tag}
-                passHref
               >
-                <a>
-                  <span
-                    className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
-                    style={sliderstyle}
-                  >
-                    {tag ? tag.toUpperCase() : 'TRAVELFEED'}
-                  </span>
-                </a>
+                <span
+                  className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
+                  style={sliderstyle}
+                >
+                  {tag ? tag.toUpperCase() : 'TRAVELFEED'}
+                </span>
               </Link>
             );
           })}

@@ -27,20 +27,20 @@ const HomeOrderBySelect = props => {
         textColor="primary"
         centered
       >
-        <Link href="/created" passHref>
+        <Link href="/created">
           <Tab icon={<NewIcon />} label="NEW" />
         </Link>
-        <Link href="/hot" passHref>
+        <Link href="/hot">
           <Tab icon={<HotIcon />} label="TAKING OFF" />
         </Link>
-        <Link href="/discover" passHref>
+        <Link href="/discover">
           <Tab icon={<DiscoverIcon />} label="DISCOVER" />
         </Link>
-        <Link href="/" passHref>
+        <Link href="/">
           <Tab icon={<FeaturedIcon />} label="FEATURED" />
         </Link>
         {user && (
-          <Link href="/feed" passHref>
+          <Link href="/feed">
             <Tab icon={<FeedIcon />} label="FEED" />
           </Link>
         )}

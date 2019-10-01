@@ -115,11 +115,8 @@ class PostCommentItem extends Component {
             color="textPrimary"
             as={`/@${this.props.post.parent_author}/${this.props.post.parent_permlink}`}
             href={`/post?author=${this.props.post.parent_author}&permlink=${this.props.post.parent_permlink}`}
-            passHref
           >
-            <a>
-              <strong className="ablue hoverline">Go to parent comment</strong>
-            </a>
+            <strong className="ablue hoverline">Go to parent comment</strong>
           </Link>
         </div>
       );
@@ -138,11 +135,8 @@ class PostCommentItem extends Component {
               color="textPrimary"
               as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
               href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}&depth=0`}
-              passHref
             >
-              <a>
-                <strong className="ablue hoverline">Go to original post</strong>
-              </a>
+              <strong className="ablue hoverline">Go to original post</strong>
             </Link>
           </div>
           {parent}

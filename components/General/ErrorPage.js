@@ -123,12 +123,10 @@ const ErrorPage = props => {
                       </Typography>
                       <div className="pt-2">
                         {(error.footer && error.footer) || (
-                          <Link href="/" passHref>
-                            <a>
-                              <Button color="primary" variant="contained">
-                                Back to Homepage
-                              </Button>
-                            </a>
+                          <Link href="/">
+                            <Button color="primary" variant="contained">
+                              Back to Homepage
+                            </Button>
                           </Link>
                         )}
                       </div>

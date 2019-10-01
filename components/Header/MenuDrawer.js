@@ -133,23 +133,20 @@ export default function SwipeableTemporaryDrawer(props) {
               color="textPrimary"
               as={`/@${user}`}
               href={`/blog?author=${user}`}
-              passHref
             >
-              <a>
-                <Avatar
-                  className={`cpointer ${classes.avatar}`}
-                  src={`https://steemitimages.com/u/${user}/avatar/small`}
-                />
-                <div className="text-light">
-                  <Typography
-                    variant="h6"
-                    className={`pl-1 pt-2 ${classes.typography}`}
-                    color="inherit"
-                  >
-                    {user}
-                  </Typography>
-                </div>
-              </a>
+              <Avatar
+                className={`cpointer ${classes.avatar}`}
+                src={`https://steemitimages.com/u/${user}/avatar/small`}
+              />
+              <div className="text-light">
+                <Typography
+                  variant="h6"
+                  className={`pl-1 pt-2 ${classes.typography}`}
+                  color="inherit"
+                >
+                  {user}
+                </Typography>
+              </div>
             </Link>
           </Paper>
         </>
@@ -164,13 +161,11 @@ export default function SwipeableTemporaryDrawer(props) {
       <Divider />
       <List>
         {feedList.map(el => (
-          <Link color="textPrimary" href={el.link} passHref>
-            <a>
-              <ListItem selected={active === el.label} button key={el.label}>
-                <ListItemIcon>{el.icon}</ListItemIcon>
-                <ListItemText primary={capitalize(el.label)} />
-              </ListItem>
-            </a>
+          <Link color="textPrimary" href={el.link}>
+            <ListItem selected={active === el.label} button key={el.label}>
+              <ListItemIcon>{el.icon}</ListItemIcon>
+              <ListItemText primary={capitalize(el.label)} />
+            </ListItem>
           </Link>
         ))}
       </List>
@@ -184,13 +179,11 @@ export default function SwipeableTemporaryDrawer(props) {
           },
           { label: 'map', link: '/map', icon: <MapIcon /> },
         ].map(el => (
-          <Link color="textPrimary" href={el.link} passHref>
-            <a>
-              <ListItem selected={active === el.label} button key={el.label}>
-                <ListItemIcon>{el.icon}</ListItemIcon>
-                <ListItemText primary={capitalize(el.label)} />
-              </ListItem>
-            </a>
+          <Link color="textPrimary" href={el.link}>
+            <ListItem selected={active === el.label} button key={el.label}>
+              <ListItemIcon>{el.icon}</ListItemIcon>
+              <ListItemText primary={capitalize(el.label)} />
+            </ListItem>
           </Link>
         ))}
       </List>
@@ -210,13 +203,11 @@ export default function SwipeableTemporaryDrawer(props) {
                 icon: <PublishIcon />,
               },
             ].map(el => (
-              <Link color="textPrimary" href={el.link} passHref>
-                <a>
-                  <ListItem button key={el.label}>
-                    <ListItemIcon>{el.icon}</ListItemIcon>
-                    <ListItemText primary={el.label} />
-                  </ListItem>
-                </a>
+              <Link color="textPrimary" href={el.link}>
+                <ListItem button key={el.label}>
+                  <ListItemIcon>{el.icon}</ListItemIcon>
+                  <ListItemText primary={el.label} />
+                </ListItem>
               </Link>
             ))}
           </List>
@@ -225,13 +216,11 @@ export default function SwipeableTemporaryDrawer(props) {
       )}
       <List>
         {legalList.map(el => (
-          <Link color="textPrimary" href={el.href} as={el.as} passHref>
-            <a>
-              <ListItem selected={active === el.label} button key={el.label}>
-                <ListItemIcon>{el.icon}</ListItemIcon>
-                <ListItemText primary={capitalize(el.label)} />
-              </ListItem>
-            </a>
+          <Link color="textPrimary" href={el.href} as={el.as}>
+            <ListItem selected={active === el.label} button key={el.label}>
+              <ListItemIcon>{el.icon}</ListItemIcon>
+              <ListItemText primary={capitalize(el.label)} />
+            </ListItem>
           </Link>
         ))}
       </List>
