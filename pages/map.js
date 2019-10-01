@@ -37,4 +37,6 @@ const MapPage = () => {
   );
 };
 
+MapPage.getInitialProps = () => {};
+
 export default MapPage;

@@ -101,4 +101,6 @@ const AboutPage = () => {
   );
 };
 
+AboutPage.getInitialProps = () => {};
+
 export default AboutPage;

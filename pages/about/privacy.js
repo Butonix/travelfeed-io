@@ -48,4 +48,6 @@ const PrivacyPage = () => {
   );
 };
 
+PrivacyPage.getInitialProps = () => {};
+
 export default PrivacyPage;

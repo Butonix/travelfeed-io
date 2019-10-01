@@ -29,4 +29,6 @@ const FaqPage = () => {
   );
 };
 
+FaqPage.getInitialProps = () => {};
+
 export default FaqPage;

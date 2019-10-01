@@ -23,4 +23,6 @@ const CustomFeed = () => {
   );
 };
 
+CustomFeed.getInitialProps = () => {};
+
 export default CustomFeed;

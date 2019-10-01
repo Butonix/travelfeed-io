@@ -110,4 +110,6 @@ class CookiesPage extends Component {
   }
 }
 
+CookiesPage.getInitialProps = () => {};
+
 export default CookiesPage;

@@ -33,4 +33,6 @@ const TermsPage = () => {
   );
 };
 
+TermsPage.getInitialProps = () => {};
+
 export default TermsPage;

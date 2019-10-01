@@ -12,4 +12,6 @@ const DiscoverFeed = () => {
   );
 };
 
+DiscoverFeed.getInitialProps = () => {};
+
 export default DiscoverFeed;

@@ -12,4 +12,6 @@ const FeaturedFeed = () => {
   );
 };
 
+FeaturedFeed.getInitialProps = () => {};
+
 export default FeaturedFeed;
