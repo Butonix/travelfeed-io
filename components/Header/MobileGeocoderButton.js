@@ -34,7 +34,13 @@ const MobileGeocoderButton = () => {
         }
           `}</style>
         </>
-      )) || <SearchIcon onClick={toggleShow} className="text-light" />}
+      )) || (
+        <span className="text-light">
+          <IconButton color="inherit" onClick={toggleShow} edge="end">
+            <SearchIcon />
+          </IconButton>
+        </span>
+      )}
     </>
   );
 };

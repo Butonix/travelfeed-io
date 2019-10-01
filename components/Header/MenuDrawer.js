@@ -1,6 +1,7 @@
 import Avatar from '@material-ui/core/Avatar';
 import { teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -242,7 +243,11 @@ export default function SwipeableTemporaryDrawer(props) {
   return (
     <>
       {!props.hidden && (
-        <MenuIcon onClick={toggleDrawer(true)} className="text-light" />
+        <span className="text-light">
+          <IconButton color="inherit" onClick={toggleDrawer(true)} edge="start">
+            <MenuIcon />
+          </IconButton>
+        </span>
       )}
       <SwipeableDrawer
         open={open}

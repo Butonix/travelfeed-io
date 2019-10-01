@@ -2,6 +2,7 @@
 
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
 import FollowIcon from '@material-ui/icons/PersonAdd';
 import UnfollowIcon from '@material-ui/icons/PersonAddDisabled';
 import { withSnackbar } from 'notistack';
@@ -107,26 +108,22 @@ const FollowButton = props => {
                 <Fragment>
                   {(props.btnstyle === 'icon' && (
                     <>
-                      {(changing && (
-                        <span className="text-light">
-                          <CircularProgress
-                            className="text-light"
-                            color="inherit"
-                            size={18}
-                          />
-                        </span>
-                      )) ||
-                        (isFollowed && (
-                          <UnfollowIcon
-                            onClick={() => toggleFollowAuthor(props.author)}
-                            className="text-light"
-                          />
-                        )) || (
-                          <FollowIcon
-                            onClick={() => toggleFollowAuthor(props.author)}
-                            className="text-light"
-                          />
-                        )}
+                      <span className="text-light">
+                        <IconButton
+                          color="inherit"
+                          onClick={() => toggleFollowAuthor(props.author)}
+                          edge="end"
+                        >
+                          {(changing && (
+                            <CircularProgress
+                              className="text-light"
+                              color="inherit"
+                              size={18}
+                            />
+                          )) ||
+                            (isFollowed && <UnfollowIcon />) || <FollowIcon />}
+                        </IconButton>
+                      </span>
                     </>
                   )) || (
                     <Button

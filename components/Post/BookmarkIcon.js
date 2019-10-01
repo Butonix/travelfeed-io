@@ -77,10 +77,11 @@ const IsBookmarked = props => {
         }
         if (props.isHeader)
           return (
-            <BookmarkIconFilled
-              onClick={deleteBookmark}
-              className="text-light"
-            />
+            <div className="text-light">
+              <IconButton color="inherit" onClick={deleteBookmark} edge="end">
+                <BookmarkIconFilled />
+              </IconButton>
+            </div>
           );
         return (
           <Tooltip title="Remove bookmark" placement="bottom">
@@ -120,7 +121,11 @@ const IsNotBookmarked = props => {
         }
         if (props.isHeader)
           return (
-            <BookmarkIconBorder onClick={addBookmark} className="text-light" />
+            <div className="text-light">
+              <IconButton color="inherit" onClick={addBookmark} edge="end">
+                <BookmarkIconBorder />
+              </IconButton>
+            </div>
           );
         return (
           <Tooltip title="Add bookmark" placement="bottom">

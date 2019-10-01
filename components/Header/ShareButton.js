@@ -1,4 +1,5 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,7 +46,11 @@ const BackButton = props => {
 
   return (
     <>
-      <ShareIcon onClick={browserShare} className="text-light" />
+      <div className="text-light">
+        <IconButton color="inherit" onClick={browserShare} edge="end">
+          <ShareIcon />
+        </IconButton>
+      </div>
       <Popper
         open={open}
         anchorEl={anchorEl}
