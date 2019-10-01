@@ -9,6 +9,7 @@ import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import LazyLoad from 'vanilla-lazyload';
+import cleanTags from '../../helpers/cleanTags';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
@@ -138,6 +139,7 @@ class SinglePost extends Component {
               img_url = data.post.img_url;
               created_at = data.post.created_at;
             }
+            tags = cleanTags(tags);
             // 404 for error and if post does not exist
             if (data && data.post && data.post.post_id === null) {
               return (
@@ -315,7 +317,7 @@ class SinglePost extends Component {
                       )}
                     </Card>
                   </div>
-                  <div className="pt-2">
+                  <div className="pt-2 d-none d-sm-none d-md-block d-lg-block d-xl-block">
                     <Card className={classes.card}>
                       {data && data.post && (
                         <PostSocialShares
@@ -359,7 +361,10 @@ class SinglePost extends Component {
                   <link rel="preconnect" href="https://maps.gstatic.com" />
                 </NextHead>
                 {head}
-                <Header active="post" subheader={display_name} />
+                <Header
+                  active="post"
+                  socialShare={{ author, permlink, tags, title, img_url }}
+                />
                 <div style={{ position: 'relative' }}>
                   {depth === 0 && img_url && (
                     <PostImageHeader

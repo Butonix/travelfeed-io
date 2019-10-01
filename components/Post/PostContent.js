@@ -24,7 +24,9 @@ const PostContent = props => {
           <Fragment>
             <span>{props.appIcon}</span>
             {!props.hideAuthorProfile && (
-              <BookmarkIcon author={props.author} permlink={props.permlink} />
+              <div className="d-none d-sm-none d-xl-inline d-lg-inline d-md-inline">
+                <BookmarkIcon author={props.author} permlink={props.permlink} />
+              </div>
             )}
             <PostMenu
               author={props.author}
