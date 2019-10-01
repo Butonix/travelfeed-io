@@ -111,7 +111,7 @@ const FollowButton = props => {
                       <span className="text-light">
                         <IconButton
                           color="inherit"
-                          onClick={() => toggleFollowAuthor(props.author)}
+                          onClick={() => toggleFollowAuthor()}
                           edge="end"
                         >
                           {(changing && (
@@ -131,7 +131,7 @@ const FollowButton = props => {
                       variant={variant}
                       size="small"
                       color={color}
-                      onClick={() => toggleFollowAuthor(props.author)}
+                      onClick={() => toggleFollowAuthor()}
                       className={btnclass}
                     >
                       {isFollowed ? 'Unfollow' : 'Follow'}

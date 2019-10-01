@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const BackButton = props => {
+const ShareButton = props => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -82,4 +82,4 @@ const BackButton = props => {
   );
 };
 
-export default BackButton;
+export default ShareButton;

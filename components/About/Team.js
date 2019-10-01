@@ -58,14 +58,6 @@ const Team = () => {
       content: 'Discord Moderator',
     },
   ];
-  const international = [
-    {
-      username: 'saunter',
-      photo:
-        'https://cdn.steemitimages.com/DQmQJhiw4GTLfvrmh4YdeXyxfsXgWLLKA7nW7hgm7rHv1Cs/163903_165953620115571_2481178_n.jpg',
-      content: 'Founder and curator of TravelFeed in Polish',
-    },
-  ];
   return (
     <Fragment>
       <div className="container">

@@ -12,8 +12,8 @@ const FixedBackgroundImage = props => {
 
   useEffect(() => {
     const getWebpSupport = async () => {
-      const webp = await supportsWebp();
-      return webp;
+      const isWebp = await supportsWebp();
+      return isWebp;
     };
     const webp = getWebpSupport();
     setWebpSupport(webp);

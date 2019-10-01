@@ -7,7 +7,7 @@ import JsonAndMutate from './Actions/JsonAndMutate';
 import PostBlacklist from './Actions/PostBlacklist';
 import CuratorMenu from './CuratorMenu';
 
-const BlogMenu = props => {
+const PostMenu = props => {
   const [roles, setRoles] = useState(undefined);
 
   useEffect(() => {
@@ -94,4 +94,4 @@ const BlogMenu = props => {
   );
 };
 
-export default BlogMenu;
+export default PostMenu;

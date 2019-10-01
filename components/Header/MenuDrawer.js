@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SwipeableTemporaryDrawer(props) {
+export default function MenuDrawer(props) {
   const [user, setUser] = useState(getUser());
   const { active } = props;
 

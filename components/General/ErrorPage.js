@@ -122,7 +122,7 @@ const ErrorPage = props => {
                         {error.message}
                       </Typography>
                       <div className="pt-2">
-                        {(error.footer && error.footer) || (
+                        {error.footer || (
                           <Link href="/">
                             <Button color="primary" variant="contained">
                               Back to Homepage

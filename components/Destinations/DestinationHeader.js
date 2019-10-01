@@ -13,7 +13,7 @@ const DestinationHeader = props => {
     <Fragment>
       <Query query={GET_LOCATION_DETAILS} variables={query}>
         {({ data, loading }) => {
-          if (loading || (data && data && data.locationDetails)) {
+          if (loading || (data && data.locationDetails)) {
             return (
               <Fragment>
                 <div
