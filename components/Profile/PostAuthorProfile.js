@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import { getAccount } from '../../helpers/steem';
@@ -10,10 +10,13 @@ const PostAuthorProfile = props => {
   const [displayName, setDisplayName] = useState(props.author);
   const [about, setAbout] = useState('');
 
-  getAccount(props.author).then(profile => {
-    setDisplayName(profile.display_name);
-    if (profile.about) setAbout(profile.about);
-  });
+  useEffect(() => {
+    getAccount(props.author).then(profile => {
+      setDisplayName(profile.display_name);
+      if (profile.about) setAbout(profile.about);
+    });
+  }, []);
+
   return (
     <Fragment>
       <Query query={GET_SHORT_PROFILE} variables={props}>
