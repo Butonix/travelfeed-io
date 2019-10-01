@@ -46,6 +46,12 @@ const CuratorMenu = props => {
           vertical: 'top',
           horizontal: 'center',
         }}
+        modifiers={{
+          preventOverflow: {
+            enabled: true,
+            boundariesElement: 'scrollParent',
+          },
+        }}
       >
         <MenuList>{component}</MenuList>
       </Popover>
