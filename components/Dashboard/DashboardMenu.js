@@ -103,7 +103,6 @@ const styles = theme => ({
 class DashboardMenu extends Component {
   state = {
     open: this.props.open === 'true',
-    variant: 'permanent',
     roles: [],
     user: null,
   };
@@ -114,7 +113,8 @@ class DashboardMenu extends Component {
   }
 
   componentDidMount() {
-    if (window.innerWidth < 576) {
+    const user = getUser();
+    if (window.innerWidth < 576 || !user) {
       this.setState({ open: false, variant: undefined });
     } else if (window.innerWidth < 992) {
       this.setState({ open: false, variant: 'permanent' });
@@ -122,7 +122,6 @@ class DashboardMenu extends Component {
       this.setState({ open: true, variant: 'permanent' });
     }
     const roles = getRoles();
-    const user = getUser();
     this.setState({
       roles,
       user,
