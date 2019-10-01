@@ -93,13 +93,15 @@ class GridPostCard extends Component {
         </Fragment>
       );
     }
-    const cardImage = imageProxy(
-      this.props.post.img_url,
-      this.state.cardWidth,
-      this.props.cardHeight,
-      undefined,
-      'webp',
-    );
+    const cardImage = this.props.post.img_url
+      ? imageProxy(
+          this.props.post.img_url,
+          this.state.cardWidth,
+          this.props.cardHeight,
+          undefined,
+          'webp',
+        )
+      : undefined;
     let titleUri = '';
     let bodyUri = '';
     let displayNameUri = '';
