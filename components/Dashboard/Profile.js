@@ -48,34 +48,6 @@ const Profile = () => {
     });
   }
 
-  const linkBuilder = () => {
-    const changed = [];
-    if (displayName) changed.push({ label: 'name', value: displayName });
-    if (about) changed.push({ label: 'about', value: about });
-    if (profileImage)
-      changed.push({ label: 'profile_image', value: profileImage });
-    if (coverImage) changed.push({ label: 'cover_image', value: coverImage });
-    if (location) changed.push({ label: 'location', value: location });
-    if (website) changed.push({ label: 'website', value: website });
-    if (facebook) changed.push({ label: 'facebook', value: facebook });
-    if (twitter) changed.push({ label: 'twitter', value: twitter });
-    if (instagram) changed.push({ label: 'instagram', value: instagram });
-    if (youtube) changed.push({ label: 'youtube', value: youtube });
-    if (couchsurfing)
-      changed.push({ label: 'couchsurfing', value: couchsurfing });
-    if (pinterest) changed.push({ label: 'pinterest', value: pinterest });
-    let link = 'https://steemconnect.com/sign/profile-update?';
-    let count = 0;
-    changed.forEach(el => {
-      if (count > 0) {
-        link += '&';
-      }
-      link += `${el.label}=${el.value}`;
-      count += 1;
-    });
-    window.open(link, '_blank');
-  };
-
   const handleInput = changeThis => event => {
     changeThis(event.target.value);
   };
@@ -236,7 +208,6 @@ const Profile = () => {
             content={
               <Fragment>
                 <UpdateProfileButton
-                  linkBuilder={linkBuilder}
                   profile={JSON.stringify({
                     profile: {
                       name: displayName,
