@@ -99,6 +99,7 @@ class Header extends Component {
                 <div
                   className={`my-auto col-xl-4 col-lg-3 col-md-4 ${(active ===
                     'post' &&
+                    this.state.user &&
                     'col-6 col-sm-9') ||
                     'col-8 col-sm-10'}`}
                 >
@@ -156,10 +157,11 @@ class Header extends Component {
                 )}
                 <div
                   className={`my-auto ${(active === 'post' &&
+                    this.state.user &&
                     'col-4 col-sm-2') ||
                     'col-2 col-sm-1'} d-xl-none d-lg-none d-md-none`}
                 >
-                  {(active === 'post' && (
+                  {(active === 'post' && this.state.user && (
                     <>
                       <div className="container-fluid">
                         <div className="row">
@@ -177,6 +179,9 @@ class Header extends Component {
                       </div>
                     </>
                   )) ||
+                    (active === 'post' && (
+                      <ShareButton socialShare={this.props.socialShare} />
+                    )) ||
                     (active === 'blog' && this.state.user && (
                       <FollowButton
                         author={this.props.author}
