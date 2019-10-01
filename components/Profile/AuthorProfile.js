@@ -56,7 +56,7 @@ const AuthorProfile = props => {
                   username: name,
                 }}
               />
-              <Header active="blog" subheader={display_name} />
+              <Header active="blog" subheader={display_name} author={name} />
               <AuthorProfileHeader
                 data={{
                   name,
@@ -68,7 +68,7 @@ const AuthorProfile = props => {
                 }}
                 moreContent={
                   <>
-                    <div className="col-12 pt-3">
+                    <div className="col-12 pt-3 d-none d-sm-none d-md-block d-lg-block d-xl-block">
                       <FollowButton author={name} btnstyle="solid" />
                     </div>
                     <div className="col-12 pt-4 pb-3">

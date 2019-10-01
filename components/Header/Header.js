@@ -10,6 +10,7 @@ import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import FollowButton from '../Profile/FollowButton';
 import BackButton from './BackButton';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
@@ -166,7 +167,13 @@ class Header extends Component {
                         </div>
                       </div>
                     </>
-                  )) || <MobileGeocoderButton />}
+                  )) ||
+                    (active === 'blog' && this.state.user && (
+                      <FollowButton
+                        author={this.props.author}
+                        btnstyle="icon"
+                      />
+                    )) || <MobileGeocoderButton />}
                 </div>
                 <div
                   className={`my-auto ${(this.state.user &&
