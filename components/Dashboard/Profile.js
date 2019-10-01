@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import { green, indigo, purple, teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { getAccount } from '../../helpers/steem';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
@@ -25,9 +25,8 @@ const Profile = () => {
   const [youtube, setYouTube] = useState('');
   const [couchsurfing, setCouchsurfing] = useState('');
   const [pinterest, setPinterest] = useState('');
-  const [loaded, setLoaded] = useState(false);
 
-  if (!loaded) {
+  useEffect(() => {
     getAccount(author).then(profile => {
       if (profile.name && !displayName) setDisplayName(profile.display_name);
       if (profile.about && !about) setAbout(profile.about);
@@ -44,9 +43,8 @@ const Profile = () => {
       if (profile.couchsurfing && !couchsurfing)
         setCouchsurfing(profile.couchcouchsurfing);
       if (profile.pinterest && !pinterest) setPinterest(profile.pinterest);
-      setLoaded(true);
     });
-  }
+  }, []);
 
   const handleInput = changeThis => event => {
     changeThis(event.target.value);
