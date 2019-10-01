@@ -51,7 +51,7 @@ class LocationPage extends Component {
               limit: 9,
             }}
             grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
-            cardHeight={170}
+            cardHeight={200}
             poststyle="grid"
           />
         </div>

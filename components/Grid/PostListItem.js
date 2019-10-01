@@ -18,6 +18,7 @@ import { imageProxy } from '../../helpers/getImage';
 import { markdownComment, swmregex } from '../../helpers/regex';
 import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
+import Excerpt from './Excerpt';
 
 const styles = theme => ({
   card: {
@@ -121,9 +122,7 @@ class PostListItem extends Component {
               <Typography gutterBottom variant="h6" component="h2">
                 {this.props.post.title || 'Untitled'}
               </Typography>
-              <Typography component="p">
-                {this.props.post.excerpt} [...]
-              </Typography>
+              <Excerpt text={this.props.post.excerpt} />
             </div>
           </CardContent>
           <CardActions className={classNames(classes.areabg)}>

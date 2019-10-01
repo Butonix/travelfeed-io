@@ -11,7 +11,6 @@ import sanitize from 'sanitize-html';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_BOOKMARKS } from '../../helpers/graphql/bookmarks';
 import parseBody from '../../helpers/parseBody';
-import { regExcerpt } from '../../helpers/regex';
 import GridPostCard from '../Grid/GridPostCard';
 
 class Bookmarks extends Component {
@@ -105,12 +104,7 @@ class Bookmarks extends Component {
                         undefined,
                         imgHeight,
                       );
-                      let { title } = post;
-                      title =
-                        title.length > 85
-                          ? `${title.substring(0, 81)}[...]`
-                          : title;
-                      const excerpt = regExcerpt(sanitized);
+                      const { title } = post;
                       return (
                         <Grid
                           item
@@ -131,7 +125,7 @@ class Bookmarks extends Component {
                               img_url: image,
                               created_at: post.created_at,
                               readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,

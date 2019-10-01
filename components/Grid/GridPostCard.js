@@ -2,7 +2,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
@@ -15,6 +14,7 @@ import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
+import Excerpt from './Excerpt';
 
 const styles = () => ({
   card: {
@@ -191,12 +191,10 @@ class GridPostCard extends Component {
                   </picture>
                 )}
               <CardContent>
-                <Typography gutterBottom variant="h6" component="h2">
-                  {this.props.post.title}
-                </Typography>
-                <Typography component="p">
-                  {this.props.post.excerpt} [...]
-                </Typography>
+                <Excerpt
+                  title={this.props.post.title}
+                  text={this.props.post.excerpt}
+                />
               </CardContent>
             </CardActionArea>
           </a>

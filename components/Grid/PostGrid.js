@@ -11,7 +11,6 @@ import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import parseBody from '../../helpers/parseBody';
-import { regExcerpt } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import PostCommentItem from '../Post/PostCommentItem';
@@ -125,12 +124,7 @@ class PostGrid extends Component {
                       const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
-                      let { title } = post;
-                      title =
-                        title.length > 85
-                          ? `${title.substring(0, 81)}[...]`
-                          : title;
-                      const excerpt = regExcerpt(sanitized);
+                      const { title } = post;
                       let card = <Fragment />;
                       if (this.props.poststyle === 'list') {
                         card = (
@@ -146,7 +140,7 @@ class PostGrid extends Component {
                               longitude: post.longitude,
                               created_at: post.created_at,
                               readtime: post.readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,
@@ -204,7 +198,7 @@ class PostGrid extends Component {
                               img_url: post.img_url,
                               created_at: post.created_at,
                               readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,

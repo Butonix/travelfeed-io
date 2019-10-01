@@ -10,7 +10,6 @@ import sanitize from 'sanitize-html';
 import { GET_DRAFTS } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import parseBody from '../../helpers/parseBody';
-import { regExcerpt } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import PostListItem from '../Grid/PostListItem';
 
@@ -102,7 +101,6 @@ class Drafts extends Component {
                           allowedTags: [],
                         });
                         const readtime = readingTime(sanitized);
-                        const excerpt = regExcerpt(sanitized);
                         return (
                           <PostListItem
                             key={draft.id}
@@ -115,7 +113,7 @@ class Drafts extends Component {
                               json: draft.json,
                               created_at: draft.savedate,
                               readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               id: draft.id,
                             }}
                             id={draft.id}
