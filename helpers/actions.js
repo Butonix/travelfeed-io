@@ -194,7 +194,7 @@ export const customJson = async (payload, id) => {
         if (err) {
           resolve({
             success: false,
-            message: `Could not write custom_json to Blockchain${(typeof err ===
+            message: `Could not broadcast custom_json to blockchain${(typeof err ===
               'string' &&
               `: ${err}`) ||
               (err.error_description && `: ${err.error_description}`)}`,
@@ -203,7 +203,7 @@ export const customJson = async (payload, id) => {
         if (res) {
           resolve({
             success: true,
-            message: 'Curation action was broadcasted sucessfully',
+            message: 'Action was broadcasted sucessfully',
             transactionId: res.result.id,
           });
         }

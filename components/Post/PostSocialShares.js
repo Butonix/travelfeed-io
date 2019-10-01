@@ -1,25 +1,43 @@
 import {
   faFacebookF,
   faPinterest,
+  faReddit,
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from '@material-ui/core/IconButton';
+import { withSnackbar } from 'notistack';
 import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { CONTEST_SOCIAL } from '../../helpers/graphql/contest';
+import ResteemButton from './ResteemButton';
 
 const PostSocialShares = props => {
-  const link = `https://travelfeed.io/@${props.author}/${props.permlink}`;
-  let tags = '';
-  props.tags.forEach((t, i) => {
-    if (i > 0) tags += ',';
-    tags += t;
+  const { author, permlink, title, img_url, tags, enqueueSnackbar } = props;
+
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
+  const link = `https://travelfeed.io/@${author}/${permlink}`;
+  let tagString = '';
+  tags.forEach((t, i) => {
+    if (i > 0) tagString += ',';
+    tagString += t;
   });
 
   const social = [
     {
       name: 'Facebook',
+      color: '#355899',
       link: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(link)}`,
       icon: (
         <FontAwesomeIcon
@@ -31,11 +49,12 @@ const PostSocialShares = props => {
     },
     {
       name: 'Twitter',
+      color: '#55ACEE',
       link: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         link,
-      )}&text=${encodeURIComponent(props.title)}&hashtags=${encodeURIComponent(
-        tags,
-      )}`,
+      )}&text=${encodeURIComponent(title)}&hashtags=${encodeURIComponent(
+        tagString,
+      )}&via=travelfeedio`,
       icon: (
         <FontAwesomeIcon
           style={{ width: '22px', height: '22px' }}
@@ -45,15 +64,29 @@ const PostSocialShares = props => {
     },
     {
       name: 'Pinterest',
+      color: '#E50123',
       link: `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
         link,
-      )}&media=${encodeURIComponent(
-        props.img_url,
-      )}&description=${encodeURIComponent(props.title)}`,
+      )}&media=${encodeURIComponent(img_url)}&description=${encodeURIComponent(
+        title,
+      )}`,
       icon: (
         <FontAwesomeIcon
           style={{ width: '22px', height: '22px' }}
           icon={faPinterest}
+        />
+      ),
+    },
+    {
+      name: 'Reddit',
+      color: '#FF4500',
+      link: `https://www.reddit.com/submit?title=${encodeURIComponent(
+        title,
+      )}&url=${encodeURIComponent(link)}`,
+      icon: (
+        <FontAwesomeIcon
+          style={{ width: '22px', height: '22px' }}
+          icon={faReddit}
         />
       ),
     },
@@ -76,11 +109,29 @@ const PostSocialShares = props => {
                     title={s.name}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
+                    style={{ color: s.color }}
                   >
-                    <IconButton>{s.icon}</IconButton>
+                    <IconButton color="inherit">{s.icon}</IconButton>
                   </a>
                 );
               })}
+              <ResteemButton author={author} permlink={permlink} />
+              <CopyToClipboard
+                text={link}
+                onCopy={() =>
+                  newNotification({
+                    success: true,
+                    message: 'Link copied to your clipboard',
+                  })
+                }
+              >
+                <IconButton>
+                  <FontAwesomeIcon
+                    style={{ width: '20px', height: '20px' }}
+                    icon={faLink}
+                  />
+                </IconButton>
+              </CopyToClipboard>
             </div>
           )}
         </Mutation>
@@ -89,4 +140,4 @@ const PostSocialShares = props => {
   );
 };
 
-export default PostSocialShares;
+export default withSnackbar(PostSocialShares);
