@@ -38,6 +38,12 @@ const BlogGridList = () => {
                 content={
                   <Fragment>
                     {posts.map(post => {
+                      let titleUri = '';
+                      try {
+                        titleUri = encodeURIComponent(post.title);
+                      } catch {
+                        console.warn('Could not encode URI');
+                      }
                       return (
                         <Fragment>
                           <div key={post.author + post.permlink}>
@@ -45,20 +51,17 @@ const BlogGridList = () => {
                             <Link
                               color="textPrimary"
                               as={`/@${post.author}/${post.permlink}`}
-                              href={`/post?author=${post.author}&permlink=${post.permlink}`}
-                              passHref
+                              href={`/post?author=${post.author}&permlink=${post.permlink}&depth=0&title=${titleUri}&display_name=TravelFeed`}
                             >
-                              <a>
-                                <CardActionArea className="pt-2 pb-2">
-                                  <div className="container-fluid">
-                                    <div className="row h-100">
-                                      <div className="col-12">
-                                        <ListItemText primary={post.title} />
-                                      </div>
+                              <CardActionArea className="pt-2 pb-2">
+                                <div className="container-fluid">
+                                  <div className="row h-100">
+                                    <div className="col-12">
+                                      <ListItemText primary={post.title} />
                                     </div>
                                   </div>
-                                </CardActionArea>
-                              </a>
+                                </div>
+                              </CardActionArea>
                             </Link>
                           </div>
                         </Fragment>

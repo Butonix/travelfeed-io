@@ -10,9 +10,14 @@ import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import FollowButton from '../Profile/FollowButton';
+import BackButton from './BackButton';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
 import LoginButton from './LoginButton';
+import MenuDrawer from './MenuDrawer';
+import MobileGeocoderButton from './MobileGeocoderButton';
+import ShareButton from './ShareButton';
 
 const styles = () => ({
   root: {
@@ -46,17 +51,19 @@ class Header extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    // Prevent SSR
+    const BookmarkIcon = dynamic(() => import('../Post/BookmarkIcon'), {
+      ssr: false,
+    });
+    const { classes, active } = this.props;
     const DestinationsNav = dynamic(
       () => import('../Destinations/DestinationsNav'),
       {
         loading: () => (
-          <Link color="textPrimary" href="/destinations" passHref>
-            <a>
-              <Button color="default" className={classes.whitebutton}>
-                Destinations <DownIcon />
-              </Button>
-            </a>
+          <Link color="textPrimary" href="/destinations">
+            <Button color="default" className={classes.whitebutton}>
+              Destinations <DownIcon />
+            </Button>
           </Link>
         ),
         ssr: false,
@@ -68,26 +75,54 @@ class Header extends Component {
           <AppBar position="fixed" color="secondary" className={classes.root}>
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
-                <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-9">
-                  <Link color="textPrimary" href="/" passHref>
+                <div className="my-auto col-2 col-sm-1 d-xl-none d-lg-none d-md-none">
+                  {(['post', 'blog', 'destination', 'location', 'tag'].indexOf(
+                    active,
+                  ) !== -1 && (
+                    <>
+                      <BackButton />
+                      <MenuDrawer
+                        hidden
+                        active={active}
+                        handleLogout={this.handleLogout}
+                      />
+                    </>
+                  )) || (
+                    <MenuDrawer
+                      active={active}
+                      handleLogout={this.handleLogout}
+                    />
+                  )}
+                </div>
+                <div
+                  className={`my-auto col-xl-4 col-lg-3 col-md-4 ${(active ===
+                    'post' &&
+                    this.state.user &&
+                    'col-6 col-sm-9') ||
+                    'col-8 col-sm-10'}`}
+                >
+                  <Link color="textPrimary" href="/">
                     <a style={{ flexGrow: 1 }} className="textPrimary">
                       <Typography
                         variant="h6"
                         className={classes.heading}
                         noWrap
                       >
-                        <span className="d-none d-sm-block d-xl-none">
-                          TravelFeed
-                        </span>
-                        <span className="d-none d-xl-block">
+                        <span className="d-none d-xl-block d-sm-block d-lg-none d-md-none">
                           TravelFeed{' '}
                           {this.props.subheader && (
                             <span>{`| ${this.props.subheader}`}</span>
                           )}
                         </span>
-                        <span className="d-block d-xl-none d-sm-none">
+                        <span className="d-none d-lg-block d-xl-none d-md-none d-sm-none">
                           {(this.props.subheader && (
                             <span>{`TF | ${this.props.subheader}`}</span>
+                          )) ||
+                            'TravelFeed'}
+                        </span>
+                        <span className="d-block d-md-block d-xl-none d-lg-none d-sm-none">
+                          {(this.props.subheader && (
+                            <span>{this.props.subheader}</span>
                           )) ||
                             'TravelFeed'}
                         </span>
@@ -96,7 +131,6 @@ class Header extends Component {
                   </Link>
                 </div>
                 <div className="col-xl-2 col-lg-2 d-xl-block d-lg-block d-md-none d-sm-none d-none my-auto text-center">
-                  {' '}
                   <DestinationsNav />
                 </div>
                 <div
@@ -110,7 +144,7 @@ class Header extends Component {
                 <div
                   className={`${(this.state.user &&
                     'col-xl-4 col-lg-5 col-md-4') ||
-                    'col-xl-3 col-lg-3 col-md-3'} col-sm-6 d-none d-xl-block d-lg-block d-md-block d-sm-block my-auto text-center`}
+                    'col-xl-3 col-lg-3 col-md-3'} d-none d-xl-block d-lg-block d-md-block my-auto text-center`}
                 >
                   <GeoCoder />
                 </div>
@@ -120,9 +154,43 @@ class Header extends Component {
                   </div>
                 )}
                 <div
+                  className={`my-auto ${(active === 'post' &&
+                    this.state.user &&
+                    'col-4 col-sm-2') ||
+                    'col-2 col-sm-1'} d-xl-none d-lg-none d-md-none`}
+                >
+                  {(active === 'post' && this.state.user && (
+                    <>
+                      <div className="container-fluid">
+                        <div className="row">
+                          <div className="col-6">
+                            <BookmarkIcon
+                              isHeader
+                              author={this.props.socialShare.author}
+                              permlink={this.props.socialShare.permlink}
+                            />
+                          </div>
+                          <div className="col-6">
+                            <ShareButton socialShare={this.props.socialShare} />
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )) ||
+                    (active === 'post' && (
+                      <ShareButton socialShare={this.props.socialShare} />
+                    )) ||
+                    (active === 'blog' && this.state.user && (
+                      <FollowButton
+                        author={this.props.author}
+                        btnstyle="icon"
+                      />
+                    )) || <MobileGeocoderButton />}
+                </div>
+                <div
                   className={`my-auto ${(this.state.user &&
                     'col-xl-2 col-lg-2 col-md-2') ||
-                    'col-xl-1 col-lg-1 col-md-2'} col-3 text-right`}
+                    'col-xl-1 col-lg-1 col-md-2'} d-none d-xl-block d-lg-block d-md-block text-right`}
                 >
                   <HeaderMenu
                     isDashboard={false}

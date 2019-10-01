@@ -18,8 +18,12 @@ import { imageProxy } from '../../helpers/getImage';
 import { markdownComment, swmregex } from '../../helpers/regex';
 import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
+import Excerpt from './Excerpt';
 
 const styles = theme => ({
+  card: {
+    borderRadius: 12,
+  },
   areabg: {
     background: theme.palette.background.light,
   },
@@ -62,8 +66,19 @@ class PostListItem extends Component {
       <Link
         color="textPrimary"
         as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-        href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
-        passHref
+        href={`/post?author=${this.props.post.author}&permlink=${
+          this.props.post.permlink
+        }&title=${encodeURIComponent(
+          this.props.post.title,
+        )}&body=${encodeURIComponent(
+          this.props.post.body,
+        )}&display_name=${encodeURIComponent(
+          this.props.post.display_name,
+        )}&img_url=${encodeURIComponent(
+          this.props.post.img_url,
+        )}&created_at=${encodeURIComponent(
+          this.props.post.created_at,
+        )}&depth=0`}
       >
         <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">
@@ -83,6 +98,12 @@ class PostListItem extends Component {
       this.props.post.country_code !== null
         ? nameFromCC(this.props.post.country_code)
         : undefined;
+    let titleUri = '';
+    try {
+      titleUri = encodeURIComponent(this.props.post.title);
+    } catch {
+      console.warn('Could not encode URI');
+    }
     const content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
@@ -97,12 +118,10 @@ class PostListItem extends Component {
         <div className={colsize}>
           <CardContent>
             <div className="pr-2 pl-2 pb-2">
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography gutterBottom variant="h6" component="h2">
                 {this.props.post.title || 'Untitled'}
               </Typography>
-              <Typography component="p">
-                {this.props.post.excerpt} [...]
-              </Typography>
+              <Excerpt text={this.props.post.excerpt} />
             </div>
           </CardContent>
           <CardActions className={classNames(classes.areabg)}>
@@ -116,13 +135,14 @@ class PostListItem extends Component {
                         this.props.post.id
                       }&permlink=${encodeURIComponent(
                         this.props.post.permlink,
-                      )}&title=${encodeURIComponent(
-                        this.props.post.title,
-                      )}&body=${encodeURIComponent(
+                      )}&title=${titleUri}&body=${encodeURIComponent(
                         cleanBody,
                       )}&isCodeEditor=${encodeURIComponent(
                         this.props.post.isCodeEditor,
-                      )}&json=${this.props.post.json ||
+                      )}&jsonMeta=${encodeURIComponent(
+                        this.props.isDraftMode ? '' : this.props.post.json,
+                      )}&json=${(this.props.isDraftMode &&
+                        this.props.post.json) ||
                         JSON.stringify({
                           tags: this.props.post.tags,
                           location: {
@@ -130,10 +150,10 @@ class PostListItem extends Component {
                             longitude: this.props.post.longitude,
                           },
                           featuredImage: this.props.post.img_url,
+                          category: this.props.post.category,
                         })}&editmode=${(this.props.isDraftMode && 'false') ||
                         'true'}`}
                       as="/dashboard/publish"
-                      passHref
                     >
                       <Button className="p-0 pl-2 pr-2">
                         <span className="textPrimary pr-1">Edit</span>{' '}
@@ -197,8 +217,10 @@ class PostListItem extends Component {
       </div>
     );
     return (
-      <div className="p-1 pb-3">
-        <Card key={this.props.post.permlink}>{content}</Card>
+      <div className="pt-2 pr-2 pl-2">
+        <Card className={classes.card} key={this.props.post.permlink}>
+          {content}
+        </Card>
       </div>
     );
   }

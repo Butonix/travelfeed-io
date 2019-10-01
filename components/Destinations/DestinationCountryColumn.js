@@ -19,13 +19,10 @@ class DestinationCountryColumn extends Component {
           key={slug}
           href={`/destinations?country=${slug}`}
           as={`/destinations/${slug}`}
-          passHref
         >
-          <a>
-            <MenuItem onClick={() => onClick && onClick(text)}>
-              <ListItemText primary={name} />
-            </MenuItem>
-          </a>
+          <MenuItem onClick={() => onClick && onClick(text)}>
+            <ListItemText primary={name} />
+          </MenuItem>
         </Link>
       );
     });

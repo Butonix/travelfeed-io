@@ -4,7 +4,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import { saveAs } from 'file-saver';
 import React from 'react';
-import steem from 'steem';
+import steem from '../../helpers/steem';
 
 const SteemKeys = props => {
   const { passPhrase } = props;

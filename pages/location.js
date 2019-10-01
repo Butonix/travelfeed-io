@@ -32,7 +32,7 @@ class LocationPage extends Component {
           title={`${this.props.formatted_address} - TravelFeed: The Travel Community`}
           description={`Explore posts about ${this.props.formatted_address} on TravelFeed.`}
         />
-        <Header />
+        <Header active="location" />
         <DestinationHeader
           query={{
             search: this.props.formatted_address,
@@ -41,8 +41,9 @@ class LocationPage extends Component {
           title={this.props.formatted_address}
           countrySlug={slugFromCC(this.props.country_code)}
         />
-        <div className="container">
+        <div className="container" id="containerInvisibleOnMobile">
           <PostGrid
+            active="destination"
             query={{
               location_box: this.props.location_box,
               country_code: this.props.country_code,
@@ -50,10 +51,18 @@ class LocationPage extends Component {
               limit: 9,
             }}
             grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
-            cardHeight={170}
+            cardHeight={200}
             poststyle="grid"
           />
         </div>
+        <style>{`
+        @media (max-width: 992px) {
+          #containerInvisibleOnMobile {
+            padding: 0;
+            margin: 0;
+          }
+        }
+        `}</style>
       </Fragment>
     );
   }

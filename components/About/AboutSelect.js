@@ -24,22 +24,22 @@ class AboutSelect extends React.Component {
           textColor="primary"
           centered
         >
-          <Link href="/about" passHref>
+          <Link href="/about">
             <Tab icon={<AboutIcon />} label="ABOUT" />
           </Link>
-          <Link href="/about/terms" passHref>
+          <Link href="/about/terms">
             <Tab icon={<TermsIcon />} label="TERMS" />
           </Link>
-          <Link href="/about/privacy" passHref>
+          <Link href="/about/privacy">
             <Tab icon={<PrivacyIcon />} label="PRIVACY" />
           </Link>
-          <Link href="/about/cookies" passHref>
+          <Link href="/about/cookies">
             <Tab icon={<CookieIcon />} label="COOKIES" />
           </Link>
-          <Link href="/about/faq" passHref>
+          <Link href="/about/faq">
             <Tab icon={<FAQIcon />} label="FAQ" />
           </Link>
-          <Link href="/about/support-us" passHref>
+          <Link href="/about/support-us">
             <Tab icon={<SupportIcon />} label="SUPPORT US" />
           </Link>
         </Tabs>

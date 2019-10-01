@@ -5,82 +5,70 @@ import Link from '../../lib/Link';
 const LegalNotice = () => {
   return (
     <div className="p-2 pt-0">
-      <Link color="textPrimary" href="/about" passHref>
-        <a>
-          <Typography
-            className="hoverline"
-            color="textSecondary"
-            variant="subtitle"
-            display="inline"
-          >
-            About
-          </Typography>
-        </a>
+      <Link color="textPrimary" href="/about">
+        <Typography
+          className="hoverline"
+          color="textSecondary"
+          variant="subtitle"
+          display="inline"
+        >
+          About
+        </Typography>
       </Link>
       {'　'}
-      <Link color="textPrimary" href="/about/faq" passHref>
-        <a>
-          <Typography
-            className="hoverline"
-            color="textSecondary"
-            variant="subtitle"
-            display="inline"
-          >
-            FAQ
-          </Typography>
-        </a>
+      <Link color="textPrimary" href="/about/faq">
+        <Typography
+          className="hoverline"
+          color="textSecondary"
+          variant="subtitle"
+          display="inline"
+        >
+          FAQ
+        </Typography>
       </Link>
       {'　'}
-      <Link color="textPrimary" href="/about/support-us" passHref>
-        <a>
-          <Typography
-            className="hoverline"
-            color="textSecondary"
-            variant="subtitle"
-            display="inline"
-          >
-            Support Us
-          </Typography>
-        </a>
+      <Link color="textPrimary" href="/about/support-us">
+        <Typography
+          className="hoverline"
+          color="textSecondary"
+          variant="subtitle"
+          display="inline"
+        >
+          Support Us
+        </Typography>
       </Link>
       {'　'}
-      <Link color="textPrimary" href="/about/terms" passHref>
-        <a>
-          <Typography
-            className="hoverline"
-            color="textSecondary"
-            variant="subtitle"
-            display="inline"
-          >
-            Terms
-          </Typography>
-        </a>
+      <Link color="textPrimary" href="/about/terms">
+        <Typography
+          className="hoverline"
+          color="textSecondary"
+          variant="subtitle"
+          display="inline"
+        >
+          Terms
+        </Typography>
       </Link>
       {'　'}
-      <Link color="textPrimary" href="/about/privacy" passHref>
-        <a>
-          <Typography
-            className="hoverline"
-            color="textSecondary"
-            variant="subtitle"
-            display="inline"
-          >
-            Privacy
-          </Typography>
-        </a>
+      <Link color="textPrimary" href="/about/privacy">
+        <Typography
+          className="hoverline"
+          color="textSecondary"
+          variant="subtitle"
+          display="inline"
+        >
+          Privacy
+        </Typography>
       </Link>
       {'　'}
-      <Link color="textPrimary" href="/about/cookies" passHref>
-        <a>
-          <Typography
-            className="hoverline"
-            color="textSecondary"
-            variant="subtitle"
-            display="inline"
-          >
-            Cookies
-          </Typography>
-        </a>
+      <Link color="textPrimary" href="/about/cookies">
+        <Typography
+          className="hoverline"
+          color="textSecondary"
+          variant="subtitle"
+          display="inline"
+        >
+          Cookies
+        </Typography>
       </Link>
       <div className="pt-2">
         <Typography color="textSecondary" variant="subtitle" display="inline">

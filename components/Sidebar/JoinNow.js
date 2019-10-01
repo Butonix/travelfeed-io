@@ -7,7 +7,7 @@ import Link from '../../lib/Link';
 
 const JoinNow = () => {
   return (
-    <div className="text-center pt-3">
+    <div className="text-center pt-2">
       <Card>
         <CardContent>
           <Typography
@@ -19,7 +19,7 @@ const JoinNow = () => {
             Never miss another story!
           </Typography>
           <div>
-            <Link color="textPrimary" href="/join" passHref>
+            <Link color="textPrimary" href="/join">
               <Button
                 variant="contained"
                 color="primary"

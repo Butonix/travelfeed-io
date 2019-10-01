@@ -3,11 +3,10 @@ import { ThemeProvider } from '@material-ui/styles';
 import * as Sentry from '@sentry/browser';
 import Cookie from 'js-cookie';
 import { register, unregister } from 'next-offline/runtime';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 import { SnackbarProvider } from 'notistack';
-import NProgress from 'nprogress';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
@@ -32,16 +31,11 @@ const Piwik = new ReactPiwik({
   phpFilename: 'matomo.php',
 });
 
-NProgress.configure({ showSpinner: false });
-
 Router.events.on('routeChangeStart', () => {
-  NProgress.start();
   if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
   ReactPiwik.push(['setDocumentTitle', document.title]);
   ReactPiwik.push(['trackPageView']);
 });
-Router.events.on('routeChangeComplete', () => NProgress.done());
-Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -109,29 +103,27 @@ class MyApp extends App {
       paletteType: colorscheme,
     });
     return (
-      <Container>
-        <UserContext.Provider
-          value={{
-            theme: colorscheme,
-            setDarkMode: this.setDarkMode,
-            setLightMode: this.setLightMode,
-            // React Hooks: https://reacttricks.com/sharing-global-data-in-next-with-custom-app-and-usecontext-hook/
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {/* Pass pageContext to the _document though the renderPage enhancer
+      <UserContext.Provider
+        value={{
+          theme: colorscheme,
+          setDarkMode: this.setDarkMode,
+          setLightMode: this.setLightMode,
+          // React Hooks: https://reacttricks.com/sharing-global-data-in-next-with-custom-app-and-usecontext-hook/
+        }}
+      >
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <div style={{ paddingTop: '65px' }} />
-            <SnackbarProvider maxSnack={3}>
-              <ApolloProvider client={apollo}>
-                <CookieConsent />
-                <Component pageContext={this.pageContext} {...pageProps} />
-              </ApolloProvider>
-            </SnackbarProvider>
-          </ThemeProvider>
-        </UserContext.Provider>
-      </Container>
+          <div style={{ paddingTop: '65px' }} />
+          <SnackbarProvider maxSnack={3}>
+            <ApolloProvider client={apollo}>
+              <CookieConsent />
+              <Component pageContext={this.pageContext} {...pageProps} />
+            </ApolloProvider>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </UserContext.Provider>
     );
   }
 }

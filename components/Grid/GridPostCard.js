@@ -1,9 +1,8 @@
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -13,6 +12,18 @@ import Link from '../../lib/Link';
 import IsCurated from '../Post/IsCurated';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
+import ProfileAvatar from '../Profile/ProfileAvatar';
+import ProfileName from '../Profile/ProfileName';
+import Excerpt from './Excerpt';
+
+const styles = () => ({
+  card: {
+    borderRadius: 12,
+  },
+  cardHeader: {
+    padding: 12,
+  },
+});
 
 class GridPostCard extends Component {
   constructor(props) {
@@ -46,6 +57,8 @@ class GridPostCard extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     // Prevent SSR
     const BookmarkIcon = dynamic(() => import('../Post/BookmarkIcon'), {
       ssr: false,
@@ -71,66 +84,55 @@ class GridPostCard extends Component {
         />
       );
     } else {
-      let appIcon = <Fragment />;
-      if (
-        this.props.post.app &&
-        this.props.post.app.split('/')[0] === 'travelfeed'
-      ) {
-        appIcon = (
-          <img
-            width="25"
-            alt="TravelFeed"
-            className="mr-1"
-            src="https://travelfeed.io/favicon.ico"
-          />
-        );
-      }
       action = (
         <Fragment>
-          {appIcon}
-          <IsCurated curation_score={this.props.post.curation_score} />
+          <IsCurated
+            app={this.props.post.app}
+            curationScore={this.props.post.curation_score}
+          />
         </Fragment>
       );
     }
+    const cardImage = imageProxy(
+      this.props.post.img_url,
+      this.state.cardWidth,
+      this.props.cardHeight,
+      undefined,
+      'webp',
+    );
+    let titleUri = '';
+    let bodyUri = '';
+    let displayNameUri = '';
+    try {
+      titleUri = encodeURIComponent(this.props.post.title);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      bodyUri = encodeURIComponent(this.props.post.body);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      displayNameUri = encodeURIComponent(this.props.post.display_name);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+
     return (
-      <Card key={this.props.post.permlink} className="m-2">
+      <Card
+        key={this.props.post.permlink}
+        className={`mb-0 mt-2 mr-2 ml-2 ${classes.card}`}
+      >
         <CardHeader
-          avatar={
-            <Link
-              color="textPrimary"
-              as={`/@${this.props.post.author}`}
-              href={`/blog?author=${this.props.post.author}`}
-              passHref
-            >
-              <a>
-                <Avatar
-                  style={{ cursor: 'pointer' }}
-                  src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
-                  alt={this.props.post.author}
-                />
-              </a>
-            </Link>
-          }
+          className={classes.cardHeader}
+          avatar={<ProfileAvatar author={this.props.post.author} />}
           action={<Fragment>{action}</Fragment>}
           title={
-            <Link
-              color="textPrimary"
-              as={`/@${this.props.post.author}`}
-              href={`/blog?author=${this.props.post.author}`}
-              passHref
-            >
-              <a className="textPrimary cpointer">
-                <strong>{this.props.post.display_name}</strong>
-                <Typography
-                  color="textSecondary"
-                  variant="subtitle"
-                  display="inline"
-                >
-                  {' '}
-                  @{this.props.post.author}
-                </Typography>
-              </a>
-            </Link>
+            <ProfileName
+              author={this.props.post.author}
+              displayName={this.props.post.display_name}
+            />
           }
           subheader={
             <SubHeader
@@ -146,57 +148,53 @@ class GridPostCard extends Component {
         <Link
           color="textPrimary"
           as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-          href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
-          passHref
+          href={`/post?author=${this.props.post.author}&permlink=${
+            this.props.post.permlink
+          }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+            this.props.post.img_url,
+          )}&lazy_img_url=${encodeURIComponent(
+            cardImage,
+          )}&created_at=${encodeURIComponent(
+            this.props.post.created_at,
+          )}&depth=0`}
         >
-          <a>
-            <CardActionArea>
-              {this.props.post.img_url !== undefined &&
-                this.props.post.img_url !== '' && (
-                  <picture ref={this.myInput} className="lazyImage">
-                    <source
-                      className="lazyImage"
-                      height={this.props.cardHeight}
-                      type="image/webp"
-                      data-srcset={`${imageProxy(
-                        this.props.post.img_url,
-                        this.state.cardWidth,
-                        this.props.cardHeight,
-                        undefined,
-                        'webp',
-                      )}`}
-                      data-sizes="100w"
-                    />
-                    <img
-                      height={this.props.cardHeight}
-                      width="100%"
-                      alt={this.props.post.title}
-                      className="lazy"
-                      src={`${imageProxy(
-                        this.props.post.img_url,
-                        10,
-                        10,
-                        'fit',
-                      )}`}
-                      data-src={`${imageProxy(
-                        this.props.post.img_url,
-                        this.state.cardWidth,
-                        this.props.cardHeight,
-                      )}`}
-                      data-sizes="100w"
-                    />
-                  </picture>
-                )}
-              <CardContent>
-                <Typography gutterBottom variant="h5">
-                  {this.props.post.title}
-                </Typography>
-                <Typography component="p">
-                  {this.props.post.excerpt} [...]
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </a>
+          <CardActionArea>
+            {this.props.post.img_url !== undefined &&
+              this.props.post.img_url !== '' && (
+                <picture ref={this.myInput} className="lazyImage">
+                  <source
+                    className="lazyImage"
+                    height={this.props.cardHeight}
+                    type="image/webp"
+                    data-srcset={`${cardImage}`}
+                    data-sizes="100w"
+                  />
+                  <img
+                    height={this.props.cardHeight}
+                    width="100%"
+                    alt={this.props.post.title}
+                    className="lazy"
+                    src={`${imageProxy(
+                      this.props.post.img_url,
+                      this.state.cardWidth * 0.1,
+                      this.props.cardHeight * 0.1,
+                    )}`}
+                    data-src={`${imageProxy(
+                      this.props.post.img_url,
+                      this.state.cardWidth,
+                      this.props.cardHeight,
+                    )}`}
+                    data-sizes="100w"
+                  />
+                </picture>
+              )}
+            <CardContent>
+              <Excerpt
+                title={this.props.post.title}
+                text={this.props.post.excerpt}
+              />
+            </CardContent>
+          </CardActionArea>
         </Link>
         <VoteSlider
           author={this.props.post.author}
@@ -224,4 +222,4 @@ GridPostCard.propTypes = {
   isBookmark: PropTypes.bool,
 };
 
-export default GridPostCard;
+export default withStyles(styles)(GridPostCard);

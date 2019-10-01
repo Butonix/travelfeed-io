@@ -4,17 +4,32 @@ import SinglePost from '../components/Post/SinglePost';
 
 class PostPage extends Component {
   static async getInitialProps(props) {
-    const { author } = props.query;
-    const { permlink } = props.query;
-    return { author, permlink };
+    const {
+      author,
+      permlink,
+      title,
+      body,
+      display_name,
+      img_url,
+      lazy_img_url,
+      created_at,
+      depth,
+    } = props.query;
+    return {
+      author,
+      permlink,
+      title,
+      body,
+      display_name,
+      img_url,
+      lazy_img_url,
+      created_at,
+      depth,
+    };
   }
 
   render() {
-    return (
-      <SinglePost
-        post={{ author: this.props.author, permlink: this.props.permlink }}
-      />
-    );
+    return <SinglePost post={this.props} />;
   }
 }
 

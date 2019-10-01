@@ -10,7 +10,6 @@ import sanitize from 'sanitize-html';
 import { GET_DRAFTS } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import parseBody from '../../helpers/parseBody';
-import { regExcerpt } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import PostListItem from '../Grid/PostListItem';
 
@@ -29,7 +28,7 @@ class Drafts extends Component {
     const user = getUser();
     return (
       <Fragment>
-        <div className="text-center pt-4" />
+        <div className="text-center pt-1 pb-3" />
         <Query
           fetchPolicy="network-only"
           query={GET_DRAFTS}
@@ -43,10 +42,16 @@ class Drafts extends Component {
                 </div>
               );
             }
-            if (error || data.drafts === null) {
-              return <Fragment />;
+            if (error) {
+              return (
+                <Card className="m-5 text-center" key="noposts">
+                  <CardContent>
+                    {error && 'Network Error. Are you online?'}
+                  </CardContent>
+                </Card>
+              );
             }
-            if (data.drafts.length < 10 && hasMore)
+            if (data && data.drafts && data.drafts.length < 10 && hasMore)
               this.setState({ hasMore: false });
             return (
               <InfiniteScroll
@@ -83,29 +88,22 @@ class Drafts extends Component {
                   alignItems="center"
                   justify="center"
                 >
-                  {data.drafts.length > 0 &&
-                    data.drafts.map(draft => {
-                      const htmlBody = parseBody(
-                        draft.isCodeEditor === false
-                          ? json2md(JSON.parse(draft.body))
-                          : draft.body,
-                        {},
-                      );
-                      const sanitized = sanitize(htmlBody, {
-                        allowedTags: [],
-                      });
-                      const readtime = readingTime(sanitized);
-                      const excerpt = regExcerpt(sanitized);
-                      return (
-                        <Grid
-                          item
-                          lg={8}
-                          md={10}
-                          sm={11}
-                          xs={12}
-                          key={draft.id}
-                        >
+                  <Grid item lg={8} md={10} sm={11} xs={12}>
+                    {data.drafts.length > 0 &&
+                      data.drafts.map(draft => {
+                        const htmlBody = parseBody(
+                          draft.isCodeEditor === false
+                            ? json2md(JSON.parse(draft.body))
+                            : draft.body,
+                          {},
+                        );
+                        const sanitized = sanitize(htmlBody, {
+                          allowedTags: [],
+                        });
+                        const readtime = readingTime(sanitized);
+                        return (
                           <PostListItem
+                            key={draft.id}
                             post={{
                               author: user,
                               body: draft.body,
@@ -115,22 +113,22 @@ class Drafts extends Component {
                               json: draft.json,
                               created_at: draft.savedate,
                               readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               id: draft.id,
                             }}
                             id={draft.id}
                             isDraftMode
-                          />{' '}
-                        </Grid>
-                      );
-                    })}
-                  {data.drafts && data.drafts.length === 0 && (
-                    <Card className="mt-5">
-                      <CardContent>
-                        You don&apos;t have any drafts yet.
-                      </CardContent>
-                    </Card>
-                  )}
+                          />
+                        );
+                      })}
+                    {data.drafts && data.drafts.length === 0 && (
+                      <Card className="mt-2 text-center">
+                        <CardContent>
+                          You don&apos;t have any drafts yet.
+                        </CardContent>
+                      </Card>
+                    )}
+                  </Grid>
                 </Grid>
               </InfiniteScroll>
             );

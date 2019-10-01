@@ -24,7 +24,6 @@ class TagsOrderBySelect extends React.Component {
             color="textPrimary"
             as={`/hot/${this.props.tags}`}
             href={`/tag?tags=${this.props.tags}&orderby=sc_hot`}
-            passHref
           >
             <Tab icon={<HotIcon />} label="TAKING OFF" />
           </Link>
@@ -32,7 +31,6 @@ class TagsOrderBySelect extends React.Component {
             color="textPrimary"
             as={`/featured/${this.props.tags}`}
             href={`/tag?tags=${this.props.tags}&orderby=featured`}
-            passHref
           >
             <Tab icon={<FeaturedIcon />} label="FEATURED" />
           </Link>
@@ -40,7 +38,6 @@ class TagsOrderBySelect extends React.Component {
             color="textPrimary"
             as={`/favorites/${this.props.tags}`}
             href={`/tag?tags=${this.props.tags}&orderby=total_votes`}
-            passHref
           >
             <Tab icon={<FavoriteIcon />} label="FAVORITES" />
           </Link>

@@ -26,14 +26,14 @@ const EditorPreview = props => {
         >
           <Card>
             <PostContent
-              hideAuthorProfile={props.hideAuthorProfile}
+              hideAuthorProfile
               author={props.author}
               permlink={props.permlink}
               display_name={props.author}
               readtime={props.readtime}
               content={
                 <div
-                  className="textPrimary postcontent"
+                  className="textPrimary postcontent postCardContent"
                   // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={htmlBody}
                 />

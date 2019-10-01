@@ -8,6 +8,26 @@
     max-width: 100%;
   }
 }
+@media (min-width: 576px) {
+  /* Bootstrap sm */
+  .pull-right {
+    position: relative;
+    width: 50%;
+    float: right;
+    padding: 5px 0 5px 20px;
+  }
+  .pull-left {
+    position: relative;
+    max-width: 50%;
+    float: left;
+    padding: 5px 20px 5px 0;
+  }
+  .pull-left figure,
+  .pull-right figure {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+}
 
 .mapboxgl-popup-content {
   padding: 0 !important;
@@ -19,11 +39,6 @@
   z-index: 9999;
 }
 
-/* Markdown/html editor */
-.CodeMirror {
-  height: 100% !important;
-  min-height: 300px;
-}
 /* Editor inline menu */
 .duDjGM {
   padding-bottom: 14px !important;
@@ -34,9 +49,9 @@
   color: inherit !important;
 }
 
-/* Progress bar */
-#nprogress .bar {
-  background: #3849ab !important;
+/* Bring editor notification to front */
+.cdx-notifies {
+  z-index: 9999 !important;
 }
 
 figcaption {
@@ -44,13 +59,13 @@ figcaption {
   margin-right: 24px;
   text-align: center;
   font-style: italic;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 /* Image lazy loading fade effect */
 .lazy {
-  transition: opacity 0.5s;
-  opacity: 0.2;
+  transition: opacity 0.3s;
+  opacity: 0.8;
 }
 .lazy.loaded {
   opacity: 1;
@@ -94,6 +109,15 @@ a:hover {
   text-decoration: none !important;
   color: inherit;
 }
+.postCardContent {
+  overflow: hidden;
+  padding: 16px;
+}
+sup {
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9em;
+}
 .postcontent a,
 .ablue {
   color: #1e88e5 !important;
@@ -136,35 +160,23 @@ a:hover {
   margin-right: -24px;
   padding: 20px 0;
 }
-/* Disabled for causing problems with the editor - todo: investigate if these styles are needed for proper post rendering */
-/* .postcontent span {
-  width: calc(100% + 24px);
-  margin-left: -12px;
-  margin-right: -12px;
-  outline: 0;
-  border: 0;
-} */
 
 #editorjs-container,
 .custom-html-style,
 .custom-html-style p,
 .rc-md-editor .editor-container .sec-md .input {
-  font-size: 1.2rem !important;
+  font-size: 1.15rem !important;
   font-weight: 400;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
 /* Editor js */
-
 #editorjs-container img,
 #editorjs-container iframe,
 .html-wrap iframe, /* Markdown editor */
 .editorjs-container img {
-  /* overwrite .postcontent styles */
-  width: 100% !important;
-  padding: 0 !important;
-  margin-left: 0px !important;
-  margin-right: 0px !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .image-tool__caption {
@@ -177,8 +189,10 @@ a:hover {
   height: 250px !important;
 }
 
-.postcontent {
-  font-size: 1.2rem !important;
+.postcontent,
+.custom-html-style ol,
+.custom-html-style ul {
+  font-size: 1.15rem !important;
   font-weight: 400;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1.46429em;
@@ -318,85 +332,4 @@ button:hover,
 .carousel-inner .active {
   opacity: 1;
   z-index: 100;
-}
-/* Make clicks pass-through */
-#nprogress {
-  pointer-events: none;
-}
-
-#nprogress .bar {
-  background: #29d;
-
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 2px;
-}
-
-/* Fancy blur effect */
-#nprogress .peg {
-  display: block;
-  position: absolute;
-  right: 0px;
-  width: 100px;
-  height: 100%;
-  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
-  opacity: 1;
-
-  -webkit-transform: rotate(3deg) translate(0px, -4px);
-  -ms-transform: rotate(3deg) translate(0px, -4px);
-  transform: rotate(3deg) translate(0px, -4px);
-}
-
-/* Remove these to get rid of the spinner */
-#nprogress .spinner {
-  display: block;
-  position: fixed;
-  z-index: 1031;
-  top: 15px;
-  right: 15px;
-}
-
-#nprogress .spinner-icon {
-  width: 18px;
-  height: 18px;
-  box-sizing: border-box;
-
-  border: solid 2px transparent;
-  border-top-color: #29d;
-  border-left-color: #29d;
-  border-radius: 50%;
-
-  -webkit-animation: nprogress-spinner 400ms linear infinite;
-  animation: nprogress-spinner 400ms linear infinite;
-}
-
-.nprogress-custom-parent {
-  overflow: hidden;
-  position: relative;
-}
-
-.nprogress-custom-parent #nprogress .spinner,
-.nprogress-custom-parent #nprogress .bar {
-  position: absolute;
-}
-
-@-webkit-keyframes nprogress-spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@keyframes nprogress-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }

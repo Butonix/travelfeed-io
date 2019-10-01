@@ -119,45 +119,7 @@ app
     });
 
     server.get('/featured', (req, res) => {
-      const actualPage = '/';
-      const queryParams = {
-        orderby: 'featured',
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/feed', (req, res) => {
-      const actualPage = '/';
-      const queryParams = {
-        orderby: 'feed',
-      };
-      // Personal, so no caching
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/discover', (req, res) => {
-      const actualPage = '/';
-      const queryParams = {
-        orderby: 'random',
-      };
-      // No cache for randomness
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/created', (req, res) => {
-      const actualPage = '/';
-      const queryParams = {
-        orderby: 'created_at',
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/hot', (req, res) => {
-      const actualPage = '/';
-      const queryParams = {
-        orderby: 'sc_hot',
-      };
-      app.render(req, res, actualPage, queryParams);
+      res.redirect(`/`);
     });
 
     server.get('/created/:tag', (req, res) => {

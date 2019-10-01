@@ -8,53 +8,48 @@ import NewIcon from '@material-ui/icons/Restore';
 import FeaturedIcon from '@material-ui/icons/Star';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getUser } from '../../helpers/token';
 
-class HomeOrderBySelect extends React.Component {
-  render() {
-    return (
-      <Paper square>
-        <Tabs
-          value={this.props.selection}
-          onChange={this.handleChange}
-          variant="fullWidth"
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Link as="/created" href="/?orderby=created_at" passHref>
-            <Tab
-              icon={<NewIcon />}
-              label="NEW"
-              className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
-            />
-          </Link>
-          <Link as="/hot" href="/?orderby=sc_hot" passHref>
-            <Tab icon={<HotIcon />} label="TAKING OFF" />
-          </Link>
-          <Link as="/discover" href="/?orderby=random" passHref>
-            <Tab icon={<DiscoverIcon />} label="DISCOVER" />
-          </Link>
-          <Link as="/featured" href="/?orderby=featured" passHref>
-            <Tab icon={<FeaturedIcon />} label="FEATURED" />
-          </Link>
-          {this.props.showFeed && (
-            <Link as="/feed" href="/?orderby=feed" passHref>
-              <Tab icon={<FeedIcon />} label="FEED" />
-            </Link>
-          )}
-        </Tabs>
-      </Paper>
-    );
-  }
-}
+const HomeOrderBySelect = props => {
+  const [user, setUser] = useState(null);
 
-HomeOrderBySelect.defaultProps = {
-  showFeed: undefined,
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
+  return (
+    <Paper square>
+      <Tabs
+        value={props.selection}
+        variant="fullWidth"
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+      >
+        <Link href="/created">
+          <Tab icon={<NewIcon />} label="NEW" />
+        </Link>
+        <Link href="/hot">
+          <Tab icon={<HotIcon />} label="TAKING OFF" />
+        </Link>
+        <Link href="/discover">
+          <Tab icon={<DiscoverIcon />} label="DISCOVER" />
+        </Link>
+        <Link href="/">
+          <Tab icon={<FeaturedIcon />} label="FEATURED" />
+        </Link>
+        {user && (
+          <Link href="/feed">
+            <Tab icon={<FeedIcon />} label="FEED" />
+          </Link>
+        )}
+      </Tabs>
+    </Paper>
+  );
 };
 
 HomeOrderBySelect.propTypes = {
-  showFeed: PropTypes.string,
   selection: PropTypes.number.isRequired,
 };
 

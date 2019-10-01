@@ -58,7 +58,6 @@ const SubHeader = props => {
                 ? `&subdivision=${location.subdivision}`
                 : ''
             }`}
-            passHref
           >
             <Tooltip
               title={`${

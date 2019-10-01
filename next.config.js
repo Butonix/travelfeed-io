@@ -20,9 +20,9 @@ module.exports = withImages(
           MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
           GMAPS_API_KEY: process.env.GMAPS_API_KEY,
           RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
-          CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
           ROOTURL: process.env.ROOTURL,
           GRAPHQL_URL: process.env.GRAPHQL_URL,
+          STEEM_API: process.env.STEEM_API,
         },
         analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
         analyzeBrowser: ['browser', 'both'].includes(

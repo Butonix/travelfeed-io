@@ -11,17 +11,16 @@ import { withStyles } from '@material-ui/styles';
 import MUIPlacesAutocomplete, {
   geocodeBySuggestion,
 } from 'mui-places-autocomplete';
-import NextHead from 'next/head';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
-import { GMAPS_API_KEY } from '../../config';
+import React from 'react';
 
 // https://stackoverflow.com/questions/49040092/material-ui-v1-input-focus-style-override
 const styles = theme => ({
-  input: {
+  input: props => ({
     borderRadius: theme.shape.borderRadius,
-    width: '100%',
+    width: props.width || '100%',
+    height: (props.width && '65px') || '100%',
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
@@ -29,18 +28,26 @@ const styles = theme => ({
     color: 'white',
     padding: '5px',
     transition: 'width 0.3s',
-  },
-  // Separate this part into it's own CSS class
-  inputFocused: {
-    width: '120%',
+  }),
+  inputFocused: props => ({
+    // Separate this part into it's own CSS class
+    width: props.width || '120%',
     backgroundColor: fade(theme.palette.common.white, 0.25),
     transition: 'width 0.3s',
-  },
+  }),
 });
 
-class Geocoder extends Component {
+const createAutocompleteRequest = inputValue => {
+  return {
+    input: inputValue,
+    types: ['(regions)'],
+    language: 'en',
+  };
+};
+
+const Geocoder = props => {
   // eslint-disable-next-line class-methods-use-this
-  onSuggestionSelected(suggestion) {
+  const onSuggestionSelected = suggestion => {
     // Once a suggestion has been selected by your consumer you can use the
     // utility geocoding
     // functions to get the latitude and longitude for the selected suggestion.
@@ -70,48 +77,43 @@ class Geocoder extends Component {
         if (!bounds) {
           bounds = result.geometry.viewport;
         }
-        console.log(bounds);
+        const bound1 = bounds[Object.keys(bounds)[1]];
+        const bound2 = bounds[Object.keys(bounds)[0]];
         Router.push(
-          `/location?location_box=${bounds.da.g},${bounds.ha.g},${bounds.da.h},${bounds.ha.h}&formatted_address=${result.formatted_address}${args}`,
+          `/location?location_box=${bound1.g},${bound2.g},${bound1.h},${bound2.h}&formatted_address=${result.formatted_address}${args}`,
         );
       })
       .catch(err => {
         // eslint-disable-next-line no-console
         console.log(err);
       });
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Fragment>
-        <NextHead>
-          <script
-            type="text/javascript"
-            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
-          />
-        </NextHead>
-        <MUIPlacesAutocomplete
-          textFieldProps={{
-            InputProps: {
-              placeholder: 'Search for a place',
-              className: classes.input,
-              classes: { focused: classes.inputFocused },
-              disableUnderline: true,
-              startAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon className="text-light ml-1 mr-3" />
-                </InputAdornment>
-              ),
-            },
-          }}
-          onSuggestionSelected={this.onSuggestionSelected}
-          renderTarget={() => <div />}
-        />
-      </Fragment>
-    );
-  }
-}
+  const { classes } = props;
+  return (
+    <>
+      <MUIPlacesAutocomplete
+        textFieldProps={{
+          InputProps: {
+            autoFocus: props.autoFocus,
+            placeholder: 'Search for a place',
+            className: classes.input,
+            classes: { focused: classes.inputFocused },
+            disableUnderline: true,
+            startAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon className="text-light ml-1 mr-3" />
+              </InputAdornment>
+            ),
+          },
+        }}
+        onSuggestionSelected={onSuggestionSelected}
+        createAutocompleteRequest={createAutocompleteRequest}
+        renderTarget={() => <></>}
+      />
+    </>
+  );
+};
 
 Geocoder.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,

@@ -1,6 +1,4 @@
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
@@ -12,12 +10,17 @@ import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
-import CuratorMenu from '../CuratorMenu/CommentMenu';
+import CommentMenu from '../CuratorMenu/CommentMenu';
+import ProfileAvatar from '../Profile/ProfileAvatar';
+import ProfileName from '../Profile/ProfileName';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
 
 const styles = theme => ({
+  card: {
+    borderRadius: 12,
+  },
   areabg: {
     background: theme.palette.background.light,
   },
@@ -83,9 +86,9 @@ class PostCommentItem extends Component {
         />
       );
     }
-    let debth = 0;
+    let depth = 0;
     if (this.props.post.depth > 1 && this.props.loadreplies === true) {
-      debth = `${String(this.props.post.depth * 20)}px`;
+      depth = `${String(this.props.post.depth * 10)}px`;
     }
     let title = <Fragment />;
     let appIcon = <Fragment />;
@@ -112,11 +115,8 @@ class PostCommentItem extends Component {
             color="textPrimary"
             as={`/@${this.props.post.parent_author}/${this.props.post.parent_permlink}`}
             href={`/post?author=${this.props.post.parent_author}&permlink=${this.props.post.parent_permlink}`}
-            passHref
           >
-            <a>
-              <strong className="ablue hoverline">Go to parent comment</strong>
-            </a>
+            <strong className="ablue hoverline">Go to parent comment</strong>
           </Link>
         </div>
       );
@@ -127,17 +127,16 @@ class PostCommentItem extends Component {
           className={`border p-3 mb-2 
         ${classNames(classes.areabg)}`}
         >
-          <h4>{`Re: ${this.props.post.root_title}`}</h4>
+          <Typography gutterBottom variant="h6" component="h4">
+            {`Re: ${this.props.post.root_title}`}
+          </Typography>
           <div>
             <Link
               color="textPrimary"
               as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
-              href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}`}
-              passHref
+              href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}&depth=0`}
             >
-              <a>
-                <strong className="ablue hoverline">Go to original post</strong>
-              </a>
+              <strong className="ablue hoverline">Go to original post</strong>
             </Link>
           </div>
           {parent}
@@ -146,7 +145,10 @@ class PostCommentItem extends Component {
     }
     let cardcontent = (
       // eslint-disable-next-line react/no-danger
-      <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
+      <div
+        className="postcontent postCardContent"
+        dangerouslySetInnerHTML={bodyText}
+      />
     );
     if (this.state.showEditor) {
       const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
@@ -164,29 +166,14 @@ class PostCommentItem extends Component {
       );
     }
     return (
-      <Fragment>
+      <div>
         <Card
-          className="mb-3"
-          style={{ marginLeft: debth }}
+          className={classes.card}
+          style={{ marginLeft: depth }}
           id={this.props.post.permlink}
         >
           <CardHeader
-            avatar={
-              <Link
-                color="textPrimary"
-                as={`/@${this.props.post.author}`}
-                href={`/blog?author=${this.props.post.author}`}
-                passHref
-              >
-                <a>
-                  <Avatar
-                    className="cpointer"
-                    src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
-                    alt={this.props.post.author}
-                  />
-                </a>
-              </Link>
-            }
+            avatar={<ProfileAvatar author={this.props.post.author} />}
             action={
               <Fragment>
                 {appIcon}
@@ -194,38 +181,24 @@ class PostCommentItem extends Component {
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
                 />
-                <CuratorMenu
+                <CommentMenu
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
                 />
               </Fragment>
             }
             title={
-              <Link
-                color="textPrimary"
-                as={`/@${this.props.post.author}`}
-                href={`/blog?author=${this.props.post.author}`}
-                passHref
-              >
-                <a className="textPrimary cpointer">
-                  <strong>{this.props.post.display_name}</strong>
-                  <Typography
-                    color="textSecondary"
-                    variant="subtitle"
-                    display="inline"
-                  >
-                    {' '}
-                    @{this.props.post.author}
-                  </Typography>
-                </a>
-              </Link>
+              <ProfileName
+                author={this.props.post.author}
+                displayName={this.props.post.display_name}
+              />
             }
             subheader={<SubHeader created_at={this.props.post.created_at} />}
           />
-          <CardContent>
+          <>
             {title}
             {cardcontent}
-          </CardContent>
+          </>
           <VoteSlider
             author={this.props.post.author}
             permlink={this.props.post.permlink}
@@ -260,7 +233,7 @@ class PostCommentItem extends Component {
           />
         )}
         {children}
-      </Fragment>
+      </div>
     );
   }
 }

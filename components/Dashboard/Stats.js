@@ -35,17 +35,16 @@ const Stats = () => {
     <Fragment>
       <Grid container className="p-1" spacing={0} justify="center">
         <Query query={GET_USER_STATS}>
-          {({ data, loading, error }) => {
-            if (loading || error || data.userstats === null) {
-              return <Fragment />;
-            }
+          {({ data }) => {
             return (
               <Fragment>
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={TotalPostsIcon}
                     title="Total Posts"
-                    value={data.userstats.total_posts}
+                    value={
+                      data && data.userstats ? data.userstats.total_posts : ''
+                    }
                     iconColor={purple[600]}
                     boxColor={purple[400]}
                   />
@@ -54,7 +53,9 @@ const Stats = () => {
                   <SmallBox
                     Icon={TotalPayoutIcon}
                     title="Total Earnings"
-                    value={data.userstats.total_payout}
+                    value={
+                      data && data.userstats ? data.userstats.total_payout : ''
+                    }
                     prefix="$"
                     iconColor={cyan[800]}
                     boxColor={cyan[600]}
@@ -64,7 +65,11 @@ const Stats = () => {
                   <SmallBox
                     Icon={TotalFeaturedIcon}
                     title="Featured Posts"
-                    value={data.userstats.total_featured}
+                    value={
+                      data && data.userstats
+                        ? data.userstats.total_featured
+                        : ''
+                    }
                     iconColor={orange[600]}
                     boxColor={orange[400]}
                   />
@@ -73,10 +78,14 @@ const Stats = () => {
                   <SmallBox
                     Icon={QualityIcon}
                     title="Quality Score"
-                    value={calculateQualityScore(
-                      data.userstats.total_featured,
-                      data.userstats.total_posts,
-                    )}
+                    value={
+                      data && data.userstats
+                        ? calculateQualityScore(
+                            data.userstats.total_featured,
+                            data.userstats.total_posts,
+                          )
+                        : ''
+                    }
                     iconColor={pink[600]}
                     boxColor={pink[400]}
                   />
@@ -97,51 +106,28 @@ const Stats = () => {
                         </p>
                         <ul>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/publish"
-                              passHref
-                            >
-                              <a>Write your next awesome travel post</a>
+                            <Link color="textPrimary" href="/dashboard/publish">
+                              Write your next awesome travel post
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/drafts"
-                              passHref
-                            >
-                              <a>
-                                Access your drafts and continue where you left
-                                off
-                              </a>
+                            <Link color="textPrimary" href="/dashboard/drafts">
+                              Access your drafts and continue where you left off
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/posts"
-                              passHref
-                            >
-                              <a>View and edit your published posts</a>
+                            <Link color="textPrimary" href="/dashboard/posts">
+                              View and edit your published posts
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/replies"
-                              passHref
-                            >
-                              <a>View and answer replies from your followers</a>
+                            <Link color="textPrimary" href="/dashboard/replies">
+                              View and answer replies from your followers
                             </Link>
                           </li>
                           <li>
-                            <Link
-                              color="textPrimary"
-                              href="/dashboard/profile"
-                              passHref
-                            >
-                              <a>Edit your profile</a>
+                            <Link color="textPrimary" href="/dashboard/profile">
+                              Edit your profile
                             </Link>
                           </li>
                         </ul>
@@ -149,8 +135,8 @@ const Stats = () => {
                           To return to TravelFeed and discover other travel
                           blogs, you can always click on your profile icon on
                           the top right and select &quot;TravelFeed&quot; to{' '}
-                          <Link color="textPrimary" href="/" passHref>
-                            <a>return to the feed.</a>
+                          <Link color="textPrimary" href="/">
+                            return to the feed.
                           </Link>
                         </p>
                       </div>
@@ -163,10 +149,12 @@ const Stats = () => {
                       background={teal[600]}
                       content={
                         <div className="pt-3">
-                          <RecentEarnings
-                            color={teal[400]}
-                            recentPayouts={data.userstats.recent_payouts}
-                          />
+                          {data && data.userstats && (
+                            <RecentEarnings
+                              color={teal[400]}
+                              recentPayouts={data.userstats.recent_payouts}
+                            />
+                          )}
                         </div>
                       }
                     />
@@ -181,16 +169,13 @@ const Stats = () => {
             query={GET_DASHBOARD_POSTS}
             variables={{ author: getUser(), limit: 15 }}
           >
-            {({ data, loading, error }) => {
-              if (loading || error || data.post === null) {
-                return <Fragment />;
-              }
+            {({ data }) => {
               return (
                 <HeaderCard
                   noborder
                   title="Recent Posts"
                   background={indigo[600]}
-                  content={<PostsTable data={data.posts} />}
+                  content={<>{data && <PostsTable data={data.posts} />}</>}
                 />
               );
             }}
@@ -203,45 +188,44 @@ const Stats = () => {
               limit: 3,
             }}
           >
-            {({ data, loading, error }) => {
-              if (loading || error || data.post === null) {
-                return <Fragment />;
-              }
+            {({ data }) => {
               return (
                 <div className="mt-2">
                   <HeaderCard
                     title="Notifications"
                     background={lightGreen[600]}
                     content={
-                      (data.posts && data.posts.length === 0 && (
+                      (data && data.posts && data.posts.length === 0 && (
                         <div className="text-center">No notifications.</div>
                       )) ||
-                      data.posts.map(post => {
-                        return post.curation_score >= 9000 ? (
-                          <div
-                            key={post.title}
-                            className="d-flex justify-content-center p-2"
-                          >
-                            <CustomSnackbar
-                              variant="success"
-                              message={`Your post ${post.title}
+                      (data &&
+                        data.posts &&
+                        data.posts.map(post => {
+                          return post.curation_score >= 9000 ? (
+                            <div
+                              key={post.title}
+                              className="d-flex justify-content-center p-2"
+                            >
+                              <CustomSnackbar
+                                variant="success"
+                                message={`Your post ${post.title}
                         was selected to be featured on the front page! Keep
                         up the great work!`}
-                            />
-                          </div>
-                        ) : (
-                          <div
-                            key={post.title}
-                            className="d-flex justify-content-center p-2"
-                          >
-                            <CustomSnackbar
-                              variant="info"
-                              message={`Your post ${post.title}
+                              />
+                            </div>
+                          ) : (
+                            <div
+                              key={post.title}
+                              className="d-flex justify-content-center p-2"
+                            >
+                              <CustomSnackbar
+                                variant="info"
+                                message={`Your post ${post.title}
                         received a small vote by our curation team! Good job!`}
-                            />
-                          </div>
-                        );
-                      })
+                              />
+                            </div>
+                          );
+                        }))
                     }
                   />
                 </div>

@@ -1,22 +1,49 @@
 import IconButton from '@material-ui/core/IconButton';
 import FlightIcon from '@material-ui/icons/FlightTakeoff';
-import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
+import { withSnackbar } from 'notistack';
+import React from 'react';
 import { vote } from '../../helpers/actions';
 import { VOTE } from '../../helpers/graphql/broadcast';
+import graphQLClient from '../../helpers/graphQLClient';
 import { getRoles } from '../../helpers/token';
 
 const VoteButton = props => {
-  const [mutate, setMutate] = useState(false);
-
   const { author, permlink, pastVote, setLoading } = props;
   const weight = props.weight * 1000;
+
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
 
   const votePost = () => {
     setLoading();
     const roles = getRoles();
     if (roles && roles.indexOf('easylogin') !== -1) {
-      setMutate(true);
+      const variables = {
+        author,
+        permlink,
+        weight,
+      };
+      graphQLClient(VOTE, variables)
+        .then(res => {
+          if (res && res.vote) pastVote(res.vote);
+          setLoading(false);
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
       vote(author, permlink, weight).then(res => {
         if (res) {
@@ -27,34 +54,10 @@ const VoteButton = props => {
   };
 
   return (
-    <>
-      <Mutation
-        mutation={VOTE}
-        variables={{
-          author,
-          permlink,
-          weight,
-        }}
-      >
-        {(triggerVote, { data }) => {
-          if (mutate) triggerVote();
-          setMutate(false);
-          if (data) {
-            pastVote(data.vote);
-          }
-          return (
-            <IconButton
-              aria-label="Upvote"
-              onClick={() => votePost()}
-              color="primary"
-            >
-              <FlightIcon className="mr" />
-            </IconButton>
-          );
-        }}
-      </Mutation>
-    </>
+    <IconButton aria-label="Upvote" onClick={() => votePost()} color="primary">
+      <FlightIcon className="mr" />
+    </IconButton>
   );
 };
 
-export default VoteButton;
+export default withSnackbar(VoteButton);

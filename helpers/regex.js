@@ -21,13 +21,6 @@ export const htmlComment = /<!--([\s\S]+?)(-->|$)/g;
 
 export const markdownComment = /\[\/\/\]:\S?\s\(.*\)/g;
 
-export const regExcerpt = text => {
-  return text
-    .replace(allURLs, '')
-    .replace(allowedTitleChars, '')
-    .substring(0, 250);
-};
-
 // eslint-disable-next-line no-control-regex
 export const allSpecialChars = /(?:[!/:-@[-`{-~],.|[^\x00-\x7F]|\s)/g;
 

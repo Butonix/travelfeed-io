@@ -1,4 +1,6 @@
 import { teal } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
@@ -35,8 +37,10 @@ class MapCluster extends Component {
   mapRef = React.createRef();
 
   componentDidMount() {
-    const width = document.getElementById('container').clientWidth;
-    const height = document.getElementById('container').clientHeight - 30;
+    const width = document.body.clientWidth;
+    const height = this.props.getHeightFromContainer
+      ? document.getElementById('container').clientHeight
+      : 500;
     this.setState({
       viewport: {
         width,
@@ -92,13 +96,28 @@ class MapCluster extends Component {
           <Popup
             offsetLeft={popupInfo.posts === undefined ? 0 : 3}
             offsetTop={popupInfo.posts === undefined ? 0 : 8}
+            closeButton={false}
             captureScroll
             anchor="top"
             longitude={popupInfo.longitude}
             latitude={popupInfo.latitude}
             closeOnClick
-            onClose={() => this.setState({ popupInfo: undefined })}
+            // onClose={() => this.setState({ popupInfo: undefined })}
           >
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                zIndex: 9999,
+              }}
+            >
+              <IconButton
+                onClick={() => this.setState({ popupInfo: undefined })}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
             <MapCard info={popupInfo} />
           </Popup>
         </>
@@ -148,26 +167,27 @@ class MapCluster extends Component {
                   />
                 )}
               >
-                {this.props.data.map((point, i) => {
-                  if (point.longitude !== null) {
-                    return (
-                      <Marker
-                        key={i}
-                        longitude={point.longitude}
-                        latitude={point.latitude}
-                        author={point.author}
-                        permlink={point.permlink}
-                        title={point.title}
-                        img_url={point.img_url}
-                      >
-                        <MarkerSmall
-                          size={20}
-                          onClick={() => this.setState({ popupInfo: point })}
-                        />{' '}
-                      </Marker>
-                    );
-                  }
-                })}
+                {this.props.data &&
+                  this.props.data.map((point, i) => {
+                    if (point.longitude !== null) {
+                      return (
+                        <Marker
+                          key={i}
+                          longitude={point.longitude}
+                          latitude={point.latitude}
+                          author={point.author}
+                          permlink={point.permlink}
+                          title={point.title}
+                          img_url={point.img_url}
+                        >
+                          <MarkerSmall
+                            size={20}
+                            onClick={() => this.setState({ popupInfo: point })}
+                          />{' '}
+                        </Marker>
+                      );
+                    }
+                  })}
               </Cluster>
             </>
           )}
@@ -215,7 +235,7 @@ MapCluster.propTypes = {
   showControls: PropTypes.bool,
   position: PropTypes.string,
   height: PropTypes.string,
-  data: PropTypes.objectOf(PropTypes.any).isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default MapCluster;

@@ -12,7 +12,7 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import api from '../../helpers/steemConnectAPI';
-import ScLogo from '../../images/steemconnect.svg';
+import ScLogo from '../../images/steemconnect.png';
 import EasyLoginButton from './EasyLoginButton';
 import HrCaption from './HrCaption';
 import KeychainButton from './KeychainButton';

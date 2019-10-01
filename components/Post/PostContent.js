@@ -1,14 +1,13 @@
-import Avatar from '@material-ui/core/Avatar';
-import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import Link from '../../lib/Link';
-import CuratorMenu from '../CuratorMenu/PostMenu';
+import PostMenu from '../CuratorMenu/PostMenu';
 import PostMap from '../Maps/PostMap';
 import PostAuthorProfile from '../Profile/PostAuthorProfile';
+import ProfileAvatar from '../Profile/ProfileAvatar';
+import ProfileName from '../Profile/ProfileName';
 import SubHeader from './SubHeader';
 
 const PostContent = props => {
@@ -20,27 +19,16 @@ const PostContent = props => {
   return (
     <Fragment>
       <CardHeader
-        avatar={
-          <Link
-            color="textPrimary"
-            as={`/@${props.author}`}
-            href={`/blog?author=${props.author}`}
-            passHref
-          >
-            <a>
-              <Avatar
-                className="cpointer"
-                src={`https://steemitimages.com/u/${props.author}/avatar/small`}
-                alt={props.author}
-              />
-            </a>
-          </Link>
-        }
+        avatar={<ProfileAvatar author={props.author} />}
         action={
           <Fragment>
             <span>{props.appIcon}</span>
-            <BookmarkIcon author={props.author} permlink={props.permlink} />
-            <CuratorMenu
+            {!props.hideAuthorProfile && (
+              <div className="d-none d-sm-none d-xl-inline d-lg-inline d-md-inline">
+                <BookmarkIcon author={props.author} permlink={props.permlink} />
+              </div>
+            )}
+            <PostMenu
               author={props.author}
               permlink={props.permlink}
               isTf={props.isTf}
@@ -48,26 +36,7 @@ const PostContent = props => {
           </Fragment>
         }
         title={
-          <Fragment>
-            <Link
-              color="textPrimary"
-              as={`/@${props.author}`}
-              href={`/blog?author=${props.author}`}
-              passHref
-            >
-              <a className="textPrimary cpointer">
-                <strong>{props.display_name}</strong>
-                <Typography
-                  color="textSecondary"
-                  variant="subtitle"
-                  display="inline"
-                >
-                  {' '}
-                  @{props.author}
-                </Typography>
-              </a>
-            </Link>
-          </Fragment>
+          <ProfileName author={props.author} displayName={props.display_name} />
         }
         subheader={
           <SubHeader
@@ -76,14 +45,14 @@ const PostContent = props => {
           />
         }
       />
-      <CardContent>
+      <>
         {props.content}
         {props.latitude && (
           <div className="fullwidth">
             <hr />
             <div className="text-center">
-              <Typography variant="h5" className="p-2">
-                Post Location:
+              <Typography variant="h5" className="p-2" gutterBottom>
+                Post Location
               </Typography>
             </div>
             <PostMap
@@ -98,17 +67,30 @@ const PostContent = props => {
         )}
         {!props.hideAuthorProfile && (
           <>
-            <hr />
+            <div className="postCardContent">
+              <hr />
+            </div>
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-lg-6 col-md-9 col-sm12">
-                  <PostAuthorProfile author={props.author} />
+                  <div className="text-center">
+                    <Typography
+                      variant="h5"
+                      className="p-2 text-center"
+                      gutterBottom
+                    >
+                      Written by
+                    </Typography>
+                    <div className="pb-3">
+                      <PostAuthorProfile author={props.author} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </>
         )}
-      </CardContent>
+      </>
     </Fragment>
   );
 };

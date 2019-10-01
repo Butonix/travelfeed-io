@@ -12,7 +12,7 @@ const MapPage = () => {
   const title = 'Map';
   return (
     <Fragment>
-      <Header subheader={title} />
+      <Header subheader={title} active="map" />
       <Head title={`${title} - TravelFeed: The Travel Community`} />
       {
         // Fetches all posts with a location and a minimum upvote of 50%.
@@ -26,6 +26,7 @@ const MapPage = () => {
               <Map
                 data={data && data.places}
                 dark={theme.palette.type === 'dark'}
+                getHeightFromContainer
               />
             );
           }
@@ -35,5 +36,7 @@ const MapPage = () => {
     </Fragment>
   );
 };
+
+MapPage.getInitialProps = () => {};
 
 export default MapPage;

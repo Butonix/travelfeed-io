@@ -1,6 +1,7 @@
 import {
   faFacebookF,
   faInstagram,
+  faPinterest,
   faTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
@@ -47,6 +48,16 @@ const social = [
       <FontAwesomeIcon
         style={{ width: '22px', height: '22px' }}
         icon={faYoutube}
+      />
+    ),
+  },
+  {
+    name: 'Pinterest',
+    link: 'https://www.pinterest.com/travelfeedio/',
+    icon: (
+      <FontAwesomeIcon
+        style={{ width: '22px', height: '22px' }}
+        icon={faPinterest}
       />
     ),
   },

@@ -72,7 +72,7 @@ class PostBlacklist extends React.Component {
                     permlink,
                   }}
                 >
-                  {unblacklistPost => {
+                  {(unblacklistPost, data) => {
                     if (
                       data &&
                       data.data &&
@@ -146,7 +146,7 @@ class PostBlacklist extends React.Component {
                     reason: this.state.reason,
                   }}
                 >
-                  {blacklistPost => {
+                  {(blacklistPost, data) => {
                     if (
                       data &&
                       data.data &&

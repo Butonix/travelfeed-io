@@ -31,9 +31,14 @@ class PostComments extends Component {
           }}
         >
           {({ data, fetchMore }) => {
-            if (data.posts && data.posts.length < 10 && this.state.hasMore)
+            if (
+              data &&
+              data.posts &&
+              data.posts.length < 10 &&
+              this.state.hasMore
+            )
               this.setState({ hasMore: false });
-            if (data.posts) {
+            if (data && data.posts) {
               return (
                 <InfiniteScroll
                   initialLoad={false}
@@ -81,27 +86,28 @@ class PostComments extends Component {
                         md={12}
                         sm={12}
                         xs={12}
-                        className="pb-2"
                         key={post.post_id}
                       >
-                        <PostCommentItem
-                          post={{
-                            post_id: post.post_id,
-                            body: post.body,
-                            created_at: post.created_at,
-                            children: post.children,
-                            author: post.author,
-                            display_name: post.display_name,
-                            permlink: post.permlink,
-                            depth: post.depth,
-                            total_votes: post.total_votes,
-                            votes: post.votes,
-                            parent_author: post.parent_author,
-                            parent_permlink: post.parent_permlink,
-                          }}
-                          orderby={this.props.orderby}
-                          orderdir={this.props.orderdir}
-                        />
+                        <div className="pt-2">
+                          <PostCommentItem
+                            post={{
+                              post_id: post.post_id,
+                              body: post.body,
+                              created_at: post.created_at,
+                              children: post.children,
+                              author: post.author,
+                              display_name: post.display_name,
+                              permlink: post.permlink,
+                              depth: post.depth,
+                              total_votes: post.total_votes,
+                              votes: post.votes,
+                              parent_author: post.parent_author,
+                              parent_permlink: post.parent_permlink,
+                            }}
+                            orderby={this.props.orderby}
+                            orderdir={this.props.orderdir}
+                          />
+                        </div>
                       </Grid>
                     ))}
                 </InfiniteScroll>

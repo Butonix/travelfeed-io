@@ -11,7 +11,8 @@ import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import parseBody from '../../helpers/parseBody';
-import { regExcerpt } from '../../helpers/regex';
+import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import PostCommentItem from '../Post/PostCommentItem';
 import GridPostCard from './GridPostCard';
 import PostListItem from './PostListItem';
@@ -22,14 +23,14 @@ class PostGrid extends Component {
     postslength: this.props.query.limit,
   };
 
-  noMore() {
-    this.setState({ hasMore: false });
-  }
-
   // When switching between different props, e.g. feed/featured/created/ the
   // count needs to be reset
   UNSAFE_componentWillReceiveProps() {
     this.setState({ postslength: this.props.query.limit });
+  }
+
+  noMore() {
+    this.setState({ hasMore: false });
   }
 
   render() {
@@ -46,9 +47,16 @@ class PostGrid extends Component {
                 </Grid>
               );
             }
-            if (error || data.posts === null) {
-              return <Fragment />;
+            if (error) {
+              return (
+                <Card className="m-5 text-center" key="noposts">
+                  <CardContent>
+                    {error && 'Network Error. Are you online?'}
+                  </CardContent>
+                </Card>
+              );
             }
+            if (data.posts === null) return <></>;
             if (
               data.posts.length < this.props.query.limit &&
               this.state.hasMore
@@ -116,16 +124,7 @@ class PostGrid extends Component {
                       const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
-                      let { title } = post;
-                      title =
-                        title.length > 85
-                          ? `${title.substring(0, 81)}[...]`
-                          : title;
-                      const tags =
-                        post.tags && post.tags.length > 1
-                          ? [post.tags[1]]
-                          : ['travelfeed'];
-                      const excerpt = regExcerpt(sanitized);
+                      const { title } = post;
                       let card = <Fragment />;
                       if (this.props.poststyle === 'list') {
                         card = (
@@ -141,7 +140,7 @@ class PostGrid extends Component {
                               longitude: post.longitude,
                               created_at: post.created_at,
                               readtime: post.readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,
@@ -152,6 +151,8 @@ class PostGrid extends Component {
                               payout: post.payout,
                               country_code: post.country_code,
                               subdivision: post.subdivision,
+                              json: post.json,
+                              category: post.category,
                             }}
                             id={`${post.author}-${post.permlink}`}
                             mode="edit"
@@ -159,34 +160,37 @@ class PostGrid extends Component {
                         );
                       } else if (this.props.poststyle === 'comment') {
                         card = (
-                          <PostCommentItem
-                            post={{
-                              post_id: post.post_id,
-                              body: post.body,
-                              created_at: post.created_at,
-                              children: post.children,
-                              author: post.author,
-                              display_name: post.display_name,
-                              permlink: post.permlink,
-                              depth: post.depth,
-                              total_votes: post.total_votes,
-                              votes: post.votes,
-                              parent_author: post.parent_author,
-                              parent_permlink: post.parent_permlink,
-                              root_author: post.root_author,
-                              root_permlink: post.root_permlink,
-                              root_title: post.root_title,
-                              tags: 'travelfeed',
-                            }}
-                            loadreplies={false}
-                            title
-                          />
+                          <div className="pt-2 pr-2 pl-2">
+                            <PostCommentItem
+                              post={{
+                                post_id: post.post_id,
+                                body: post.body,
+                                created_at: post.created_at,
+                                children: post.children,
+                                author: post.author,
+                                display_name: post.display_name,
+                                permlink: post.permlink,
+                                depth: post.depth,
+                                total_votes: post.total_votes,
+                                votes: post.votes,
+                                parent_author: post.parent_author,
+                                parent_permlink: post.parent_permlink,
+                                root_author: post.root_author,
+                                root_permlink: post.root_permlink,
+                                root_title: post.root_title,
+                                tags: 'travelfeed',
+                              }}
+                              loadreplies={false}
+                              title
+                            />
+                          </div>
                         );
                       } else {
                         card = (
                           <GridPostCard
                             cardHeight={this.props.cardHeight}
                             post={{
+                              body: post.body,
                               author: post.author,
                               display_name: post.display_name,
                               permlink: post.permlink,
@@ -194,10 +198,10 @@ class PostGrid extends Component {
                               img_url: post.img_url,
                               created_at: post.created_at,
                               readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               votes: post.votes,
                               total_votes: post.total_votes,
-                              tags,
+                              tags: post.tags,
                               curation_score: post.curation_score,
                               app: post.app,
                               depth: post.depth,
@@ -220,13 +224,47 @@ class PostGrid extends Component {
                         </Grid>
                       );
                     })}
-                  {data.posts &&
-                    data.posts.length === 0 &&
-                    this.props.poststyle === 'grid' && (
-                      <Card className="mt-5" key="noposts">
-                        <CardContent>No posts found</CardContent>
-                      </Card>
-                    )}
+                  {data.posts && data.posts.length === 0 && (
+                    <Card className="m-5" key="noposts">
+                      <CardContent>
+                        {(this.props.active === 'feed' &&
+                          'Start following your favorite authors to fill your feed!') ||
+                          (this.props.active === 'blog' &&
+                            `${
+                              this.props.query.author === getUser()
+                                ? `You haven't`
+                                : `${this.props.query.author} hasn't`
+                            } started blogging yet.`) ||
+                          ([
+                            'new',
+                            'taking Off',
+                            'discover',
+                            'featured',
+                          ].indexOf(this.props.active) === -1 && (
+                            <>
+                              <span>
+                                {(this.props.active === 'destination' &&
+                                  'There are no posts yet about this destination.') ||
+                                  (this.props.active === 'topic' &&
+                                    'No posts found about this topic.') ||
+                                  `There's nothing here yet.`}
+                              </span>
+                              {getUser() &&
+                                (this.props.active === 'destination' ||
+                                  this.props.active === 'topic') && (
+                                  <>
+                                    {' '}
+                                    <Link href="/dashboard/publish">
+                                      Create one now!
+                                    </Link>
+                                  </>
+                                )}
+                            </>
+                          )) ||
+                          'No posts found. This could be a connection problem.'}
+                      </CardContent>
+                    </Card>
+                  )}
                 </Grid>
               </InfiniteScroll>
             );

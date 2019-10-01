@@ -44,6 +44,15 @@ export const CUSTOM_JSON = gql`
   }
 `;
 
+export const ACCOUNT_UPDATE = gql`
+  mutation accountUpdate($profile: String!) {
+    accountUpdate(profile: $profile) {
+      success
+      message
+    }
+  }
+`;
+
 export const FOLLOW = gql`
   mutation follow($following: String!) {
     follow(following: $following) {

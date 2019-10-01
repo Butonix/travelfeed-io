@@ -10,29 +10,36 @@ const styles = theme => ({
   },
 });
 
-const AuthorProfile = props => {
+const AuthorProfileImage = props => {
   const { classes } = props;
 
-  const src = props.image
+  const dataSrc = props.image
     ? imageProxy(props.image, 300, 300)
     : `https://steemitimages.com/u/${
         props.user ? props.user : 'null'
       }/avatar/large`;
 
+  const src = props.image
+    ? imageProxy(props.image, 10, 10)
+    : `https://steemitimages.com/u/${
+        props.user ? props.user : 'null'
+      }/avatar/small`;
+
   return (
     <img
       src={src}
+      data-src={dataSrc}
       alt="avatar"
       width="200"
       height="200"
-      className={`rounded-circle p-0 ${classes.imgborder}`}
+      className={`lazy rounded-circle p-0 ${classes.imgborder}`}
     />
   );
 };
 
-AuthorProfile.propTypes = {
+AuthorProfileImage.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   user: PropTypes.string,
 };
 
-export default withStyles(styles, { withTheme: true })(AuthorProfile);
+export default withStyles(styles, { withTheme: true })(AuthorProfileImage);

@@ -29,13 +29,10 @@ class DestinationCityColumn extends Component {
           as={`/destinations/${c.countrySlug}${
             c.nosubdivision ? '' : `/${c.subdivision}`
           }${c.nocity ? '' : `/${c.city}`}`}
-          passHref
         >
-          <a>
-            <MenuItem onClick={() => onClick && onClick(text)}>
-              <ListItemText primary={c.city} />
-            </MenuItem>
-          </a>
+          <MenuItem onClick={() => onClick && onClick(text)}>
+            <ListItemText primary={c.city} />
+          </MenuItem>
         </Link>
       );
     });

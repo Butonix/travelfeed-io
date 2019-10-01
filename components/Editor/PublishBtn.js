@@ -3,13 +3,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import { post } from '../../helpers/actions';
 import { POST } from '../../helpers/graphql/broadcast';
+import graphQLClient from '../../helpers/graphQLClient';
 import { getRoles } from '../../helpers/token';
 
 const PublishBtn = props => {
-  const [mutate, setMutate] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const newNotification = notification => {
@@ -25,13 +24,35 @@ const PublishBtn = props => {
   const publishComment = () => {
     const roles = getRoles();
     if (roles && roles.indexOf('easylogin') !== -1) {
-      setMutate(true);
+      graphQLClient(POST, props.publishThis)
+        .then(res => {
+          if (res && res.post) {
+            newNotification(res.post);
+            props.pastPublish(res.post);
+          }
+          setLoading(false);
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
       post(props.publishThis).then(res => {
         if (res) {
           newNotification(res);
           setLoading(undefined);
           props.pastPublish(res);
+        } else {
+          newNotification({
+            success: false,
+            message: 'Post could not be published',
+          });
+          setLoading(undefined);
         }
       });
     }
@@ -46,39 +67,18 @@ const PublishBtn = props => {
 
   return (
     <>
-      <Mutation mutation={POST} variables={props.publishThis}>
-        {(triggerCommment, { data }) => {
-          if (mutate) triggerCommment();
-          setMutate(false);
-          if (data && data.post) {
-            setLoading(false);
-            if (loading) {
-              newNotification(data.post);
-              props.pastPublish(data.post);
-            }
-          }
-          return (
-            <>
-              <Button
-                className="mt-1"
-                variant="contained"
-                color="primary"
-                onClick={props.triggerPublish}
-                disabled={props.disabled || loading}
-              >
-                {props.label}
-                {loading && (
-                  <CircularProgress
-                    className="ml-2"
-                    value={loading}
-                    size={24}
-                  />
-                )}
-              </Button>
-            </>
-          );
-        }}
-      </Mutation>
+      <Button
+        className="mt-1"
+        variant="contained"
+        color="primary"
+        onClick={props.triggerPublish}
+        disabled={props.disabled || loading}
+      >
+        {props.label}
+        {loading && (
+          <CircularProgress className="ml-2" value={loading} size={24} />
+        )}
+      </Button>
     </>
   );
 };

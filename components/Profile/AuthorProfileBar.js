@@ -2,6 +2,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import {
   faFacebookF,
   faInstagram,
+  faPinterest,
   faTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
@@ -19,7 +20,7 @@ const AuthorProfileBar = props => {
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">
-        {props.location !== '' && (
+        {props.location && props.location !== '' && (
           <div className="col-12 pb-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <span className="textPrimary h1">
               <FontAwesomeIcon icon={faMapMarkerAlt} />
@@ -29,7 +30,7 @@ const AuthorProfileBar = props => {
             </Typography>
           </div>
         )}
-        {props.website !== '' && (
+        {props.website && props.website !== '' && (
           <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <a
               href={props.website}
@@ -48,7 +49,7 @@ const AuthorProfileBar = props => {
             </a>
           </div>
         )}
-        {props.facebook !== '' && (
+        {props.facebook && props.facebook !== '' && (
           <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <a
               href={`https://facebook.com/${props.facebook}`}
@@ -67,7 +68,7 @@ const AuthorProfileBar = props => {
             </a>
           </div>
         )}
-        {props.twitter !== '' && (
+        {props.twitter && props.twitter !== '' && (
           <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <a
               href={`https://twitter.com/${props.twitter}`}
@@ -86,7 +87,7 @@ const AuthorProfileBar = props => {
             </a>
           </div>
         )}
-        {props.instagram !== '' && (
+        {props.instagram && props.instagram !== '' && (
           <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <a
               href={`https://instagram.com/${props.instagram}`}
@@ -105,7 +106,7 @@ const AuthorProfileBar = props => {
             </a>
           </div>
         )}
-        {props.youtube !== '' && (
+        {props.youtube && props.youtube !== '' && (
           <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <a
               href={`https://youtube.com/user/${props.youtube}`}
@@ -124,7 +125,7 @@ const AuthorProfileBar = props => {
             </a>
           </div>
         )}
-        {props.couchsurfing !== '' && (
+        {props.couchsurfing && props.couchsurfing !== '' && (
           <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
             <a
               href={`https://couchsurfing.com/people/${props.couchsurfing}`}
@@ -143,19 +144,28 @@ const AuthorProfileBar = props => {
             </a>
           </div>
         )}
+        {props.pinterest && props.pinterest !== '' && (
+          <div className="col-2 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
+            <a
+              href={`https://pinterest.com/${props.pinterest}`}
+              target="_blank"
+              rel="nofollow noreferrer noopener"
+            >
+              <span className="textPrimary h1">
+                <FontAwesomeIcon icon={faPinterest} />
+              </span>
+              <Typography
+                variant="subtitle2"
+                className="textPrimary d-none d-xl-block d-lg-block d-md-block d-xs-block"
+              >
+                Pinterest
+              </Typography>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
-};
-
-AuthorProfileBar.defaultProps = {
-  location: undefined,
-  website: undefined,
-  facebook: undefined,
-  twitter: undefined,
-  instagram: undefined,
-  youtube: undefined,
-  couchsurfing: undefined,
 };
 
 AuthorProfileBar.propTypes = {
@@ -166,6 +176,7 @@ AuthorProfileBar.propTypes = {
   instagram: PropTypes.string,
   youtube: PropTypes.string,
   couchsurfing: PropTypes.string,
+  pinterest: PropTypes.string,
 };
 
 export default AuthorProfileBar;

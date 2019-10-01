@@ -69,7 +69,7 @@ class DeleteDraftButton extends Component {
           }
           return (
             <Fragment>
-              <a className="text-light">
+              <span className="text-light">
                 <Button
                   onClick={this.handleClickOpen}
                   className="p-0 pr-2 pl-2"
@@ -77,7 +77,7 @@ class DeleteDraftButton extends Component {
                   <span className="textPrimary pr-1">Delete</span>
                   <DeleteIcon />
                 </Button>
-              </a>
+              </span>
               <Dialog
                 open={open}
                 onClose={this.handleClose}

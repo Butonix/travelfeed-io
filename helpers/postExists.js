@@ -1,4 +1,4 @@
-import steem from 'steem';
+import steem from './steem';
 
 const postExists = (author, permlink) => {
   return steem.api.getContentAsync(author, permlink).then(r => {

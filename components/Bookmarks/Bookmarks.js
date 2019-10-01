@@ -11,7 +11,6 @@ import sanitize from 'sanitize-html';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_BOOKMARKS } from '../../helpers/graphql/bookmarks';
 import parseBody from '../../helpers/parseBody';
-import { regExcerpt } from '../../helpers/regex';
 import GridPostCard from '../Grid/GridPostCard';
 
 class Bookmarks extends Component {
@@ -28,10 +27,11 @@ class Bookmarks extends Component {
     const { hasMore, postslength } = this.state;
     return (
       <Fragment>
-        <div className="text-center pt-4">
-          <h1>Bookmarks</h1>
-        </div>
-        <Query query={GET_BOOKMARKS} variables={{ limit: 9 }}>
+        <Query
+          query={GET_BOOKMARKS}
+          variables={{ limit: 9 }}
+          fetchPolicy="network-only"
+        >
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (
@@ -42,11 +42,13 @@ class Bookmarks extends Component {
                 </Grid>
               );
             }
-            if (error || data.bookmarks === null) {
+            if (error) {
               return (
-                <div className="text-center">
-                  You don't have any bookmarks yet.
-                </div>
+                <Card className="m-5 text-center" key="noposts">
+                  <CardContent>
+                    {error && 'Network Error. Are you online?'}
+                  </CardContent>
+                </Card>
               );
             }
             if (data.bookmarks.length < 9 && hasMore)
@@ -90,7 +92,6 @@ class Bookmarks extends Component {
                   spacing={0}
                   alignItems="center"
                   justify="center"
-                  className="p-3"
                 >
                   {data.bookmarks.length > 0 &&
                     data.bookmarks.map(post => {
@@ -103,16 +104,7 @@ class Bookmarks extends Component {
                         undefined,
                         imgHeight,
                       );
-                      let { title } = post;
-                      title =
-                        title.length > 85
-                          ? `${title.substring(0, 81)}[...]`
-                          : title;
-                      const tags =
-                        post.tags && post.tags.length > 1
-                          ? [post.tags[1]]
-                          : ['travelfeed'];
-                      const excerpt = regExcerpt(sanitized);
+                      const { title } = post;
                       return (
                         <Grid
                           item
@@ -133,10 +125,10 @@ class Bookmarks extends Component {
                               img_url: image,
                               created_at: post.created_at,
                               readtime,
-                              excerpt,
+                              excerpt: sanitized,
                               votes: post.votes,
                               total_votes: post.total_votes,
-                              tags,
+                              tags: post.tags,
                               curation_score: post.curation_score,
                               app: post.app,
                               depth: post.depth,
@@ -146,9 +138,10 @@ class Bookmarks extends Component {
                       );
                     })}
                   {data.bookmarks && data.bookmarks.length === 0 && (
-                    <Card className="mt-5">
+                    <Card className="mt-5 m-2">
                       <CardContent>
-                        You don't have any bookmarks yet.
+                        You don't have any bookmarks yet. Click the bookmark
+                        icon on the top right of a post to bookmark it.
                       </CardContent>
                     </Card>
                   )}

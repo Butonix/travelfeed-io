@@ -3,6 +3,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import Typography from '@material-ui/core/Typography';
 import RandomIcon from '@material-ui/icons/Explore';
 import CountryIcon from '@material-ui/icons/Landscape';
 import CityIcon from '@material-ui/icons/LocationCity';
@@ -84,28 +85,23 @@ class HeaderPopupNav extends Component {
                           text="Popular Places"
                           active={this.state.selection === 'Popular Places'}
                         />
-                        <Link color="textPrimary" href="/map" passHref>
-                          <a>
-                            <DestinationMenuItem
-                              onClick={this.props.closeDest}
-                              icon={<MapIcon />}
-                              text="Map"
-                            />
-                          </a>
+                        <Link color="textPrimary" href="/map">
+                          <DestinationMenuItem
+                            onClick={this.props.closeDest}
+                            icon={<MapIcon />}
+                            text="Map"
+                          />
                         </Link>
                         <Link
                           color="textPrimary"
                           href={`/destinations?country=${this.state.random}`}
                           as={`/destinations/${this.state.random}`}
-                          passHref
                         >
-                          <a>
-                            <DestinationMenuItem
-                              onClick={this.newRandom}
-                              icon={<RandomIcon />}
-                              text="Random Destination"
-                            />
-                          </a>
+                          <DestinationMenuItem
+                            onClick={this.newRandom}
+                            icon={<RandomIcon />}
+                            text="Random Destination"
+                          />
                         </Link>
                       </MenuList>
                     </div>
@@ -116,7 +112,7 @@ class HeaderPopupNav extends Component {
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
-                                  <h4>Europe</h4>
+                                  <Typography variant="h6">Europe</Typography>
                                 </MenuItem>
                                 <DestinationCityColumn
                                   onClick={this.props.closeDest}
@@ -127,7 +123,7 @@ class HeaderPopupNav extends Component {
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
-                                  <h4>Asia</h4>
+                                  <Typography variant="h6">Asia</Typography>
                                 </MenuItem>
                                 <DestinationCityColumn
                                   onClick={this.props.closeDest}
@@ -138,7 +134,7 @@ class HeaderPopupNav extends Component {
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
-                                  <h4>World</h4>
+                                  <Typography variant="h6">World</Typography>
                                 </MenuItem>
                                 <DestinationCityColumn
                                   onClick={this.props.closeDest}
@@ -154,7 +150,7 @@ class HeaderPopupNav extends Component {
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
-                                  <h4>Europe</h4>
+                                  <Typography variant="h6">Europe</Typography>
                                 </MenuItem>
                                 <DestinationCountryColumn
                                   onClick={this.props.closeDest}
@@ -165,7 +161,7 @@ class HeaderPopupNav extends Component {
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
-                                  <h4>Asia</h4>
+                                  <Typography variant="h6">Asia</Typography>
                                 </MenuItem>
                                 <DestinationCountryColumn
                                   onClick={this.props.closeDest}
@@ -176,7 +172,7 @@ class HeaderPopupNav extends Component {
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
-                                  <h4>World</h4>
+                                  <Typography variant="h6">World</Typography>
                                 </MenuItem>
                                 <DestinationCountryColumn
                                   onClick={this.props.closeDest}

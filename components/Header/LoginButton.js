@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import { grey } from '@material-ui/core/colors';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -72,25 +73,41 @@ const LoginButton = props => {
             <ListItemText primary="Login" />
           </MenuItem>
         </>
-      )) || (
-        <>
-          <Button
-            color="secondary"
-            variant="contained"
-            className={`ml-1 p-2 ${classes.whitebutton}`}
-            onClick={handleJoinClickOpen}
-          >
-            Join Now
-          </Button>
-          <Button
-            color="default"
-            className={`ml-1 p-2 ${classes.whitebutton}`}
-            onClick={handleClickOpen}
-          >
-            Login
-          </Button>
-        </>
-      )}
+      )) ||
+        (props.isList && (
+          <>
+            <ListItem onClick={handleJoinMenuClickOpen}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign Up" />
+            </ListItem>
+            <ListItem onClick={handleMenuClickOpen}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItem>
+          </>
+        )) || (
+          <>
+            <Button
+              color={props.usePrimaryBtn ? 'primary' : 'secondary'}
+              variant="contained"
+              className={`ml-1 p-2 ${classes.whitebutton}`}
+              onClick={handleJoinClickOpen}
+            >
+              Join Now
+            </Button>
+            <Button
+              color="default"
+              className={`ml-1 p-2 ${classes.whitebutton}`}
+              onClick={handleClickOpen}
+            >
+              Login
+            </Button>
+          </>
+        )}
       <LoginDialog
         switch={handleSwitchDialog}
         open={open}

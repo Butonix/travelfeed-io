@@ -11,7 +11,7 @@ const TermsPage = () => {
   const title = 'Terms of Service';
   return (
     <Fragment>
-      <Header subheader={title} />
+      <Header subheader={title} active="terms" />
       <Head title={`${title} - TravelFeed: The Travel Community`} />
       <AboutSelect selection={1} />
       <Grid
@@ -32,5 +32,7 @@ const TermsPage = () => {
     </Fragment>
   );
 };
+
+TermsPage.getInitialProps = () => {};
 
 export default TermsPage;

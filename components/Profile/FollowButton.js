@@ -2,18 +2,21 @@
 
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import FollowIcon from '@material-ui/icons/PersonAdd';
+import UnfollowIcon from '@material-ui/icons/PersonAddDisabled';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { follow, unfollow } from '../../helpers/actions';
 import { FOLLOW, UNFOLLOW } from '../../helpers/graphql/broadcast';
 import { GET_IS_FOLLOWED } from '../../helpers/graphql/profile';
+import graphQLClient from '../../helpers/graphQLClient';
 import { getRoles } from '../../helpers/token';
 import Link from '../../lib/Link';
 
 const FollowButton = props => {
-  const [mutate, setMutate] = useState(false);
   const [isFollowed, setFollowed] = useState(undefined);
   const [isMounted, setMounted] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
@@ -40,27 +43,37 @@ const FollowButton = props => {
     else setFollowed(!isFollowed);
   };
 
-  const followAuthor = () => {
+  const toggleFollowAuthor = () => {
     setChanging(true);
     const roles = getRoles();
     if (roles && roles.indexOf('easylogin') !== -1) {
-      setMutate(true);
+      const variables = { following: props.author };
+      graphQLClient(isFollowed ? UNFOLLOW : FOLLOW, variables)
+        .then(res => {
+          if (res && (res.follow || res.unfollow)) {
+            pastBroadcast(res.follow || res.unfollow);
+          }
+        })
+        .catch(err => {
+          newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Draft could not be saved: ${err.message}`,
+          });
+        });
     } else {
-      follow(props.author).then(res => {
-        if (res) pastBroadcast(res);
-      });
-    }
-  };
-
-  const unfollowAuthor = () => {
-    setChanging(true);
-    const roles = getRoles();
-    if (roles && roles.indexOf('easylogin') !== -1) {
-      setMutate(true);
-    } else {
-      unfollow(props.author).then(res => {
-        if (res) pastBroadcast(res);
-      });
+      // eslint-disable-next-line no-lonely-if
+      if (isFollowed) {
+        unfollow(props.author).then(res => {
+          if (res) pastBroadcast(res);
+        });
+      } else {
+        follow(props.author).then(res => {
+          if (res) pastBroadcast(res);
+        });
+      }
     }
   };
 
@@ -76,7 +89,11 @@ const FollowButton = props => {
 
   return (
     <Fragment>
-      <Query query={GET_IS_FOLLOWED} variables={{ author: props.author }}>
+      <Query
+        fetchPolicy="network-only"
+        query={GET_IS_FOLLOWED}
+        variables={{ author: props.author }}
+      >
         {({ data, loading, error }) => {
           if (loading || error || data.profile === null) {
             return <Fragment />;
@@ -86,83 +103,61 @@ const FollowButton = props => {
             setLoaded(true);
           }
           return (
-            <Mutation
-              mutation={isFollowed ? UNFOLLOW : FOLLOW}
-              variables={{
-                following: props.author,
-              }}
-            >
-              {(triggerBroadcast, { data: mutdata }) => {
-                if (mutate) {
-                  triggerBroadcast();
-                  setMutate(false);
-                }
-                if (
-                  changing &&
-                  mutdata &&
-                  (mutdata.follow || mutdata.unfollow)
-                ) {
-                  pastBroadcast(mutdata.follow || mutdata.unfollow);
-                }
-                return (
-                  <>
-                    {(isFollowed === true && (
-                      <Fragment>
-                        <Button
-                          style={(changing && { opacity: 0.2 }) || {}}
-                          variant={variant}
-                          size="small"
-                          color={color}
-                          onClick={() => unfollowAuthor(props.author)}
-                          className={btnclass}
+            <>
+              {(isFollowed !== undefined && (
+                <Fragment>
+                  {(props.btnstyle === 'icon' && (
+                    <>
+                      <span className="text-light">
+                        <IconButton
+                          color="inherit"
+                          onClick={() => toggleFollowAuthor()}
+                          edge="end"
                         >
-                          Unfollow
-                        </Button>
-                        {changing && (
-                          <CircularProgress
-                            className="ml-2"
-                            value={changing}
-                            size={24}
-                          />
-                        )}
-                      </Fragment>
-                    )) ||
-                      ((isFollowed === false && (
-                        <Fragment>
-                          <Button
-                            style={(changing && { opacity: 0.2 }) || {}}
-                            variant={variant}
-                            size="small"
-                            color={color}
-                            onClick={() => followAuthor(props.author)}
-                            className={btnclass}
-                          >
-                            Follow
-                          </Button>
-                          {changing && (
+                          {(changing && (
                             <CircularProgress
-                              className="ml-2"
-                              value={changing}
-                              size={24}
+                              className="text-light"
+                              color="inherit"
+                              size={18}
                             />
-                          )}
-                        </Fragment>
-                      )) || (
-                        <Link color="textPrimary" href="/join" passHref>
-                          <Button
-                            variant={variant}
-                            size="small"
-                            color={color}
-                            className={btnclass}
-                          >
-                            Log in to follow
-                          </Button>
-                        </Link>
-                      ))}
-                  </>
-                );
-              }}
-            </Mutation>
+                          )) ||
+                            (isFollowed && <UnfollowIcon />) || <FollowIcon />}
+                        </IconButton>
+                      </span>
+                    </>
+                  )) || (
+                    <Button
+                      style={(changing && { opacity: 0.8 }) || {}}
+                      variant={variant}
+                      size="small"
+                      color={color}
+                      onClick={() => toggleFollowAuthor()}
+                      className={btnclass}
+                    >
+                      {isFollowed ? 'Unfollow' : 'Follow'}
+                      {changing && (
+                        <CircularProgress
+                          color="secondary"
+                          className="ml-2"
+                          size={24}
+                        />
+                      )}
+                    </Button>
+                  )}
+                </Fragment>
+              )) || (
+                <Link color="textPrimary" href="/join">
+                  <Button
+                    variant={variant}
+                    size="small"
+                    color={color}
+                    className={btnclass}
+                  >
+                    Log in to follow
+                  </Button>
+                </Link>
+              )}
+            </>
           );
         }}
       </Query>

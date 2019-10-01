@@ -4,8 +4,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import steem from 'steem';
 import accountExists from '../../helpers/accountExists';
+import steem from '../../helpers/steem';
 
 const UsernameInput = props => {
   const { onChange } = props;

@@ -102,6 +102,28 @@ const SupportUsPage = () => {
                   </a>
                 </div>
                 <Divider />
+                <h4 className="pt-4">Support our Crowdfunding Campaign</h4>
+                <p>
+                  As of now, all costs for running TravelFeed have been paid out
+                  of our own pockets, but taking TravelFeed to the next level
+                  requires some investment that we hope to (partly) cover by
+                  selling advertising space on TravelFeed through a crowdfunding
+                  campaign on Fundition. We really hope that you consider a
+                  contribution!
+                </p>
+                <div className="pb-3 text-center">
+                  <a
+                    className="p-1"
+                    href="https://fundition.io/#!/@travelfeed/81n9hwooj"
+                    target="_blank"
+                    rel="nofollow noreferrer noopener"
+                  >
+                    <Button variant="contained" color="secondary">
+                      Learn more
+                    </Button>
+                  </a>
+                </div>
+                <Divider />
                 <h4 className="pt-4">Follow the TravelFeed Curation Trail</h4>
                 <p>
                   By following our curation trail, you automatically upvote all
@@ -111,9 +133,8 @@ const SupportUsPage = () => {
                     color="textPrimary"
                     as="/@travelfeed/tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
                     href="/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
-                    passHref
                   >
-                    <a>a simple tutorial</a>
+                    a simple tutorial
                   </Link>{' '}
                   explaining how to follow our curation trail.
                 </p>
@@ -195,5 +216,7 @@ const SupportUsPage = () => {
     </Fragment>
   );
 };
+
+SupportUsPage.getInitialProps = () => {};
 
 export default SupportUsPage;

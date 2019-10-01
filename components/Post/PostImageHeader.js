@@ -57,12 +57,7 @@ class PostImageHeader extends Component {
           height: this.state.bgheight,
           position: this.state.bgpos,
           marginTop: this.state.bgmargin,
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("${imageProxy(
-            this.props.backgroundImage,
-            undefined,
-            10,
-            'fit',
-          )}")`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("${this.props.lazyImage}")`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
           backgroundSize: 'cover',
@@ -95,6 +90,7 @@ class PostImageHeader extends Component {
 
 PostImageHeader.propTypes = {
   backgroundImage: PropTypes.string.isRequired,
+  lazyImage: PropTypes.string.isRequired,
 };
 
 export default PostImageHeader;

@@ -5,7 +5,6 @@ import React, { Fragment, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { imageProxy } from '../../helpers/getImage';
 import uploadFile from '../../helpers/imageUpload';
-import { getUser } from '../../helpers/token';
 
 const baseStyle = {
   flex: 1,
@@ -50,7 +49,7 @@ const FeaturedImageUpload = props => {
     multiple: false,
     onDropAccepted: files => {
       files.map(file => {
-        return uploadFile(file, getUser()).then(res => {
+        return uploadFile(file).then(res => {
           setFeaturedImage(res);
         });
       });

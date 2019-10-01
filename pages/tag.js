@@ -42,7 +42,7 @@ class TagPage extends Component {
             this.props.tags.slice(1)} - TravelFeed: The Travel Community`}
           description={`Explore posts about #${this.props.tags} on TravelFeed.`}
         />
-        <Header />
+        <Header active="tag" />
         <Typography
           variant="h4"
           align="center"
@@ -55,8 +55,9 @@ class TagPage extends Component {
           tags={this.props.tags}
           selection={this.props.selection}
         />
-        <div className="container">
+        <div className="container pb-2" id="containerInvisibleOnMobile">
           <PostGrid
+            active="topic"
             query={{
               tags: this.props.tags,
               orderby: this.props.orderby,
@@ -68,6 +69,14 @@ class TagPage extends Component {
             poststyle="grid"
           />
         </div>
+        <style>{`
+        @media (max-width: 992px) {
+          #containerInvisibleOnMobile {
+            padding: 0;
+            margin: 0;
+          }
+        }
+        `}</style>
       </Fragment>
     );
   }

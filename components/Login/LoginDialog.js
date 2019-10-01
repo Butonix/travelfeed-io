@@ -46,7 +46,7 @@ const LoginDialog = props => {
           </Typography>
         </MuiDialogContent>
         <MuiDialogActions>
-          <Link color="textPrimary" href="/" passHref>
+          <Link color="textPrimary" href="/">
             <Button color="primary" onClick={() => setOpen(false)}>
               Decline
             </Button>

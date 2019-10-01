@@ -12,9 +12,11 @@ import {
 } from '../../helpers/graphql/bookmarks';
 
 const BookmarkIcon = props => {
+  const { isHeader } = props;
   return (
     <Fragment>
       <Query
+        fetchPolicy="network-only"
         query={IS_BOOKMARKED}
         variables={{
           author: props.author,
@@ -28,6 +30,7 @@ const BookmarkIcon = props => {
           if (data.isBookmarked) {
             return (
               <IsBookmarked
+                isHeader={isHeader}
                 author={props.author}
                 permlink={props.permlink}
                 onBmChange={props.onBmChange}
@@ -36,6 +39,7 @@ const BookmarkIcon = props => {
           }
           return (
             <IsNotBookmarked
+              isHeader={isHeader}
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
@@ -48,6 +52,7 @@ const BookmarkIcon = props => {
 };
 
 const IsBookmarked = props => {
+  const { isHeader } = props;
   return (
     <Mutation
       mutation={DELETE_BOOKMARK}
@@ -63,12 +68,21 @@ const IsBookmarked = props => {
           }
           return (
             <IsNotBookmarked
+              isHeader={isHeader}
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
             />
           );
         }
+        if (props.isHeader)
+          return (
+            <div className="text-light">
+              <IconButton color="inherit" onClick={deleteBookmark} edge="end">
+                <BookmarkIconFilled />
+              </IconButton>
+            </div>
+          );
         return (
           <Tooltip title="Remove bookmark" placement="bottom">
             <IconButton onClick={deleteBookmark}>
@@ -82,6 +96,7 @@ const IsBookmarked = props => {
 };
 
 const IsNotBookmarked = props => {
+  const { isHeader } = props;
   return (
     <Mutation
       mutation={ADD_BOOKMARK}
@@ -97,12 +112,21 @@ const IsNotBookmarked = props => {
           }
           return (
             <IsBookmarked
+              isHeader={isHeader}
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
             />
           );
         }
+        if (props.isHeader)
+          return (
+            <div className="text-light">
+              <IconButton color="inherit" onClick={addBookmark} edge="end">
+                <BookmarkIconBorder />
+              </IconButton>
+            </div>
+          );
         return (
           <Tooltip title="Add bookmark" placement="bottom">
             <IconButton onClick={addBookmark}>

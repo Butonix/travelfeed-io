@@ -11,7 +11,7 @@ const Onboarding = () => {
           if (data && data.onboardingGetReviewable)
             return (
               <>
-                <div className="container pt-3">
+                <div className="container pt-1">
                   <div className="row">
                     {(data.onboardingGetReviewable.length < 1 && (
                       <div className="col text-center">
@@ -19,7 +19,7 @@ const Onboarding = () => {
                       </div>
                     )) ||
                       data.onboardingGetReviewable.map(acc => (
-                        <div className="col-12 p-1">
+                        <div className="col-12 pt-2 pl-2 pr-2">
                           <OnboardingItem acc={acc} />
                         </div>
                       ))}

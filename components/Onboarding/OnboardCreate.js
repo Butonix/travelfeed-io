@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import owasp from 'owasp-password-strength-test';
 import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
-import steem from 'steem';
 import { ONBOARD_CREATE } from '../../helpers/graphql/onboarding';
+import steem from '../../helpers/steem';
 import generateSteemPassphrase from '../../helpers/steeminvite/generateSteemPassphrase';
 import Link from '../../lib/Link';
 import AccountTypePicker from './AccountTypePicker';
@@ -41,8 +41,6 @@ const OnboardCreate = props => {
 
   const [username, setUserName] = useState('');
   const [activeStep, setActiveStep] = React.useState(0);
-  const [mutate, setMutate] = useState(false);
-  const [mutatetTriggered, setMutateTriggered] = useState(false);
   const [accountType, setAccountType] = useState(0);
   const [passPhrase, setPassPhrase] = useState(undefined);
   const [passPhraseConfirm, setPassPhraseConfirm] = useState(undefined);
@@ -161,8 +159,8 @@ const OnboardCreate = props => {
             <FormLabel component="legend" className="pt-2 pb-2">
               Want to know more about your Steem keys? Watch this video by
               TravelFeed user{' '}
-              <Link as="/@coruscate" href="/blog?author=coruscate" passHref>
-                <a>@coruscate</a>
+              <Link as="/@coruscate" href="/blog?author=coruscate">
+                @coruscate
               </Link>
               .
             </FormLabel>
@@ -216,11 +214,6 @@ const OnboardCreate = props => {
     else setActiveStep(prevActiveStep => prevActiveStep - 1);
   }
 
-  const mutateNow = () => {
-    setMutate(true);
-    setMutateTriggered(true);
-  };
-
   const { claimToken } = props;
 
   return (
@@ -238,8 +231,6 @@ const OnboardCreate = props => {
         }}
       >
         {(onboardCreate, { data, loading, error }) => {
-          if (mutate) onboardCreate();
-          setMutate(false);
           if (loading) {
             return (
               <>
@@ -267,6 +258,7 @@ const OnboardCreate = props => {
             );
           }
           if (error) {
+            console.log(error);
             return (
               <FormLabel component="legend">
                 Account could not be created :(
@@ -287,9 +279,7 @@ const OnboardCreate = props => {
                 })}
               </Stepper>
               <div>
-                {activeStep === steps.length ? (
-                  <div>{!mutatetTriggered && mutateNow()}</div>
-                ) : (
+                {
                   <>
                     <div>
                       <Typography className={classes.instructions}>
@@ -307,7 +297,11 @@ const OnboardCreate = props => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleNext}
+                        onClick={
+                          activeStep === steps.length - 1
+                            ? onboardCreate
+                            : handleNext
+                        }
                         disabled={
                           (activeStep === 0 && username === '') ||
                           (activeStep === 2 &&
@@ -322,7 +316,7 @@ const OnboardCreate = props => {
                       </Button>
                     </div>
                   </>
-                )}
+                }
               </div>
             </>
           );
