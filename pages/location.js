@@ -32,7 +32,7 @@ class LocationPage extends Component {
           title={`${this.props.formatted_address} - TravelFeed: The Travel Community`}
           description={`Explore posts about ${this.props.formatted_address} on TravelFeed.`}
         />
-        <Header />
+        <Header active="location" />
         <DestinationHeader
           query={{
             search: this.props.formatted_address,

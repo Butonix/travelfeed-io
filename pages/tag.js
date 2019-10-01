@@ -42,7 +42,7 @@ class TagPage extends Component {
             this.props.tags.slice(1)} - TravelFeed: The Travel Community`}
           description={`Explore posts about #${this.props.tags} on TravelFeed.`}
         />
-        <Header />
+        <Header active="tag" />
         <Typography
           variant="h4"
           align="center"

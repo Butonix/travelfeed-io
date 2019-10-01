@@ -240,8 +240,10 @@ export default function SwipeableTemporaryDrawer(props) {
   );
 
   return (
-    <div>
-      <MenuIcon onClick={toggleDrawer(true)} className="text-light" />
+    <>
+      {!props.hidden && (
+        <MenuIcon onClick={toggleDrawer(true)} className="text-light" />
+      )}
       <SwipeableDrawer
         open={open}
         onClose={toggleDrawer(false)}
@@ -249,6 +251,6 @@ export default function SwipeableTemporaryDrawer(props) {
       >
         {sideList()}
       </SwipeableDrawer>
-    </div>
+    </>
   );
 }

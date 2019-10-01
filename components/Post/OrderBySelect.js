@@ -87,14 +87,14 @@ class OrderBySelect extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: 'Hot',
+                title: 'Taking Off',
                 orderby: 'sc_hot',
                 orderdir: 'DESC',
               });
               this.handleClose();
             }}
           >
-            Hot
+            Taking Off
           </MenuItem>
           <MenuItem
             onClick={() => {

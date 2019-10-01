@@ -53,7 +53,7 @@ class DestinationsPage extends Component {
             subdivision ||
             countryName} on TravelFeed.`}
         />
-        <Header subheader={title} active="destinations" />
+        <Header subheader={title} active="destination" />
         <DestinationHeader
           countrySlug={country}
           query={{ country_code, subdivision, city }}

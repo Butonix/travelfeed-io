@@ -78,8 +78,17 @@ class Header extends Component {
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
                 <div className="my-auto col-2 col-sm-1 d-xl-none d-lg-none d-md-none">
-                  {((active === 'post' || active === 'blog') && (
-                    <BackButton />
+                  {(['post', 'blog', 'destination', 'location', 'tag'].indexOf(
+                    active,
+                  ) !== -1 && (
+                    <>
+                      <BackButton />
+                      <MenuDrawer
+                        hidden
+                        active={active}
+                        handleLogout={this.handleLogout}
+                      />
+                    </>
                   )) || (
                     <MenuDrawer
                       active={active}

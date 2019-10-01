@@ -27,6 +27,7 @@ export const photoTags = [
 
 export const removeTags = [
   'travelfeed',
+  'fundition-81n9hwooj',
   'travel',
   'blog',
   'steemitworldmap',
