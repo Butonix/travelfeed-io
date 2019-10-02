@@ -40,7 +40,7 @@
     "@turf/helpers": "^6.1.4",
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "@zeit/next-css": "^1.0.1",
-    "apollo-boost": "^0.3.1",
+    "apollo-boost": "^0.4.4",
     "babel-loader": "^8.0.6",
     "blueimp-canvas-to-blob": "^3.16.0",
     "blueimp-load-image": "^2.24.0",
