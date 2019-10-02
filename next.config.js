@@ -22,6 +22,7 @@ module.exports = withImages(
           RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
           ROOTURL: process.env.ROOTURL,
           GRAPHQL_URL: process.env.GRAPHQL_URL,
+          NOTIFY_URL: process.env.NOTIFY_URL,
           STEEM_API: process.env.STEEM_API,
         },
         analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
