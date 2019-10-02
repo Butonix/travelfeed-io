@@ -30,6 +30,24 @@ const Settings = props => {
   const [notificationPermission, setNotificationPermission] = useState(false);
 
   useEffect(() => {
+    // https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
+
+    // Are Notifications supported in the service worker?
+    if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
+      return;
+    }
+
+    // Check the current Notification permission.
+    // If its denied, it's a permanent block until the
+    // user changes the permission
+    if (Notification.permission === 'denied') {
+      return;
+    }
+
+    // Check if push messaging is supported
+    if (!('PushManager' in window)) {
+      return;
+    }
     setNotificationPermission(Notification.permission === 'granted');
   }, []);
 

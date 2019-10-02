@@ -1,5 +1,8 @@
 import { Client } from 'busyjs';
 import { NOTIFY_URL, WEB_PUSH_PUB } from '../config';
+import { ADD_PUSH_SUBSCRIPTION } from './graphql/notifications';
+import graphQLClient from './graphQLClient';
+import { getUser } from './token';
 
 const notificationTypes = {
   FOLLOW: 'follow',
@@ -85,17 +88,35 @@ export const registerServiceWorker = () => {
         .register('/service-worker.js', { scope: '/' })
         .then(registration => {
           console.log('SW registered: ', registration);
-          if (Notification.permission === 'granted') {
+          if (Notification.permission === 'granted' && getUser()) {
             console.log('Notifications are enabled');
-            const subscribeOptions = {
-              userVisibleOnly: true,
-              applicationServerKey: urlBase64ToUint8Array(WEB_PUSH_PUB),
-            };
             registration.pushManager
-              .subscribe(subscribeOptions)
-              .then(pushSubscription => {
-                console.log(JSON.stringify(pushSubscription));
-              });
+              .getSubscription()
+              .then(res => {
+                if (res)
+                  console.log('Already registered for push notifications');
+                // Return if already registered
+                if (res) return;
+                const subscribeOptions = {
+                  userVisibleOnly: true,
+                  applicationServerKey: urlBase64ToUint8Array(WEB_PUSH_PUB),
+                };
+                registration.pushManager
+                  .subscribe(subscribeOptions)
+                  .then(pushSubscription => {
+                    console.log(pushSubscription);
+                    const variables = {
+                      pushSubscription: JSON.stringify(pushSubscription),
+                    };
+                    graphQLClient(ADD_PUSH_SUBSCRIPTION, variables).then(res =>
+                      console.log(
+                        'Submitted push notification subscription to API',
+                      ),
+                    );
+                  })
+                  .catch(err => console.error(err));
+              })
+              .catch(err => console.error(err));
           } else console.log('Notifications are disabled');
         })
         .catch(function(registrationError) {
