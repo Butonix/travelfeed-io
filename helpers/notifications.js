@@ -1,5 +1,5 @@
 import { Client } from 'busyjs';
-import { NOTIFY_URL } from '../config';
+import { NOTIFY_URL, WEB_PUSH_PUB } from '../config';
 
 const notificationTypes = {
   FOLLOW: 'follow',
@@ -61,4 +61,46 @@ export const getUserNotifications = username => {
       resolve(res);
     });
   });
+};
+
+const urlBase64ToUint8Array = base64String => {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
+
+export const registerServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/service-worker.js', { scope: '/' })
+        .then(registration => {
+          console.log('SW registered: ', registration);
+          if (Notification.permission === 'granted') {
+            console.log('Notifications are enabled');
+            const subscribeOptions = {
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array(WEB_PUSH_PUB),
+            };
+            registration.pushManager
+              .subscribe(subscribeOptions)
+              .then(pushSubscription => {
+                console.log(JSON.stringify(pushSubscription));
+              });
+          } else console.log('Notifications are disabled');
+        })
+        .catch(function(registrationError) {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
 };
