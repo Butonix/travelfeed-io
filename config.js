@@ -8,6 +8,7 @@ export const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY;
 export const ROOTURL = process.env.ROOTURL;
 export const GRAPHQL_URL = process.env.GRAPHQL_URL;
 export const NOTIFY_URL = process.env.NOTIFY_URL;
+export const WEB_PUSH_PUB = process.env.WEB_PUSH_PUB;
 export const STEEM_API = process.env.STEEM_API;
 
 export const STEEMCONNECT_CALLBACK_URL = `${ROOTURL}/login`;
