@@ -83,45 +83,42 @@ const urlBase64ToUint8Array = base64String => {
 
 export const registerServiceWorker = () => {
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/service-worker.js', { scope: '/' })
-        .then(registration => {
-          console.log('SW registered: ', registration);
-          if (Notification.permission === 'granted' && getUser()) {
-            console.log('Notifications are enabled');
-            registration.pushManager
-              .getSubscription()
-              .then(res => {
-                if (res)
-                  console.log('Already registered for push notifications');
-                // Return if already registered
-                if (res) return;
-                const subscribeOptions = {
-                  userVisibleOnly: true,
-                  applicationServerKey: urlBase64ToUint8Array(WEB_PUSH_PUB),
-                };
-                registration.pushManager
-                  .subscribe(subscribeOptions)
-                  .then(pushSubscription => {
-                    console.log(pushSubscription);
-                    const variables = {
-                      pushSubscription: JSON.stringify(pushSubscription),
-                    };
-                    graphQLClient(ADD_PUSH_SUBSCRIPTION, variables).then(res =>
-                      console.log(
-                        'Submitted push notification subscription to API',
-                      ),
-                    );
-                  })
-                  .catch(err => console.error(err));
-              })
-              .catch(err => console.error(err));
-          } else console.log('Notifications are disabled');
-        })
-        .catch(function(registrationError) {
-          console.log('SW registration failed: ', registrationError);
-        });
-    });
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(registration => {
+        console.log('SW registered: ', registration);
+        if (Notification.permission === 'granted' && getUser()) {
+          console.log('Notifications are enabled');
+          registration.pushManager
+            .getSubscription()
+            .then(res => {
+              if (res) console.log('Already registered for push notifications');
+              // Return if already registered
+              if (res) return;
+              const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(WEB_PUSH_PUB),
+              };
+              registration.pushManager
+                .subscribe(subscribeOptions)
+                .then(pushSubscription => {
+                  console.log(pushSubscription);
+                  const variables = {
+                    pushSubscription: JSON.stringify(pushSubscription),
+                  };
+                  graphQLClient(ADD_PUSH_SUBSCRIPTION, variables).then(res =>
+                    console.log(
+                      'Submitted push notification subscription to API',
+                    ),
+                  );
+                })
+                .catch(err => console.error(err));
+            })
+            .catch(err => console.error(err));
+        } else console.log('Notifications are disabled');
+      })
+      .catch(function(registrationError) {
+        console.log('SW registration failed: ', registrationError);
+      });
   }
 };
