@@ -18,9 +18,6 @@ import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
 
 const styles = theme => ({
-  card: {
-    borderRadius: 12,
-  },
   areabg: {
     background: theme.palette.background.light,
   },
@@ -168,8 +165,7 @@ class PostCommentItem extends Component {
     return (
       <div>
         <Card
-          className={classes.card}
-          style={{ marginLeft: depth }}
+          style={{ marginLeft: depth, borderRadius: 12 }}
           id={this.props.post.permlink}
         >
           <CardHeader
@@ -215,22 +211,24 @@ class PostCommentItem extends Component {
         </Card>
         {// "Fake" display new user comment after submitting comment without refreshing from the API
         this.state.userComment && (
-          <PostCommentItem
-            post={{
-              body: this.state.userComment.body,
-              created_at: new Date(),
-              children: 0,
-              author: getUser(),
-              display_name: '',
-              permlink: this.state.userComment.permlink,
-              depth: this.props.post.depth + 1,
-              total_votes: 0,
-              votes: '',
-              parent_author: '',
-              parent_permlink: '',
-              root_title: '',
-            }}
-          />
+          <div className="pt-2 pr-2 pl-2">
+            <PostCommentItem
+              post={{
+                body: this.state.userComment.body,
+                created_at: new Date(),
+                children: 0,
+                author: getUser(),
+                display_name: '',
+                permlink: this.state.userComment.permlink,
+                depth: this.props.post.depth + 1,
+                total_votes: 0,
+                votes: '',
+                parent_author: '',
+                parent_permlink: '',
+                root_title: '',
+              }}
+            />
+          </div>
         )}
         {children}
       </div>
