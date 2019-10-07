@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
+import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import CommentMenu from '../CuratorMenu/CommentMenu';
@@ -72,7 +73,7 @@ class PostCommentItem extends Component {
       ssr: false,
     });
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
-    const bodyText = { __html: htmlBody };
+    const bodyText = parseHtmlToReact(htmlBody);
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies === true) {
       children = (
@@ -142,10 +143,7 @@ class PostCommentItem extends Component {
     }
     let cardcontent = (
       // eslint-disable-next-line react/no-danger
-      <div
-        className="postcontent postCardContent"
-        dangerouslySetInnerHTML={bodyText}
-      />
+      <div className="postcontent postCardContent">{bodyText}</div>
     );
     if (this.state.showEditor) {
       const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {

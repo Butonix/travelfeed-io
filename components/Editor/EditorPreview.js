@@ -3,14 +3,15 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
 import parseBody from '../../helpers/parseBody';
+import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import PostContent from '../Post/PostContent';
 import PostTitle from '../Post/PostTitle';
 
 const EditorPreview = props => {
-  let htmlBody = { __html: <br /> };
+  let bodyText = <br />;
   if (props.content && props.content.length > 1) {
-    htmlBody = { __html: parseBody(props.content, { lazy: false }) };
+    bodyText = parseHtmlToReact(parseBody(props.content, { lazy: false }));
   }
   return (
     <div>
@@ -32,11 +33,9 @@ const EditorPreview = props => {
               display_name={props.author}
               readtime={props.readtime}
               content={
-                <div
-                  className="textPrimary postcontent postCardContent"
-                  // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={htmlBody}
-                />
+                <div className="textPrimary postcontent postCardContent">
+                  {bodyText}
+                </div>
               }
               latitude={props.latitude}
               longitude={props.longitude}
