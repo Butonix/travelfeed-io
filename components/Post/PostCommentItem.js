@@ -221,8 +221,8 @@ class PostCommentItem extends Component {
                 depth: this.props.post.depth + 1,
                 total_votes: 0,
                 votes: '',
-                parent_author: '',
-                parent_permlink: '',
+                parent_author: this.props.post.author,
+                parent_permlink: this.props.post.permlink,
                 root_title: '',
               }}
             />
