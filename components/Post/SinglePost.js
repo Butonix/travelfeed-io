@@ -2,6 +2,7 @@
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
+import parse from 'html-react-parser';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -170,13 +171,12 @@ class SinglePost extends Component {
             const htmlBody = parseBody(body, {
               cardWidth: this.state.cardWidth,
             });
-            const bodyText = { __html: htmlBody };
+            const bodyText = parse(htmlBody);
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
-              <div
-                className="textPrimary postcontent postCardContent"
-                dangerouslySetInnerHTML={bodyText}
-              />
+              <div className="textPrimary postcontent postCardContent">
+                {bodyText}
+              </div>
             );
             const isBacklisted = is_blacklisted;
             const isNSFW = is_nsfw;
@@ -203,11 +203,9 @@ class SinglePost extends Component {
                       );
                     }
                     return (
-                      <div
-                        className="textPrimary postcontent postCardContent"
-                        // eslint-disable-next-line react/no-danger
-                        dangerouslySetInnerHTML={bodyText}
-                      />
+                      <div className="textPrimary postcontent postCardContent">
+                        {bodyText}
+                      </div>
                     );
                   }}
                 </Query>
