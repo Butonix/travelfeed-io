@@ -2,7 +2,6 @@
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
-import parse from 'html-react-parser';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -15,6 +14,7 @@ import { imageProxy } from '../../helpers/getImage';
 import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
+import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
@@ -171,7 +171,7 @@ class SinglePost extends Component {
             const htmlBody = parseBody(body, {
               cardWidth: this.state.cardWidth,
             });
-            const bodyText = parse(htmlBody);
+            const bodyText = parseHtmlToReact(htmlBody);
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div className="textPrimary postcontent postCardContent">

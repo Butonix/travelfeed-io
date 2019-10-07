@@ -27,6 +27,7 @@ const knownDomains = [
   'busy.org',
   'steempeak.com',
   'steemit.com',
+  'partiko.app',
   'd.tube',
   'youtube.com',
   'instagram.com',

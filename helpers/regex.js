@@ -35,3 +35,7 @@ export const extractSWM = bodyText => {
 export const dtubeImageRegex = /<center><a href='https:\/\/d\.tube\/#!\/v\/(.*)\/(.*)'><img src='https:\/\/ipfs\.io\/ipfs\/.*'><\/a><\/center><hr>/i;
 
 export const dtubeLinkRegex = /\nhttps:\/\/d\.tube\/#!\/v\/(.*\/.*)\n/gi;
+
+export const postUrl = /https:\/\/(?:travelfeed\.io|steemit\.com|busy\.org|steempeak\.com|partiko\.app)(?:\/|\/[a-z0-9-]{1,30}\/)@([a-z0-9-]{3,16})\/([a-z0-9-]*)/i;
+
+export const mentionUrl = /\/@([a-z0-9-]{3,16})/i;
