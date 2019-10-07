@@ -254,11 +254,11 @@ sup {
   font-family: medium-content-slab-serif-font, Georgia, Cambria, Times, serif;
   font-weight: 400;
   font-style: italic;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   line-height: 1.48;
   letter-spacing: -0.012em;
   padding: 0 50px 0 50px;
-  quotes: '\201C''\201D''\2018''\2019';
+  quotes: '\201c''\201d';
 }
 .postcontent blockquote:before {
   content: open-quote;
