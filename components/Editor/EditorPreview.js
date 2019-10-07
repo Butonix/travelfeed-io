@@ -11,7 +11,10 @@ import PostTitle from '../Post/PostTitle';
 const EditorPreview = props => {
   let bodyText = <br />;
   if (props.content && props.content.length > 1) {
-    bodyText = parseHtmlToReact(parseBody(props.content, { lazy: false }));
+    const htmlBody = parseBody(props.content, { lazy: false });
+    bodyText = parseHtmlToReact(htmlBody, {
+      parseLinksToBlank: true,
+    });
   }
   return (
     <div>

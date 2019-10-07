@@ -73,7 +73,7 @@ class PostCommentItem extends Component {
       ssr: false,
     });
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
-    const bodyText = parseHtmlToReact(htmlBody);
+    const bodyText = parseHtmlToReact(htmlBody, {});
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies === true) {
       children = (

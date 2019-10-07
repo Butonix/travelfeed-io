@@ -171,7 +171,7 @@ class SinglePost extends Component {
             const htmlBody = parseBody(body, {
               cardWidth: this.state.cardWidth,
             });
-            const bodyText = parseHtmlToReact(htmlBody);
+            const bodyText = parseHtmlToReact(htmlBody, {});
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div className="textPrimary postcontent postCardContent">
