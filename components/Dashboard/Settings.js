@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
+import { registerServiceWorker } from '../../helpers/notifications';
 import HeaderCard from '../General/HeaderCard';
 import UserContext from '../General/UserContext';
 
@@ -63,6 +64,7 @@ const Settings = props => {
       if (!notificationPermission)
         Notification.requestPermission(status => {
           setNotificationPermission(status === 'granted');
+          registerServiceWorker();
         });
       new Notification(
         'You can disable notifications in your browser settings',
