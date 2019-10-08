@@ -9,3 +9,9 @@ export const ADD_PUSH_SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const GET_NOTIFICATIONS = gql`
+  query notifications($limit: Int) {
+    notifications(limit: $limit)
+  }
+`;

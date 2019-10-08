@@ -16,16 +16,15 @@ Environment variables need to be set at build time.
 
 ## Configuration
 
-| Environment          | Description                                                                  | Recommended value           |
-| -------------------- | ---------------------------------------------------------------------------- | --------------------------- |
-| `GRAPHQL_URL`        | Travelfeed api                                                               | https://api.travelfeed.io/  |
-| `NOTIFY_URL`         | Notification api                                                             | wss://notify.travelfeed.io/ |
-| `STEEM_API`          | Steem api                                                                    | https://api.steemit.com     |
-| `ROOTURL`            | URL of the server                                                            | http://localhost:3000       |
-| `WEB_PUSH_PUB`       | [Generate a public web push key](https://web-push-codelab.glitch.me/)        |                             |
-| `RECAPTCHA_SITE_KEY` | [Get an API key](http://www.google.com/recaptcha/admin)                      |                             |
-| `GMAPS_API_KEY`      | [Get an API key](https://cloud.google.com/console/google/maps-apis/overview) |                             |
-| `MAPBOX_TOKEN`       | [Get an API key](https://www.mapbox.com/)                                    |                             |
+| Environment          | Description                                                                  | Recommended value          |
+| -------------------- | ---------------------------------------------------------------------------- | -------------------------- |
+| `GRAPHQL_URL`        | Travelfeed api                                                               | https://api.travelfeed.io/ |
+| `STEEM_API`          | Steem api                                                                    | https://api.steemit.com    |
+| `ROOTURL`            | URL of the server                                                            | http://localhost:3000      |
+| `WEB_PUSH_PUB`       | [Generate a public web push key](https://web-push-codelab.glitch.me/)        |                            |
+| `RECAPTCHA_SITE_KEY` | [Get an API key](http://www.google.com/recaptcha/admin)                      |                            |
+| `GMAPS_API_KEY`      | [Get an API key](https://cloud.google.com/console/google/maps-apis/overview) |                            |
+| `MAPBOX_TOKEN`       | [Get an API key](https://www.mapbox.com/)                                    |                            |
 
 For the local development server, use an .env file.
 

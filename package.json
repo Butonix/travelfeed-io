@@ -45,7 +45,6 @@
     "blueimp-canvas-to-blob": "^3.16.0",
     "blueimp-load-image": "^2.24.0",
     "bs58": "^4.0.1",
-    "busyjs": "^1.0.2",
     "classnames": "^2.2.6",
     "clsx": "^1.0.4",
     "dayjs": "^1.8.16",

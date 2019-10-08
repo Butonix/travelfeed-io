@@ -25,7 +25,6 @@ module.exports = withImages(
           RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
           ROOTURL: process.env.ROOTURL,
           GRAPHQL_URL: process.env.GRAPHQL_URL,
-          NOTIFY_URL: process.env.NOTIFY_URL,
           WEB_PUSH_PUB: process.env.WEB_PUSH_PUB,
           STEEM_API: process.env.STEEM_API,
         },
