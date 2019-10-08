@@ -4,6 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
 import { Query } from 'react-apollo';
 import { GET_NOTIFICATIONS } from '../../helpers/graphql/notifications';
+import { messageFromNotification } from '../../helpers/messageFromNotification';
 import CustomSnackbar from './Notifications/CustomSnackbar';
 
 const AllNotifications = props => {
@@ -42,11 +43,15 @@ const AllNotifications = props => {
           }
           return (
             <>
-              {data.notifications.map(message => (
-                <div className="pt-3">
-                  <CustomSnackbar variant="info" message={message} />
-                </div>
-              ))}
+              {data.notifications.map(message => {
+                const msg = messageFromNotification(message);
+                console.log(msg);
+                return (
+                  <div className="pt-3">
+                    <CustomSnackbar variant="info" message={msg} />
+                  </div>
+                );
+              })}
             </>
           );
         }}
