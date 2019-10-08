@@ -1,6 +1,5 @@
 // Todo: Add delete account to remove all of users data from our database
 import { teal } from '@material-ui/core/colors';
-import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -10,9 +9,10 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
+import { registerServiceWorker } from '../../helpers/notifications';
 import HeaderCard from '../General/HeaderCard';
 import UserContext from '../General/UserContext';
 
@@ -22,18 +22,35 @@ const Settings = props => {
   const { theme, setDarkMode, setLightMode } = useContext(UserContext);
 
   const useDarkMode = theme === 'dark';
-
   const [loaded, setLoaded] = useState(false);
-
   const [saved, setSaved] = useState(true);
-
   const [defaultVoteWeight, setDefaultVoteWeight] = useState(0);
-
   const [defaultCommentsVoteWeight, setDefaultCommentsVoteWeight] = useState(0);
-
   const [showNSFW, setShowNSFW] = useState(false);
-
   const [useTfBlacklist, setUseTfBlacklist] = useState(true);
+  const [notificationPermission, setNotificationPermission] = useState(false);
+
+  useEffect(() => {
+    // https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
+
+    // Are Notifications supported in the service worker?
+    if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
+      return;
+    }
+
+    // Check the current Notification permission.
+    // If its denied, it's a permanent block until the
+    // user changes the permission
+    if (Notification.permission === 'denied') {
+      return;
+    }
+
+    // Check if push messaging is supported
+    if (!('PushManager' in window)) {
+      return;
+    }
+    setNotificationPermission(Notification.permission === 'granted');
+  }, []);
 
   const handleCheckboxChange = name => event => {
     if (name === 'useDarkMode') {
@@ -43,6 +60,16 @@ const Settings = props => {
       setShowNSFW(event.target.checked);
     } else if (name === 'useTfBlacklist') {
       setUseTfBlacklist(event.target.checked);
+    } else if (name === 'notificationPermission') {
+      if (!notificationPermission)
+        Notification.requestPermission(status => {
+          setNotificationPermission(status === 'granted');
+          registerServiceWorker();
+        });
+      new Notification(
+        'You can disable notifications in your browser settings',
+      );
+      setNotificationPermission(false);
     }
   };
 
@@ -129,7 +156,7 @@ const Settings = props => {
                                   }
                                   label="Show NSFW posts"
                                 />
-                                <Divider />
+
                                 <FormControlLabel
                                   labelPlacement="end"
                                   control={
@@ -145,7 +172,7 @@ const Settings = props => {
                                   }
                                   label="Use TravelFeed Blacklist"
                                 />
-                                <Divider />
+
                                 <FormControlLabel
                                   labelPlacement="end"
                                   control={
@@ -162,7 +189,21 @@ const Settings = props => {
                                   }
                                   label="Use dark mode"
                                 />
-                                <Divider />
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={notificationPermission}
+                                      onChange={handleCheckboxChange(
+                                        'notificationPermission',
+                                      )}
+                                      value="notificationPermission"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Display Notifications"
+                                />
+
                                 <TextField
                                   select
                                   label="Default miles weight for posts"
@@ -183,7 +224,7 @@ const Settings = props => {
                                     </MenuItem>
                                   ))}
                                 </TextField>
-                                <Divider />
+
                                 <TextField
                                   select
                                   label="Default miles weight on comments"

@@ -1,5 +1,7 @@
 {
   "name": "TravelFeed",
+  "short_name": "TravelFeed",
+  "description": "Discover the best travel blogs on TravelFeed, the world-wide travel community!",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
