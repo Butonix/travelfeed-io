@@ -45,6 +45,12 @@ module.exports = withImages(
         dontAutoRegisterSw: true,
         workboxOpts: {
           importScripts: ['./scripts/sw-push-listener.js'],
+          runtimeCaching: [
+            {
+              urlPattern: /https:\/\/api\.mapbox\.com\/.*/,
+              handler: 'NetworkFirst',
+            },
+          ],
         },
       }),
     ),
