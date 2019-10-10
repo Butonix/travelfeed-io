@@ -2,6 +2,7 @@ import {
   faFacebookF,
   faInstagram,
   faPinterest,
+  faReddit,
   faTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
@@ -50,6 +51,7 @@ const social = [
         icon={faYoutube}
       />
     ),
+    hideOnSmallScreen: true,
   },
   {
     name: 'Pinterest',
@@ -58,6 +60,16 @@ const social = [
       <FontAwesomeIcon
         style={{ width: '22px', height: '22px' }}
         icon={faPinterest}
+      />
+    ),
+  },
+  {
+    name: 'Reddit',
+    link: 'https://www.reddit.com/r/TravelFeedio/',
+    icon: (
+      <FontAwesomeIcon
+        style={{ width: '22px', height: '22px' }}
+        icon={faReddit}
       />
     ),
   },
@@ -73,6 +85,11 @@ const SocialLinks = () => {
               href={s.link}
               title={s.name}
               target="_blank"
+              className={
+                s.hideOnSmallScreen
+                  ? 'd-none d-sm-none d-md-none d-lg-none d-xl-inline'
+                  : ''
+              }
               rel="noopener noreferrer nofollow"
             >
               <IconButton>{s.icon}</IconButton>
