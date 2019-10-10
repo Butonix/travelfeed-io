@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import StickyBox from 'react-sticky-box';
 import capitalize from '../../helpers/capitalize';
+import { getUser } from '../../helpers/token';
 import HomeOrderBySelect from '../Grid/HomeOrderBySelect';
 import PostGrid from '../Grid/PostGrid';
 import Head from '../Header/Head';
@@ -23,6 +24,10 @@ const Feed = props => {
   } = props;
 
   const DiscoverCountry = dynamic(() => import('../Sidebar/DiscoverCountry'), {
+    ssr: false,
+  });
+
+  const NewUsers = dynamic(() => import('../Sidebar/NewUsers'), {
     ssr: false,
   });
 
@@ -70,6 +75,12 @@ const Feed = props => {
               <div className="pt-2" />
               <DiscoverCountry />
               <div className="pt-2" />
+              {getUser() && (
+                <>
+                  <NewUsers />
+                  <div className="pt-2" />
+                </>
+              )}
               <SocialLinks />
               <LegalNotice />
             </StickyBox>
