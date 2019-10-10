@@ -118,6 +118,7 @@ const LoginButton = props => {
         switch={handleSwitchDialog}
         open={joinOpen}
         handleClose={handleJoinClose}
+        text={props.text}
       />
     </Fragment>
   );

@@ -26,7 +26,7 @@ const JoinDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle className="text-center" id="form-dialog-title">
-          Join TravelFeed
+          Join TravelFeed{props.text}
           <div
             style={{
               position: 'absolute',

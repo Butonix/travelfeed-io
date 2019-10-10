@@ -23,6 +23,7 @@ const BookmarkIcon = props => {
           open={open}
           hideButtons
           onClickClose={() => setOpen(false)}
+          text=" and bookmark your favorite posts"
         />
       )}
       <Query
