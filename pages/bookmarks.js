@@ -19,8 +19,10 @@ const BookmarksPage = () => {
       {(user === null && <></>) ||
         (user && (
           <>
-            <div className="container" id="containerInvisibleOnMobile">
-              <Bookmarks user={user} />
+            <div className="pb-2">
+              <div className="container" id="containerInvisibleOnMobile">
+                <Bookmarks user={user} />
+              </div>
             </div>
             <style>{`
         @media (max-width: 992px) {
