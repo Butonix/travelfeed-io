@@ -1,6 +1,8 @@
 /* eslint-disable no-shadow */
 import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
@@ -19,6 +21,8 @@ import { getUser } from '../../helpers/token';
 import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
+import PostMap from '../Maps/PostMap';
+import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
 import PostComments from './PostComments';
@@ -26,6 +30,7 @@ import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
+import SimilarPosts from './SimilarPosts';
 import VoteSlider from './VoteSlider';
 
 const styles = () => ({
@@ -95,7 +100,8 @@ class SinglePost extends Component {
       parent_author,
       parent_permlink,
       root_author,
-      root_permlink;
+      root_permlink,
+      country_code;
 
     let {
       author,
@@ -139,6 +145,7 @@ class SinglePost extends Component {
               display_name = data.post.display_name;
               img_url = data.post.img_url;
               created_at = data.post.created_at;
+              country_code = data.post.country_code;
             }
             tags = cleanTags(tags);
             // 404 for error and if post does not exist
@@ -302,6 +309,71 @@ class SinglePost extends Component {
                         longitude={longitude}
                       />
                       {data && data.post && (
+                        <>
+                          <Divider variant="middle" />
+                          <Typography
+                            variant="h5"
+                            className="pt-4"
+                            align="center"
+                            gutterBottom
+                          >
+                            Share this post
+                          </Typography>
+                          <PostSocialShares
+                            author={author}
+                            permlink={permlink}
+                            tags={tags}
+                            title={title}
+                            img_url={img_url}
+                          />
+                        </>
+                      )}
+                      {latitude && (
+                        <>
+                          <Divider variant="middle" />
+                          <div className="fullwidth">
+                            <Typography
+                              variant="h5"
+                              className="p-2"
+                              align="center"
+                              gutterBottom
+                            >
+                              Post Location
+                            </Typography>
+                            <PostMap
+                              location={{
+                                coordinates: {
+                                  lat: latitude,
+                                  lng: longitude,
+                                },
+                              }}
+                            />
+                          </div>
+                        </>
+                      )}
+                      <div className="postCardContent">
+                        <Divider variant="middle" />
+                      </div>
+                      <div className="container">
+                        <div className="row justify-content-center">
+                          <div className="col-lg-6 col-md-9 col-sm12">
+                            <div className="text-center">
+                              <Typography
+                                variant="h5"
+                                align="center"
+                                className="p-2"
+                                gutterBottom
+                              >
+                                Written by
+                              </Typography>
+                              <div className="pb-3">
+                                <PostAuthorProfile author={author} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {data && data.post && (
                         <VoteSlider
                           author={author}
                           permlink={permlink}
@@ -315,18 +387,10 @@ class SinglePost extends Component {
                       )}
                     </Card>
                   </div>
-                  <div className="pt-2 d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                    <Card className={classes.card}>
-                      {data && data.post && (
-                        <PostSocialShares
-                          author={author}
-                          permlink={permlink}
-                          tags={tags}
-                          title={title}
-                          img_url={img_url}
-                        />
-                      )}
-                    </Card>
+                  <div className="pt-2">
+                    {country_code && (
+                      <SimilarPosts country_code={country_code} />
+                    )}
                   </div>
                 </>
               );

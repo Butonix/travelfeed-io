@@ -17,12 +17,14 @@ const Excerpt = props => {
           {title}
         </Typography>
       )}
-      <Typography component="p" className="preview-text">
-        {text
-          .replace(/&amp;/g, '&')
-          .replace(/!([a-zA-Z])/g, '! $1')
-          .substring(0, 300)}
-      </Typography>
+      {text && (
+        <Typography component="p" className="preview-text">
+          {text
+            .replace(/&amp;/g, '&')
+            .replace(/!([a-zA-Z])/g, '! $1')
+            .substring(0, 300)}
+        </Typography>
+      )}
       <style>{`
     .preview-title {
       line-height: 1.5em;

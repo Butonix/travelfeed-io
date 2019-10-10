@@ -236,7 +236,6 @@ const OnboardInfo = props => {
               Your post
             </Typography>
             <EditorPreview
-              hideAuthorProfile
               fullsize
               author="null"
               img_url={cover_image}
