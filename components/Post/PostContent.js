@@ -1,5 +1,4 @@
 import CardHeader from '@material-ui/core/CardHeader';
-import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import PostMenu from '../CuratorMenu/PostMenu';
@@ -9,10 +8,6 @@ import SubHeader from './SubHeader';
 
 const PostContent = props => {
   // Prevent SSR
-  const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
-    ssr: false,
-  });
-
   return (
     <Fragment>
       <CardHeader
@@ -20,11 +15,6 @@ const PostContent = props => {
         action={
           <Fragment>
             <span>{props.appIcon}</span>
-            {!props.hideAuthorProfile && (
-              <div className="d-none d-sm-none d-xl-inline d-lg-inline d-md-inline">
-                <BookmarkIcon author={props.author} permlink={props.permlink} />
-              </div>
-            )}
             <PostMenu
               author={props.author}
               permlink={props.permlink}

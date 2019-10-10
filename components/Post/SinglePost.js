@@ -309,7 +309,7 @@ class SinglePost extends Component {
                         longitude={longitude}
                       />
                       {data && data.post && (
-                        <>
+                        <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
                           <Divider variant="middle" />
                           <Typography
                             variant="h5"
@@ -326,7 +326,7 @@ class SinglePost extends Component {
                             title={title}
                             img_url={img_url}
                           />
-                        </>
+                        </div>
                       )}
                       {latitude && (
                         <>
@@ -400,12 +400,26 @@ class SinglePost extends Component {
             if (children !== 0) {
               comments = (
                 <Fragment>
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <OrderBySelect
-                      handleClick={this.handleClick}
-                      selection={this.state.title || 'Most miles'}
-                    />
-                  </Grid>
+                  <div className="anchor" id="comments" />
+                  <div className="container">
+                    <div className="row">
+                      <div className="col">
+                        <Typography
+                          variant="h5"
+                          className="p-2 d-inline"
+                          gutterBottom
+                        >
+                          Comments
+                        </Typography>
+                      </div>
+                      <div className="col">
+                        <OrderBySelect
+                          handleClick={this.handleClick}
+                          selection={this.state.title || 'Most miles'}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="pr-2 pl-2">
                     <PostComments
                       post_id={post_id}
@@ -427,6 +441,30 @@ class SinglePost extends Component {
                   active="post"
                   socialShare={{ author, permlink, tags, title, img_url }}
                 />
+                <div
+                  className="d-none d-sm-none d-md-none d-xl-block d-lg-block container"
+                  style={{
+                    position: 'fixed',
+                    top: 65,
+                    left: 0,
+                    width: '25px',
+                    height: 'calc(100% - 65px)',
+                    zIndex: '900',
+                  }}
+                >
+                  <div className="row h-100">
+                    <div className="my-auto">
+                      <PostSocialShares
+                        author={author}
+                        permlink={permlink}
+                        tags={tags}
+                        title={title}
+                        img_url={img_url}
+                        comments={children}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div style={{ position: 'relative' }}>
                   {depth === 0 && img_url && (
                     <PostImageHeader

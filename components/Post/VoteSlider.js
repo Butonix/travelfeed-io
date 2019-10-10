@@ -209,7 +209,7 @@ class VoteSlider extends Component {
               color="inherit"
             >
               <CommentIcon className="mr pr-1 mr-1" />
-              {numberreplies} Comment
+              {numberreplies} Reply
             </Button>
           </Typography>,
         );
@@ -219,7 +219,7 @@ class VoteSlider extends Component {
             <Link color="textSecondary" href="/join">
               <Button size="small" color="inherit">
                 <CommentIcon className="mr pr-1 mr-1" />
-                {numberreplies} Comment
+                {numberreplies} Reply
               </Button>
             </Link>
           </Typography>,
