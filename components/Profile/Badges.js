@@ -30,7 +30,7 @@ const getExplorerBadge = regionsVisited => {
       emoji: '🗺',
     };
   else if (regionsVisited > 8)
-    level = { name: 'Traveller: Visited more than 8 regions', emoji: '✈️' };
+    level = { name: 'Traveler: Visited more than 8 regions', emoji: '✈️' };
   else if (regionsVisited > 5)
     level = { name: 'Nomad: Visited more than 5 regions', emoji: '🐫' };
   else level = { name: 'Backpacker: Visited less than 5 regions', emoji: '🎒' };

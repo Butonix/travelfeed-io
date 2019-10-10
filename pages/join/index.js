@@ -66,10 +66,10 @@ const JoinPage = props => {
                       </div>
                       <Typography gutterBottom variant="subtitle1">
                         On TravelFeed, you can discover travel content created
-                        by a large community of likeminded travellers! With{' '}
+                        by a large community of likeminded travelers! With{' '}
                         <strong>{data.stats.posts} blog posts</strong>, you will
                         almost certainly discover insiders' tips about your
-                        travel destination and find other travellers to connect
+                        travel destination and find other travelers to connect
                         with.
                       </Typography>
                     </div>
@@ -89,7 +89,7 @@ const JoinPage = props => {
                       <Typography gutterBottom variant="subtitle1">
                         With <strong>{data.stats.authors} authors</strong> and
                         many more readers, TravelFeed is one of the largest
-                        international communities of independent travellers.
+                        international communities of independent travelers.
                         Soon, you will be able to create custom trips and find
                         travel buddies for your next trip.
                       </Typography>

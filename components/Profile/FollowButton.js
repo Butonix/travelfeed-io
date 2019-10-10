@@ -99,7 +99,7 @@ const FollowButton = props => {
           open={open}
           hideButtons
           onClickClose={() => setOpen(false)}
-          text=" to follow favorite authors"
+          text=" to follow your favorite authors"
         />
       )}
       <Query

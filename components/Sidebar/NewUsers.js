@@ -23,7 +23,7 @@ const NewUsers = () => {
             <>
               <HeaderCard
                 noborder
-                title="New TravelFeediors"
+                title="New Travelers"
                 titlesize="h5"
                 background={indigo[600]}
                 content={
@@ -31,17 +31,19 @@ const NewUsers = () => {
                     {data.posts.map((post, i) => {
                       return (
                         <>
-                          <PostPreview
-                            isSmall
-                            author={post.author}
-                            permlink={post.permlink}
-                            img_url={`https://steemitimages.com/u/${post.author}/avatar/small`}
-                            title={post.title.replace(
-                              /Introducing myself to TravelFeed: /,
-                              '',
-                            )}
-                            divider={i < data.posts.length - 1}
-                          />
+                          {!post.is_blacklisted && (
+                            <PostPreview
+                              isSmall
+                              author={post.author}
+                              permlink={post.permlink}
+                              img_url={`https://steemitimages.com/u/${post.author}/avatar/small`}
+                              title={post.title.replace(
+                                /Introducing myself to TravelFeed: /,
+                                '',
+                              )}
+                              divider={i < data.posts.length - 1}
+                            />
+                          )}
                         </>
                       );
                     })}
