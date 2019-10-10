@@ -20,7 +20,7 @@ const styles = () => ({
 
 const LoginButton = props => {
   const [open, setOpen] = useState(false);
-  const [joinOpen, setJoinOpen] = useState(false);
+  const [joinOpen, setJoinOpen] = useState(props.open);
 
   const handleSwitchDialog = () => {
     setJoinOpen(!joinOpen);
@@ -58,22 +58,23 @@ const LoginButton = props => {
   const { classes } = props;
   return (
     <Fragment>
-      {(props.isMenu && (
-        <>
-          <MenuItem onClick={handleJoinMenuClickOpen}>
-            <ListItemIcon>
-              <LoginIcon />
-            </ListItemIcon>
-            <ListItemText primary="Sign Up" />
-          </MenuItem>
-          <MenuItem onClick={handleMenuClickOpen}>
-            <ListItemIcon>
-              <LoginIcon />
-            </ListItemIcon>
-            <ListItemText primary="Login" />
-          </MenuItem>
-        </>
-      )) ||
+      {(props.hideButtons && <></>) ||
+        (props.isMenu && (
+          <>
+            <MenuItem onClick={handleJoinMenuClickOpen}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign Up" />
+            </MenuItem>
+            <MenuItem onClick={handleMenuClickOpen}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </MenuItem>
+          </>
+        )) ||
         (props.isList && (
           <>
             <ListItem onClick={handleJoinMenuClickOpen}>

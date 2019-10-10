@@ -10,6 +10,7 @@ import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import BookmarkIcon from '../Post/BookmarkIcon';
 import FollowButton from '../Profile/FollowButton';
 import BackButton from './BackButton';
 import GeoCoder from './Geocoder';
@@ -51,10 +52,6 @@ class Header extends Component {
   };
 
   render() {
-    // Prevent SSR
-    const BookmarkIcon = dynamic(() => import('../Post/BookmarkIcon'), {
-      ssr: false,
-    });
     const { classes, active } = this.props;
     const DestinationsNav = dynamic(
       () => import('../Destinations/DestinationsNav'),

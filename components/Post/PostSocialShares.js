@@ -8,12 +8,12 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/AddComment';
-import dynamic from 'next/dynamic';
 import { withSnackbar } from 'notistack';
 import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { CONTEST_SOCIAL } from '../../helpers/graphql/contest';
+import BookmarkIcon from './BookmarkIcon';
 import ResteemButton from './ResteemButton';
 
 const PostSocialShares = props => {
@@ -102,10 +102,6 @@ const PostSocialShares = props => {
       ),
     },
   ];
-
-  const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
-    ssr: false,
-  });
 
   return (
     <Fragment>

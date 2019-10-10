@@ -3,12 +3,12 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/styles';
-import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
+import BookmarkIcon from '../Post/BookmarkIcon';
 import IsCurated from '../Post/IsCurated';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
@@ -59,10 +59,6 @@ class GridPostCard extends Component {
   render() {
     const { classes } = this.props;
 
-    // Prevent SSR
-    const BookmarkIcon = dynamic(() => import('../Post/BookmarkIcon'), {
-      ssr: false,
-    });
     // Hide if deleted (for bookmarks)
     if (!this.state.show) {
       return <Fragment />;

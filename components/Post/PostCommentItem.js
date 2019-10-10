@@ -12,6 +12,7 @@ import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import CommentMenu from '../CuratorMenu/CommentMenu';
+import BookmarkIcon from '../Post/BookmarkIcon';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
 import PostComments from './PostComments';
@@ -68,10 +69,6 @@ class PostCommentItem extends Component {
   render() {
     const { classes } = this.props;
 
-    // Prevent SSR
-    const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
-      ssr: false,
-    });
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
     const bodyText = parseHtmlToReact(htmlBody, {});
     let children = <Fragment />;
