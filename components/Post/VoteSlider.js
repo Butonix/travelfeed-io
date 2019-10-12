@@ -22,6 +22,7 @@ import { Query } from 'react-apollo';
 import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import LoginButton from '../Header/LoginButton';
 import SliderTags from './SliderTags';
 import VoteButton from './VoteButton';
 
@@ -35,6 +36,7 @@ class VoteSlider extends Component {
     hasVoted: false,
     user: null,
     totalmiles: null,
+    open: false,
   };
 
   async componentDidMount() {
@@ -130,13 +132,12 @@ class VoteSlider extends Component {
     }
     let cardFooter = <Fragment />;
     let voteButton = (
-      <Link color="textPrimary" href="/join">
-        <Tooltip title="Log in to vote" placement="bottom">
-          <IconButton aria-label="Upvote">
-            <FlightIcon className="mr" />
-          </IconButton>
-        </Tooltip>
-      </Link>
+      <IconButton
+        aria-label="Upvote"
+        onClick={() => this.setState({ open: true })}
+      >
+        <FlightIcon className="mr" />
+      </IconButton>
     );
     if (this.state.user != null) {
       voteButton = (
@@ -209,19 +210,21 @@ class VoteSlider extends Component {
               color="inherit"
             >
               <CommentIcon className="mr pr-1 mr-1" />
-              {numberreplies} Comment
+              {numberreplies} Reply
             </Button>
           </Typography>,
         );
       } else {
         actions.push(
           <Typography color="textSecondary" component="span">
-            <Link color="textSecondary" href="/join">
-              <Button size="small" color="inherit">
-                <CommentIcon className="mr pr-1 mr-1" />
-                {numberreplies} Comment
-              </Button>
-            </Link>
+            <Button
+              size="small"
+              color="inherit"
+              onClick={() => this.setState({ open: true })}
+            >
+              <CommentIcon className="mr pr-1 mr-1" />
+              {numberreplies} Reply
+            </Button>
           </Typography>,
         );
       }
@@ -407,7 +410,19 @@ class VoteSlider extends Component {
         </Fragment>
       );
     }
-    return <Fragment>{cardFooter}</Fragment>;
+    return (
+      <Fragment>
+        {this.state.open && (
+          <LoginButton
+            open={this.state.open}
+            hideButtons
+            onClickClose={() => this.setState({ open: false })}
+            text=" to vote and reply on posts"
+          />
+        )}
+        {cardFooter}
+      </Fragment>
+    );
   }
 }
 

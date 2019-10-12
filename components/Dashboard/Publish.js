@@ -277,7 +277,7 @@ const PostEditor = props => {
         <span>
           <WarnIcon />
           {'  '}You need to set a location. If your post is not about a specific
-          country/region/place (e.g. &quot;What to pack for travelling&quot;),
+          country/region/place (e.g. &quot;What to pack for traveling&quot;),
           please select &quot;traveladvice&quot; as tag
         </span>
       ),

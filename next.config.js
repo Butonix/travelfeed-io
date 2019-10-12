@@ -1,8 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const withCSS = require('@zeit/next-css');
 const withOffline = require('next-offline');
 const withImages = require('next-images');
 // https://github.com/zeit/next-plugins/tree/master/packages/next-bundle-analyzer
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
+// Add push listener to next-offline service worker
+// https://github.com/hanford/next-offline/issues/35#issuecomment-415367268
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -22,6 +25,7 @@ module.exports = withImages(
           RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
           ROOTURL: process.env.ROOTURL,
           GRAPHQL_URL: process.env.GRAPHQL_URL,
+          WEB_PUSH_PUB: process.env.WEB_PUSH_PUB,
           STEEM_API: process.env.STEEM_API,
         },
         analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
@@ -39,6 +43,15 @@ module.exports = withImages(
           },
         },
         dontAutoRegisterSw: true,
+        workboxOpts: {
+          importScripts: ['./scripts/sw-push-listener.js'],
+          runtimeCaching: [
+            {
+              urlPattern: /https:\/\/api\.mapbox\.com\/.*/,
+              handler: 'NetworkFirst',
+            },
+          ],
+        },
       }),
     ),
   ),

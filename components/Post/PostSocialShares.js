@@ -7,15 +7,25 @@ import {
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from '@material-ui/core/IconButton';
+import CommentIcon from '@material-ui/icons/AddComment';
 import { withSnackbar } from 'notistack';
 import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { CONTEST_SOCIAL } from '../../helpers/graphql/contest';
+import BookmarkIcon from './BookmarkIcon';
 import ResteemButton from './ResteemButton';
 
 const PostSocialShares = props => {
-  const { author, permlink, title, img_url, tags, enqueueSnackbar } = props;
+  const {
+    author,
+    permlink,
+    title,
+    img_url,
+    tags,
+    enqueueSnackbar,
+    comments,
+  } = props;
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -29,10 +39,11 @@ const PostSocialShares = props => {
 
   const link = `https://travelfeed.io/@${author}/${permlink}`;
   let tagString = '';
-  tags.forEach((t, i) => {
-    if (i > 0) tagString += ',';
-    tagString += t;
-  });
+  if (tags && tags.length > 0)
+    tags.forEach((t, i) => {
+      if (i > 0) tagString += ',';
+      tagString += t;
+    });
 
   const social = [
     {
@@ -101,6 +112,7 @@ const PostSocialShares = props => {
             // eslint-disable-next-line no-shadow
           ) => (
             <div className="text-center">
+              <BookmarkIcon author={author} permlink={permlink} />
               {social.map(s => {
                 return (
                   <a
@@ -132,6 +144,13 @@ const PostSocialShares = props => {
                   />
                 </IconButton>
               </CopyToClipboard>
+              <a href="#comments">
+                {comments && (
+                  <IconButton>
+                    <CommentIcon />
+                  </IconButton>
+                )}
+              </a>
             </div>
           )}
         </Mutation>

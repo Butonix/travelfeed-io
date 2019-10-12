@@ -13,6 +13,7 @@ const Skeleton = dynamic(() => import('react-loading-skeleton'), {
 });
 
 const PostPreview = props => {
+  const { isSmall } = props;
   const imgUrl = props.img_url ? imageProxy(props.img_url, 100, 100) : '';
   let titleUri = '';
   try {
@@ -43,8 +44,8 @@ const PostPreview = props => {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
-                    width: '70px',
-                    height: '70px',
+                    width: isSmall ? '35px' : '70px',
+                    height: isSmall ? '35px' : '70px',
                   }}
                 />
               )) || <Skeleton width="70px" height="70px" />}
@@ -59,7 +60,10 @@ const PostPreview = props => {
                     as={`/@${props.author}`}
                     href={`/blog?author=${props.author}`}
                   >
-                    {(props.author && `by @${props.author}`) || <Skeleton />}
+                    {(props.author &&
+                      `${isSmall ? '' : 'by '}@${props.author}`) || (
+                      <Skeleton />
+                    )}
                   </Link>
                 </em>
               </div>

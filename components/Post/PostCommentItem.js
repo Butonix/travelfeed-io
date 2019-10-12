@@ -8,9 +8,11 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
+import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import CommentMenu from '../CuratorMenu/CommentMenu';
+import BookmarkIcon from '../Post/BookmarkIcon';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
 import PostComments from './PostComments';
@@ -67,12 +69,8 @@ class PostCommentItem extends Component {
   render() {
     const { classes } = this.props;
 
-    // Prevent SSR
-    const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
-      ssr: false,
-    });
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
-    const bodyText = { __html: htmlBody };
+    const bodyText = parseHtmlToReact(htmlBody, {});
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies === true) {
       children = (
@@ -142,10 +140,7 @@ class PostCommentItem extends Component {
     }
     let cardcontent = (
       // eslint-disable-next-line react/no-danger
-      <div
-        className="postcontent postCardContent"
-        dangerouslySetInnerHTML={bodyText}
-      />
+      <div className="postcontent postCardContent">{bodyText}</div>
     );
     if (this.state.showEditor) {
       const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
@@ -223,8 +218,8 @@ class PostCommentItem extends Component {
                 depth: this.props.post.depth + 1,
                 total_votes: 0,
                 votes: '',
-                parent_author: '',
-                parent_permlink: '',
+                parent_author: this.props.post.author,
+                parent_permlink: this.props.post.permlink,
                 root_title: '',
               }}
             />

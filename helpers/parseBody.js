@@ -9,7 +9,6 @@ future problems:
 
 import sanitizeHtml from 'sanitize-html';
 import { DefaultRenderer } from 'steem-content-renderer';
-import { ROOTURL } from '../config';
 import { imageProxy } from './getImage';
 import sanitizeConfig from './PostParser/SanitizeConfig';
 import {
@@ -107,10 +106,6 @@ const parseBody = (body, options) => {
   );
   // remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, '');
-  // Replace Steemit links with Travelfeed
-  parsedBody = parsedBody.replace(/https:\/\/steemit\.com/g, ROOTURL);
-  parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
-  parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
   // Render markdown to HTML
   try {
     parsedBody = parsedBody.length > 0 ? renderer.render(parsedBody) : '';

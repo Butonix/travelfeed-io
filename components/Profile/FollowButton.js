@@ -13,14 +13,15 @@ import { follow, unfollow } from '../../helpers/actions';
 import { FOLLOW, UNFOLLOW } from '../../helpers/graphql/broadcast';
 import { GET_IS_FOLLOWED } from '../../helpers/graphql/profile';
 import graphQLClient from '../../helpers/graphQLClient';
-import { getRoles } from '../../helpers/token';
-import Link from '../../lib/Link';
+import { getRoles, getUser } from '../../helpers/token';
+import LoginButton from '../Header/LoginButton';
 
 const FollowButton = props => {
   const [isFollowed, setFollowed] = useState(undefined);
   const [isMounted, setMounted] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
   const [changing, setChanging] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -44,6 +45,10 @@ const FollowButton = props => {
   };
 
   const toggleFollowAuthor = () => {
+    if (!getUser()) {
+      setOpen(true);
+      return;
+    }
     setChanging(true);
     const roles = getRoles();
     if (roles && roles.indexOf('easylogin') !== -1) {
@@ -89,6 +94,14 @@ const FollowButton = props => {
 
   return (
     <Fragment>
+      {open && (
+        <LoginButton
+          open={open}
+          hideButtons
+          onClickClose={() => setOpen(false)}
+          text=" to follow your favorite authors"
+        />
+      )}
       <Query
         fetchPolicy="network-only"
         query={GET_IS_FOLLOWED}
@@ -104,59 +117,46 @@ const FollowButton = props => {
           }
           return (
             <>
-              {(isFollowed !== undefined && (
-                <Fragment>
-                  {(props.btnstyle === 'icon' && (
-                    <>
-                      <span className="text-light">
-                        <IconButton
-                          color="inherit"
-                          onClick={() => toggleFollowAuthor()}
-                          edge="end"
-                        >
-                          {(changing && (
-                            <CircularProgress
-                              className="text-light"
-                              color="inherit"
-                              size={18}
-                            />
-                          )) ||
-                            (isFollowed && <UnfollowIcon />) || <FollowIcon />}
-                        </IconButton>
-                      </span>
-                    </>
-                  )) || (
-                    <Button
-                      style={(changing && { opacity: 0.8 }) || {}}
-                      variant={variant}
-                      size="small"
-                      color={color}
-                      onClick={() => toggleFollowAuthor()}
-                      className={btnclass}
-                    >
-                      {isFollowed ? 'Unfollow' : 'Follow'}
-                      {changing && (
-                        <CircularProgress
-                          color="secondary"
-                          className="ml-2"
-                          size={24}
-                        />
-                      )}
-                    </Button>
-                  )}
-                </Fragment>
-              )) || (
-                <Link color="textPrimary" href="/join">
+              <Fragment>
+                {(props.btnstyle === 'icon' && (
+                  <>
+                    <span className="text-light">
+                      <IconButton
+                        color="inherit"
+                        onClick={() => toggleFollowAuthor()}
+                        edge="end"
+                      >
+                        {(changing && (
+                          <CircularProgress
+                            className="text-light"
+                            color="inherit"
+                            size={18}
+                          />
+                        )) ||
+                          (isFollowed && <UnfollowIcon />) || <FollowIcon />}
+                      </IconButton>
+                    </span>
+                  </>
+                )) || (
                   <Button
+                    style={(changing && { opacity: 0.8 }) || {}}
                     variant={variant}
                     size="small"
                     color={color}
+                    onClick={() => toggleFollowAuthor()}
                     className={btnclass}
                   >
-                    Log in to follow
+                    {isFollowed ? 'Unfollow' : 'Follow'}
+                    {changing && (
+                      <CircularProgress
+                        color="secondary"
+                        className="ml-2"
+                        size={24}
+                      />
+                    )}
                   </Button>
-                </Link>
-              )}
+                )}
+              </Fragment>
             </>
           );
         }}

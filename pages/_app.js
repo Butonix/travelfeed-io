@@ -2,7 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import * as Sentry from '@sentry/browser';
 import Cookie from 'js-cookie';
-import { register, unregister } from 'next-offline/runtime';
+import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
@@ -12,6 +12,7 @@ import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import CookieConsent from '../components/CookieConsent/CookieConsent';
 import UserContext from '../components/General/UserContext';
+import { registerServiceWorker } from '../helpers/notifications';
 import { getUser, hasCookieConsent } from '../helpers/token';
 import { getTheme } from '../lib/theme';
 import withApollo from '../lib/withApollo';
@@ -58,7 +59,7 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-    if (process.env.NODE_ENV === 'production') register();
+    if (process.env.NODE_ENV === 'production') registerServiceWorker();
     if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
     const user = getUser();
     if (user) ReactPiwik.push(['setUserId', user]);

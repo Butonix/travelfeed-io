@@ -1,7 +1,10 @@
 /* eslint-disable no-shadow */
 import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
+import detectIt from 'detect-it';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -14,10 +17,13 @@ import { imageProxy } from '../../helpers/getImage';
 import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
+import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
+import PostMap from '../Maps/PostMap';
+import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
 import PostComments from './PostComments';
@@ -25,6 +31,7 @@ import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
+import SimilarPosts from './SimilarPosts';
 import VoteSlider from './VoteSlider';
 
 const styles = () => ({
@@ -45,9 +52,19 @@ class SinglePost extends Component {
     orderdir: 'DESC',
     userComment: undefined,
     cardWidth: 800,
+    bgpos: 'fixed',
+    bgheight: '100%',
+    bgmargin: '0px',
+    opacity: 0,
   };
 
   componentDidMount() {
+    window.addEventListener(
+      'scroll',
+      this.listenScrollEvent,
+      // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+      detectIt.passiveEvents ? { passive: true } : false,
+    );
     if (this.myInput.current) {
       const cardWidth =
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
@@ -67,6 +84,35 @@ class SinglePost extends Component {
   componentDidUpdate() {
     document.lazyLoadInstance.update();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.listenScrollEvent);
+  }
+
+  listenScrollEvent = () => {
+    if (window.scrollY > 500) {
+      this.setState({
+        bgpos: 'absolute',
+        bgheight: window.innerHeight,
+        bgmargin: '500px',
+      });
+    } else {
+      this.setState({
+        bgpos: 'fixed',
+        bgheight: window.innerHeight,
+        bgmargin: '0px',
+      });
+    }
+    if (window.scrollY > 900) {
+      this.setState({
+        opacity: 1,
+      });
+    } else {
+      this.setState({
+        opacity: 0,
+      });
+    }
+  };
 
   handleClick = op => {
     this.setState(op);
@@ -94,7 +140,8 @@ class SinglePost extends Component {
       parent_author,
       parent_permlink,
       root_author,
-      root_permlink;
+      root_permlink,
+      country_code;
 
     let {
       author,
@@ -138,6 +185,7 @@ class SinglePost extends Component {
               display_name = data.post.display_name;
               img_url = data.post.img_url;
               created_at = data.post.created_at;
+              country_code = data.post.country_code;
             }
             tags = cleanTags(tags);
             // 404 for error and if post does not exist
@@ -170,13 +218,12 @@ class SinglePost extends Component {
             const htmlBody = parseBody(body, {
               cardWidth: this.state.cardWidth,
             });
-            const bodyText = { __html: htmlBody };
+            const bodyText = parseHtmlToReact(htmlBody, {});
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
-              <div
-                className="textPrimary postcontent postCardContent"
-                dangerouslySetInnerHTML={bodyText}
-              />
+              <div className="textPrimary postcontent postCardContent">
+                {bodyText}
+              </div>
             );
             const isBacklisted = is_blacklisted;
             const isNSFW = is_nsfw;
@@ -203,11 +250,9 @@ class SinglePost extends Component {
                       );
                     }
                     return (
-                      <div
-                        className="textPrimary postcontent postCardContent"
-                        // eslint-disable-next-line react/no-danger
-                        dangerouslySetInnerHTML={bodyText}
-                      />
+                      <div className="textPrimary postcontent postCardContent">
+                        {bodyText}
+                      </div>
                     );
                   }}
                 </Query>
@@ -304,6 +349,71 @@ class SinglePost extends Component {
                         longitude={longitude}
                       />
                       {data && data.post && (
+                        <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
+                          <Divider variant="middle" />
+                          <Typography
+                            variant="h5"
+                            className="pt-4"
+                            align="center"
+                            gutterBottom
+                          >
+                            Share this post
+                          </Typography>
+                          <PostSocialShares
+                            author={author}
+                            permlink={permlink}
+                            tags={tags}
+                            title={title}
+                            img_url={img_url}
+                          />
+                        </div>
+                      )}
+                      {latitude && (
+                        <>
+                          <Divider variant="middle" />
+                          <div className="fullwidth">
+                            <Typography
+                              variant="h5"
+                              className="p-2"
+                              align="center"
+                              gutterBottom
+                            >
+                              Post Location
+                            </Typography>
+                            <PostMap
+                              location={{
+                                coordinates: {
+                                  lat: latitude,
+                                  lng: longitude,
+                                },
+                              }}
+                            />
+                          </div>
+                        </>
+                      )}
+                      <div className="postCardContent">
+                        <Divider variant="middle" />
+                      </div>
+                      <div className="container">
+                        <div className="row justify-content-center">
+                          <div className="col-lg-6 col-md-9 col-sm12">
+                            <div className="text-center">
+                              <Typography
+                                variant="h5"
+                                align="center"
+                                className="p-2"
+                                gutterBottom
+                              >
+                                Written by
+                              </Typography>
+                              <div className="pb-3">
+                                <PostAuthorProfile author={author} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {data && data.post && (
                         <VoteSlider
                           author={author}
                           permlink={permlink}
@@ -317,18 +427,10 @@ class SinglePost extends Component {
                       )}
                     </Card>
                   </div>
-                  <div className="pt-2 d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                    <Card className={classes.card}>
-                      {data && data.post && (
-                        <PostSocialShares
-                          author={author}
-                          permlink={permlink}
-                          tags={tags}
-                          title={title}
-                          img_url={img_url}
-                        />
-                      )}
-                    </Card>
+                  <div className="pt-2">
+                    {country_code && (
+                      <SimilarPosts country_code={country_code} />
+                    )}
                   </div>
                 </>
               );
@@ -338,12 +440,26 @@ class SinglePost extends Component {
             if (children !== 0) {
               comments = (
                 <Fragment>
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <OrderBySelect
-                      handleClick={this.handleClick}
-                      selection={this.state.title || 'Most miles'}
-                    />
-                  </Grid>
+                  <div className="anchor" id="comments" />
+                  <div className="container">
+                    <div className="row">
+                      <div className="col">
+                        <Typography
+                          variant="h5"
+                          className="p-2 d-inline"
+                          gutterBottom
+                        >
+                          Comments
+                        </Typography>
+                      </div>
+                      <div className="col">
+                        <OrderBySelect
+                          handleClick={this.handleClick}
+                          selection={this.state.title || 'Most miles'}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="pr-2 pl-2">
                     <PostComments
                       post_id={post_id}
@@ -365,9 +481,38 @@ class SinglePost extends Component {
                   active="post"
                   socialShare={{ author, permlink, tags, title, img_url }}
                 />
+                <div
+                  className="d-none d-sm-none d-md-none d-xl-block d-lg-block container"
+                  style={{
+                    position: 'fixed',
+                    top: 65,
+                    left: 0,
+                    width: '25px',
+                    height: 'calc(100% - 65px)',
+                    zIndex: '900',
+                    opacity: this.state.opacity,
+                    transition: 'opacity 0.5s linear',
+                  }}
+                >
+                  <div className="row h-100">
+                    <div className="my-auto">
+                      <PostSocialShares
+                        author={author}
+                        permlink={permlink}
+                        tags={tags}
+                        title={title}
+                        img_url={img_url}
+                        comments={children}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div style={{ position: 'relative' }}>
                   {depth === 0 && img_url && (
                     <PostImageHeader
+                      bgheight={this.state.bgheight}
+                      bgpos={this.state.bgpos}
+                      bgmargin={this.state.bgmargin}
                       lazyImage={
                         lazy_img_url ||
                         imageProxy(img_url, undefined, 10, 'fit')
@@ -409,8 +554,8 @@ class SinglePost extends Component {
                                   depth: this.props.post.depth + 1,
                                   total_votes: 0,
                                   votes: '',
-                                  parent_author: '',
-                                  parent_permlink: '',
+                                  parent_author: this.props.post.author,
+                                  parent_permlink: this.props.post.permlink,
                                   root_title: '',
                                 }}
                               />

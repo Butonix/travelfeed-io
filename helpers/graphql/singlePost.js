@@ -24,6 +24,8 @@ export const GET_POST = gql`
       longitude
       country_code
       subdivision
+      city
+      suburb
       body
       app
       votes

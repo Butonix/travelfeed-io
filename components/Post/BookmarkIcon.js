@@ -1,20 +1,31 @@
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import BookmarkIconFilled from '@material-ui/icons/Bookmark';
 import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import {
   ADD_BOOKMARK,
   DELETE_BOOKMARK,
   IS_BOOKMARKED,
 } from '../../helpers/graphql/bookmarks';
+import { getUser } from '../../helpers/token';
+import LoginButton from '../Header/LoginButton';
 
 const BookmarkIcon = props => {
   const { isHeader } = props;
+  const [open, setOpen] = useState(false);
+
   return (
     <Fragment>
+      {open && (
+        <LoginButton
+          open={open}
+          hideButtons
+          onClickClose={() => setOpen(false)}
+          text=" and bookmark your favorite posts"
+        />
+      )}
       <Query
         fetchPolicy="network-only"
         query={IS_BOOKMARKED}
@@ -23,17 +34,15 @@ const BookmarkIcon = props => {
           permlink: props.permlink,
         }}
       >
-        {({ data, loading, error }) => {
-          if (loading || error) {
-            return <Fragment />;
-          }
-          if (data.isBookmarked) {
+        {({ data }) => {
+          if (data && data.isBookmarked) {
             return (
               <IsBookmarked
                 isHeader={isHeader}
                 author={props.author}
                 permlink={props.permlink}
                 onBmChange={props.onBmChange}
+                setOpen={() => setOpen(true)}
               />
             );
           }
@@ -43,6 +52,7 @@ const BookmarkIcon = props => {
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
+              setOpen={() => setOpen(true)}
             />
           );
         }}
@@ -78,17 +88,19 @@ const IsBookmarked = props => {
         if (props.isHeader)
           return (
             <div className="text-light">
-              <IconButton color="inherit" onClick={deleteBookmark} edge="end">
+              <IconButton
+                color="inherit"
+                onClick={getUser() ? deleteBookmark : props.setOpen}
+                edge="end"
+              >
                 <BookmarkIconFilled />
               </IconButton>
             </div>
           );
         return (
-          <Tooltip title="Remove bookmark" placement="bottom">
-            <IconButton onClick={deleteBookmark}>
-              <BookmarkIconFilled />
-            </IconButton>
-          </Tooltip>
+          <IconButton onClick={getUser() ? deleteBookmark : props.setOpen}>
+            <BookmarkIconFilled />
+          </IconButton>
         );
       }}
     </Mutation>
@@ -122,17 +134,19 @@ const IsNotBookmarked = props => {
         if (props.isHeader)
           return (
             <div className="text-light">
-              <IconButton color="inherit" onClick={addBookmark} edge="end">
+              <IconButton
+                color="inherit"
+                onClick={getUser() ? addBookmark : props.setOpen}
+                edge="end"
+              >
                 <BookmarkIconBorder />
               </IconButton>
             </div>
           );
         return (
-          <Tooltip title="Add bookmark" placement="bottom">
-            <IconButton onClick={addBookmark}>
-              <BookmarkIconBorder />
-            </IconButton>
-          </Tooltip>
+          <IconButton onClick={getUser() ? addBookmark : props.setOpen}>
+            <BookmarkIconBorder />
+          </IconButton>
         );
       }}
     </Mutation>

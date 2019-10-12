@@ -1,7 +1,7 @@
 import {
   faFacebookF,
-  faInstagram,
   faPinterest,
+  faReddit,
   faTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
@@ -32,16 +32,6 @@ const social = [
     ),
   },
   {
-    name: 'Instagram',
-    link: 'https://www.instagram.com/travelfeed.io/',
-    icon: (
-      <FontAwesomeIcon
-        style={{ width: '22px', height: '22px' }}
-        icon={faInstagram}
-      />
-    ),
-  },
-  {
     name: 'Youtube',
     link: 'https://www.youtube.com/channel/UCy2nXX5orB6sBBpA-oRXTuw',
     icon: (
@@ -58,6 +48,16 @@ const social = [
       <FontAwesomeIcon
         style={{ width: '22px', height: '22px' }}
         icon={faPinterest}
+      />
+    ),
+  },
+  {
+    name: 'Reddit',
+    link: 'https://www.reddit.com/r/TravelFeedio/',
+    icon: (
+      <FontAwesomeIcon
+        style={{ width: '22px', height: '22px' }}
+        icon={faReddit}
       />
     ),
   },

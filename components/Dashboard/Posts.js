@@ -18,6 +18,7 @@ const Posts = () => {
           grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}
           cardHeight={140}
           poststyle="list"
+          warnWhenHidden
         />
       </Grid>
     </Fragment>

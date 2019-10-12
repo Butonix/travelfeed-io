@@ -119,7 +119,7 @@ class PostGrid extends Component {
                   {data.posts &&
                     data.posts.length > 0 &&
                     data.posts.map(post => {
-                      if (post.is_blacklisted)
+                      if (post.is_blacklisted && !this.props.warnWhenHidden)
                         return <Fragment key={post.id} />;
                       const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
@@ -156,6 +156,9 @@ class PostGrid extends Component {
                             }}
                             id={`${post.author}-${post.permlink}`}
                             mode="edit"
+                            warnWhenHidden={
+                              this.props.warnWhenHidden && post.is_blacklisted
+                            }
                           />
                         );
                       } else if (this.props.poststyle === 'comment') {

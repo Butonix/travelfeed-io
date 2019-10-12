@@ -17,15 +17,12 @@ import TotalFeaturedIcon from '@material-ui/icons/Star';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import calculateQualityScore from '../../helpers/calculateQualityScore';
-import {
-  GET_DASHBOARD_POSTS,
-  GET_NOTIFICATIONS,
-} from '../../helpers/graphql/posts';
+import { GET_DASHBOARD_POSTS } from '../../helpers/graphql/posts';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
-import CustomSnackbar from './Notifications/CustomSnackbar';
+import AllNotifications from './AllNotifications';
 import PostsTable from './Stats/PostsTable';
 import RecentEarnings from './Stats/RecentEarningsChart';
 import SmallBox from './Stats/SmallBox';
@@ -180,59 +177,16 @@ const Stats = () => {
               );
             }}
           </Query>
-          <Query
-            query={GET_NOTIFICATIONS}
-            variables={{
-              author: getUser(),
-              min_curation_score: 5000,
-              limit: 3,
-            }}
-          >
-            {({ data }) => {
-              return (
-                <div className="mt-2">
-                  <HeaderCard
-                    title="Notifications"
-                    background={lightGreen[600]}
-                    content={
-                      (data && data.posts && data.posts.length === 0 && (
-                        <div className="text-center">No notifications.</div>
-                      )) ||
-                      (data &&
-                        data.posts &&
-                        data.posts.map(post => {
-                          return post.curation_score >= 9000 ? (
-                            <div
-                              key={post.title}
-                              className="d-flex justify-content-center p-2"
-                            >
-                              <CustomSnackbar
-                                variant="success"
-                                message={`Your post ${post.title}
-                        was selected to be featured on the front page! Keep
-                        up the great work!`}
-                              />
-                            </div>
-                          ) : (
-                            <div
-                              key={post.title}
-                              className="d-flex justify-content-center p-2"
-                            >
-                              <CustomSnackbar
-                                variant="info"
-                                message={`Your post ${post.title}
-                        received a small vote by our curation team! Good job!`}
-                              />
-                            </div>
-                          );
-                        }))
-                    }
-                  />
-                </div>
-                // Todo: Card for recent drafts
-              );
-            }}
-          </Query>
+          <div className="mt-2">
+            <HeaderCard
+              title="Notifications"
+              background={lightGreen[600]}
+              content={<AllNotifications limit={5} />}
+            />
+          </div>
+          {
+            // TODO: Card for recent drafts
+          }
         </Grid>
       </Grid>
     </Fragment>

@@ -10,6 +10,7 @@ import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import BookmarkIcon from '../Post/BookmarkIcon';
 import FollowButton from '../Profile/FollowButton';
 import BackButton from './BackButton';
 import GeoCoder from './Geocoder';
@@ -51,10 +52,6 @@ class Header extends Component {
   };
 
   render() {
-    // Prevent SSR
-    const BookmarkIcon = dynamic(() => import('../Post/BookmarkIcon'), {
-      ssr: false,
-    });
     const { classes, active } = this.props;
     const DestinationsNav = dynamic(
       () => import('../Destinations/DestinationsNav'),
@@ -97,7 +94,6 @@ class Header extends Component {
                 <div
                   className={`my-auto col-xl-4 col-lg-3 col-md-4 ${(active ===
                     'post' &&
-                    this.state.user &&
                     'col-6 col-sm-9') ||
                     'col-8 col-sm-10'}`}
                 >
@@ -155,11 +151,10 @@ class Header extends Component {
                 )}
                 <div
                   className={`my-auto ${(active === 'post' &&
-                    this.state.user &&
                     'col-4 col-sm-2') ||
                     'col-2 col-sm-1'} d-xl-none d-lg-none d-md-none`}
                 >
-                  {(active === 'post' && this.state.user && (
+                  {(active === 'post' && (
                     <>
                       <div className="container-fluid">
                         <div className="row">
@@ -177,10 +172,7 @@ class Header extends Component {
                       </div>
                     </>
                   )) ||
-                    (active === 'post' && (
-                      <ShareButton socialShare={this.props.socialShare} />
-                    )) ||
-                    (active === 'blog' && this.state.user && (
+                    (active === 'blog' && (
                       <FollowButton
                         author={this.props.author}
                         btnstyle="icon"

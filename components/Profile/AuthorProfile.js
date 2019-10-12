@@ -47,7 +47,8 @@ const AuthorProfile = props => {
           return (
             <Fragment>
               <Head
-                title={`${display_name}'s Blog on TravelFeed: The Travel Community`}
+                title={`${display_name ||
+                  name}'s Blog on TravelFeed: The Travel Community`}
                 image={cover_image}
                 description={`${display_name}'s Blog: ${about}`}
                 type={{

@@ -3,12 +3,14 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import { red } from '@material-ui/core/colors';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Create';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import NoLocationIcon from '@material-ui/icons/NotListedLocation';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';
+import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -26,6 +28,9 @@ const styles = theme => ({
   },
   areabg: {
     background: theme.palette.background.light,
+  },
+  areahidden: {
+    background: red[600],
   },
 });
 class PostListItem extends Component {
@@ -119,12 +124,28 @@ class PostListItem extends Component {
           <CardContent>
             <div className="pr-2 pl-2 pb-2">
               <Typography gutterBottom variant="h6" component="h2">
+                {this.props.warnWhenHidden && (
+                  <Tooltip
+                    title="This post was blacklisted after manual review by the TravelFeed content team. It will not appear on TravelFeed. If you believe this is a mistake, please contact us."
+                    placement="bottom"
+                  >
+                    <div className="pr-2 d-inline">
+                      <WarningIcon />
+                    </div>
+                  </Tooltip>
+                )}
                 {this.props.post.title || 'Untitled'}
               </Typography>
               <Excerpt text={this.props.post.excerpt} />
             </div>
           </CardContent>
-          <CardActions className={classNames(classes.areabg)}>
+          <CardActions
+            className={
+              this.props.warnWhenHidden
+                ? classNames(classes.areahidden)
+                : classNames(classes.areabg)
+            }
+          >
             <div className="container-fluid">
               <div className="row w-100">
                 <div className="col-7 my-auto">

@@ -59,21 +59,23 @@ class DestinationsPage extends Component {
           query={{ country_code, subdivision, city }}
           title={title}
         />
-        <div className="container pb-2" id="containerInvisibleOnMobile">
-          <PostGrid
-            active="destination"
-            query={{
-              limit: 9,
-              orderby: 'curation_score DESC, total_votes DESC',
-              country_code,
-              subdivision,
-              city,
-              suburb,
-            }}
-            grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
-            cardHeight={200}
-            poststyle="grid"
-          />
+        <div className="pb-2">
+          <div className="container pb-2" id="containerInvisibleOnMobile">
+            <PostGrid
+              active="destination"
+              query={{
+                limit: 9,
+                orderby: 'curation_score DESC, total_votes DESC',
+                country_code,
+                subdivision,
+                city,
+                suburb,
+              }}
+              grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
+              cardHeight={200}
+              poststyle="grid"
+            />
+          </div>
         </div>
         <style>{`
         @media (max-width: 992px) {

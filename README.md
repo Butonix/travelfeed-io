@@ -1,18 +1,38 @@
 # TravelFeed
 
-Find inspiration for your travels on Travelfeed, the travel community on the Steem Blockchain. Our large community has created over 11,000 high-quality travel blogs so far that are all accessible easily through TravelFeed. Not only can you find the best insider tips for your destination, but also connect with over thousand like minded travelers.
+Find inspiration for your travels on Travelfeed, the travel community on the Steem Blockchain. Our large community has created over 13,000 high-quality travel blogs so far that are all accessible easily through TravelFeed. Not only can you find the best insider tips for your destination, but also connect with over thousand like minded travelers.
 
 For travel bloggers, we offer a free blog hosted forever on the uncensorable Steem Blockchain. Even better, authors get paid for their posts in the cryptocurrency STEEM and soon in TravelFeed MILES, an upcoming token that will provide travelers and the tourism industry alike with unique benefits on the platform.
 
 ## Technology Stack
 
-TravelFeed is written in JavaScript using React and Next.js. The UI is made using the Material-UI React components and Bootstrap 4. All public information are written to the Steem blockchain client-side, [our Backend](https://github.com/travelfeed-io/travelfeed-backend) pulls data from our Hivemind database that is in sync with the Steem Blockchain.
+TravelFeed is written in JavaScript using React and Next.js. The UI is made using the Material-UI React components and Bootstrap 4. All public information are written to the Steem blockchain client-side, our backend pulls data from our Hivemind database that is in sync with the Steem Blockchain.
 
 ## How to Run
 
 ### Environment variables
 
-Environment variables need to be present at build time for production (e.g. configure build environment variables on DockerHub). For the local development server, an .env file works fine.
+Environment variables need to be set at build time.
+
+## Configuration
+
+| Environment          | Description                                                                  | Recommended value          |
+| -------------------- | ---------------------------------------------------------------------------- | -------------------------- |
+| `GRAPHQL_URL`        | Travelfeed api                                                               | https://api.travelfeed.io/ |
+| `STEEM_API`          | Steem api                                                                    | https://api.steemit.com    |
+| `ROOTURL`            | URL of the server                                                            | http://localhost:3000      |
+| `WEB_PUSH_PUB`       | [Generate a public web push key](https://web-push-codelab.glitch.me/)        |                            |
+| `RECAPTCHA_SITE_KEY` | [Get an API key](http://www.google.com/recaptcha/admin)                      |                            |
+| `GMAPS_API_KEY`      | [Get an API key](https://cloud.google.com/console/google/maps-apis/overview) |                            |
+| `MAPBOX_TOKEN`       | [Get an API key](https://www.mapbox.com/)                                    |                            |
+
+For the local development server, use an .env file.
+
+For a production build, configure build environment variables on DockerHub, or set the variables from the .env file for a local build:
+
+```
+export $(cat .env | xargs)
+```
 
 ### Development
 
@@ -26,6 +46,15 @@ npm run dev
 ```
 
 ### Production
+
+#### Local production build:
+
+```
+npm run build
+npm start
+```
+
+#### Docker
 
 We use Docker to deploy TravelFeed behind an Nginx proxy. This is our setup, pulling all the latest images from DockerHub:
 
@@ -80,5 +109,3 @@ travelfeed/tfio:latest
 We are looking for contributors! We invite you to join our [Discord Server](https://discord.gg/jWWu73H) where most of our communication takes places.
 
 If you discover an issue, you can create an issue or open a pull-request.
-
-We will also be publishing task requests on Utopian describing features that we would like to see developed.
