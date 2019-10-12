@@ -1,6 +1,5 @@
 import {
   faFacebookF,
-  faInstagram,
   faPinterest,
   faReddit,
   faTwitter,
@@ -33,16 +32,6 @@ const social = [
     ),
   },
   {
-    name: 'Instagram',
-    link: 'https://www.instagram.com/travelfeed.io/',
-    icon: (
-      <FontAwesomeIcon
-        style={{ width: '22px', height: '22px' }}
-        icon={faInstagram}
-      />
-    ),
-  },
-  {
     name: 'Youtube',
     link: 'https://www.youtube.com/channel/UCy2nXX5orB6sBBpA-oRXTuw',
     icon: (
@@ -51,7 +40,6 @@ const social = [
         icon={faYoutube}
       />
     ),
-    hideOnSmallScreen: true,
   },
   {
     name: 'Pinterest',
@@ -85,11 +73,6 @@ const SocialLinks = () => {
               href={s.link}
               title={s.name}
               target="_blank"
-              className={
-                s.hideOnSmallScreen
-                  ? 'd-none d-sm-none d-md-none d-lg-none d-xl-inline'
-                  : ''
-              }
               rel="noopener noreferrer nofollow"
             >
               <IconButton>{s.icon}</IconButton>
