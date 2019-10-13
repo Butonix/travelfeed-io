@@ -32,7 +32,7 @@ const parseHtmlToReact = (htmlBody, options) => {
         }
       }
       // Replace local mentions with Link component
-      if (attribs.href && attribs.href[1] === '@' && children.length > 0) {
+      if (attribs.href && children.length > 0) {
         const mention = attribs.href.match(mentionUrl);
         if (mention) {
           return (
