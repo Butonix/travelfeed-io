@@ -2,7 +2,7 @@
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
 import Link from '../lib/Link';
-import { mentionUrl, postUrl } from './regex';
+import { exitUrl, mentionUrl, postUrl } from './regex';
 
 const parseHtmlToReact = (htmlBody, options) => {
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
@@ -15,6 +15,18 @@ const parseHtmlToReact = (htmlBody, options) => {
       if (parseLinksToBlank && attribs.href) {
         attribs.target = '_blank';
         return;
+      }
+
+      // Replace exit urls with Link component
+      if (attribs.href && attribs.href[0] === '/' && children.length > 0) {
+        const exitLink = attribs.href.match(exitUrl);
+        if (exitLink) {
+          return (
+            <Link href={`/exit?url=${exitLink[1]}`}>
+              {domToReact(children, parseOptions)}
+            </Link>
+          );
+        }
       }
 
       // Replace Steem post links with Link component
