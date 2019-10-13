@@ -6,8 +6,8 @@ import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 
 class ExitPage extends Component {
-  static async getInitialProps({ req }) {
-    const { url } = req.query;
+  static async getInitialProps(props) {
+    const { url } = props.query;
     return { url };
   }
 

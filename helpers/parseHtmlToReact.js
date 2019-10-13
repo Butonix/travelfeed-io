@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
-import parse from 'html-react-parser';
+import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
 import Link from '../lib/Link';
-import { mentionUrl, postUrl } from './regex';
+import { exitUrl, mentionUrl, postUrl } from './regex';
 
 const parseHtmlToReact = (htmlBody, options) => {
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
@@ -17,6 +17,18 @@ const parseHtmlToReact = (htmlBody, options) => {
         return;
       }
 
+      // Replace exit urls with Link component
+      if (attribs.href && attribs.href[0] === '/' && children.length > 0) {
+        const exitLink = attribs.href.match(exitUrl);
+        if (exitLink) {
+          return (
+            <Link href={`/exit?url=${exitLink[1]}`}>
+              {domToReact(children, parseOptions)}
+            </Link>
+          );
+        }
+      }
+
       // Replace Steem post links with Link component
       if (attribs.href && attribs.href[0] === 'h' && children.length > 0) {
         const blogLink = attribs.href.match(postUrl);
@@ -26,18 +38,18 @@ const parseHtmlToReact = (htmlBody, options) => {
               as={`/@${blogLink[1]}/${blogLink[2]}`}
               href={`/post?author=${blogLink[1]}&permlink=${blogLink[2]}`}
             >
-              {children[0].data}
+              {domToReact(children, parseOptions)}
             </Link>
           );
         }
       }
       // Replace local mentions with Link component
-      if (attribs.href && attribs.href[1] === '@' && children.length > 0) {
+      if (attribs.href && children.length > 0) {
         const mention = attribs.href.match(mentionUrl);
         if (mention) {
           return (
             <Link as={`/@${mention[1]}`} href={`/blog?author=${mention[1]}`}>
-              {children[0].data}
+              {domToReact(children, parseOptions)}
             </Link>
           );
         }
