@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import parse from 'html-react-parser';
+import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
 import Link from '../lib/Link';
 import { mentionUrl, postUrl } from './regex';
@@ -26,7 +26,7 @@ const parseHtmlToReact = (htmlBody, options) => {
               as={`/@${blogLink[1]}/${blogLink[2]}`}
               href={`/post?author=${blogLink[1]}&permlink=${blogLink[2]}`}
             >
-              {children[0].data}
+              {domToReact(children, parseOptions)}
             </Link>
           );
         }
@@ -37,7 +37,7 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (mention) {
           return (
             <Link as={`/@${mention[1]}`} href={`/blog?author=${mention[1]}`}>
-              {children[0].data}
+              {domToReact(children, parseOptions)}
             </Link>
           );
         }
