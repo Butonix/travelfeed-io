@@ -4,7 +4,6 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
-import detectIt from 'detect-it';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -52,19 +51,9 @@ class SinglePost extends Component {
     orderdir: 'DESC',
     userComment: undefined,
     cardWidth: 800,
-    bgpos: 'fixed',
-    bgheight: '100%',
-    bgmargin: '0px',
-    opacity: 0,
   };
 
   componentDidMount() {
-    window.addEventListener(
-      'scroll',
-      this.listenScrollEvent,
-      // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-      detectIt.passiveEvents ? { passive: true } : false,
-    );
     if (this.myInput.current) {
       const cardWidth =
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
@@ -84,35 +73,6 @@ class SinglePost extends Component {
   componentDidUpdate() {
     document.lazyLoadInstance.update();
   }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.listenScrollEvent);
-  }
-
-  listenScrollEvent = () => {
-    if (window.scrollY > 500) {
-      this.setState({
-        bgpos: 'absolute',
-        bgheight: window.innerHeight,
-        bgmargin: '500px',
-      });
-    } else {
-      this.setState({
-        bgpos: 'fixed',
-        bgheight: window.innerHeight,
-        bgmargin: '0px',
-      });
-    }
-    if (window.scrollY > 900) {
-      this.setState({
-        opacity: 1,
-      });
-    } else {
-      this.setState({
-        opacity: 0,
-      });
-    }
-  };
 
   handleClick = op => {
     this.setState(op);
@@ -481,43 +441,20 @@ class SinglePost extends Component {
                   active="post"
                   socialShare={{ author, permlink, tags, title, img_url }}
                 />
-                <div
-                  className="d-none d-sm-none d-md-none d-xl-block d-lg-block container"
-                  style={{
-                    position: 'fixed',
-                    top: 65,
-                    left: 0,
-                    width: '25px',
-                    height: 'calc(100% - 65px)',
-                    zIndex: '900',
-                    opacity: this.state.opacity,
-                    transition: 'opacity 0.5s linear',
-                  }}
-                >
-                  <div className="row h-100">
-                    <div className="my-auto">
-                      <PostSocialShares
-                        author={author}
-                        permlink={permlink}
-                        tags={tags}
-                        title={title}
-                        img_url={img_url}
-                        comments={children}
-                      />
-                    </div>
-                  </div>
-                </div>
                 <div style={{ position: 'relative' }}>
                   {depth === 0 && img_url && (
                     <PostImageHeader
-                      bgheight={this.state.bgheight}
-                      bgpos={this.state.bgpos}
-                      bgmargin={this.state.bgmargin}
                       lazyImage={
                         lazy_img_url ||
                         imageProxy(img_url, undefined, 10, 'fit')
                       }
                       backgroundImage={img_url}
+                      author={author}
+                      permlink={permlink}
+                      tags={tags}
+                      title={title}
+                      img_url={img_url}
+                      comments={children}
                     />
                   )}
                   <div className="w-100" style={{ position: 'relative' }}>
