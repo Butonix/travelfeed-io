@@ -1,5 +1,11 @@
+import Button from '@material-ui/core/Button';
+import red from '@material-ui/core/colors/red';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import ReplyIcon from '@material-ui/icons/Comment';
+import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import json2md from '../../helpers/json2md';
@@ -12,6 +18,12 @@ import {
 import { getUser } from '../../helpers/token';
 import EasyEditor from './EasyEditor';
 import PublishBtn from './PublishBtn';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: red,
+  },
+});
 
 const CommentEditor = props => {
   const defVal = props.defaultValue ? md2json(props.defaultValue) : undefined;
@@ -72,8 +84,8 @@ const CommentEditor = props => {
   };
 
   return (
-    <Fragment>
-      <div className="border textPrimary postcontent pl-2">
+    <div>
+      <div className={`p-2${props.editMode ? '' : ' border'}`}>
         <EasyEditor
           holderId={`${props.editMode ? 're' : 'edit'}_${props.parent_author}_${
             props.parent_permlink
@@ -84,14 +96,44 @@ const CommentEditor = props => {
           defaultValue={props.defaultValue}
         />
       </div>
-      <PublishBtn
-        publishThis={publishThis}
-        pastPublish={res => pastPublish(res)}
-        triggerPublish={triggerPublish}
-        disabled={content.length < 1}
-        label={(props.editMode && 'Edit') || 'Reply'}
-      />
-    </Fragment>
+      <div className="container pb-2">
+        <div className="row text-right">
+          <div className="col">
+            <MuiThemeProvider theme={theme}>
+              <Button
+                className="mt-1"
+                variant="contained"
+                color="primary"
+                onClick={props.onClose}
+              >
+                <span>
+                  Cancel <CloseIcon />
+                </span>
+              </Button>
+            </MuiThemeProvider>
+            <div className="pl-2 d-inline">
+              <PublishBtn
+                publishThis={publishThis}
+                pastPublish={res => pastPublish(res)}
+                triggerPublish={triggerPublish}
+                disabled={content.length < 1}
+                label={
+                  (props.editMode && (
+                    <span>
+                      Update <EditIcon />
+                    </span>
+                  )) || (
+                    <span>
+                      Reply <ReplyIcon />
+                    </span>
+                  )
+                }
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

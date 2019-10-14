@@ -154,6 +154,7 @@ class PostCommentItem extends Component {
           parent_permlink={this.props.post.parent_permlink}
           defaultValue={this.props.post.body}
           onCommentEdit={this.onCommentEdit}
+          onClose={() => this.setState({ showEditor: false })}
         />
       );
     }
