@@ -2,6 +2,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import capitalize from '../../helpers/capitalize';
 import { nameFromSlug, slugFromCC } from '../../helpers/countryCodes';
 import Link from '../../lib/Link';
 
@@ -21,7 +22,7 @@ class DestinationCountryColumn extends Component {
           as={`/destinations/${slug}`}
         >
           <MenuItem onClick={() => onClick && onClick(text)}>
-            <ListItemText primary={name} />
+            <ListItemText primary={capitalize(name)} />
           </MenuItem>
         </Link>
       );
