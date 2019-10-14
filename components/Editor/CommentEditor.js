@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-import Editor from 'rich-markdown-editor';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
-import uploadFile from '../../helpers/imageUpload';
+import json2md from '../../helpers/json2md';
+import md2json from '../../helpers/md2json';
 import {
   getImageList,
   getLinkList,
   getMentionList,
 } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
+import EasyEditor from './EasyEditor';
 import PublishBtn from './PublishBtn';
 
 const CommentEditor = props => {
-  const [content, setContent] = useState('');
+  const defVal = props.defaultValue ? md2json(props.defaultValue) : undefined;
+  const [content, setContent] = useState(defVal ? defVal.json : '');
   const [publishThis, setPublishThis] = useState(undefined);
 
   const handleEditorChange = value => {
-    setContent(value());
+    setContent(value);
   };
 
   const triggerPublish = () => {
@@ -28,7 +30,7 @@ const CommentEditor = props => {
     const permlink =
       (props.editMode && props.permlink) ||
       `re-${parentPermlink}-${commenttime}`;
-    const body = content;
+    const body = json2md(content);
     const jsonMetadata = {};
     jsonMetadata.tags = ['travelfeed'];
     jsonMetadata.app = APP_VERSION;
@@ -66,25 +68,22 @@ const CommentEditor = props => {
         });
       }
     }
-    if (!props.editMode) props.onClose();
+    if (!props.editMode && res.success) props.onClose();
   };
 
   return (
     <Fragment>
-      <Editor
-        uploadImage={file => {
-          return uploadFile(file).then(res => {
-            return res;
-          });
-        }}
-        data={content}
-        style={{ minHeight: '100px' }}
-        defaultValue={props.defaultValue}
-        autofocus
-        placeholder="Reply"
-        onChange={handleEditorChange}
-        className="border textPrimary postcontent pl-2"
-      />
+      <div className="border textPrimary postcontent pl-2">
+        <EasyEditor
+          holderId={`${props.editMode ? 're' : 'edit'}_${props.parent_author}_${
+            props.parent_permlink
+          }`}
+          onChange={handleEditorChange}
+          data={content}
+          placeholder="Reply"
+          defaultValue={props.defaultValue}
+        />
+      </div>
       <PublishBtn
         publishThis={publishThis}
         pastPublish={res => pastPublish(res)}
