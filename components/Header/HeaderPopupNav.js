@@ -1,8 +1,6 @@
-import Grow from '@material-ui/core/Grow';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
+import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import RandomIcon from '@material-ui/icons/Explore';
 import CountryIcon from '@material-ui/icons/Landscape';
@@ -48,148 +46,135 @@ class HeaderPopupNav extends Component {
     }
     return (
       <Fragment>
-        <div
-          className="w-100 container bg-primary"
-          style={{
-            paddingLeft: '0px',
-            position: 'fixed',
-            zIndex: 99999,
-            top: '65px',
-            right: '0px',
-            left: '0px',
+        <Popover
+          open={this.props.showDest}
+          anchorEl={this.props.anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
           }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          onClose={this.props.closeDest}
         >
-          <Popper open={this.props.showDest} transition disablePortal>
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list-grow"
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom',
-                }}
-              >
-                <Paper>
+          <div className="row">
+            <div className="col-xl-4 col-lg-4 col-md-4">
+              <MenuList>
+                <DestinationMenuItem
+                  onClick={this.onMenuClick}
+                  icon={<CountryIcon />}
+                  text="Popular Countries"
+                  active={this.state.selection !== 'Popular Places'}
+                />
+                <DestinationMenuItem
+                  onClick={this.onMenuClick}
+                  icon={<CityIcon />}
+                  text="Popular Places"
+                  active={this.state.selection === 'Popular Places'}
+                />
+                <Link color="textPrimary" href="/map">
+                  <DestinationMenuItem
+                    onClick={this.props.closeDest}
+                    icon={<MapIcon />}
+                    text="Map"
+                  />
+                </Link>
+                <Link
+                  color="textPrimary"
+                  href={`/destinations?country=${this.state.random}`}
+                  as={`/destinations/${this.state.random}`}
+                >
+                  <DestinationMenuItem
+                    onClick={this.newRandom}
+                    icon={<RandomIcon />}
+                    text="Random Destination"
+                  />
+                </Link>
+              </MenuList>
+            </div>
+            <div className="col-xl-8 col-lg-8 col-md-8">
+              {(this.state.selection === 'Popular Places' && (
+                <div className="container-fluid">
                   <div className="row">
-                    <div className="col-xl-4 col-lg-4 col-md-4">
+                    <div className="col-4">
                       <MenuList>
-                        <DestinationMenuItem
-                          onClick={this.onMenuClick}
-                          icon={<CountryIcon />}
-                          text="Popular Countries"
-                          active={this.state.selection !== 'Popular Places'}
+                        <MenuItem>
+                          <Typography variant="h6">Europe</Typography>
+                        </MenuItem>
+                        <DestinationCityColumn
+                          onClick={this.props.closeDest}
+                          cities={featuredPlacesEurope}
                         />
-                        <DestinationMenuItem
-                          onClick={this.onMenuClick}
-                          icon={<CityIcon />}
-                          text="Popular Places"
-                          active={this.state.selection === 'Popular Places'}
-                        />
-                        <Link color="textPrimary" href="/map">
-                          <DestinationMenuItem
-                            onClick={this.props.closeDest}
-                            icon={<MapIcon />}
-                            text="Map"
-                          />
-                        </Link>
-                        <Link
-                          color="textPrimary"
-                          href={`/destinations?country=${this.state.random}`}
-                          as={`/destinations/${this.state.random}`}
-                        >
-                          <DestinationMenuItem
-                            onClick={this.newRandom}
-                            icon={<RandomIcon />}
-                            text="Random Destination"
-                          />
-                        </Link>
                       </MenuList>
                     </div>
-                    <div className="col-xl-8 col-lg-8 col-md-8">
-                      {(this.state.selection === 'Popular Places' && (
-                        <div className="container-fluid">
-                          <div className="row">
-                            <div className="col-4">
-                              <MenuList>
-                                <MenuItem>
-                                  <Typography variant="h6">Europe</Typography>
-                                </MenuItem>
-                                <DestinationCityColumn
-                                  onClick={this.props.closeDest}
-                                  cities={featuredPlacesEurope}
-                                />
-                              </MenuList>
-                            </div>
-                            <div className="col-4">
-                              <MenuList>
-                                <MenuItem>
-                                  <Typography variant="h6">Asia</Typography>
-                                </MenuItem>
-                                <DestinationCityColumn
-                                  onClick={this.props.closeDest}
-                                  cities={featuredPlacesAsia}
-                                />
-                              </MenuList>
-                            </div>
-                            <div className="col-4">
-                              <MenuList>
-                                <MenuItem>
-                                  <Typography variant="h6">World</Typography>
-                                </MenuItem>
-                                <DestinationCityColumn
-                                  onClick={this.props.closeDest}
-                                  cities={featuredPlacesWorld}
-                                />
-                              </MenuList>
-                            </div>
-                          </div>
-                        </div>
-                      )) || (
-                        <div className="container-fluid">
-                          <div className="row">
-                            <div className="col-4">
-                              <MenuList>
-                                <MenuItem>
-                                  <Typography variant="h6">Europe</Typography>
-                                </MenuItem>
-                                <DestinationCountryColumn
-                                  onClick={this.props.closeDest}
-                                  countryCodes={featuredCcEurope}
-                                />
-                              </MenuList>
-                            </div>
-                            <div className="col-4">
-                              <MenuList>
-                                <MenuItem>
-                                  <Typography variant="h6">Asia</Typography>
-                                </MenuItem>
-                                <DestinationCountryColumn
-                                  onClick={this.props.closeDest}
-                                  countryCodes={featuredCcAsia}
-                                />
-                              </MenuList>
-                            </div>{' '}
-                            <div className="col-4">
-                              <MenuList>
-                                <MenuItem>
-                                  <Typography variant="h6">World</Typography>
-                                </MenuItem>
-                                <DestinationCountryColumn
-                                  onClick={this.props.closeDest}
-                                  countryCodes={featuredCcWorld}
-                                />
-                              </MenuList>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                    <div className="col-4">
+                      <MenuList>
+                        <MenuItem>
+                          <Typography variant="h6">Asia</Typography>
+                        </MenuItem>
+                        <DestinationCityColumn
+                          onClick={this.props.closeDest}
+                          cities={featuredPlacesAsia}
+                        />
+                      </MenuList>
+                    </div>
+                    <div className="col-4">
+                      <MenuList>
+                        <MenuItem>
+                          <Typography variant="h6">World</Typography>
+                        </MenuItem>
+                        <DestinationCityColumn
+                          onClick={this.props.closeDest}
+                          cities={featuredPlacesWorld}
+                        />
+                      </MenuList>
                     </div>
                   </div>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </div>
+                </div>
+              )) || (
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-4">
+                      <MenuList>
+                        <MenuItem>
+                          <Typography variant="h6">Europe</Typography>
+                        </MenuItem>
+                        <DestinationCountryColumn
+                          onClick={this.props.closeDest}
+                          countryCodes={featuredCcEurope}
+                        />
+                      </MenuList>
+                    </div>
+                    <div className="col-4">
+                      <MenuList>
+                        <MenuItem>
+                          <Typography variant="h6">Asia</Typography>
+                        </MenuItem>
+                        <DestinationCountryColumn
+                          onClick={this.props.closeDest}
+                          countryCodes={featuredCcAsia}
+                        />
+                      </MenuList>
+                    </div>{' '}
+                    <div className="col-4">
+                      <MenuList>
+                        <MenuItem>
+                          <Typography variant="h6">World</Typography>
+                        </MenuItem>
+                        <DestinationCountryColumn
+                          onClick={this.props.closeDest}
+                          countryCodes={featuredCcWorld}
+                        />
+                      </MenuList>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </Popover>
       </Fragment>
     );
   }

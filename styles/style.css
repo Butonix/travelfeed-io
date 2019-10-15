@@ -1,3 +1,13 @@
+/* post editor */
+#editorjs-container .codex-editor__redactor {
+  padding-bottom: 300px !important;
+}
+
+/* comment editor */
+.codex-editor__redactor {
+  padding-bottom: 100px !important;
+}
+
 @media (min-width: 1200px) {
   .container {
     max-width: 1240px;

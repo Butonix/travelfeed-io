@@ -1,14 +1,13 @@
 import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { grey } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/styles';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
 import DestinationsIcon from '@material-ui/icons/Explore';
+import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { popularCountries, slugFromCC } from '../../helpers/countryCodes';
-import PopupNav from '../Header/HeaderPopupNav';
+import HeaderPopupNav from '../Header/HeaderPopupNav';
 
 const styles = () => ({
   whitebutton: {
@@ -20,6 +19,7 @@ class DestinationsNav extends Component {
   state = {
     random: undefined,
     showDest: false,
+    anchorEl: null,
   };
 
   closeDest = () => {
@@ -31,9 +31,12 @@ class DestinationsNav extends Component {
     this.toggleDest();
   };
 
-  toggleDest() {
-    this.setState(state => ({ showDest: !state.showDest }));
-  }
+  toggleDest = event => {
+    this.setState(state => ({
+      showDest: !state.showDest,
+    }));
+    this.setState({ anchorEl: event.currentTarget });
+  };
 
   render() {
     const { classes } = this.props;
@@ -44,30 +47,24 @@ class DestinationsNav extends Component {
     }
     return (
       <Fragment>
-        <ClickAwayListener onClickAway={this.closeDest}>
-          <div>
-            {(this.props.isSmall && (
-              <IconButton
-                className="text-light p-2"
-                onClick={() => this.toggleDest()}
-              >
-                <DestinationsIcon />
-              </IconButton>
-            )) || (
-              <Button
-                color="default"
-                className={classes.whitebutton}
-                onClick={() => this.toggleDest()}
-              >
-                Destinations <DownIcon />
-              </Button>
-            )}
-            <PopupNav
-              showDest={this.state.showDest}
-              closeDest={this.closeDest}
-            />
-          </div>
-        </ClickAwayListener>
+        {(this.props.isSmall && (
+          <IconButton className="text-light p-2" onClick={this.toggleDest}>
+            <DestinationsIcon />
+          </IconButton>
+        )) || (
+          <Button
+            color="default"
+            className={classes.whitebutton}
+            onClick={this.toggleDest}
+          >
+            Destinations <DownIcon />
+          </Button>
+        )}
+        <HeaderPopupNav
+          anchorEl={this.state.anchorEl}
+          showDest={this.state.showDest}
+          closeDest={this.closeDest}
+        />
       </Fragment>
     );
   }

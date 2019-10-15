@@ -6,7 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { red } from '@material-ui/core/colors';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import EditIcon from '@material-ui/icons/Create';
+import EditIcon from '@material-ui/icons/Edit';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import NoLocationIcon from '@material-ui/icons/NotListedLocation';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';

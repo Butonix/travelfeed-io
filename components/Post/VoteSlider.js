@@ -401,11 +401,6 @@ class VoteSlider extends Component {
                 onCommentAdd={this.props.onCommentAdd}
               />
             </div>
-            <Tooltip title="Close" placement="bottom">
-              <IconButton onClick={() => this.collapseCommentBar()}>
-                <CloseIcon />
-              </IconButton>
-            </Tooltip>
           </CardActions>
         </Fragment>
       );
