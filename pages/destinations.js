@@ -1,8 +1,8 @@
 // TODO: Create content for /destinations, especially for mobile view
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import DestinationHeader from '../components/Destinations/DestinationHeader';
 import DestinationsContent from '../components/Destinations/DestinationsPage';
+import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
@@ -54,7 +54,7 @@ class DestinationsPage extends Component {
             countryName} on TravelFeed.`}
         />
         <Header subheader={title} active="destination" />
-        <DestinationHeader
+        <PhotoDetailHeader
           countrySlug={country}
           query={{ country_code, subdivision, city }}
           title={title}

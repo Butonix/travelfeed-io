@@ -7,12 +7,14 @@ export const GET_LOCATION_DETAILS = gql`
     $subdivision: String
     $city: String
     $search: String
+    $tag: String
   ) {
     locationDetails(
       country_code: $country_code
       subdivision: $subdivision
       city: $city
       search: $search
+      tag: $tag
     ) {
       description
       image

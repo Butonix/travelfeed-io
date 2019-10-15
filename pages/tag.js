@@ -1,6 +1,6 @@
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
@@ -25,14 +25,11 @@ class TagPage extends Component {
           description={`Explore posts about #${this.props.tags} on TravelFeed.`}
         />
         <Header active="tag" />
-        <Typography
-          variant="h4"
-          align="center"
-          gutterBottom
-          className="pt-5 pb-3"
-        >
-          {this.props.tags.charAt(0).toUpperCase() + this.props.tags.slice(1)}
-        </Typography>
+        <PhotoDetailHeader
+          tag={this.props.tags}
+          query={{ tag: this.props.tags }}
+          title={capitalize(this.props.tags)}
+        />
         <div className="pb-2">
           <div className="container" id="containerInvisibleOnMobile">
             <PostGrid
