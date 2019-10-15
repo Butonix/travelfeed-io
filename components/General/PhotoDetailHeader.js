@@ -5,6 +5,7 @@ import { Query } from 'react-apollo';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 import Link from '../../lib/Link';
+import EditLocationDetails from './EditLocationDetails';
 
 const PhotoDetailHeader = props => {
   const { query, countrySlug, title, tag } = props;
@@ -80,6 +81,17 @@ const PhotoDetailHeader = props => {
                                 </span>
                               </Link>
                             ))}
+                          <EditLocationDetails
+                            country_code={props.query.country_code}
+                            subdivision={props.query.subdivision}
+                            city={props.query.city}
+                            tag={tag}
+                            data={
+                              data && data.locationDetails
+                                ? data.locationDetails
+                                : {}
+                            }
+                          />
                         </Typography>
                         <Typography
                           gutterBottom
@@ -90,7 +102,10 @@ const PhotoDetailHeader = props => {
                             textShadow: '1px 1px 10px #343A40',
                           }}
                         >
-                          {title}
+                          {(data &&
+                            data.locationDetails &&
+                            data.locationDetails.title) ||
+                            title}
                         </Typography>
                         <p
                           className="lead text-light text-center"
@@ -217,16 +232,9 @@ const PhotoDetailHeader = props => {
                             {data && data.locationDetails.attribution}
                           </a>
                         )) || (
-                          <Link
-                            color="textPrimary"
-                            as={`/@${data && data.locationDetails.attribution}`}
-                            href={`/blog?author=${data &&
-                              data.locationDetails.attribution}`}
-                          >
-                            <span className="text-mutedlight text-decoration-underline">
-                              @{data && data.locationDetails.attribution}
-                            </span>
-                          </Link>
+                          <span className="text-mutedlight">
+                            {data && data.locationDetails.attribution}
+                          </span>
                         )}{' '}
                         {data && data.locationDetails.unsplashUser && (
                           <span>
