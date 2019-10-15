@@ -57,7 +57,7 @@ class DestinationsNav extends Component {
             className={classes.whitebutton}
             onClick={this.toggleDest}
           >
-            Destinations <DownIcon />
+            Discover <DownIcon />
           </Button>
         )}
         <HeaderPopupNav
