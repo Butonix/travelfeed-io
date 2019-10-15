@@ -32,7 +32,7 @@ const PopupNavItem = props => {
             );
           }
           return (
-            <div className="container-fluid pb-4">
+            <div className="container-fluid pb-4 pr-4">
               <div className="row">
                 {data &&
                   data.featuredLocations &&

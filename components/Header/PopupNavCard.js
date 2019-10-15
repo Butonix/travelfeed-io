@@ -53,11 +53,18 @@ const PopupNavCard = props => {
                   image={imageProxy(props.data.image, undefined, 150, 'fit')}
                 />
               )}
-              <CardContent>
+              <CardContent
+                style={{
+                  height: '45px',
+                  marginTop: '-45px',
+                  background:
+                    'linear-gradient(rgba(0, 0, 0, 0.0),rgba(0, 0, 0,0.8))',
+                }}
+              >
                 <Typography
-                  className="font-weight-bold"
+                  className="font-weight-bold text-light"
                   variant="body1"
-                  color="textPrimary"
+                  color="inherit"
                 >
                   {props.data.title}
                   {props.data.subdivision &&

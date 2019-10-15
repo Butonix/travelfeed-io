@@ -1,6 +1,7 @@
 import MenuList from '@material-ui/core/MenuList';
 import Popover from '@material-ui/core/Popover';
 import RandomIcon from '@material-ui/icons/Explore';
+import TopicIcon from '@material-ui/icons/FolderSpecial';
 import CountryIcon from '@material-ui/icons/Landscape';
 import CityIcon from '@material-ui/icons/LocationCity';
 import MapIcon from '@material-ui/icons/Map';
@@ -62,7 +63,7 @@ class HeaderPopupNav extends Component {
               <MenuList>
                 <DestinationMenuItem
                   onClick={this.onMenuClick}
-                  icon={<CityIcon />}
+                  icon={<TopicIcon />}
                   text="Popular Topics"
                   active={this.state.selection === 'Popular Topics'}
                 />
