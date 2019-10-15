@@ -34,6 +34,7 @@ class LocationPage extends Component {
         />
         <Header active="location" />
         <PhotoDetailHeader
+          noEdit
           query={{
             search: this.props.formatted_address,
             country_code: showLocations,

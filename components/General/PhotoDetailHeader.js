@@ -81,17 +81,19 @@ const PhotoDetailHeader = props => {
                                 </span>
                               </Link>
                             ))}
-                          <EditLocationDetails
-                            country_code={props.query.country_code}
-                            subdivision={props.query.subdivision}
-                            city={props.query.city}
-                            tag={tag}
-                            data={
-                              data && data.locationDetails
-                                ? data.locationDetails
-                                : {}
-                            }
-                          />
+                          {!props.noEdit && (
+                            <EditLocationDetails
+                              country_code={props.query.country_code}
+                              subdivision={props.query.subdivision}
+                              city={props.query.city}
+                              tag={tag}
+                              data={
+                                data && data.locationDetails
+                                  ? data.locationDetails
+                                  : {}
+                              }
+                            />
+                          )}
                         </Typography>
                         <Typography
                           gutterBottom
