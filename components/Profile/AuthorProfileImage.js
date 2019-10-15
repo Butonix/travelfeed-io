@@ -13,26 +13,19 @@ const styles = theme => ({
 const AuthorProfileImage = props => {
   const { classes } = props;
 
-  const dataSrc = props.image
+  const img = props.image
     ? imageProxy(props.image, 300, 300)
     : `https://steemitimages.com/u/${
         props.user ? props.user : 'null'
       }/avatar/large`;
 
-  const src = props.image
-    ? imageProxy(props.image, 10, 10)
-    : `https://steemitimages.com/u/${
-        props.user ? props.user : 'null'
-      }/avatar/small`;
-
   return (
     <img
-      src={src}
-      data-src={dataSrc}
+      src={img}
       alt="avatar"
       width="200"
       height="200"
-      className={`lazy rounded-circle p-0 ${classes.imgborder}`}
+      className={`rounded-circle p-0 ${classes.imgborder}`}
     />
   );
 };
