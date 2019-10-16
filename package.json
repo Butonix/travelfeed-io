@@ -64,7 +64,7 @@
     "immutable": "^4.0.0-rc.12",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
-    "keyword-extractor": "0.0.17",
+    "keyword-extractor": "0.0.18",
     "lodash.deburr": "^4.1.0",
     "mapbox-gl": "^1.4.0",
     "markdown-it": "^10.0.0",
