@@ -37,6 +37,7 @@ export const GET_POST = gql`
       root_author
       root_permlink
       root_title
+      json
     }
   }
 `;

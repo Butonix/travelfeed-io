@@ -11,6 +11,7 @@ import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import LazyLoad from 'vanilla-lazyload';
+import canonicalLinker from '../../helpers/canonicalLinker';
 import cleanTags from '../../helpers/cleanTags';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_SETTINGS } from '../../helpers/graphql/settings';
@@ -101,7 +102,9 @@ class SinglePost extends Component {
       parent_permlink,
       root_author,
       root_permlink,
-      country_code;
+      country_code,
+      json,
+      category;
 
     let {
       author,
@@ -146,6 +149,8 @@ class SinglePost extends Component {
               img_url = data.post.img_url;
               created_at = data.post.created_at;
               country_code = data.post.country_code;
+              json = data.post.json;
+              category = data.post.category;
             }
             tags = cleanTags(tags);
             // 404 for error and if post does not exist
@@ -221,14 +226,17 @@ class SinglePost extends Component {
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
             const excerpt = `${sanitized.substring(0, 180)}[...] by ${author}`;
-            // Set the canonical URL to steemit.com by default to avoid
-            // duplicate content SEO problems
-            let canonicalUrl = `https://steemit.com/travelfeed/@${author}/${permlink}`;
+            const canonicalUrl = canonicalLinker(
+              json,
+              app,
+              category,
+              author,
+              permlink,
+            );
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored
             // through the dApp
             if (app && app.split('/')[0] === 'travelfeed') {
-              canonicalUrl = `https://travelfeed.io/@${author}/${permlink}`;
               appIcon = (
                 <img
                   alt="TravelFeed"
