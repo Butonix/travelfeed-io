@@ -96,6 +96,7 @@
     "steem": "^0.7.7",
     "steem-content-renderer": "^2.1.1",
     "steemconnect": "git+https://github.com/travelfeed-io/steemconnect.js.git",
+    "steemscript": "^1.1.1",
     "styled-jsx": "^3.2.2",
     "supercluster": "^6.0.2",
     "turndown": "^5.0.3",
