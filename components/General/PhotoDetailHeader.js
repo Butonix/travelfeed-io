@@ -1,14 +1,28 @@
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import { nameFromSlug } from '../../helpers/countryCodes';
+import { imageProxy } from '../../helpers/getImage';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
+import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import EditLocationDetails from './EditLocationDetails';
 
 const PhotoDetailHeader = props => {
   const { query, countrySlug, title, tag } = props;
+  const [screenWidth, setScreenWidth] = useState(1920);
+  const [webpSupport, setWebpSupport] = useState(undefined);
+
+  useEffect(() => {
+    setScreenWidth(Math.ceil(window.innerWidth / 100) * 100);
+    const getWebpSupport = async () => {
+      const isWebp = await supportsWebp();
+      return isWebp;
+    };
+    const webp = getWebpSupport();
+    setWebpSupport(webp);
+  }, []);
 
   return (
     <Fragment>
@@ -21,7 +35,19 @@ const PhotoDetailHeader = props => {
                   className="w-100"
                   style={{
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.5)),
-                      url("${(data && data.locationDetails.image) || ''}")`,
+                      url("${(data &&
+                        data.locationDetails.unsplashUser &&
+                        data.locationDetails.image) ||
+                        (data &&
+                          data.locationDetails.image &&
+                          imageProxy(
+                            data.locationDetails.image,
+                            screenWidth,
+                            600,
+                            undefined,
+                            webpSupport ? 'webp' : undefined,
+                          )) ||
+                        ''}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
