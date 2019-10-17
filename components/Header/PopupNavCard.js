@@ -4,6 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import { slugFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
@@ -12,6 +13,7 @@ import Link from '../../lib/Link';
 const useStyles = makeStyles(() => ({
   card: {
     borderRadius: 12,
+    minWidth: '250px',
   },
 }));
 
@@ -21,6 +23,15 @@ const PopupNavCard = props => {
   let href = '';
   let as = '';
   let key = '';
+
+  if (!props.data)
+    return (
+      <div className="col-6 p-1">
+        <Card className={classes.card}>
+          <Skeleton height="105px" width="100%" variant="rect" />
+        </Card>
+      </div>
+    );
 
   if (props.data.tag) {
     href = `/tag?tags=${props.data.tag}`;
