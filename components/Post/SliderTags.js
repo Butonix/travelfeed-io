@@ -16,8 +16,8 @@ const SliderTags = props => {
             return (
               <Link
                 color="textPrimary"
-                as={`/favorites/${tag}`}
-                href={`/tag?orderby=total_votes&tags=${tag}`}
+                as={`/topics/${tag}`}
+                href={`/tag?tags=${tag}`}
                 key={tag}
               >
                 <span

@@ -6,7 +6,7 @@ import Header from '../components/Header/Header';
 import Map from '../components/Maps/MapCluster';
 import { GET_PLACES } from '../helpers/graphql/places';
 
-const MapPage = () => {
+const MapPage = props => {
   const theme = useTheme();
 
   const title = 'Map';
@@ -26,6 +26,9 @@ const MapPage = () => {
               <Map
                 data={data && data.places}
                 dark={theme.palette.type === 'dark'}
+                latitude={props.latitude}
+                longitude={props.longitude}
+                zoom={props.zoom}
                 getHeightFromContainer
               />
             );
@@ -37,6 +40,11 @@ const MapPage = () => {
   );
 };
 
-MapPage.getInitialProps = () => {};
+MapPage.getInitialProps = props => {
+  const latitude = Number(props.query.latitude);
+  const longitude = Number(props.query.longitude);
+  const zoom = Number(props.query.zoom);
+  return { latitude, longitude, zoom };
+};
 
 export default MapPage;

@@ -32,7 +32,7 @@ const renderer = new DefaultRenderer({
   assetsHeight: 1, // performed by sanitize
   imageProxyFn: url => url,
   usertagUrlFn: account => `/@${account}`,
-  hashtagUrlFn: hashtag => `/favorites/${hashtag}`,
+  hashtagUrlFn: hashtag => `/topics/${hashtag}`,
   isLinkSafeFn: () => true,
 });
 

@@ -124,36 +124,32 @@ app
 
     server.get('/created/:tag', (req, res) => {
       const { tag } = req.params;
-      res.redirect(`/hot/${tag}`);
+      res.redirect(`/topics/${tag}`);
     });
 
     server.get('/trending/:tag', (req, res) => {
       const { tag } = req.params;
-      res.redirect(`/favorites/${tag}`);
+      res.redirect(`/topics/${tag}`);
     });
 
     server.get('/hot/:tag', (req, res) => {
-      const actualPage = '/tag';
-      const queryParams = {
-        orderby: 'sc_hot',
-        tags: req.params.tag,
-      };
-      app.render(req, res, actualPage, queryParams);
+      const { tag } = req.params;
+      res.redirect(`/topics/${tag}`);
     });
 
     server.get('/favorites/:tag', (req, res) => {
-      const actualPage = '/tag';
-      const queryParams = {
-        orderby: 'total_votes',
-        tags: req.params.tag,
-      };
-      app.render(req, res, actualPage, queryParams);
+      const { tag } = req.params;
+      res.redirect(`/topics/${tag}`);
     });
 
     server.get('/featured/:tag', (req, res) => {
+      const { tag } = req.params;
+      res.redirect(`/topics/${tag}`);
+    });
+
+    server.get('/topics/:tag', (req, res) => {
       const actualPage = '/tag';
       const queryParams = {
-        orderby: 'featured',
         tags: req.params.tag,
       };
       app.render(req, res, actualPage, queryParams);

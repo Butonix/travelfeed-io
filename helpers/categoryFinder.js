@@ -28,7 +28,7 @@ const categories = [
     keywords: ['nomad', 'work', 'income', 'freelancer'],
   },
   {
-    category: 'photofeed',
+    category: 'photography',
     keywords: ['photography', 'camera', 'photographer'],
   },
   { category: 'family', keywords: ['kids', 'children'] },

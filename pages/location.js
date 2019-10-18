@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import DestinationHeader from '../components/Destinations/DestinationHeader';
+import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
@@ -33,7 +33,8 @@ class LocationPage extends Component {
           description={`Explore posts about ${this.props.formatted_address} on TravelFeed.`}
         />
         <Header active="location" />
-        <DestinationHeader
+        <PhotoDetailHeader
+          noEdit
           query={{
             search: this.props.formatted_address,
             country_code: showLocations,

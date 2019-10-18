@@ -4,7 +4,6 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
-import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -349,12 +348,9 @@ class SinglePost extends Component {
                               Post Location
                             </Typography>
                             <PostMap
-                              location={{
-                                coordinates: {
-                                  lat: latitude,
-                                  lng: longitude,
-                                },
-                              }}
+                              cardWidth={this.state.cardWidth}
+                              latitude={latitude}
+                              longitude={longitude}
                             />
                           </div>
                         </>
@@ -441,9 +437,6 @@ class SinglePost extends Component {
             }
             return (
               <Fragment>
-                <NextHead>
-                  <link rel="preconnect" href="https://maps.gstatic.com" />
-                </NextHead>
                 {head}
                 <Header
                   active="post"

@@ -1,13 +1,28 @@
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import { nameFromSlug } from '../../helpers/countryCodes';
+import { imageProxy } from '../../helpers/getImage';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
+import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
+import EditLocationDetails from './EditLocationDetails';
 
-const DestinationHeader = props => {
-  const { query, countrySlug, title } = props;
+const PhotoDetailHeader = props => {
+  const { query, countrySlug, title, tag } = props;
+  const [screenWidth, setScreenWidth] = useState(1920);
+  const [webpSupport, setWebpSupport] = useState(undefined);
+
+  useEffect(() => {
+    setScreenWidth(Math.ceil(window.innerWidth / 100) * 100);
+    const getWebpSupport = async () => {
+      const isWebp = await supportsWebp();
+      return isWebp;
+    };
+    const webp = getWebpSupport();
+    setWebpSupport(webp);
+  }, []);
 
   return (
     <Fragment>
@@ -20,7 +35,19 @@ const DestinationHeader = props => {
                   className="w-100"
                   style={{
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.5)),
-                      url("${(data && data.locationDetails.image) || ''}")`,
+                      url("${(data &&
+                        data.locationDetails.unsplashUser &&
+                        data.locationDetails.image) ||
+                        (data &&
+                          data.locationDetails.image &&
+                          imageProxy(
+                            data.locationDetails.image,
+                            screenWidth,
+                            600,
+                            undefined,
+                            webpSupport ? 'webp' : undefined,
+                          )) ||
+                        ''}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
@@ -39,32 +66,33 @@ const DestinationHeader = props => {
                           component="h5"
                         >
                           {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
-                          (query.city && (
-                            <span>
-                              <Link
-                                color="textPrimary"
-                                as={`/destinations/${countrySlug}/`}
-                                href={`/destinations?country=${countrySlug}`}
-                              >
-                                <a className="text-light font-weight-bold">
-                                  {nameFromSlug(countrySlug)}
-                                </a>
-                              </Link>
-                              <span className="text-light">
-                                {' '}
-                                &raquo;{' '}
+                          (tag && `#${tag}`) ||
+                            (query.city && (
+                              <span>
                                 <Link
                                   color="textPrimary"
-                                  as={`/destinations/${countrySlug}/${query.subdivision}`}
-                                  href={`/destinations?country=${countrySlug}&subdivision=${query.subdivision}`}
+                                  as={`/destinations/${countrySlug}/`}
+                                  href={`/destinations?country=${countrySlug}`}
                                 >
-                                  <a className="text-light font-weight-bold">
-                                    {query.subdivision}
-                                  </a>
+                                  <span className="text-light font-weight-bold">
+                                    {nameFromSlug(countrySlug)}
+                                  </span>
                                 </Link>
-                              </span>{' '}
-                            </span>
-                          )) ||
+                                <span className="text-light">
+                                  {' '}
+                                  &raquo;{' '}
+                                  <Link
+                                    color="textPrimary"
+                                    as={`/destinations/${countrySlug}/${query.subdivision}`}
+                                    href={`/destinations?country=${countrySlug}&subdivision=${query.subdivision}`}
+                                  >
+                                    <span className="text-light font-weight-bold">
+                                      {query.subdivision}
+                                    </span>
+                                  </Link>
+                                </span>{' '}
+                              </span>
+                            )) ||
                             (((query.search && !query.country_code) ||
                               query.subdivision ||
                               query.city) && (
@@ -73,12 +101,25 @@ const DestinationHeader = props => {
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
                               >
-                                <a className="text-light font-weight-bold">
+                                <span className="text-light font-weight-bold">
                                   {(data && data.locationDetails.subtitle) ||
                                     nameFromSlug(countrySlug)}
-                                </a>
+                                </span>
                               </Link>
                             ))}
+                          {!props.noEdit && (
+                            <EditLocationDetails
+                              country_code={props.query.country_code}
+                              subdivision={props.query.subdivision}
+                              city={props.query.city}
+                              tag={tag}
+                              data={
+                                data && data.locationDetails
+                                  ? data.locationDetails
+                                  : {}
+                              }
+                            />
+                          )}
                         </Typography>
                         <Typography
                           gutterBottom
@@ -89,7 +130,10 @@ const DestinationHeader = props => {
                             textShadow: '1px 1px 10px #343A40',
                           }}
                         >
-                          {title}
+                          {(data &&
+                            data.locationDetails &&
+                            data.locationDetails.title) ||
+                            title}
                         </Typography>
                         <p
                           className="lead text-light text-center"
@@ -154,7 +198,7 @@ const DestinationHeader = props => {
                                               : `${query.subdivision}/${location.city}`
                                           }`}
                                         >
-                                          <a
+                                          <span
                                             className="text-light"
                                             style={{
                                               textShadow: '1px 1px 10px black',
@@ -163,7 +207,7 @@ const DestinationHeader = props => {
                                             {location.city
                                               ? location.city
                                               : location.subdivision}
-                                          </a>
+                                          </span>
                                         </Link>
                                       </div>
                                     );
@@ -216,16 +260,9 @@ const DestinationHeader = props => {
                             {data && data.locationDetails.attribution}
                           </a>
                         )) || (
-                          <Link
-                            color="textPrimary"
-                            as={`/@${data && data.locationDetails.attribution}`}
-                            href={`/blog?author=${data &&
-                              data.locationDetails.attribution}`}
-                          >
-                            <a className="text-mutedlight text-decoration-underline">
-                              @{data && data.locationDetails.attribution}
-                            </a>
-                          </Link>
+                          <span className="text-mutedlight">
+                            {data && data.locationDetails.attribution}
+                          </span>
                         )}{' '}
                         {data && data.locationDetails.unsplashUser && (
                           <span>
@@ -254,10 +291,10 @@ const DestinationHeader = props => {
   );
 };
 
-DestinationHeader.propTypes = {
+PhotoDetailHeader.propTypes = {
   query: PropTypes.objectOf(PropTypes.string).isRequired,
   countrySlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };
 
-export default DestinationHeader;
+export default PhotoDetailHeader;

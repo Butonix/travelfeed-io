@@ -156,7 +156,7 @@ const OnboardInfo = props => {
               <FeaturedImageUpload
                 featuredImage={cover_image}
                 setFeaturedImage={res => setCoverImage(res)}
-                placeholder="To upload your cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 1920x400"
+                placeholder="To upload your cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 2880x600"
               />
             </div>
           </>

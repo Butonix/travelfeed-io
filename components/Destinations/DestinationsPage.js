@@ -1,23 +1,11 @@
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import {
-  featuredCcAsia,
-  featuredCcEurope,
-  featuredCcWorld,
-  featuredPlacesAsia,
-  featuredPlacesEurope,
-  featuredPlacesWorld,
-  popularCountries,
-  slugFromCC,
-} from '../../helpers/countryCodes';
-import DestinationCityColumn from './DestinationCityColumn';
-import DestinationCountryColumn from './DestinationCountryColumn';
+import { popularCountries, slugFromCC } from '../../helpers/countryCodes';
+import PopupNavItems from '../Header/PopupNavItems';
 
 class DestinationsMobile extends Component {
   state = {
@@ -45,83 +33,15 @@ class DestinationsMobile extends Component {
                 <Typography variant="h4" className="text-center p-3">
                   Popular Countries
                 </Typography>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
-                      <MenuList className="text-center">
-                        <MenuItem>
-                          <Typography variant="h6">Europe</Typography>
-                        </MenuItem>
-                        <DestinationCountryColumn
-                          onClick={this.props.closeDest}
-                          countryCodes={featuredCcEurope}
-                        />
-                      </MenuList>
-                    </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
-                      <MenuList>
-                        <MenuItem>
-                          <Typography variant="h6">Asia</Typography>
-                        </MenuItem>
-                        <DestinationCountryColumn
-                          onClick={this.props.closeDest}
-                          countryCodes={featuredCcAsia}
-                        />
-                      </MenuList>
-                    </div>{' '}
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
-                      <MenuList>
-                        <MenuItem>
-                          <Typography variant="h6">World</Typography>
-                        </MenuItem>
-                        <DestinationCountryColumn
-                          onClick={this.props.closeDest}
-                          countryCodes={featuredCcWorld}
-                        />
-                      </MenuList>
-                    </div>
-                  </div>
-                </div>
+                <PopupNavItems countries />
                 <Typography variant="h4" className="text-center p-3">
                   Popular Places
                 </Typography>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
-                      <MenuList>
-                        <MenuItem>
-                          <Typography variant="h6">Europe</Typography>
-                        </MenuItem>
-                        <DestinationCityColumn
-                          onClick={this.props.closeDest}
-                          cities={featuredPlacesEurope}
-                        />
-                      </MenuList>
-                    </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
-                      <MenuList>
-                        <MenuItem>
-                          <Typography variant="h6">Asia</Typography>
-                        </MenuItem>
-                        <DestinationCityColumn
-                          onClick={this.props.closeDest}
-                          cities={featuredPlacesAsia}
-                        />
-                      </MenuList>
-                    </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
-                      <MenuList>
-                        <MenuItem>
-                          <Typography variant="h6">World</Typography>
-                        </MenuItem>
-                        <DestinationCityColumn
-                          onClick={this.props.closeDest}
-                          cities={featuredPlacesWorld}
-                        />
-                      </MenuList>
-                    </div>
-                  </div>
-                </div>
+                <PopupNavItems places />
+                <Typography variant="h4" className="text-center p-3">
+                  Popular Topics
+                </Typography>
+                <PopupNavItems tags />
               </CardContent>
             </Card>
           </Grid>

@@ -45,9 +45,9 @@ class MapCluster extends Component {
       viewport: {
         width,
         height,
-        latitude: 25,
-        longitude: 10,
-        zoom: 1,
+        latitude: this.props.latitude || 25,
+        longitude: this.props.longitude || 10,
+        zoom: this.props.zoom || 1,
       },
     });
   }
