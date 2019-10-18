@@ -13,6 +13,9 @@ import Link from '../../lib/Link';
 const useStyles = makeStyles(() => ({
   card: {
     borderRadius: 12,
+  },
+  skeletoncard: {
+    borderRadius: 12,
     minWidth: '250px',
   },
 }));
@@ -27,7 +30,7 @@ const PopupNavCard = props => {
   if (!props.data)
     return (
       <div className="col-6 p-1">
-        <Card className={classes.card}>
+        <Card className={classes.skeletoncard}>
           <Skeleton height="105px" width="100%" variant="rect" />
         </Card>
       </div>

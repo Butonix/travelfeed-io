@@ -21,7 +21,7 @@ const styles = () => ({
 
 class HeaderPopupNav extends Component {
   state = {
-    selection: 'Popular Topics',
+    selection: 'Popular Countries',
     random: undefined,
   };
 
@@ -63,12 +63,6 @@ class HeaderPopupNav extends Component {
               <MenuList>
                 <DestinationMenuItem
                   onClick={this.onMenuClick}
-                  icon={<TopicIcon />}
-                  text="Popular Topics"
-                  active={this.state.selection === 'Popular Topics'}
-                />
-                <DestinationMenuItem
-                  onClick={this.onMenuClick}
                   icon={<CountryIcon />}
                   text="Popular Countries"
                   active={this.state.selection === 'Popular Countries'}
@@ -78,6 +72,12 @@ class HeaderPopupNav extends Component {
                   icon={<CityIcon />}
                   text="Popular Places"
                   active={this.state.selection === 'Popular Places'}
+                />
+                <DestinationMenuItem
+                  onClick={this.onMenuClick}
+                  icon={<TopicIcon />}
+                  text="Popular Topics"
+                  active={this.state.selection === 'Popular Topics'}
                 />
                 <Link color="textPrimary" href="/map">
                   <DestinationMenuItem
@@ -99,7 +99,7 @@ class HeaderPopupNav extends Component {
                 </Link>
               </MenuList>
             </div>
-            <div className="col-xl-8 col-lg-8 col-md-8">
+            <div className="col-xl-8 col-lg-8 col-md-8 pr-4">
               {(this.state.selection === 'Popular Places' && (
                 <PopupNavItems places />
               )) ||
