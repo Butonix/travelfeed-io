@@ -349,21 +349,6 @@ class DashboardMenu extends Component {
             </ListItem>
           </Link>
         </List>
-        <Divider />
-        <List>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/contest?open=${this.state.open}`}
-            as="/dashboard/contest"
-          >
-            <ListItem selected={this.props.active === 'contest'} button>
-              <ListItemIcon>
-                <LabelIcon />
-              </ListItemIcon>
-              <ListItemText primary="Steemfest" />
-            </ListItem>
-          </Link>
-        </List>
         {this.state.roles && this.state.roles.indexOf('curator') !== -1 && (
           <>
             <Divider />
