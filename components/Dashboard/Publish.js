@@ -90,10 +90,7 @@ const PostEditor = props => {
   };
 
   const sanitized = sanitize(
-    parseBody(codeEditor ? content : json2md(content), {
-      lazy: false,
-      hideimgcaptions: true,
-    }),
+    parseBody(codeEditor ? content : json2md(content), {}),
     { allowedTags: [] },
   );
   const readingtime = content
