@@ -35,7 +35,6 @@ const PostMap = props => {
           <div style={{ position: 'absolute', bottom: 20 }} className="w-100">
             <div className="text-center">
               <Link
-                as="/map"
                 href={`/map?zoom=6&latitude=${encodeURIComponent(
                   latitude,
                 )}&longitude=${encodeURIComponent(longitude)}`}

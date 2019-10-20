@@ -1,4 +1,6 @@
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import MapIcon from '@material-ui/icons/Map';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
@@ -150,6 +152,24 @@ const PhotoDetailHeader = props => {
                             )}
                           </em>
                         </p>
+                        {!tag && (
+                          <>
+                            <Typography
+                              variant="h4"
+                              className="text-light font-weight-bold"
+                            >
+                              {data &&
+                                data.locationDetails.budget_score &&
+                                '$'.repeat(data.locationDetails.budget_score)}
+                            </Typography>
+                            <Link href={`/map?search=${title}`}>
+                              <Button variant="contained" color="primary">
+                                <span className="pr-1">Explore the map</span>
+                                <MapIcon />
+                              </Button>
+                            </Link>
+                          </>
+                        )}
                         {data &&
                           data.locationDetails.sublocations &&
                           data &&
