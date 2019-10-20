@@ -54,7 +54,6 @@ const upload = file => {
 };
 
 const uploadFile = async (localfile, options) => {
-  console.log(options.allowFullSize);
   return new Promise((resolve, reject) => {
     if (
       localfile.size < 1000000 ||

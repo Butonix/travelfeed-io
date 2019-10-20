@@ -1,11 +1,12 @@
 // TODO: Create content for /destinations, especially for mobile view
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import DestinationsContent from '../components/Destinations/DestinationsPage';
 import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
+import PopupNavItems from '../components/Header/PopupNavItems';
 import { ccFromSlug, nameFromSlug } from '../helpers/countryCodes';
 
 class DestinationsPage extends Component {
@@ -37,7 +38,14 @@ class DestinationsPage extends Component {
             description="Discover the best travel destinations on TravelFeed."
           />
           <Header subheader="Destinations" active="destinations" />
-          <DestinationsContent />
+          <Typography variant="h4" className="text-center p-3">
+            Popular Countries
+          </Typography>
+          <PopupNavItems countries />
+          <Typography variant="h4" className="text-center p-3">
+            Popular Places
+          </Typography>
+          <PopupNavItems places />
         </Fragment>
       );
     const title = `${(suburb && `${suburb}, ${city}`) ||
