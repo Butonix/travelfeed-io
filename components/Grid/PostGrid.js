@@ -56,7 +56,7 @@ class PostGrid extends Component {
                 </Card>
               );
             }
-            if (data.posts === null) return <></>;
+            if (!data || data.posts === null) return <></>;
             if (
               data.posts.length < this.props.query.limit &&
               this.state.hasMore

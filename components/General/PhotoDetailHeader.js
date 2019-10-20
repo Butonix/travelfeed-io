@@ -10,6 +10,7 @@ import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import EditLocationDetails from './EditLocationDetails';
+import TopicSelector from './TopicSelector';
 
 const PhotoDetailHeader = props => {
   const { query, countrySlug, title, tag } = props;
@@ -301,6 +302,13 @@ const PhotoDetailHeader = props => {
                     )}
                   </div>
                 </div>
+                {data && data.locationDetails.topics && (
+                  <TopicSelector
+                    topics={data.locationDetails.topics}
+                    active={props.topic}
+                    onChange={props.setTopic}
+                  />
+                )}
               </Fragment>
             );
           }
