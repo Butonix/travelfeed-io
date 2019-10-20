@@ -135,6 +135,7 @@ const EditLocationDetails = props => {
                       label="Featured"
                     />
                     <FeaturedImageUpload
+                      allowFullSize
                       featuredImage={image}
                       setFeaturedImage={input => setImage(input)}
                       placeholder="To upload a cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 2880x900"

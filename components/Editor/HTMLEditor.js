@@ -21,7 +21,7 @@ const HtmlEditor = props => {
   }, []);
 
   const handleImageUpload = (file, callback) => {
-    return uploadFile(file).then(res => {
+    return uploadFile(file, {}).then(res => {
       return callback(res);
     });
   };
