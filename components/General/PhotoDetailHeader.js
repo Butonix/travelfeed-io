@@ -1,14 +1,17 @@
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import MapIcon from '@material-ui/icons/Map';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
+import { getBudgetScore } from '../../helpers/budgetScore';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
+import PopularDestinationsPopup from '../Destinations/PopularDestinationsPopup';
 import EditLocationDetails from './EditLocationDetails';
 import TopicSelector from './TopicSelector';
 
@@ -26,6 +29,8 @@ const PhotoDetailHeader = props => {
     const webp = getWebpSupport();
     setWebpSupport(webp);
   }, []);
+
+  const countryName = nameFromSlug(countrySlug);
 
   return (
     <Fragment>
@@ -46,7 +51,7 @@ const PhotoDetailHeader = props => {
                           imageProxy(
                             data.locationDetails.image,
                             screenWidth,
-                            600,
+                            500,
                             undefined,
                             webpSupport ? 'webp' : undefined,
                           )) ||
@@ -57,8 +62,11 @@ const PhotoDetailHeader = props => {
                   }}
                 >
                   <div className="container h-100">
-                    <div className="row h-100" style={{ minHeight: '500px' }}>
-                      <div className="col-12 my-auto">
+                    <div
+                      className="row h-100 justify-content-center"
+                      style={{ minHeight: '400px' }}
+                    >
+                      <div className="col-xl-7 col-lg-8 col-md-9 col-sm-10 col-12 my-auto">
                         <Typography
                           variant="h6"
                           align="center"
@@ -78,7 +86,7 @@ const PhotoDetailHeader = props => {
                                   href={`/destinations?country=${countrySlug}`}
                                 >
                                   <span className="text-light font-weight-bold">
-                                    {nameFromSlug(countrySlug)}
+                                    {countryName}
                                   </span>
                                 </Link>
                                 <span className="text-light">
@@ -106,7 +114,7 @@ const PhotoDetailHeader = props => {
                               >
                                 <span className="text-light font-weight-bold">
                                   {(data && data.locationDetails.subtitle) ||
-                                    nameFromSlug(countrySlug)}
+                                    countryName}
                                 </span>
                               </Link>
                             ))}
@@ -138,8 +146,10 @@ const PhotoDetailHeader = props => {
                             data.locationDetails.title) ||
                             title}
                         </Typography>
-                        <p
+                        <Typography
+                          gutterBottom
                           className="lead text-light text-center"
+                          variant="h6"
                           style={{
                             textShadow: '1px 1px 10px black',
                           }}
@@ -152,90 +162,49 @@ const PhotoDetailHeader = props => {
                               </>
                             )}
                           </em>
-                        </p>
-                        {!tag && (
-                          <>
-                            <Typography
-                              variant="h4"
-                              className="text-light font-weight-bold"
-                            >
-                              {data &&
-                                data.locationDetails.budget_score &&
-                                '$'.repeat(data.locationDetails.budget_score)}
-                            </Typography>
-                            <Link href={`/map?search=${title}`}>
-                              <Button variant="contained" color="primary">
-                                <span className="pr-1">Explore the map</span>
-                                <MapIcon />
-                              </Button>
-                            </Link>
-                          </>
-                        )}
-                        {data &&
-                          data.locationDetails.sublocations &&
-                          data &&
-                          data.locationDetails.sublocations.length > 1 && (
-                            <div className="row p-2 justify-content-md-center">
-                              <div className="col-12">
-                                <Typography
-                                  variant="h4"
-                                  className="text-light font-weight-bold"
-                                  style={{
-                                    textShadow: '1px 1px 10px #343A40',
-                                  }}
-                                  align="center"
-                                  component="h3"
-                                  gutterBottom
+                        </Typography>
+                        <div className="text-center">
+                          {!tag && (
+                            <>
+                              <Link href={`/map?search=${title}`}>
+                                <Button
+                                  className="m-2"
+                                  variant="contained"
+                                  color="primary"
                                 >
-                                  Popular destinations
-                                </Typography>
-                              </div>
-                              {data &&
-                                data.locationDetails.sublocations.map(
-                                  (location, index) => {
-                                    //   limit results
-                                    if (index > 11) {
-                                      return <Fragment />;
-                                    }
-                                    return (
-                                      <div
-                                        key={`${countrySlug}_${
-                                          location.subdivision
-                                            ? location.subdivision
-                                            : `${query.subdivision}_${location.city}`
-                                        }`}
-                                        className="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 text-center"
-                                      >
-                                        <Link
-                                          color="textPrimary"
-                                          href={`/destinations?country=${countrySlug}&subdivision=${
-                                            location.subdivision
-                                              ? location.subdivision
-                                              : `${query.subdivision}&city=${location.city}`
-                                          }`}
-                                          as={`/destinations/${countrySlug}/${
-                                            location.subdivision
-                                              ? location.subdivision
-                                              : `${query.subdivision}/${location.city}`
-                                          }`}
-                                        >
-                                          <span
-                                            className="text-light"
-                                            style={{
-                                              textShadow: '1px 1px 10px black',
-                                            }}
-                                          >
-                                            {location.city
-                                              ? location.city
-                                              : location.subdivision}
-                                          </span>
-                                        </Link>
-                                      </div>
-                                    );
-                                  },
-                                )}
-                            </div>
+                                  <span className="pr-1">Explore the map</span>
+                                  <MapIcon />
+                                </Button>
+                              </Link>
+                            </>
                           )}
+                          {data &&
+                            data.locationDetails.sublocations &&
+                            data &&
+                            data.locationDetails.sublocations.length > 1 && (
+                              <PopularDestinationsPopup
+                                countrySlug={countrySlug}
+                                subdivision={query.subdivision}
+                                destinations={data.locationDetails.sublocations}
+                              />
+                            )}
+                          {data && data.locationDetails.budget_score && (
+                            <Tooltip
+                              title={getBudgetScore(
+                                data.locationDetails.budget_score,
+                                countryName,
+                              )}
+                            >
+                              <Typography
+                                component="p"
+                                variant="h4"
+                                className="pt-2 text-light font-weight-bold"
+                              >
+                                {'$'.repeat(data.locationDetails.budget_score)}
+                              </Typography>
+                            </Tooltip>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -143,7 +143,7 @@ const EditLocationDetails = props => {
                       allowFullSize
                       featuredImage={image}
                       setFeaturedImage={input => setImage(input)}
-                      placeholder="To upload a cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 2880x900"
+                      placeholder="To upload a cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 2880x750"
                     />
                     <TextField
                       label="Image Attribution"
