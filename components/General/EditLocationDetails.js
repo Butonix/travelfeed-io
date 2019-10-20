@@ -70,9 +70,11 @@ const EditLocationDetails = props => {
 
   return (
     <>
-      <IconButton color="primary" onClick={handleClickOpen}>
-        <EditIcon />
-      </IconButton>
+      <span className="text-light">
+        <IconButton color="inherit" onClick={handleClickOpen}>
+          <EditIcon />
+        </IconButton>
+      </span>
       <Mutation
         mutation={ADD_LOCATION_DETAILS}
         variables={{
