@@ -63,14 +63,27 @@ const Geocoder = props => {
         // subdivision, the country-code is consistant to the database,
         // adding it to the query improves the accuracy
         let args = '';
-        const components =
-          result.address_components[result.address_components.length - 1];
-        const showlocations = result.address_components.length === 1;
-        components.types.forEach(t => {
-          if (t === 'country') {
-            args = `&country_code=${components.short_name.toLowerCase()}&showlocations=${showlocations}`;
-          }
+        result.address_components.forEach(adrcomp => {
+          adrcomp.types.forEach(t => {
+            if (t === 'country') {
+              args += `&country_code=${adrcomp.short_name.toLowerCase()}`;
+            } else if (t === 'administrative_area_level_1') {
+              // Manual geocoding overrides for mismatches between Google and Nominatim results
+              let subdivision = adrcomp.long_name;
+              if (subdivision === 'Federal Territory of Kuala Lumpur')
+                subdivision = 'Kuala Lumpur';
+              args += `&subdivision=${encodeURIComponent(subdivision)}`;
+            } else if (
+              t === 'administrative_area_level_2' ||
+              t === 'locality'
+            ) {
+              const city = adrcomp.long_name;
+              if (city !== 'Kuala Lumpur')
+                args += `&city=${encodeURIComponent(city)}`;
+            }
+          });
         });
+
         let { bounds } = result.geometry;
         // Some exact locations have no boundary, so use the less exact viewport
         //  instead

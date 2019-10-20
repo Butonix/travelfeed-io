@@ -91,10 +91,7 @@ const DestinationsPage = props => {
 };
 
 DestinationsPage.getInitialProps = props => {
-  const { country } = props.query;
-  const { subdivision } = props.query;
-  const { city } = props.query;
-  const { suburb } = props.query;
+  const { country, subdivision, city, suburb } = props.query;
   return {
     country,
     subdivision,
