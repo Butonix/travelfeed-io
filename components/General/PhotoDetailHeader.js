@@ -192,7 +192,10 @@ const PhotoDetailHeader = props => {
                             <Tooltip
                               title={getBudgetScore(
                                 data.locationDetails.budget_score,
-                                countryName,
+                                (data &&
+                                  data.locationDetails &&
+                                  data.locationDetails.title) ||
+                                  title,
                               )}
                             >
                               <Typography
