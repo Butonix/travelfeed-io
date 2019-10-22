@@ -1,6 +1,15 @@
 import Typography from '@material-ui/core/Typography';
 import React, { Component, Fragment } from 'react';
-import { hasCookieConsent, setCookieConsent } from '../../helpers/token';
+import {
+  CHANGE_SETTINGS,
+  GET_COOKIES_ACCEPTED,
+} from '../../helpers/graphql/settings';
+import graphQLClient from '../../helpers/graphQLClient';
+import {
+  getUser,
+  hasCookieConsent,
+  setCookieConsent,
+} from '../../helpers/token';
 import Link from '../../lib/Link';
 import CookiePopup from './CookiePopup';
 
@@ -11,15 +20,21 @@ class CookieConsent extends Component {
 
   componentDidMount() {
     const cookie = hasCookieConsent() !== 'true';
-    this.setState({ open: cookie });
+    if (cookie && getUser())
+      graphQLClient(GET_COOKIES_ACCEPTED).then(res => {
+        if (res.preferences.hasAcceptedCookies) this.accept();
+        else this.setState({ open: cookie });
+      });
+    else this.setState({ open: cookie });
   }
-
-  decline = () => {
-    this.setState({ open: false });
-  };
 
   accept = () => {
     setCookieConsent('true');
+    this.setState({ open: false });
+    if (getUser()) graphQLClient(CHANGE_SETTINGS, { hasAcceptedCookies: true });
+  };
+
+  decline = () => {
     this.setState({ open: false });
   };
 

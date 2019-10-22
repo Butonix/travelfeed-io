@@ -59,7 +59,7 @@ class Header extends Component {
         loading: () => (
           <Link color="textPrimary" href="/destinations">
             <Button color="default" className={classes.whitebutton}>
-              Destinations <DownIcon />
+              Discover <DownIcon />
             </Button>
           </Link>
         ),

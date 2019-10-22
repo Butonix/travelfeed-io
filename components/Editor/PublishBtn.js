@@ -30,7 +30,6 @@ const PublishBtn = props => {
             newNotification(res.post);
             props.pastPublish(res.post);
           }
-          setLoading(false);
         })
         .catch(err => {
           newNotification({
@@ -41,19 +40,19 @@ const PublishBtn = props => {
                 : `Draft could not be saved: ${err.message}`,
           });
         });
+      setLoading(false);
     } else {
       post(props.publishThis).then(res => {
         if (res) {
           newNotification(res);
-          setLoading(undefined);
           props.pastPublish(res);
         } else {
           newNotification({
             success: false,
             message: 'Post could not be published',
           });
-          setLoading(undefined);
         }
+        setLoading(false);
       });
     }
   };

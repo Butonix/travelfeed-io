@@ -7,6 +7,7 @@ export const CHANGE_SETTINGS = gql`
     $showNSFW: Boolean
     $useTfBlacklist: Boolean
     $useDarkMode: Boolean
+    $hasAcceptedCookies: Boolean
   ) {
     updatePreferences(
       defaultVoteWeight: $defaultVoteWeight
@@ -14,9 +15,18 @@ export const CHANGE_SETTINGS = gql`
       showNSFW: $showNSFW
       useTfBlacklist: $useTfBlacklist
       useDarkMode: $useDarkMode
+      hasAcceptedCookies: $hasAcceptedCookies
     ) {
       success
       message
+    }
+  }
+`;
+
+export const GET_COOKIES_ACCEPTED = gql`
+  query preferences {
+    preferences {
+      hasAcceptedCookies
     }
   }
 `;
