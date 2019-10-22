@@ -167,8 +167,18 @@ const PostEditor = props => {
         if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
       }
       if (json) {
-        if (editMode && json.category) setPrimaryTag(json.category);
-        if (json.tags && json.tags.length > 0) {
+        if (editMode && json.category) {
+          setPrimaryTag(json.category);
+          if (json.tags && json.tags.length > 0) {
+            const jstags = [];
+            json.tags.forEach(tag => {
+              if (tag !== json.category) jstags.push(tag);
+            });
+            if (editMode && !json.category)
+              setPrimaryTag(json.tags.splice(0, 1));
+            setTags(jstags);
+          }
+        } else if (json.tags && json.tags.length > 0) {
           if (editMode && !json.category) setPrimaryTag(json.tags.splice(0, 1));
           setTags(json.tags);
         }
