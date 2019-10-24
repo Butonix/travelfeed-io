@@ -183,6 +183,12 @@ const PhotoDetailHeader = props => {
                             data &&
                             data.locationDetails.sublocations.length > 1 && (
                               <PopularDestinationsPopup
+                                title={
+                                  (data &&
+                                    data.locationDetails &&
+                                    data.locationDetails.title) ||
+                                  title
+                                }
                                 countrySlug={countrySlug}
                                 subdivision={query.subdivision}
                                 destinations={data.locationDetails.sublocations}

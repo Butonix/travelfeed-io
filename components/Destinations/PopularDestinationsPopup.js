@@ -33,7 +33,7 @@ const PopularDestinationsPopup = props => {
   return (
     <>
       <Button variant="contained" color="primary" onClick={handleClick}>
-        <span className="pr-1">Popular Destinations</span>
+        <span className="pr-1">Popular in {props.title}</span>
         <DiscoverIcon />
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl} transition>
