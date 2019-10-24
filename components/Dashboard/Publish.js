@@ -10,12 +10,14 @@ import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
+import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import { USE_ADVANCED_EDITOR_OPTIONS } from '../../helpers/graphql/settings';
 import graphQLClient from '../../helpers/graphQLClient';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
@@ -525,19 +527,6 @@ const PostEditor = props => {
               }
             />
           </div>
-          {editMode === false && (
-            <div className="col-12 pt-2 pl-2 pr-2">
-              <DetailedExpansionPanel
-                title="Language"
-                description="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read"
-                helper="The use of automated translation tools is not allowed. Currently, only English posts are displayed on TravelFeed, but we are working on introducing new languages soon. Currently, only English and Polish posts are curated - if you would like to run a curation team for your language, please contact us."
-                value={languages.find(lang => lang.code === language).name}
-                selector={
-                  <LanguageSelector onChange={setLanguage} value={language} />
-                }
-              />
-            </div>
-          )}
           <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               expanded
@@ -558,72 +547,102 @@ const PostEditor = props => {
           </div>
           {!editMode && (
             <Fragment>
-              <div className="col-12 pt-2 pl-2 pr-2">
-                <DetailedExpansionPanel
-                  title="Payout Options"
-                  description="Choose how to receive your reward"
-                  helper="This is an advanced option for experienced Steem-users."
-                  value={
-                    poweredUp
-                      ? '100% Steem Power'
-                      : '50% liquid SBD/STEEM and 50% Steem Power'
-                  }
-                  selector={
-                    <PayoutTypeSelector
-                      onChange={setPoweredUp}
-                      value={poweredUp}
-                    />
-                  }
-                />
-              </div>
-              <div className="col-12 pt-2 pl-2 pr-2">
-                <DetailedExpansionPanel
-                  title={
-                    !permlinkValid ? (
-                      <span>
-                        <WarnIcon />
-                        {'  '}Permlink
-                      </span>
-                    ) : (
-                      'Permlink'
-                    )
-                  }
-                  description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
-                  helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
-                  value={`https://travelfeed.io/@${user}/${permlink ||
-                    getSlug(title)}`}
-                  selector={
-                    <PermlinkInput
-                      onChange={pl => {
-                        setPermlink(pl);
-                        setPermlinkValid(true);
-                      }}
-                      data={permlink}
-                      placeholder={getSlug(title)}
-                    />
-                  }
-                />
-              </div>
-              <div className="col-12 pt-2 pl-2 pr-2">
-                <DetailedExpansionPanel
-                  title="Beneficiaries"
-                  description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here. Remember to click on + to add the beneficiary."
-                  helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
-                  value={
-                    beneficiaries.length === 0
-                      ? 'None'
-                      : `${beneficiaries.length} Beneficiar${
-                          beneficiaries.length === 1 ? 'y' : 'ies'
-                        } set`
-                  }
-                  selector={
-                    <BeneficiaryInput
-                      onChange={setBeneficiaries}
-                      value={beneficiaries}
-                    />
-                  }
-                />
-              </div>
+              <Query query={USE_ADVANCED_EDITOR_OPTIONS}>
+                {({ data }) => (
+                  <>
+                    {(data &&
+                      data.preferences.useAdvancedEditorOptions === false && (
+                        <></>
+                      )) || (
+                      <>
+                        <div className="col-12 pt-2 pl-2 pr-2">
+                          <DetailedExpansionPanel
+                            title="Language"
+                            description="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read"
+                            helper="The use of automated translation tools is not allowed. Currently, only English posts are displayed on TravelFeed, but we are working on introducing new languages soon. Currently, only English and Polish posts are curated - if you would like to run a curation team for your language, please contact us."
+                            value={
+                              languages.find(lang => lang.code === language)
+                                .name
+                            }
+                            selector={
+                              <LanguageSelector
+                                onChange={setLanguage}
+                                value={language}
+                              />
+                            }
+                          />
+                        </div>
+                        <div className="col-12 pt-2 pl-2 pr-2">
+                          <DetailedExpansionPanel
+                            title="Payout Options"
+                            description="Choose how to receive your reward"
+                            helper="This is an advanced option for experienced Steem-users."
+                            value={
+                              poweredUp
+                                ? '100% Steem Power'
+                                : '50% liquid SBD/STEEM and 50% Steem Power'
+                            }
+                            selector={
+                              <PayoutTypeSelector
+                                onChange={setPoweredUp}
+                                value={poweredUp}
+                              />
+                            }
+                          />
+                        </div>
+                        <div className="col-12 pt-2 pl-2 pr-2">
+                          <DetailedExpansionPanel
+                            title="Beneficiaries"
+                            description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here. Remember to click on + to add the beneficiary."
+                            helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
+                            value={
+                              beneficiaries.length === 0
+                                ? 'None'
+                                : `${beneficiaries.length} Beneficiar${
+                                    beneficiaries.length === 1 ? 'y' : 'ies'
+                                  } set`
+                            }
+                            selector={
+                              <BeneficiaryInput
+                                onChange={setBeneficiaries}
+                                value={beneficiaries}
+                              />
+                            }
+                          />
+                        </div>
+                      </>
+                    )}
+                    <div className="col-12 pt-2 pl-2 pr-2">
+                      <DetailedExpansionPanel
+                        title={
+                          !permlinkValid ? (
+                            <span>
+                              <WarnIcon />
+                              {'  '}Permlink
+                            </span>
+                          ) : (
+                            'Permlink'
+                          )
+                        }
+                        description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
+                        helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                        value={`https://travelfeed.io/@${user}/${permlink ||
+                          getSlug(title)}`}
+                        selector={
+                          <PermlinkInput
+                            onChange={pl => {
+                              setPermlink(pl);
+                              setPermlinkValid(true);
+                            }}
+                            data={permlink}
+                            placeholder={getSlug(title)}
+                          />
+                        }
+                      />
+                    </div>
+                  </>
+                )}
+              </Query>
             </Fragment>
           )}
           <div className="col-12 pt-2 pl-2 pr-2">

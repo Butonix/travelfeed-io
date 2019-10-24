@@ -29,6 +29,13 @@ const Settings = props => {
   const [showNSFW, setShowNSFW] = useState(false);
   const [useTfBlacklist, setUseTfBlacklist] = useState(true);
   const [notificationPermission, setNotificationPermission] = useState(false);
+  const [
+    useHighPrecisionVotingSlider,
+    setUseHighPrecisionVotingSlider,
+  ] = useState(false);
+  const [useAdvancedEditorOptions, setUseAdvancedEditorOptions] = useState(
+    false,
+  );
 
   useEffect(() => {
     // https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
@@ -60,6 +67,10 @@ const Settings = props => {
       setShowNSFW(event.target.checked);
     } else if (name === 'useTfBlacklist') {
       setUseTfBlacklist(event.target.checked);
+    } else if (name === 'useHighPrecisionVotingSlider') {
+      setUseHighPrecisionVotingSlider(event.target.checked);
+    } else if (name === 'useAdvancedEditorOptions') {
+      setUseAdvancedEditorOptions(event.target.checked);
     } else if (name === 'notificationPermission') {
       if (!notificationPermission)
         Notification.requestPermission(status => {
@@ -108,6 +119,12 @@ const Settings = props => {
                     );
                     setShowNSFW(data.preferences.showNSFW);
                     setUseTfBlacklist(data.preferences.useTfBlacklist);
+                    setUseHighPrecisionVotingSlider(
+                      data.preferences.useHighPrecisionVotingSlider,
+                    );
+                    setUseAdvancedEditorOptions(
+                      data.preferences.useAdvancedEditorOptions !== false,
+                    );
                     return <Fragment />;
                   }
                   return (
@@ -118,6 +135,8 @@ const Settings = props => {
                         defaultCommentsVoteWeight,
                         showNSFW,
                         useTfBlacklist,
+                        useHighPrecisionVotingSlider,
+                        useAdvancedEditorOptions,
                       }}
                     >
                       {(changeSettings, data) => {
@@ -170,7 +189,39 @@ const Settings = props => {
                                       color="primary"
                                     />
                                   }
-                                  label="Use TravelFeed Blacklist"
+                                  label="Use TravelFeed blacklist"
+                                />
+
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={useHighPrecisionVotingSlider}
+                                      onChange={handleCheckboxChange(
+                                        'useHighPrecisionVotingSlider',
+                                      )}
+                                      onInput={changeSettings}
+                                      value="useHighPrecisionVotingSlider"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="High precision voting slider"
+                                />
+
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={useAdvancedEditorOptions}
+                                      onChange={handleCheckboxChange(
+                                        'useAdvancedEditorOptions',
+                                      )}
+                                      onInput={changeSettings}
+                                      value="useAdvancedEditorOptions"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Advanced editor options"
                                 />
 
                                 <FormControlLabel
@@ -201,7 +252,7 @@ const Settings = props => {
                                       color="primary"
                                     />
                                   }
-                                  label="Display Notifications"
+                                  label="Display notifications"
                                 />
 
                                 <TextField
