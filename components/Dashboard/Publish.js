@@ -397,7 +397,7 @@ const PostEditor = props => {
           let percent_steem_dollars = 10000;
           if (poweredUp) percent_steem_dollars = 0;
           const extensions = [];
-          if (beneficiaries) {
+          if (beneficiaries && beneficiaries.length > 0) {
             const bfs = [];
             beneficiaries.forEach(b => {
               bfs.push({ account: b.username, weight: b.percentage * 100 });
