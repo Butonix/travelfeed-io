@@ -16,6 +16,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import DiscoverIcon from '@material-ui/icons/Explore';
 import FeedIcon from '@material-ui/icons/Favorite';
 import HotIcon from '@material-ui/icons/FlightTakeoff';
+import TopicIcon from '@material-ui/icons/FolderSpecial';
 import CookieIcon from '@material-ui/icons/GroupWork';
 import PrivacyIcon from '@material-ui/icons/Lock';
 import MapIcon from '@material-ui/icons/Map';
@@ -172,6 +173,11 @@ export default function MenuDrawer(props) {
       <Divider />
       <List>
         {[
+          {
+            label: 'topics',
+            link: '/topics',
+            icon: <TopicIcon />,
+          },
           {
             label: 'destinations',
             link: '/destinations',

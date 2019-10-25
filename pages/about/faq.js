@@ -12,7 +12,7 @@ const FaqPage = () => {
   return (
     <Fragment>
       <Header subheader={title} />
-      <Head title={`${title} - TravelFeed: The Travel Community`} />
+      <Head title={`${title}`} />
       <AboutSelect selection={4} />
       <Grid
         container

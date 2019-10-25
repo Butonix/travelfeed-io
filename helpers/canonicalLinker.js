@@ -47,7 +47,6 @@ export default function makeCanonicalLink(
   author,
   permlink,
 ) {
-  console.log(metadata, appstring, category, author, permlink);
   if (metadata) {
     const canonUrl = read_md_canonical(metadata);
     if (canonUrl) return canonUrl;

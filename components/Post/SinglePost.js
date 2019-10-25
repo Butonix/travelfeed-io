@@ -179,10 +179,10 @@ class SinglePost extends Component {
             let card = <Fragment />;
             let head = <Fragment />;
             // Render post
-            const htmlBody = parseBody(body, {
+            const htmlBody = parseBody(body, {});
+            const bodyText = parseHtmlToReact(htmlBody, {
               cardWidth: this.state.cardWidth,
             });
-            const bodyText = parseHtmlToReact(htmlBody, {});
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div className="textPrimary postcontent postCardContent">
@@ -248,7 +248,7 @@ class SinglePost extends Component {
             if (depth > 0) {
               head = (
                 <Head
-                  title={`Re: ${root_title} - TravelFeed`}
+                  shorttitle={`Re: ${root_title}`}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}
                   type={{
@@ -287,7 +287,7 @@ class SinglePost extends Component {
             } else {
               head = (
                 <Head
-                  title={`${title} - TravelFeed`}
+                  shorttitle={title}
                   image={img_url}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}

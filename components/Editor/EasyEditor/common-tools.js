@@ -21,7 +21,7 @@ export default {
       // https://github.com/editor-js/image
       uploader: {
         uploadByFile(file) {
-          return uploadFile(file).then(res => {
+          return uploadFile(file, {}).then(res => {
             return new Promise(resolve => {
               resolve({
                 success: 1,

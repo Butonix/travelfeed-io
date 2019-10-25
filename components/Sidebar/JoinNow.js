@@ -16,7 +16,7 @@ const JoinNow = () => {
             gutterBottom
             className="p-2 textPrimary"
           >
-            Never miss another story!
+            Travel, Write, Earn - it&apos;s that simple!
           </Typography>
           <div>
             <Link color="textPrimary" href="/join">

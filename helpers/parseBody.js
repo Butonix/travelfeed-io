@@ -121,16 +121,15 @@ const parseBody = (body, options) => {
     }),
   );
 
-  // Proxify image urls and add lazyload and conditional webp
-  if (options.parseImages !== false) {
+  // Proxify image urls and add lazyload and conditional webp - only for html editor preview!
+  if (options.parseImages) {
     let imgMatches = imgFullSize.exec(parsedBody);
     while (imgMatches != null) {
       imgMatches = imgFullSize.exec(parsedBody);
       if (imgMatches != null) {
-        if (options.lazy === false) {
-          parsedBody = parsedBody.replace(
-            imgMatches[0],
-            `<figure><img class="loaded"
+        parsedBody = parsedBody.replace(
+          imgMatches[0],
+          `<figure><img class="loaded"
             ${
               imgMatches[2] && !options.hideimgcaptions
                 ? `alt=${imgMatches[2]}`
@@ -142,50 +141,14 @@ const parseBody = (body, options) => {
                 undefined,
                 'fit',
               )}"><figcaption>${
-              imgMatches[2] === undefined ||
-              // ignore alt texts with image name
-              imgMatches[2].match(/(DSC_|\.gif|\.jpg|\.png)/i) ||
-              options.hideimgcaptions
-                ? ''
-                : imgMatches[2]
-            }</figcaption></figure>`,
-          );
-        } else {
-          parsedBody = parsedBody.replace(
-            imgMatches[0],
-            `<figure><picture>
-            <source type="image/webp"
-                data-srcset="${imageProxy(
-                  imgMatches[1],
-                  options.cardWidth,
-                  undefined,
-                  'fit',
-                  'webp',
-                )}"
-                data-sizes="100w">
-            <img ${imgMatches[2] ? `alt="${imgMatches[2]}"` : ''} class="lazy"
-                src="${imageProxy(
-                  imgMatches[1],
-                  undefined,
-                  50,
-                  'fit',
-                )}" data-src="${imageProxy(
-              imgMatches[1],
-              options.cardWidth,
-              undefined,
-              'fit',
-            )}"
-            data-sizes="100w">
-            </picture>
-         <figcaption>${
-           imgMatches[2] === undefined ||
-           // ignore alt texts with image name
-           imgMatches[2].match(/(DSC_|\.gif|\.jpeg|\.jpg|\.png)/i)
-             ? ''
-             : imgMatches[2]
-         }</figcaption></figure>`,
-          );
-        }
+            imgMatches[2] === undefined ||
+            // ignore alt texts with image name
+            imgMatches[2].match(/(DSC_|\.gif|\.jpg|\.png)/i) ||
+            options.hideimgcaptions
+              ? ''
+              : imgMatches[2]
+          }</figcaption></figure>`,
+        );
       }
     }
   }

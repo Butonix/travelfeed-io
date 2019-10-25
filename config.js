@@ -67,6 +67,8 @@ export const removeTags = [
   'ocd',
   'jjm',
   'ocd-resteem',
+  'oc',
+  'share2steem',
   'swmchallenge',
   'esteem',
   'powerhousecreatives',

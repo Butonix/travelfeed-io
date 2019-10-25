@@ -21,7 +21,7 @@ const HtmlEditor = props => {
   }, []);
 
   const handleImageUpload = (file, callback) => {
-    return uploadFile(file).then(res => {
+    return uploadFile(file, {}).then(res => {
       return callback(res);
     });
   };
@@ -55,7 +55,7 @@ const HtmlEditor = props => {
         }}
         value={data}
         renderHTML={text =>
-          parseBody(text, { lazy: false, secureLinks: false })
+          parseBody(text, { parseImages: true, secureLinks: false })
         }
         onChange={handleHtmlEditorChange}
         onImageUpload={handleImageUpload}

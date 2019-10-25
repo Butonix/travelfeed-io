@@ -28,7 +28,7 @@ const JoinPage = props => {
   return (
     <Fragment>
       <Head
-        title="Join TravelFeed: The Travel Community"
+        title="Join"
         description="TravelFeed is the travel community on the Steem Blockchain. Join TravelFeed now!"
       />
       <Header />
@@ -111,7 +111,7 @@ const JoinPage = props => {
                   <div className="row justify-content-center align-items-center h-100">
                     <div className="col-xl-6 col-md-8 col-sm-11 col-xs-12">
                       <Typography gutterBottom variant="h3">
-                        Get Paid for Your Travel Blog
+                        Travel, Write, Earn – it's that simple!
                       </Typography>
                       <Typography gutterBottom variant="subtitle1">
                         Ready to start your own travel blog? We offer you a free

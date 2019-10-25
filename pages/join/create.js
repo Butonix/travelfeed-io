@@ -17,7 +17,7 @@ const RegisterCreatePage = props => {
   return (
     <>
       <Header subheader="Register" />
-      <Head title="Register - TravelFeed: The Travel Community" />
+      <Head title="Register" />
       <FixedBackgroundImage
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T174359871Z-easysignup-1.jpg"
         component={

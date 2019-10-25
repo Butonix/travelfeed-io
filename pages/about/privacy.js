@@ -12,7 +12,7 @@ const PrivacyPage = () => {
   return (
     <Fragment>
       <Header subheader={title} active="privacy" />
-      <Head title={`${title} - TravelFeed: The Travel Community`} />
+      <Head title={`${title}`} />
       <AboutSelect selection={2} />
       <Grid
         container

@@ -39,6 +39,7 @@ const EditLocationDetails = props => {
   const [title, setTitle] = useState('');
   const [isFeatured, setFeatured] = useState(false);
   const [roles, setRoles] = useState(undefined);
+  const [topics, setTopics] = useState(undefined);
 
   useEffect(() => {
     setRoles(getRoles());
@@ -51,6 +52,7 @@ const EditLocationDetails = props => {
     if (props.data.budget_score) setBudgetScore(props.data.budget_score);
     if (props.data.title) setTitle(props.data.title);
     if (props.data.isFeatured !== undefined) setFeatured(props.data.isFeatured);
+    if (props.data.topics !== undefined) setTopics(props.data.topics);
   }, [props]);
 
   const theme = useTheme();
@@ -70,9 +72,11 @@ const EditLocationDetails = props => {
 
   return (
     <>
-      <IconButton color="primary" onClick={handleClickOpen}>
-        <EditIcon />
-      </IconButton>
+      <span className="text-light">
+        <IconButton color="inherit" onClick={handleClickOpen}>
+          <EditIcon />
+        </IconButton>
+      </span>
       <Mutation
         mutation={ADD_LOCATION_DETAILS}
         variables={{
@@ -86,6 +90,7 @@ const EditLocationDetails = props => {
           budget_score,
           title,
           isFeatured,
+          topics,
         }}
       >
         {(
@@ -135,9 +140,10 @@ const EditLocationDetails = props => {
                       label="Featured"
                     />
                     <FeaturedImageUpload
+                      allowFullSize
                       featuredImage={image}
                       setFeaturedImage={input => setImage(input)}
-                      placeholder="To upload a cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 2880x900"
+                      placeholder="To upload a cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 2880x750"
                     />
                     <TextField
                       label="Image Attribution"
@@ -164,6 +170,12 @@ const EditLocationDetails = props => {
                           <MenuItem value={4}>Expensive</MenuItem>
                           <MenuItem value={5}>Very expensive</MenuItem>
                         </Select>
+                        <TextField
+                          label="Topics"
+                          fullWidth
+                          value={topics}
+                          onChange={val => setTopics(val.target.value)}
+                        />
                       </>
                     )}
                   </DialogContent>

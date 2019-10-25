@@ -62,15 +62,35 @@ const Geocoder = props => {
         // from neighbouring countries to be returned as well. Unlike the
         // subdivision, the country-code is consistant to the database,
         // adding it to the query improves the accuracy
-        let args = '';
-        const components =
-          result.address_components[result.address_components.length - 1];
-        const showlocations = result.address_components.length === 1;
-        components.types.forEach(t => {
-          if (t === 'country') {
-            args = `&country_code=${components.short_name.toLowerCase()}&showlocations=${showlocations}`;
-          }
+        let country_code;
+        let subdivision;
+        let city;
+        result.address_components.forEach(adrcomp => {
+          adrcomp.types.forEach(t => {
+            if (t === 'country') {
+              country_code = adrcomp.short_name.toLowerCase();
+            } else if (
+              t === 'administrative_area_level_1' ||
+              t === 'colloquial_area'
+            ) {
+              // Manual geocoding overrides for mismatches between Google and Nominatim results
+              subdivision = adrcomp.long_name;
+              if (subdivision === 'Federal Territory of Kuala Lumpur')
+                subdivision = 'Kuala Lumpur';
+            } else if (
+              t === 'administrative_area_level_2' ||
+              t === 'locality'
+            ) {
+              city = adrcomp.long_name;
+              if (city === 'Kuala Lumpur') city = undefined;
+              else if (city === 'Beijing') city = undefined;
+              else if (city === 'Government of Amsterdam') city = 'Amsterdam';
+            }
+          });
         });
+        const args = `${country_code ? `&country_code=${country_code}` : ''}${
+          subdivision ? `&subdivision=${encodeURIComponent(subdivision)}` : ''
+        }${city ? `&city=${encodeURIComponent(city)}` : ''}`;
         let { bounds } = result.geometry;
         // Some exact locations have no boundary, so use the less exact viewport
         //  instead

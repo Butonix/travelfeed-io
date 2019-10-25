@@ -14,6 +14,7 @@ const EditorPreview = props => {
     const htmlBody = parseBody(props.content, { lazy: false });
     bodyText = parseHtmlToReact(htmlBody, {
       parseLinksToBlank: true,
+      lazy: false,
     });
   }
   return (

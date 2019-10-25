@@ -11,6 +11,7 @@ import ReactMapGL, {
   NavigationControl,
   Popup,
 } from 'react-map-gl';
+import WebMercatorViewport from 'viewport-mercator-project';
 import { MAPBOX_TOKEN } from '../../config';
 import '../Editor/react-map-gl-geocoder/react-map-gl-geocoder.css';
 import Cluster from './Cluster';
@@ -21,6 +22,9 @@ import PinGroup from './PinGroup';
 const Geocoder = dynamic(() => import('react-map-gl-geocoder'), {
   ssr: false,
 });
+
+const fitBounds = (bounds, viewport) =>
+  new WebMercatorViewport(viewport).fitBounds(bounds);
 
 class MapCluster extends Component {
   state = {
@@ -41,13 +45,25 @@ class MapCluster extends Component {
     const height = this.props.getHeightFromContainer
       ? document.getElementById('container').clientHeight
       : 500;
+    let zoom = this.props.zoom || 1;
+    if (this.props.bbox)
+      zoom = fitBounds(
+        [
+          [this.props.bbox[0], this.props.bbox[1]],
+          [this.props.bbox[2], this.props.bbox[3]],
+        ],
+        {
+          width,
+          height,
+        },
+      ).zoom;
     this.setState({
       viewport: {
         width,
         height,
         latitude: this.props.latitude || 25,
         longitude: this.props.longitude || 10,
-        zoom: this.props.zoom || 1,
+        zoom,
       },
     });
   }

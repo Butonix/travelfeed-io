@@ -49,9 +49,11 @@ const FeaturedImageUpload = props => {
     multiple: false,
     onDropAccepted: files => {
       files.map(file => {
-        return uploadFile(file).then(res => {
-          setFeaturedImage(res);
-        });
+        return uploadFile(file, { allowFullSize: props.allowFullSize }).then(
+          res => {
+            setFeaturedImage(res);
+          },
+        );
       });
     },
   });

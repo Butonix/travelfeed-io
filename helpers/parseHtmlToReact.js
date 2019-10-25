@@ -2,6 +2,7 @@
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
 import Link from '../lib/Link';
+import { imageProxy } from './getImage';
 import { exitUrl, mentionUrl, postUrl } from './regex';
 
 const parseHtmlToReact = (htmlBody, options) => {
@@ -15,6 +16,80 @@ const parseHtmlToReact = (htmlBody, options) => {
       if (parseLinksToBlank && attribs.href) {
         attribs.target = '_blank';
         return;
+      }
+
+      // Proxify image urls and add lazyload and conditional webp
+      if (
+        attribs.src &&
+        attribs.frameborder === undefined &&
+        attribs.allowfullscreen === undefined
+      ) {
+        const doNotConvert =
+          attribs.src.substr(attribs.src.length - 4) === '.gif';
+        if (options.lazy === false) {
+          return (
+            <figure>
+              <img
+                className="loaded"
+                alt={attribs.alt}
+                src={
+                  doNotConvert
+                    ? attribs.src
+                    : imageProxy(attribs.src, 1800, undefined, 'fit')
+                }
+              />
+              {attribs.alt !== undefined &&
+                // ignore alt texts with image name
+                !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
+                !options.hideimgcaptions && (
+                  <figcaption>{attribs.alt}</figcaption>
+                )}
+            </figure>
+          );
+        }
+        return (
+          <figure>
+            <picture>
+              <source
+                type="image/webp"
+                data-srcset={
+                  doNotConvert
+                    ? attribs.src
+                    : imageProxy(
+                        attribs.src,
+                        options.cardWidth,
+                        undefined,
+                        'fit',
+                        'webp',
+                      )
+                }
+                data-sizes="100w"
+              />
+              <img
+                alt={attribs.alt}
+                className="lazy"
+                src={imageProxy(attribs.src, undefined, 50, 'fit')}
+                data-src={
+                  doNotConvert
+                    ? attribs.src
+                    : imageProxy(
+                        attribs.src,
+                        options.cardWidth,
+                        undefined,
+                        'fit',
+                      )
+                }
+                data-sizes="100w"
+              />
+            </picture>
+            {attribs.alt !== undefined &&
+              // ignore alt texts with image name
+              !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
+              !options.hideimgcaptions && (
+                <figcaption>{attribs.alt}</figcaption>
+              )}
+          </figure>
+        );
       }
 
       // Replace exit urls with Link component

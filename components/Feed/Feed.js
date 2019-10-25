@@ -34,7 +34,9 @@ const Feed = props => {
   return (
     <>
       <Head
-        title={`${capitalize(active)} - TravelFeed: The Travel Community`}
+        title={`${
+          active === 'taking Off' ? 'Hot' : capitalize(active)
+        } Travel Blogs`}
         description="Discover the best travel content on TravelFeed, the world-wide travel community!"
       />
       <Header active={active} subheader={capitalize(active)} />

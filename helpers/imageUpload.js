@@ -53,9 +53,13 @@ const upload = file => {
   });
 };
 
-const uploadFile = async localfile => {
+const uploadFile = async (localfile, options) => {
   return new Promise((resolve, reject) => {
-    if (localfile.size < 1000000 || localfile.type === 'image/gif') {
+    if (
+      localfile.size < 1000000 ||
+      localfile.type === 'image/gif' ||
+      options.allowFullSize
+    ) {
       // Upload files under 1MB directly. Also don't resize gifs since that would break animations
       upload(localfile)
         .then(result => {

@@ -7,6 +7,9 @@ export const CHANGE_SETTINGS = gql`
     $showNSFW: Boolean
     $useTfBlacklist: Boolean
     $useDarkMode: Boolean
+    $hasAcceptedCookies: Boolean
+    $useHighPrecisionVotingSlider: Boolean
+    $useAdvancedEditorOptions: Boolean
   ) {
     updatePreferences(
       defaultVoteWeight: $defaultVoteWeight
@@ -14,9 +17,28 @@ export const CHANGE_SETTINGS = gql`
       showNSFW: $showNSFW
       useTfBlacklist: $useTfBlacklist
       useDarkMode: $useDarkMode
+      hasAcceptedCookies: $hasAcceptedCookies
+      useHighPrecisionVotingSlider: $useHighPrecisionVotingSlider
+      useAdvancedEditorOptions: $useAdvancedEditorOptions
     ) {
       success
       message
+    }
+  }
+`;
+
+export const GET_COOKIES_ACCEPTED = gql`
+  query preferences {
+    preferences {
+      hasAcceptedCookies
+    }
+  }
+`;
+
+export const USE_ADVANCED_EDITOR_OPTIONS = gql`
+  query preferences {
+    preferences {
+      useAdvancedEditorOptions
     }
   }
 `;
@@ -29,6 +51,8 @@ export const GET_SETTINGS = gql`
       showNSFW
       useDarkMode
       useTfBlacklist
+      useHighPrecisionVotingSlider
+      useAdvancedEditorOptions
     }
   }
 `;
@@ -38,6 +62,7 @@ export const GET_VOTE_WEIGHTS = gql`
     preferences {
       defaultVoteWeight
       defaultCommentsVoteWeight
+      useHighPrecisionVotingSlider
     }
   }
 `;

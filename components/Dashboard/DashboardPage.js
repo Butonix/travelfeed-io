@@ -18,7 +18,7 @@ const DashboardPage = props => {
       <>
         <Head
           title={`TravelBlog: ${props.label.charAt(0).toUpperCase() +
-            props.label.slice(1)} - TravelFeed: The Travel Community`}
+            props.label.slice(1)}`}
         />
         <DashboardMenu
           active={props.label}
@@ -34,7 +34,7 @@ const DashboardPage = props => {
     <>
       <Head
         title={`TravelBlog: ${props.label.charAt(0).toUpperCase() +
-          props.label.slice(1)} - TravelFeed: The Travel Community`}
+          props.label.slice(1)}`}
       />
       <DashboardMenu active={props.label} content={<></>} open={open} />
     </>

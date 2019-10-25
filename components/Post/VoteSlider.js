@@ -370,7 +370,13 @@ class VoteSlider extends Component {
                     value={this.state.weight}
                     min={1}
                     max={10}
-                    step={1}
+                    step={
+                      data &&
+                      data.preferences &&
+                      data.preferences.useHighPrecisionVotingSlider
+                        ? 0.1
+                        : 1
+                    }
                     onChange={this.setWeight}
                   />
                   <Tooltip title="Close" placement="bottom">

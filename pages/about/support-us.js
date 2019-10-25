@@ -15,7 +15,7 @@ const SupportUsPage = () => {
   return (
     <Fragment>
       <Header subheader={title} />
-      <Head title={`${title} - TravelFeed: The Travel Community`} />
+      <Head title={`${title}`} />
       <AboutSelect selection={5} />
       <Grid
         container

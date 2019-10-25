@@ -30,6 +30,7 @@ export const GET_LOCATION_DETAILS = gql`
         subdivision
         city
       }
+      topics
     }
   }
 `;
@@ -64,6 +65,7 @@ export const ADD_LOCATION_DETAILS = gql`
     $tag: String
     $title: String
     $isFeatured: Boolean
+    $topics: String
   ) {
     addLocationDetails(
       country_code: $country_code
@@ -76,6 +78,7 @@ export const ADD_LOCATION_DETAILS = gql`
       tag: $tag
       title: $title
       isFeatured: $isFeatured
+      topics: $topics
     ) {
       success
       message
