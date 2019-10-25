@@ -12,6 +12,7 @@ import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import PopularDestinationsPopup from '../Destinations/PopularDestinationsPopup';
+import Head from '../Header/Head';
 import EditLocationDetails from './EditLocationDetails';
 import TopicSelector from './TopicSelector';
 
@@ -36,9 +37,38 @@ const PhotoDetailHeader = props => {
     <Fragment>
       <Query query={GET_LOCATION_DETAILS} variables={query}>
         {({ data, loading }) => {
+          const detailTitle =
+            (data && data.locationDetails && data.locationDetails.title) ||
+            title;
+          let description = `${
+            tag ? `Discover ${detailTitle}` : `Visit ${detailTitle}`
+          }: ${
+            data &&
+            data.locationDetails.budget_score &&
+            data.locationDetails.budget_score < 3
+              ? `Traveling ${detailTitle} is affordable and exciting! `
+              : ''
+          }`;
+          if (
+            data &&
+            !data.locationDetails.url &&
+            data.locationDetails.description
+          )
+            description += `${data.locationDetails.description} `;
+          description += `Explore the best places to visit, discover insider's tips, find out what to do${
+            data &&
+            data.locationDetails.budget_score &&
+            data.locationDetails.budget_score > 4
+              ? ` in ${detailTitle} on a budget`
+              : ''
+          } and read the top travel blogs about ${detailTitle} on TravelFeed!`;
           if (loading || (data && data.locationDetails)) {
             return (
               <Fragment>
+                <Head
+                  shorttitle={`${detailTitle}: Top Travel Blogs`}
+                  description={description}
+                />
                 <div
                   className="w-100"
                   style={{
@@ -141,10 +171,7 @@ const PhotoDetailHeader = props => {
                             textShadow: '1px 1px 10px #343A40',
                           }}
                         >
-                          {(data &&
-                            data.locationDetails &&
-                            data.locationDetails.title) ||
-                            title}
+                          {detailTitle}
                         </Typography>
                         <Typography
                           gutterBottom
@@ -183,12 +210,7 @@ const PhotoDetailHeader = props => {
                             data &&
                             data.locationDetails.sublocations.length > 1 && (
                               <PopularDestinationsPopup
-                                title={
-                                  (data &&
-                                    data.locationDetails &&
-                                    data.locationDetails.title) ||
-                                  title
-                                }
+                                title={detailTitle}
                                 countrySlug={countrySlug}
                                 subdivision={query.subdivision}
                                 destinations={data.locationDetails.sublocations}
@@ -198,10 +220,7 @@ const PhotoDetailHeader = props => {
                             <Tooltip
                               title={getBudgetScore(
                                 data.locationDetails.budget_score,
-                                (data &&
-                                  data.locationDetails &&
-                                  data.locationDetails.title) ||
-                                  title,
+                                detailTitle,
                               )}
                             >
                               <Typography

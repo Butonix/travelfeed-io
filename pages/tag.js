@@ -2,14 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
-import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import capitalize from '../helpers/capitalize';
 
 class TagPage extends Component {
   static async getInitialProps(props) {
     const { tags } = props.query;
-    console.log(tags);
     return {
       tags,
     };
@@ -18,12 +16,6 @@ class TagPage extends Component {
   render() {
     return (
       <Fragment>
-        <Head
-          title={`${capitalize(
-            this.props.tags,
-          )} - TravelFeed: The Travel Community`}
-          description={`Explore posts about #${this.props.tags} on TravelFeed.`}
-        />
         <Header active="tag" />
         <PhotoDetailHeader
           tag={this.props.tags}

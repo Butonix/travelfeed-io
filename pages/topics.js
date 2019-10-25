@@ -7,7 +7,7 @@ const Topics = () => {
   return (
     <>
       <Head
-        title="Topics - TravelFeed: The Travel Community"
+        title="Topics"
         description="Discover the best travel topics on TravelFeed."
       />
       <Header subheader="Topics" active="topics" />

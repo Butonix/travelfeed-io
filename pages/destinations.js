@@ -22,7 +22,7 @@ const DestinationsPage = props => {
     return (
       <Fragment>
         <Head
-          title="Destinations - TravelFeed: The Travel Community"
+          title="Destinations"
           description="Discover the best travel destinations on TravelFeed."
         />
         <Header subheader="Destinations" active="destinations" />
@@ -52,13 +52,6 @@ const DestinationsPage = props => {
   if (topic) query.tags = topic;
   return (
     <Fragment>
-      <Head
-        title={`${title} - TravelFeed: The Travel Community`}
-        description={`Discover the best travel blog posts about ${suburb ||
-          city ||
-          subdivision ||
-          countryName} on TravelFeed.`}
-      />
       <Header subheader={title} active="destination" />
       <PhotoDetailHeader
         countrySlug={country}

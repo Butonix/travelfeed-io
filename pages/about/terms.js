@@ -12,7 +12,7 @@ const TermsPage = () => {
   return (
     <Fragment>
       <Header subheader={title} active="terms" />
-      <Head title={`${title} - TravelFeed: The Travel Community`} />
+      <Head title={`${title}`} />
       <AboutSelect selection={1} />
       <Grid
         container

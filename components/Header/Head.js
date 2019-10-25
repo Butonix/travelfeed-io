@@ -3,15 +3,29 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { imageProxy } from '../../helpers/getImage';
 
-const Head = ({ title, image, description, canonicalUrl, type }) => (
+const Head = ({
+  title,
+  shorttitle,
+  image,
+  description,
+  canonicalUrl,
+  type,
+}) => (
   <NextHead>
-    <title>{title}</title>
+    <title>
+      {shorttitle
+        ? `${shorttitle} - TravelFeed`
+        : `${title} - TravelFeed: Travel, Write, Earn`}
+    </title>
     <meta name="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${title} - TravelFeed`} />
+    <meta
+      name="twitter:title"
+      content={`${shorttitle || title} - TravelFeed`}
+    />
     <meta name="twitter:site" content="@travelfeedio" />
     <meta name="twitter:description" content={description} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={`${shorttitle || title} - TravelFeed`} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="TravelFeed" />
     {image && (
@@ -52,7 +66,7 @@ const Head = ({ title, image, description, canonicalUrl, type }) => (
 Head.defaultProps = {
   image: undefined,
   description:
-    'Discover the best travel content on TravelFeed, the world-wide travel community!',
+    'Travel, Write, Earn: Start earning with your free travel blog and discover the best travel content on TravelFeed, the world-wide travel community!',
   canonicalUrl: undefined,
   type: undefined,
 };

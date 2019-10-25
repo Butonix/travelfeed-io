@@ -84,6 +84,7 @@ const Geocoder = props => {
               city = adrcomp.long_name;
               if (city === 'Kuala Lumpur') city = undefined;
               else if (city === 'Beijing') city = undefined;
+              else if (city === 'Government of Amsterdam') city = 'Amsterdam';
             }
           });
         });

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
-import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import { slugFromCC } from '../helpers/countryCodes';
 
@@ -22,10 +21,6 @@ const LocationPage = props => {
 
   return (
     <Fragment>
-      <Head
-        title={`${props.formatted_address} - TravelFeed: The Travel Community`}
-        description={`Explore posts about ${props.formatted_address} on TravelFeed.`}
-      />
       <Header active="location" />
       <PhotoDetailHeader
         noEdit
