@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
 import DiscoverIcon from '@material-ui/icons/Explore';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from '../../lib/Link';
 
 const useStyles = makeStyles(theme => ({
@@ -19,9 +19,14 @@ const useStyles = makeStyles(theme => ({
 const PopularDestinationsPopup = props => {
   const classes = useStyles();
 
-  const { countrySlug, destinations, subdivision } = props;
-
   const [anchorEl, setAnchorEl] = useState(null);
+  const [innerWidth, setInnerWidth] = useState(undefined);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+  }, []);
+
+  const { countrySlug, destinations, subdivision } = props;
 
   const handleClick = event => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -40,7 +45,12 @@ const PopularDestinationsPopup = props => {
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-              <Paper className={classes.paper}>
+              <Paper
+                className={classes.paper}
+                style={{
+                  minWidth: innerWidth ? `${innerWidth * 0.7}px` : '250px',
+                }}
+              >
                 <div className="container">
                   <div className="row">
                     {destinations.map((location, index) => {
@@ -49,8 +59,9 @@ const PopularDestinationsPopup = props => {
                         return <></>;
                       }
                       return (
-                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div className="col">
                           <Link
+                            onClick={() => setAnchorEl(null)}
                             key={`${countrySlug}_${
                               location.subdivision
                                 ? location.subdivision
