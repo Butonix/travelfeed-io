@@ -62,28 +62,34 @@ const Geocoder = props => {
         // from neighbouring countries to be returned as well. Unlike the
         // subdivision, the country-code is consistant to the database,
         // adding it to the query improves the accuracy
-        let args = '';
+        let country_code;
+        let subdivision;
+        let city;
         result.address_components.forEach(adrcomp => {
           adrcomp.types.forEach(t => {
             if (t === 'country') {
-              args += `&country_code=${adrcomp.short_name.toLowerCase()}`;
-            } else if (t === 'administrative_area_level_1') {
+              country_code = adrcomp.short_name.toLowerCase();
+            } else if (
+              t === 'administrative_area_level_1' ||
+              t === 'colloquial_area'
+            ) {
               // Manual geocoding overrides for mismatches between Google and Nominatim results
-              let subdivision = adrcomp.long_name;
+              subdivision = adrcomp.long_name;
               if (subdivision === 'Federal Territory of Kuala Lumpur')
                 subdivision = 'Kuala Lumpur';
-              args += `&subdivision=${encodeURIComponent(subdivision)}`;
             } else if (
               t === 'administrative_area_level_2' ||
               t === 'locality'
             ) {
-              const city = adrcomp.long_name;
-              if (city !== 'Kuala Lumpur')
-                args += `&city=${encodeURIComponent(city)}`;
+              city = adrcomp.long_name;
+              if (city === 'Kuala Lumpur') city = undefined;
+              else if (city === 'Beijing') city = undefined;
             }
           });
         });
-
+        const args = `${country_code ? `&country_code=${country_code}` : ''}${
+          subdivision ? `&subdivision=${encodeURIComponent(subdivision)}` : ''
+        }${city ? `&city=${encodeURIComponent(city)}` : ''}`;
         let { bounds } = result.geometry;
         // Some exact locations have no boundary, so use the less exact viewport
         //  instead
