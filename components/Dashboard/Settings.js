@@ -11,8 +11,11 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
+import { requestPostingAuthority } from '../../helpers/actions';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
+import hasPostingAuthority from '../../helpers/hasPostingAuthority';
 import { registerServiceWorker } from '../../helpers/notifications';
+import { getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 import UserContext from '../General/UserContext';
 
@@ -60,6 +63,17 @@ const Settings = props => {
     setNotificationPermission(Notification.permission === 'granted');
   }, []);
 
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      const { enqueueSnackbar } = props;
+      enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
   const handleCheckboxChange = name => event => {
     if (name === 'useDarkMode') {
       if (useDarkMode) setLightMode();
@@ -73,28 +87,33 @@ const Settings = props => {
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
     } else if (name === 'claimRewards') {
-      setClaimRewards(event.target.checked);
+      const { checked } = event.target;
+      if (event.target.checked)
+        hasPostingAuthority(getUser()).then(res => {
+          if (res) setClaimRewards(checked);
+          else if (window && !window.steem_keychain) {
+            newNotification({
+              message:
+                'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
+              success: false,
+            });
+          } else
+            requestPostingAuthority().then(postAuthRes => {
+              if (postAuthRes.success) setClaimRewards(checked);
+              else newNotification(res);
+            });
+        });
+      else setClaimRewards(checked);
     } else if (name === 'notificationPermission') {
       if (!notificationPermission)
         Notification.requestPermission(status => {
           setNotificationPermission(status === 'granted');
           registerServiceWorker();
         });
-      new Notification(
-        'You can disable notifications in your browser settings',
-      );
+      newNotification({
+        message: 'You can disable notifications in your browser settings',
+      });
       setNotificationPermission(false);
-    }
-  };
-
-  const newNotification = notification => {
-    if (notification !== undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      const { enqueueSnackbar } = props;
-      enqueueSnackbar(notification.message, { variant });
     }
   };
 
