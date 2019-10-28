@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import steem from 'steem';
 import { STEEM_API } from '../config';
 

@@ -13,6 +13,7 @@ module.exports = {
     // camel case because of Hivemind table names
     camelcase: [0, { ignoreDestructuring: true }],
     'react/destructuring-assignment': [0, 'always'],
+    'import/prefer-default-export': ['off'],
     'react/jsx-fragments': ['off'],
     'prefer-object-spread': ['off'],
     'react/jsx-props-no-spreading': ['off'],

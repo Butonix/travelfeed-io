@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { WEB_PUSH_PUB } from '../config';
 import { ADD_PUSH_SUBSCRIPTION } from './graphql/notifications';
 import graphQLClient from './graphQLClient';
