@@ -36,6 +36,7 @@ const Settings = props => {
   const [useAdvancedEditorOptions, setUseAdvancedEditorOptions] = useState(
     false,
   );
+  const [claimRewards, setClaimRewards] = useState(false);
 
   useEffect(() => {
     // https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
@@ -71,6 +72,8 @@ const Settings = props => {
       setUseHighPrecisionVotingSlider(event.target.checked);
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
+    } else if (name === 'claimRewards') {
+      setClaimRewards(event.target.checked);
     } else if (name === 'notificationPermission') {
       if (!notificationPermission)
         Notification.requestPermission(status => {
@@ -125,6 +128,7 @@ const Settings = props => {
                     setUseAdvancedEditorOptions(
                       data.preferences.useAdvancedEditorOptions !== false,
                     );
+                    setClaimRewards(data.preferences.claimRewards);
                     return <Fragment />;
                   }
                   return (
@@ -137,6 +141,7 @@ const Settings = props => {
                         useTfBlacklist,
                         useHighPrecisionVotingSlider,
                         useAdvancedEditorOptions,
+                        claimRewards,
                       }}
                     >
                       {(changeSettings, data) => {
@@ -223,7 +228,21 @@ const Settings = props => {
                                   }
                                   label="Advanced editor options"
                                 />
-
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={claimRewards}
+                                      onChange={handleCheckboxChange(
+                                        'claimRewards',
+                                      )}
+                                      onInput={changeSettings}
+                                      value="claimRewards"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Automatically claim rewards"
+                                />
                                 <FormControlLabel
                                   labelPlacement="end"
                                   control={

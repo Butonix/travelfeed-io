@@ -10,6 +10,7 @@ export const CHANGE_SETTINGS = gql`
     $hasAcceptedCookies: Boolean
     $useHighPrecisionVotingSlider: Boolean
     $useAdvancedEditorOptions: Boolean
+    $claimRewards: Boolean
   ) {
     updatePreferences(
       defaultVoteWeight: $defaultVoteWeight
@@ -20,6 +21,7 @@ export const CHANGE_SETTINGS = gql`
       hasAcceptedCookies: $hasAcceptedCookies
       useHighPrecisionVotingSlider: $useHighPrecisionVotingSlider
       useAdvancedEditorOptions: $useAdvancedEditorOptions
+      claimRewards: $claimRewards
     ) {
       success
       message
@@ -53,6 +55,7 @@ export const GET_SETTINGS = gql`
       useTfBlacklist
       useHighPrecisionVotingSlider
       useAdvancedEditorOptions
+      claimRewards
     }
   }
 `;
