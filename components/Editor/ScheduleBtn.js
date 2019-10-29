@@ -49,7 +49,12 @@ const ScheduleBtn = props => {
                   'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
                 success: false,
               });
-            } else
+            } else {
+              newNotification({
+                message:
+                  'This action requires you to authorize @travelfeed.app to post on your behalf.',
+                success: false,
+              });
               requestPostingAuthority().then(postAuthRes => {
                 if (postAuthRes.success)
                   props.schedulePost({
@@ -58,6 +63,7 @@ const ScheduleBtn = props => {
                   });
                 else newNotification(res);
               });
+            }
           });
         }
       })

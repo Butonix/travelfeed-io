@@ -6,12 +6,18 @@ import Drafts from '../../components/Dashboard/Drafts';
 const DraftsPage = props => {
   const { open } = props;
 
-  return <DashboardPage open={open} label="drafts" content={<Drafts />} />;
+  return (
+    <DashboardPage
+      open={open}
+      label="drafts"
+      content={<Drafts sortby={props.sortby} />}
+    />
+  );
 };
 
 DraftsPage.getInitialProps = props => {
-  const { open } = props.query;
-  return { open };
+  const { open, sortby } = props.query;
+  return { open, sortby };
 };
 
 DraftsPage.propTypes = {

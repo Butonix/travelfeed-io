@@ -7,6 +7,7 @@ export const SAVE_DRAFT = gql`
     $body: String
     $json: String
     $isCodeEditor: Boolean
+    $publishedDate: Date
     $scheduledDate: Date
   ) {
     addDraft(
@@ -15,6 +16,7 @@ export const SAVE_DRAFT = gql`
       body: $body
       json: $json
       isCodeEditor: $isCodeEditor
+      publishedDate: $publishedDate
       scheduledDate: $scheduledDate
     ) {
       success
@@ -33,8 +35,18 @@ export const DELETE_DRAFT = gql`
 `;
 
 export const GET_DRAFTS = gql`
-  query drafts($offset: Int, $limit: Int, $isScheduled: Boolean) {
-    drafts(offset: $offset, limit: $limit, isScheduled: $isScheduled) {
+  query drafts(
+    $offset: Int
+    $limit: Int
+    $isScheduled: Boolean
+    $isPublished: Boolean
+  ) {
+    drafts(
+      offset: $offset
+      limit: $limit
+      isScheduled: $isScheduled
+      isPublished: $isPublished
+    ) {
       id
       savedate
       title
@@ -42,6 +54,7 @@ export const GET_DRAFTS = gql`
       json
       isCodeEditor
       scheduledDate
+      publishedDate
     }
   }
 `;

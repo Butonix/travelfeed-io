@@ -97,11 +97,17 @@ const Settings = props => {
                 'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
               success: false,
             });
-          } else
+          } else {
+            newNotification({
+              message:
+                'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
+              success: false,
+            });
             requestPostingAuthority().then(postAuthRes => {
               if (postAuthRes.success) setClaimRewards(checked);
               else newNotification(res);
             });
+          }
         });
       else setClaimRewards(checked);
     } else if (name === 'notificationPermission') {

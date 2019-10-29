@@ -13,14 +13,22 @@ import ViewIcon from '@material-ui/icons/OpenInBrowser';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
+import { generateDraftId } from '../../helpers/drafts';
 import { imageProxy } from '../../helpers/getImage';
 import { markdownComment, swmregex } from '../../helpers/regex';
+import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
+import UnScheduleButton from '../Dashboard/Drafts/UnScheduleButton';
 import Excerpt from './Excerpt';
+
+dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
 const styles = theme => ({
   card: {
@@ -94,6 +102,8 @@ class PostListItem extends Component {
     );
     if (this.props.isDraftMode) {
       button2 = <DeleteDraftButton id={this.props.id} onDelete={this.hide} />;
+      if (this.props.isScheduled)
+        button2 = <UnScheduleButton id={this.props.id} onDelete={this.hide} />;
     }
     let colsize = 'col-12';
     if (this.props.post.img_url !== undefined) {
@@ -109,6 +119,11 @@ class PostListItem extends Component {
     } catch {
       console.warn('Could not encode URI');
     }
+    let postDate;
+    if (this.props.publishedDate) postDate = dayjs(this.props.publishedDate);
+    else if (this.props.scheduledDate)
+      postDate = dayjs(this.props.scheduledDate);
+
     const content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
@@ -150,62 +165,82 @@ class PostListItem extends Component {
               <div className="row w-100">
                 <div className="col-7 my-auto">
                   <span className="textPrimary pl-2">
-                    <Link
-                      className="textPrimary"
-                      href={`/dashboard/publish?id=${
-                        this.props.post.id
-                      }&permlink=${encodeURIComponent(
-                        this.props.post.permlink,
-                      )}&title=${titleUri}&body=${encodeURIComponent(
-                        cleanBody,
-                      )}&isCodeEditor=${encodeURIComponent(
-                        this.props.post.isCodeEditor,
-                      )}&jsonMeta=${encodeURIComponent(
-                        this.props.isDraftMode ? '' : this.props.post.json,
-                      )}&json=${(this.props.isDraftMode &&
-                        this.props.post.json) ||
-                        JSON.stringify({
-                          tags: this.props.post.tags,
-                          location: {
-                            latitude: this.props.post.latitude,
-                            longitude: this.props.post.longitude,
-                          },
-                          featuredImage: this.props.post.img_url,
-                          category: this.props.post.category,
-                        })}&editmode=${(this.props.isDraftMode && 'false') ||
-                        'true'}`}
-                      as="/dashboard/publish"
-                    >
-                      <Button className="p-0 pl-2 pr-2">
-                        <span className="textPrimary pr-1">Edit</span>{' '}
-                        <EditIcon />
-                      </Button>
-                    </Link>
+                    {!this.props.isScheduled && (
+                      <Link
+                        className="textPrimary"
+                        href={`/dashboard/publish?id=${
+                          this.props.isPublished
+                            ? generateDraftId(getUser())
+                            : this.props.post.id
+                        }&permlink=${encodeURIComponent(
+                          this.props.post.permlink,
+                        )}&title=${titleUri}&body=${encodeURIComponent(
+                          cleanBody,
+                        )}&isCodeEditor=${encodeURIComponent(
+                          this.props.post.isCodeEditor,
+                        )}&jsonMeta=${encodeURIComponent(
+                          this.props.isDraftMode ? '' : this.props.post.json,
+                        )}&json=${(this.props.isDraftMode &&
+                          this.props.post.json) ||
+                          JSON.stringify({
+                            tags: this.props.post.tags,
+                            location: {
+                              latitude: this.props.post.latitude,
+                              longitude: this.props.post.longitude,
+                            },
+                            featuredImage: this.props.post.img_url,
+                            category: this.props.post.category,
+                          })}&editmode=${(this.props.isDraftMode && 'false') ||
+                          'true'}`}
+                        as="/dashboard/publish"
+                      >
+                        <Button className="p-0 pl-2 pr-2">
+                          <span className="textPrimary pr-1">
+                            {this.props.isPublished ? 'Clone' : 'Edit'}
+                          </span>{' '}
+                          <EditIcon />
+                        </Button>
+                      </Link>
+                    )}
                   </span>
                   {button2}
                 </div>
                 <div className="col-5 my-auto text-right pt-1">
-                  {(country && (
-                    <Tooltip
-                      title={`${
-                        this.props.post.subdivision !== null
-                          ? `${this.props.post.subdivision}, `
-                          : ''
-                      } ${country}`}
-                      placement="bottom"
-                    >
-                      <span className="textPrimary pr-1">
-                        <LocationIcon />
-                      </span>
-                    </Tooltip>
-                  )) || (
-                    <Tooltip
-                      title="Edit the post to add a location"
-                      placement="bottom"
-                    >
-                      <NoLocationIcon />
-                    </Tooltip>
-                  )}
+                  {(postDate &&
+                    (postDate.isBefore(
+                      dayjs()
+                        .startOf('month')
+                        .add(-1, 'month'),
+                    )
+                      ? `${
+                          this.props.isPublished
+                            ? 'Published on'
+                            : 'Scheduled for'
+                        } ${postDate.format('MMMM YYYY')}`
+                      : `${
+                          this.props.isPublished ? 'Published ' : 'Scheduled '
+                        } ${postDate.fromNow()}`)) ||
+                    (country && (
+                      <Tooltip
+                        title={`${
+                          this.props.post.subdivision !== null
+                            ? `${this.props.post.subdivision}, `
+                            : ''
+                        } ${country}`}
+                        placement="bottom"
+                      >
+                        <span className="textPrimary pr-1">
+                          <LocationIcon />
+                        </span>
+                      </Tooltip>
+                    )) || (
+                      <Tooltip
+                        title="Edit the post to add a location"
+                        placement="bottom"
+                      >
+                        <NoLocationIcon />
+                      </Tooltip>
+                    )}
                   {appIcon}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   !this.props.isDraftMode &&

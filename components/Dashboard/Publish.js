@@ -16,6 +16,7 @@ import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
+import { generateDraftId } from '../../helpers/drafts';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import { USE_ADVANCED_EDITOR_OPTIONS } from '../../helpers/graphql/settings';
 import graphQLClient from '../../helpers/graphQLClient';
@@ -62,9 +63,7 @@ const PostEditor = props => {
   const [featuredImage, setFeaturedImage] = useState(undefined);
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
-  const [id, setId] = useState(
-    `${user}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
-  );
+  const [id, setId] = useState(generateDraftId(user));
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [poweredUp, setPoweredUp] = useState(false);
@@ -146,13 +145,18 @@ const PostEditor = props => {
         json,
         isCodeEditor: codeEditor,
       };
-      if (options && options.scheduledDate)
+      if (options && options.scheduledDate) {
         variables.scheduledDate = options.scheduledDate;
+        variables.isCodeEditor = true;
+      }
+      if (options && options.publishedDate)
+        variables.publishedDate = options.publishedDate;
       graphQLClient(SAVE_DRAFT, variables)
         .then(data => {
           if (options && options.scheduledDate) {
             Router.push({
-              pathname: '/dashboard/drafts?sortby=scheduled',
+              pathname: '/dashboard/drafts',
+              query: { sortby: 'scheduled' },
             });
             if (data.addDraft.success)
               newNotification({
@@ -250,7 +254,10 @@ const PostEditor = props => {
   };
 
   const pastPublish = res => {
-    if (res.success) setSuccess(true);
+    if (res.success) {
+      saveDraft({ publishedDate: new Date() });
+      setSuccess(true);
+    }
     setPublishThis(undefined);
   };
 
@@ -508,7 +515,8 @@ const PostEditor = props => {
   if (completed && success) {
     setTimeout(() => {}, 5000);
     Router.push({
-      pathname: '/dashboard/posts',
+      pathname: '/dashboard/drafts',
+      query: { sortby: 'published' },
     });
   }
 
