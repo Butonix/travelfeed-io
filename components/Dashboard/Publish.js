@@ -101,7 +101,6 @@ const PostEditor = props => {
 
   const saveDraft = options => {
     let json;
-    let perm;
     let draftBody;
     if (options && options.scheduledDate) {
       if (!codeEditor) draftBody = json2md(content);
@@ -110,6 +109,7 @@ const PostEditor = props => {
       if (featuredImage) imageList = [featuredImage].concat(imageList);
       const linkList = getLinkList(draftBody);
       const mentionList = getMentionList(draftBody);
+      let perm = permlink;
       if (!permlink || permlink === '') perm = getSlug(title);
       json = JSON.stringify({
         tags,
@@ -119,7 +119,7 @@ const PostEditor = props => {
         beneficiaries,
         poweredUp,
         language,
-        permlink,
+        permlink: perm,
         imageList,
         linkList,
         mentionList,
@@ -133,7 +133,7 @@ const PostEditor = props => {
         beneficiaries,
         poweredUp,
         language,
-        permlink: perm || permlink,
+        permlink,
       });
       draftBody = codeEditor ? content : JSON.stringify(content);
     }
