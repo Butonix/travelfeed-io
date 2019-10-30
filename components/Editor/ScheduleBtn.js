@@ -93,7 +93,7 @@ const ScheduleBtn = props => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Your post will be automatically published at the specified date and
-            time.
+            time. The time will be rounded up to the next quarter hour.
           </DialogContentText>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDateTimePicker
@@ -115,7 +115,8 @@ const ScheduleBtn = props => {
             Cancel
           </Button>
           <Button variant="contained" onClick={triggerSchedule} color="primary">
-            <CalendarIcon /> Schedule
+            <span className="textPrimary pr-2"> Schedule</span>
+            <CalendarIcon />
           </Button>
         </DialogActions>
       </Dialog>
