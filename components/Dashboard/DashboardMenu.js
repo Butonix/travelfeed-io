@@ -16,7 +16,6 @@ import CommentsIcon from '@material-ui/icons/Comment';
 import PublishIcon from '@material-ui/icons/Create';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import DraftIcon from '@material-ui/icons/FileCopy';
-import LabelIcon from '@material-ui/icons/Label';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ProfileIcon from '@material-ui/icons/Person';
@@ -358,9 +357,9 @@ class DashboardMenu extends Component {
           >
             <ListItem selected={this.props.active === 'contest'} button>
               <ListItemIcon>
-                <LabelIcon />
+                <UserAddIcon />
               </ListItemIcon>
-              <ListItemText primary="Steemfest" />
+              <ListItemText primary="Refer a friend" />
             </ListItem>
           </Link>
         </List>
