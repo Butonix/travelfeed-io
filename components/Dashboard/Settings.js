@@ -15,9 +15,10 @@ import { requestPostingAuthority } from '../../helpers/actions';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
 import hasPostingAuthority from '../../helpers/hasPostingAuthority';
 import { registerServiceWorker } from '../../helpers/notifications';
-import { getUser } from '../../helpers/token';
+import { getRoles, getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 import UserContext from '../General/UserContext';
+import LinkEasyLogin from './Settings/LinkEasyLogin';
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -40,8 +41,11 @@ const Settings = props => {
     false,
   );
   const [claimRewards, setClaimRewards] = useState(false);
+  const [roles, setRoles] = useState(undefined);
 
   useEffect(() => {
+    setRoles(getRoles());
+
     // https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
 
     // Are Notifications supported in the service worker?
@@ -354,6 +358,7 @@ const Settings = props => {
               </Query>
             }
           />
+          {roles && roles.indexOf('easylogin') === -1 && <LinkEasyLogin />}
         </Grid>
       </Grid>
     </Fragment>

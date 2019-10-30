@@ -116,3 +116,43 @@ export const CONFIRM_PASSWORD_RESET = gql`
     }
   }
 `;
+
+export const START_ADD_ACCOUNT_PASSWORD = gql`
+  mutation startAddAccountPassword($email: String!, $isNewsletter: Boolean) {
+    startAddAccountPassword(email: $email, isNewsletter: $isNewsletter) {
+      success
+      message
+    }
+  }
+`;
+
+export const CHECK_ADD_ACCOUNT_PASSWORD = gql`
+  query checkAddAccountPassword($linkToken: String!) {
+    checkAddAccountPassword(linkToken: $linkToken) {
+      success
+    }
+  }
+`;
+
+export const CONFIRM_ADD_ACCOUNT_PASSWORD = gql`
+  mutation confirmAddAccountPassword(
+    $linkToken: String!
+    $password: String!
+    $isNewsletter: Boolean
+  ) {
+    confirmAddAccountPassword(
+      linkToken: $linkToken
+      password: $password
+      isNewsletter: $isNewsletter
+    ) {
+      success
+      message
+    }
+  }
+`;
+
+export const IS_EASY_LOGIN = gql`
+  query isEasyLogIn {
+    isEasyLogIn
+  }
+`;
