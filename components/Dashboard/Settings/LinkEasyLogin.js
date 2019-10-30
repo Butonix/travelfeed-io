@@ -11,10 +11,13 @@ import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import isEmail from 'validator/lib/isEmail';
+import { requestPostingAuthority } from '../../../helpers/actions';
 import {
   IS_EASY_LOGIN,
   START_ADD_ACCOUNT_PASSWORD,
 } from '../../../helpers/graphql/onboarding';
+import hasPostingAuthority from '../../../helpers/hasPostingAuthority';
+import { getUser } from '../../../helpers/token';
 import HeaderCard from '../../General/HeaderCard';
 import CustomSnackbar from '../Notifications/CustomSnackbar';
 
@@ -36,6 +39,28 @@ const LinkEasyLogin = props => {
       }
       props.enqueueSnackbar(notification.message, { variant });
     }
+  };
+
+  const linkEasy = startAddAccountPassword => () => {
+    hasPostingAuthority(getUser()).then(res => {
+      if (res) startAddAccountPassword();
+      else if (window && !window.steem_keychain) {
+        newNotification({
+          message:
+            'You need to give posting authority to @travelfeed.app to enable EasyLogIn.',
+          success: false,
+        });
+      } else {
+        newNotification({
+          message:
+            'You need to give posting authority to @travelfeed.app to enable EasyLogIn.',
+          success: false,
+        });
+        requestPostingAuthority().then(postAuthRes => {
+          if (postAuthRes.success) startAddAccountPassword();
+        });
+      }
+    });
   };
 
   return (
@@ -121,7 +146,7 @@ const LinkEasyLogin = props => {
                               <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={startAddAccountPassword}
+                                onClick={linkEasy(startAddAccountPassword)}
                                 disabled={!isEmail(email)}
                               >
                                 Link email
