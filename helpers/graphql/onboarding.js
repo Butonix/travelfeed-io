@@ -99,3 +99,20 @@ export const START_PASSWORD_RESET = gql`
     }
   }
 `;
+
+export const CHECK_PASSWORD_RESET_TOKEN = gql`
+  query checkPassWordResetToken($resetToken: String!) {
+    checkPassWordResetToken(resetToken: $resetToken) {
+      success
+    }
+  }
+`;
+
+export const CONFIRM_PASSWORD_RESET = gql`
+  mutation confirmPassWordReset($resetToken: String!, $password: String!) {
+    confirmPassWordReset(resetToken: $resetToken, password: $password) {
+      success
+      message
+    }
+  }
+`;
