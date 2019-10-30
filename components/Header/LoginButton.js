@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import JoinDialog from './JoinDialog';
 import LoginDialog from './LoginDialog';
+import PasswordResetDialog from './PasswordResetDialog';
 
 const styles = () => ({
   whitebutton: {
@@ -21,9 +22,15 @@ const styles = () => ({
 const LoginButton = props => {
   const [open, setOpen] = useState(false);
   const [joinOpen, setJoinOpen] = useState(props.open);
+  const [resetOpen, setResetOpen] = useState(false);
 
   const handleSwitchDialog = () => {
     setJoinOpen(!joinOpen);
+    setOpen(!open);
+  };
+
+  const handleLoginResetSwitch = () => {
+    setResetOpen(!resetOpen);
     setOpen(!open);
   };
 
@@ -53,6 +60,11 @@ const LoginButton = props => {
   const handleJoinClose = () => {
     if (props.onClickClose) props.onClickClose();
     setJoinOpen(false);
+  };
+
+  const handleResetClose = () => {
+    if (props.onClickClose) props.onClickClose();
+    setResetOpen(false);
   };
 
   const { classes } = props;
@@ -111,6 +123,7 @@ const LoginButton = props => {
         )}
       <LoginDialog
         switch={handleSwitchDialog}
+        handleLoginResetSwitch={handleLoginResetSwitch}
         open={open}
         handleClose={handleClose}
       />
@@ -118,6 +131,12 @@ const LoginButton = props => {
         switch={handleSwitchDialog}
         open={joinOpen}
         handleClose={handleJoinClose}
+        text={props.text}
+      />
+      <PasswordResetDialog
+        switch={handleLoginResetSwitch}
+        open={resetOpen}
+        handleClose={handleResetClose}
         text={props.text}
       />
     </Fragment>

@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import api from '../../helpers/steemConnectAPI';
 import ScLogo from '../../images/steemconnect.png';
 import EasyLoginButton from './EasyLoginButton';
@@ -18,6 +18,8 @@ import HrCaption from './HrCaption';
 import KeychainButton from './KeychainButton';
 
 const LoginDialog = props => {
+  const [showReset, setShowReset] = useState(false);
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { open, handleClose } = props;
@@ -83,7 +85,24 @@ const LoginDialog = props => {
                 Login with TravelFeed EasyLogin
               </DialogTitle>
               <DialogContent className="text-center">
-                <EasyLoginButton />
+                <EasyLoginButton setShowReset={setShowReset} />
+                {showReset && (
+                  <>
+                    <HrCaption text="Can't log in?" />
+                    <div className="pb-3">
+                      <Typography
+                        color="primary"
+                        onClick={props.handleLoginResetSwitch}
+                        onKeyPress={props.handleLoginResetSwitch}
+                        role="link"
+                        tabIndex={0}
+                        className="cpointer"
+                      >
+                        Reset your password
+                      </Typography>
+                    </div>
+                  </>
+                )}
                 <HrCaption text="No account?" />
                 <div className="pb-3">
                   <Typography

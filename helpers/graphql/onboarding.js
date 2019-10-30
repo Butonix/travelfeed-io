@@ -90,3 +90,12 @@ export const ONBOARD_REVIEW = gql`
     }
   }
 `;
+
+export const START_PASSWORD_RESET = gql`
+  mutation startPassWordReset($email: String!, $captcha: String!) {
+    startPassWordReset(email: $email, captcha: $captcha) {
+      success
+      message
+    }
+  }
+`;
