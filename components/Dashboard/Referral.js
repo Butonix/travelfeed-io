@@ -8,6 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 import ReferAFriend from './Contest/ReferAFriend';
+import Referrals from './Contest/Referrals';
 
 const Contest = props => {
   const newNotification = notification => {
