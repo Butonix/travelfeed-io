@@ -127,24 +127,19 @@ export const START_ADD_ACCOUNT_PASSWORD = gql`
 `;
 
 export const CHECK_ADD_ACCOUNT_PASSWORD = gql`
-  query checkAddAccountPassword($linkToken: String!) {
-    checkAddAccountPassword(linkToken: $linkToken) {
+  query checkAddAccountPassword($linkToken: String!, $isNewsletter: Boolean) {
+    checkAddAccountPassword(
+      linkToken: $linkToken
+      isNewsletter: $isNewsletter
+    ) {
       success
     }
   }
 `;
 
 export const CONFIRM_ADD_ACCOUNT_PASSWORD = gql`
-  mutation confirmAddAccountPassword(
-    $linkToken: String!
-    $password: String!
-    $isNewsletter: Boolean
-  ) {
-    confirmAddAccountPassword(
-      linkToken: $linkToken
-      password: $password
-      isNewsletter: $isNewsletter
-    ) {
+  mutation confirmAddAccountPassword($linkToken: String!, $password: String!) {
+    confirmAddAccountPassword(linkToken: $linkToken, password: $password) {
       success
       message
     }

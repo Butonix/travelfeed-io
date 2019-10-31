@@ -122,6 +122,10 @@ app
       res.redirect(`/`);
     });
 
+    server.get('/tag', (req, res) => {
+      res.redirect(`/topics`);
+    });
+
     server.get('/created/:tag', (req, res) => {
       const { tag } = req.params;
       res.redirect(`/topics/${tag}`);

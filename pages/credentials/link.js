@@ -12,7 +12,7 @@ import SetEasyLogInPassword from '../../components/Header/SetEasyLogInPassword';
 import { CHECK_ADD_ACCOUNT_PASSWORD } from '../../helpers/graphql/onboarding';
 
 const LinkEmailPage = props => {
-  const { linkToken } = props;
+  const { linkToken, isNewsletter } = props;
 
   return (
     <>
@@ -37,7 +37,10 @@ const LinkEmailPage = props => {
                     content={
                       <Query
                         query={CHECK_ADD_ACCOUNT_PASSWORD}
-                        variables={{ linkToken }}
+                        variables={{
+                          linkToken,
+                          isNewsletter: isNewsletter === 'true',
+                        }}
                       >
                         {({ data }) => {
                           if (
@@ -65,8 +68,8 @@ const LinkEmailPage = props => {
 };
 
 LinkEmailPage.getInitialProps = props => {
-  const { linkToken } = props.query;
-  return { linkToken };
+  const { linkToken, isNewsletter } = props.query;
+  return { linkToken, isNewsletter };
 };
 
 LinkEmailPage.propTypes = {

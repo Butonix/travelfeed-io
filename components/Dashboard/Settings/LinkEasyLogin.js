@@ -83,6 +83,7 @@ const LinkEasyLogin = props => {
                       mutation={START_ADD_ACCOUNT_PASSWORD}
                       variables={{
                         email,
+                        isNewsletter: newsletter,
                       }}
                     >
                       {(
