@@ -42,7 +42,7 @@ const SupportUsPage = () => {
                 <div className="text-center pb-3">
                   <a
                     className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fabout%2Fsupport-us"
+                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
                   >
@@ -52,7 +52,7 @@ const SupportUsPage = () => {
                   </a>
                   <a
                     className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fabout%2Fsupport-us"
+                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
                   >
@@ -62,7 +62,7 @@ const SupportUsPage = () => {
                   </a>
                   <a
                     className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fabout%2Fsupport-us"
+                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
                   >
@@ -72,7 +72,7 @@ const SupportUsPage = () => {
                   </a>
                   <a
                     className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fabout%2Fsupport-us"
+                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
                   >
@@ -82,7 +82,7 @@ const SupportUsPage = () => {
                   </a>
                   <a
                     className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fabout%2Fsupport-us"
+                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
                   >
@@ -92,7 +92,7 @@ const SupportUsPage = () => {
                   </a>
                   <a
                     className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fabout%2Fsupport-us"
+                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
                   >
