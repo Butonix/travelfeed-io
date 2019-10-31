@@ -3,11 +3,11 @@
 import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import { withStyles } from '@material-ui/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
 import WarningIcon from '@material-ui/icons/Warning';
+import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -43,6 +43,9 @@ const styles1 = theme => ({
     display: 'flex',
     alignItems: 'center',
   },
+  root: {
+    minWidth: '200px !important',
+  },
 });
 
 function MySnackbarContent(props) {
@@ -51,7 +54,7 @@ function MySnackbarContent(props) {
 
   return (
     <SnackbarContent
-      className={classNames(classes[variant], className)}
+      className={classNames(classes.root, classes[variant], className)}
       aria-describedby="client-snackbar"
       message={
         <span id="client-snackbar" className={classes.message}>
