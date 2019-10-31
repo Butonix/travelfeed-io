@@ -11,6 +11,7 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import CookieConsent from '../components/CookieConsent/CookieConsent';
+import NewUserMessage from '../components/General/NewUserMessage';
 import UserContext from '../components/General/UserContext';
 import { registerServiceWorker } from '../helpers/notifications';
 import { getUser, hasCookieConsent } from '../helpers/token';
@@ -120,6 +121,7 @@ class MyApp extends App {
           <SnackbarProvider maxSnack={3}>
             <ApolloProvider client={apollo}>
               <CookieConsent />
+              <NewUserMessage />
               <Component pageContext={this.pageContext} {...pageProps} />
             </ApolloProvider>
           </SnackbarProvider>
