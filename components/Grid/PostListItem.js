@@ -249,7 +249,12 @@ class PostListItem extends Component {
                         new Date().setDate(new Date().getDate() - 7),
                       ) && (
                       <span className="textPrimary pl-2 font-weight-bold">
-                        ${(this.props.post.payout * 0.75).toFixed(2)}
+                        $
+                        {// hard fork 21 reduces author rewards to 50%
+                        new Date(this.props.post.created_at) <
+                        new Date('August 27, 2019 15:00:00')
+                          ? (this.props.post.payout * 0.75).toFixed(2)
+                          : (this.props.post.payout * 0.5).toFixed(2)}
                       </span>
                     )) || (
                       <span className="textPrimary pl-2 font-weight-bold">
