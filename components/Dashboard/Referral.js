@@ -25,44 +25,44 @@ const Contest = props => {
     <Fragment>
       <Grid container spacing={0} justify="center" className="p-1">
         <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
-          <div className="pt-2">
-            <HeaderCard
-              title="Refer a Friend"
-              background={indigo[600]}
-              content={
-                <>
-                  <FormLabel component="legend" className="pt-4">
-                    Invite your friends to TravelFeed! Fill out the form to send
-                    an email to your friends to invite them:
-                  </FormLabel>
-                  <ReferAFriend />
-                  <FormLabel component="legend" className="pt-4">
-                    Or use your referral link:
-                  </FormLabel>
-                  <div>
-                    <CopyToClipboard
-                      text={`https://travelfeed.io/join?ref=${getUser()}`}
-                      onCopy={() =>
-                        newNotification({
-                          success: true,
-                          message:
-                            'Copied your referral link to your clipboard',
-                        })
-                      }
-                    >
-                      <TextField
-                        variant="filled"
-                        fullWidth
-                        margin="dense"
-                        multiline
-                        value={`https://travelfeed.io/join?ref=${getUser()}`}
-                      />
-                    </CopyToClipboard>
-                  </div>
-                </>
-              }
-            />
-          </div>
+          <HeaderCard
+            title="Refer a Friend"
+            background={indigo[600]}
+            content={
+              <>
+                <FormLabel component="legend" className="pt-4">
+                  Invite your friends to TravelFeed! Fill out the form to send
+                  an email to your friends to invite them:
+                </FormLabel>
+                <ReferAFriend />
+                <FormLabel component="legend" className="pt-4">
+                  Or use your referral link:
+                </FormLabel>
+                <div>
+                  <CopyToClipboard
+                    text={`https://travelfeed.io/join?ref=${getUser()}`}
+                    onCopy={() =>
+                      newNotification({
+                        success: true,
+                        message: 'Copied your referral link to your clipboard',
+                      })
+                    }
+                  >
+                    <TextField
+                      variant="filled"
+                      fullWidth
+                      margin="dense"
+                      multiline
+                      value={`https://travelfeed.io/join?ref=${getUser()}`}
+                    />
+                  </CopyToClipboard>
+                </div>
+              </>
+            }
+          />
+        </Grid>
+        <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
+          <Referrals />
         </Grid>
       </Grid>
     </Fragment>
