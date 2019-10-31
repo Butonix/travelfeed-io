@@ -78,7 +78,7 @@ const Settings = props => {
     }
   };
 
-  const handleCheckboxChange = name => event => {
+  const handleCheckboxChange = (name, changeSettings) => event => {
     if (name === 'useDarkMode') {
       if (useDarkMode) setLightMode();
       else setDarkMode();
@@ -92,15 +92,17 @@ const Settings = props => {
       setUseAdvancedEditorOptions(event.target.checked);
     } else if (name === 'claimRewards') {
       const { checked } = event.target;
-      if (event.target.checked)
+      setClaimRewards(checked);
+      if (event.target.checked) {
         hasPostingAuthority(getUser()).then(res => {
-          if (res) setClaimRewards(checked);
+          if (res) changeSettings();
           else if (window && !window.steem_keychain) {
             newNotification({
               message:
                 'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
               success: false,
             });
+            setClaimRewards(false);
           } else {
             newNotification({
               message:
@@ -108,12 +110,15 @@ const Settings = props => {
               success: false,
             });
             requestPostingAuthority().then(postAuthRes => {
-              if (postAuthRes.success) setClaimRewards(checked);
-              else newNotification(res);
+              if (postAuthRes.success) changeSettings();
+              else {
+                newNotification(res);
+                setClaimRewards(false);
+              }
             });
           }
         });
-      else setClaimRewards(checked);
+      }
     } else if (name === 'notificationPermission') {
       if (!notificationPermission)
         Notification.requestPermission(status => {
@@ -264,8 +269,9 @@ const Settings = props => {
                                       checked={claimRewards}
                                       onChange={handleCheckboxChange(
                                         'claimRewards',
+                                        changeSettings,
                                       )}
-                                      onInput={changeSettings}
+                                      onInput={!claimRewards && changeSettings}
                                       value="claimRewards"
                                       color="primary"
                                     />
