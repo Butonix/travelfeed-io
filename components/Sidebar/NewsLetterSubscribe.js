@@ -35,7 +35,7 @@ const NewsLetterSubscribe = () => {
               gutterBottom
               className="pt-2 textPrimary"
             >
-              Never miss any updates!
+              Stay up to date!
             </Typography>
             <Mutation
               mutation={NEWSLETTER_SUBSCRIBE}
@@ -71,7 +71,7 @@ const NewsLetterSubscribe = () => {
                     <div>
                       <FormControl fullWidth required error={!isMailValid}>
                         <TextField
-                          label="Email"
+                          label="Your Email"
                           fullWidth
                           multiline
                           value={email}
