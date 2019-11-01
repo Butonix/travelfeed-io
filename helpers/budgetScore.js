@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 export const getBudgetScore = (budget_score, name) => {
   switch (budget_score) {
     case 5:

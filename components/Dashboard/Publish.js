@@ -16,6 +16,7 @@ import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
+import { generateDraftId } from '../../helpers/drafts';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import { USE_ADVANCED_EDITOR_OPTIONS } from '../../helpers/graphql/settings';
 import graphQLClient from '../../helpers/graphQLClient';
@@ -42,6 +43,7 @@ import LocationPicker from '../Editor/LocationPicker';
 import PayoutTypeSelector from '../Editor/PayoutTypeSelector';
 import PermlinkInput from '../Editor/PermlinkInput';
 import PublishBtn from '../Editor/PublishBtn';
+import ScheduleBtn from '../Editor/ScheduleBtn';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
 import TitleEditor from '../Editor/TitleEditor';
@@ -61,9 +63,7 @@ const PostEditor = props => {
   const [featuredImage, setFeaturedImage] = useState(undefined);
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
-  const [id, setId] = useState(
-    `${user}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
-  );
+  const [id, setId] = useState(generateDraftId(user));
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [poweredUp, setPoweredUp] = useState(false);
@@ -100,27 +100,71 @@ const PostEditor = props => {
     : { words: 0, text: '0 min read' };
 
   const saveDraft = options => {
+    let json;
+    let draftBody;
+    if (options && options.scheduledDate) {
+      if (!codeEditor) draftBody = json2md(content);
+      else draftBody = content;
+      let imageList = getImageList(draftBody);
+      if (featuredImage) imageList = [featuredImage].concat(imageList);
+      const linkList = getLinkList(draftBody);
+      const mentionList = getMentionList(draftBody);
+      let perm = permlink;
+      if (!permlink || permlink === '') perm = getSlug(title);
+      json = JSON.stringify({
+        tags,
+        location,
+        locationCategory,
+        featuredImage,
+        beneficiaries,
+        poweredUp,
+        language,
+        permlink: perm,
+        imageList,
+        linkList,
+        mentionList,
+      });
+    } else {
+      json = JSON.stringify({
+        tags,
+        location,
+        locationCategory,
+        featuredImage,
+        beneficiaries,
+        poweredUp,
+        language,
+        permlink,
+      });
+      draftBody = codeEditor ? content : JSON.stringify(content);
+    }
     if ((readingtime.words > 0 || title !== '') && !editMode) {
       const variables = {
         id,
         title,
-        body: codeEditor ? content : JSON.stringify(content),
-        json: JSON.stringify({
-          tags,
-          location,
-          locationCategory,
-          featuredImage,
-          beneficiaries,
-          poweredUp,
-          language,
-          permlink,
-        }),
+        body: draftBody,
+        json,
         isCodeEditor: codeEditor,
       };
-
+      if (options && options.scheduledDate) {
+        variables.scheduledDate = options.scheduledDate;
+        variables.isCodeEditor = true;
+      }
+      if (options && options.publishedDate)
+        variables.publishedDate = options.publishedDate;
       graphQLClient(SAVE_DRAFT, variables)
         .then(data => {
-          if (options && options.showNotification)
+          if (options && options.scheduledDate) {
+            Router.push({
+              pathname: '/dashboard/drafts',
+              query: { sortby: 'scheduled' },
+            });
+            if (data.addDraft.success)
+              newNotification({
+                success: true,
+                message: 'Post has been scheduled',
+              });
+            else newNotification(data.addDraft);
+          } else if (options && options.showNotification)
             newNotification(data.addDraft);
         })
         .catch(err => {
@@ -210,7 +254,10 @@ const PostEditor = props => {
   };
 
   const pastPublish = res => {
-    if (res.success) setSuccess(true);
+    if (res.success) {
+      saveDraft({ publishedDate: new Date() });
+      setSuccess(true);
+    }
     setPublishThis(undefined);
   };
 
@@ -322,6 +369,38 @@ const PostEditor = props => {
     },
   ];
 
+  const checkBeforeSchedule = () => {
+    return new Promise(resolve => {
+      if (
+        !checklist[0].checked ||
+        !checklist[1].checked ||
+        !checklist[2].checked ||
+        !checklist[3].checked ||
+        !checklist[4].checked
+      ) {
+        newNotification({
+          message:
+            'Your post does not meet the requirements. Refer to the checklist for details.',
+          success: false,
+        });
+        resolve(false);
+      }
+      let perm = permlink;
+      if (perm === '') perm = getSlug(title);
+      return postExists(user, permlink).then(res => {
+        if (res) {
+          newNotification({
+            message:
+              'The permlink of your post has been used in a previous post. Please change it.',
+            success: false,
+          });
+          resolve(false);
+        }
+        resolve(true);
+      });
+    });
+  };
+
   const triggerPublish = () => {
     setCompleted(false);
     if (
@@ -373,7 +452,6 @@ const PostEditor = props => {
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
-        metadata.community = 'travelfeed';
         if (imageList.length > 0) metadata.image = imageList;
         if (linkList.length > 0) metadata.links = linkList;
         if (mentionList.length > 0) metadata.users = mentionList;
@@ -437,7 +515,8 @@ const PostEditor = props => {
   if (completed && success) {
     setTimeout(() => {}, 5000);
     Router.push({
-      pathname: '/dashboard/posts',
+      pathname: '/dashboard/drafts',
+      query: { sortby: 'published' },
     });
   }
 
@@ -692,6 +771,12 @@ const PostEditor = props => {
                       )}
                     </div>
                     <div className="col-6 text-right">
+                      {!editMode && (
+                        <ScheduleBtn
+                          checkBeforeSchedule={checkBeforeSchedule}
+                          schedulePost={saveDraft}
+                        />
+                      )}
                       {(!success && (
                         <PublishBtn
                           publishThis={publishThis}

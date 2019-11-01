@@ -271,3 +271,18 @@ export const broadcastActiveUser = async () => {
   const json = JSON.stringify({ app: 'travelfeed' });
   return api.customJson(requiredAuths, requiredPostingAuths, id, json);
 };
+
+export const requestPostingAuthority = async () => {
+  const user = getUser();
+  return new Promise(resolve => {
+    window.steem_keychain.requestAddAccountAuthority(
+      user,
+      'travelfeed.app',
+      'posting',
+      1,
+      response => {
+        resolve(response);
+      },
+    );
+  });
+};

@@ -11,10 +11,14 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
+import { requestPostingAuthority } from '../../helpers/actions';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
+import hasPostingAuthority from '../../helpers/hasPostingAuthority';
 import { registerServiceWorker } from '../../helpers/notifications';
+import { getRoles, getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 import UserContext from '../General/UserContext';
+import LinkEasyLogin from './Settings/LinkEasyLogin';
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -36,8 +40,12 @@ const Settings = props => {
   const [useAdvancedEditorOptions, setUseAdvancedEditorOptions] = useState(
     false,
   );
+  const [claimRewards, setClaimRewards] = useState(false);
+  const [roles, setRoles] = useState(undefined);
 
   useEffect(() => {
+    setRoles(getRoles());
+
     // https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
 
     // Are Notifications supported in the service worker?
@@ -59,7 +67,18 @@ const Settings = props => {
     setNotificationPermission(Notification.permission === 'granted');
   }, []);
 
-  const handleCheckboxChange = name => event => {
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      const { enqueueSnackbar } = props;
+      enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
+  const handleCheckboxChange = (name, changeSettings) => event => {
     if (name === 'useDarkMode') {
       if (useDarkMode) setLightMode();
       else setDarkMode();
@@ -71,27 +90,45 @@ const Settings = props => {
       setUseHighPrecisionVotingSlider(event.target.checked);
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
+    } else if (name === 'claimRewards') {
+      const { checked } = event.target;
+      setClaimRewards(checked);
+      if (event.target.checked) {
+        hasPostingAuthority(getUser()).then(res => {
+          if (res) changeSettings();
+          else if (window && !window.steem_keychain) {
+            newNotification({
+              message:
+                'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
+              success: false,
+            });
+            setClaimRewards(false);
+          } else {
+            newNotification({
+              message:
+                'You need to give posting authority to @travelfeed.app to enable automated rewards claiming.',
+              success: false,
+            });
+            requestPostingAuthority().then(postAuthRes => {
+              if (postAuthRes.success) changeSettings();
+              else {
+                newNotification(res);
+                setClaimRewards(false);
+              }
+            });
+          }
+        });
+      }
     } else if (name === 'notificationPermission') {
       if (!notificationPermission)
         Notification.requestPermission(status => {
           setNotificationPermission(status === 'granted');
           registerServiceWorker();
         });
-      new Notification(
-        'You can disable notifications in your browser settings',
-      );
+      newNotification({
+        message: 'You can disable notifications in your browser settings',
+      });
       setNotificationPermission(false);
-    }
-  };
-
-  const newNotification = notification => {
-    if (notification !== undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      const { enqueueSnackbar } = props;
-      enqueueSnackbar(notification.message, { variant });
     }
   };
 
@@ -125,6 +162,7 @@ const Settings = props => {
                     setUseAdvancedEditorOptions(
                       data.preferences.useAdvancedEditorOptions !== false,
                     );
+                    setClaimRewards(data.preferences.claimRewards);
                     return <Fragment />;
                   }
                   return (
@@ -137,6 +175,7 @@ const Settings = props => {
                         useTfBlacklist,
                         useHighPrecisionVotingSlider,
                         useAdvancedEditorOptions,
+                        claimRewards,
                       }}
                     >
                       {(changeSettings, data) => {
@@ -223,7 +262,22 @@ const Settings = props => {
                                   }
                                   label="Advanced editor options"
                                 />
-
+                                <FormControlLabel
+                                  labelPlacement="end"
+                                  control={
+                                    <Switch
+                                      checked={claimRewards}
+                                      onChange={handleCheckboxChange(
+                                        'claimRewards',
+                                        changeSettings,
+                                      )}
+                                      onInput={!claimRewards && changeSettings}
+                                      value="claimRewards"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Automatically claim rewards"
+                                />
                                 <FormControlLabel
                                   labelPlacement="end"
                                   control={
@@ -310,6 +364,7 @@ const Settings = props => {
               </Query>
             }
           />
+          {roles && roles.indexOf('easylogin') === -1 && <LinkEasyLogin />}
         </Grid>
       </Grid>
     </Fragment>

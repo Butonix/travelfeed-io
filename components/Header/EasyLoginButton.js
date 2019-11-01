@@ -66,6 +66,7 @@ const EasyLoginButton = props => {
                   message: `The login credentials you provided are not valid. Please log in again.`,
                 });
                 setMutate(false);
+                props.setShowReset(true);
               }
               // If tos are not accepted, display tos dialogue
               if (data.login.hasAcceptedTos) {

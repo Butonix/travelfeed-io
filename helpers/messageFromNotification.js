@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 import React from 'react';
 import Link from '../lib/Link';
 

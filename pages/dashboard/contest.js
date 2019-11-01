@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Contest from '../../components/Dashboard/Contest';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
+import Contest from '../../components/Dashboard/Referral';
 
 const ContestPage = props => {
   const { open } = props;

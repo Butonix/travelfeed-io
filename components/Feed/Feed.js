@@ -1,8 +1,10 @@
 // https://codepen.io/ncerminara/pen/eKNROb
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { Query } from 'react-apollo';
 import StickyBox from 'react-sticky-box';
 import capitalize from '../../helpers/capitalize';
+import { IS_NEWSLETTER_SUBSCRIBED } from '../../helpers/graphql/newsletter';
 import { getUser } from '../../helpers/token';
 import HomeOrderBySelect from '../Grid/HomeOrderBySelect';
 import PostGrid from '../Grid/PostGrid';
@@ -11,6 +13,7 @@ import Header from '../Header/Header';
 import BlogGridList from '../Sidebar/BlogGridList';
 import LegalNotice from '../Sidebar/LegalNotice';
 import NavSide from '../Sidebar/NavSide';
+import NewsLetterSubscribe from '../Sidebar/NewsLetterSubscribe';
 import SocialLinks from '../Sidebar/SocialLinks';
 
 const Feed = props => {
@@ -37,7 +40,6 @@ const Feed = props => {
         title={`${
           active === 'taking Off' ? 'Hot' : capitalize(active)
         } Travel Blogs`}
-        description="Discover the best travel content on TravelFeed, the world-wide travel community!"
       />
       <Header active={active} subheader={capitalize(active)} />
       <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
@@ -49,6 +51,19 @@ const Feed = props => {
             <StickyBox offsetTop={65} offsetBottom={10}>
               <div className="d-none d-xl-block">
                 <NavSide />
+                {(getUser() && (
+                  <Query
+                    query={IS_NEWSLETTER_SUBSCRIBED}
+                    variables={{ limit: 9 }}
+                    fetchPolicy="network-only"
+                  >
+                    {({ data }) => {
+                      if (data && data.isNewsletterSubscribed === false)
+                        return <NewsLetterSubscribe />;
+                      return <></>;
+                    }}
+                  </Query>
+                )) || <NewsLetterSubscribe />}
               </div>
             </StickyBox>
           </div>

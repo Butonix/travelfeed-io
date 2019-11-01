@@ -180,7 +180,14 @@ class PostsTable extends React.Component {
                           </TableCell>
                           <TableCell align="right">{n.total_votes}</TableCell>
                           <TableCell align="right">
-                            {(n.is_paidout && `$${n.payout.toFixed(2)}`) ||
+                            {(n.is_paidout &&
+                              `$${
+                                // hard fork 21 reduces author rewards to 50%
+                                new Date(n.created_at) <
+                                new Date('August 27, 2019 15:00:00')
+                                  ? (n.payout * 0.75).toFixed(2)
+                                  : (n.payout * 0.5).toFixed(2)
+                              }`) ||
                               'Pending'}
                           </TableCell>
                         </TableRow>

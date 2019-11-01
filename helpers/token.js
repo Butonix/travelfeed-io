@@ -71,9 +71,17 @@ export const hasCookieConsent = () => {
   return Cookie.get('cookie_consent');
 };
 export const setCookieConsent = consent => {
-  // Set cookie with one year expiry
+  // Set cookie with one year expiration
   const expires = new Date(new Date().getTime() + 3600 * 1000 * 24 * 365);
   Cookie.set('cookie_consent', consent, { expires });
+};
+export const isHideNewUserMessage = () => {
+  return Cookie.get('hide_new_user_message') === 'true';
+};
+export const setHideNewUserMessage = () => {
+  // Set cookie with one week expiration
+  const expires = new Date(new Date().getTime() + 3600 * 1000 * 24 * 7);
+  Cookie.set('hide_new_user_message', true, { expires });
 };
 export const deleteCookieConsent = () => {
   Cookie.remove('cookie_consent');
