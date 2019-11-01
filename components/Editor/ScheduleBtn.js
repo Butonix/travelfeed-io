@@ -102,6 +102,7 @@ const ScheduleBtn = props => {
               id="date-picker-dialog"
               label="Select date and time"
               ampm={false}
+              format="yyyy/MM/dd HH:mm"
               value={selectedDate}
               onChange={date => setSelectedDate(date)}
               KeyboardButtonProps={{
