@@ -67,7 +67,7 @@ const PublishBtn = props => {
   return (
     <>
       <Button
-        className="mt-1"
+        fullWidth
         variant="contained"
         color="primary"
         onClick={props.triggerPublish}

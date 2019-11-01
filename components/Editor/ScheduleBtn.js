@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import CalendarIcon from '@material-ui/icons/CalendarToday';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider,
@@ -74,13 +74,14 @@ const ScheduleBtn = props => {
     <>
       <span className="text-light">
         <Button
+          fullWidth
           onClick={() => setOpen(true)}
-          className="mt-1 mr-2"
           color="primary"
           variant="contained"
         >
-          <span className="textPrimary pr-2"> Schedule</span>
-          <CalendarIcon />
+          <span>
+            Schedule <ScheduleIcon />
+          </span>
         </Button>
       </span>
       <Dialog
@@ -117,7 +118,7 @@ const ScheduleBtn = props => {
           </Button>
           <Button variant="contained" onClick={triggerSchedule} color="primary">
             <span className="textPrimary pr-2"> Schedule</span>
-            <CalendarIcon />
+            <ScheduleIcon />
           </Button>
         </DialogActions>
       </Dialog>

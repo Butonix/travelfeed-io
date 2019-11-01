@@ -755,9 +755,10 @@ const PostEditor = props => {
                 <Fragment>
                   <Checks checklist={checklist} />
                   <div className="row">
-                    <div className="col-6">
+                    <div className="col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6 pt-1">
                       {!editMode && (
                         <Button
+                          fullWidth
                           onClick={() => {
                             saveDraft({ showNotification: true });
                           }}
@@ -770,13 +771,15 @@ const PostEditor = props => {
                         </Button>
                       )}
                     </div>
-                    <div className="col-6 text-right">
+                    <div className="col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6 pt-1">
                       {!editMode && (
                         <ScheduleBtn
                           checkBeforeSchedule={checkBeforeSchedule}
                           schedulePost={saveDraft}
                         />
                       )}
+                    </div>
+                    <div className="col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6 pt-1">
                       {(!success && (
                         <PublishBtn
                           publishThis={publishThis}
