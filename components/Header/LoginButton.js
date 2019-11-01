@@ -20,7 +20,7 @@ const styles = () => ({
 });
 
 const LoginButton = props => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(props.loginOpen);
   const [joinOpen, setJoinOpen] = useState(props.open);
   const [resetOpen, setResetOpen] = useState(false);
 

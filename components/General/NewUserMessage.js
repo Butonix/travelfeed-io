@@ -30,7 +30,6 @@ const NewUserMessage = () => {
   const handleJoinClick = () => {
     setOpen(false);
     setSignUpOpen(true);
-    console.log('aaa');
   };
 
   const onClose = () => {
