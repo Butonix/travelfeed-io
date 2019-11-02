@@ -44,13 +44,19 @@ module.exports = withImages(
         },
         dontAutoRegisterSw: true,
         workboxOpts: {
-          importScripts: ['./scripts/sw-push-listener.js'],
           runtimeCaching: [
             {
-              urlPattern: /https:\/\/api\.mapbox\.com\/.*/,
+              urlPattern: /^https?.*/,
               handler: 'NetworkFirst',
+              options: {
+                cacheName: 'offlineCache',
+                expiration: {
+                  maxEntries: 200,
+                },
+              },
             },
           ],
+          importScripts: ['./scripts/sw-push-listener.js'],
         },
       }),
     ),
