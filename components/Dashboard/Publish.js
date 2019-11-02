@@ -506,6 +506,7 @@ const PostEditor = props => {
             commentOptions && commentOptions !== ''
               ? JSON.stringify(commentOptions)
               : undefined,
+          type: 'post',
         });
       }
     });
@@ -606,30 +607,77 @@ const PostEditor = props => {
               }
             />
           </div>
-          <div className="col-12 pt-2 pl-2 pr-2">
-            <DetailedExpansionPanel
-              expanded
-              title="Tags"
-              description="Tags are for specifying topics. You can set up to 10 custom tags here. Only lowercase letters, numbers and dashes are permitted"
-              helper="The first tag is set automatically based on your language selection. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags. Generic and some Steem-specific tags are highlighted in green, these will appear on some Steem frontends but will be hidden or replaced on TravelFeed."
-              value={`${defaultTag}${tags &&
-                tags.map((t, i) => `${i > 0 ? ' ' : ', '}${t}`)}`}
-              selector={
-                <TagPicker
-                  recommendations={tagRecommendations}
-                  defaultTags={[defaultTag]}
-                  value={tags}
-                  onTagChange={handleTagClick}
-                />
-              }
-            />
-          </div>
-          {!editMode && (
-            <Fragment>
-              <Query query={USE_ADVANCED_EDITOR_OPTIONS}>
-                {({ data }) => (
-                  <>
-                    {(data &&
+          <Fragment>
+            <Query query={USE_ADVANCED_EDITOR_OPTIONS}>
+              {({ data }) => (
+                <>
+                  <div className="col-12 pt-2 pl-2 pr-2">
+                    <DetailedExpansionPanel
+                      expanded
+                      title="Topics"
+                      description={`Choose your topics carefully to reflect the theme of your post for a chance to be featured and earn extra rewards. You can set up to ${
+                        data &&
+                        data.preferences &&
+                        data.preferences.useAdvancedEditorOptions === false
+                          ? '4 topics'
+                          : '10 tags'
+                      }${
+                        data &&
+                        data.preferences &&
+                        data.preferences.useAdvancedEditorOptions === false
+                          ? ''
+                          : '. Please be aware that only the first 5 tags are indexed, the use of any further tags is only recommended for tribe tags.'
+                      }`}
+                      helper={`Only lowercase letters, numbers and dashes are permitted. We do not recommend setting location-based topics since locations are indexed based on your location setting, not by topics.${
+                        data &&
+                        data.preferences &&
+                        data.preferences.useAdvancedEditorOptions === false
+                          ? ''
+                          : ' The first tag is set automatically based on your language selection. Generic and some Steem-specific tags are highlighted in green, these will appear on some Steem frontends but will be hidden or replaced on TravelFeed.'
+                      }`}
+                      value={`${
+                        data &&
+                        data.preferences &&
+                        data.preferences.useAdvancedEditorOptions === false
+                          ? ''
+                          : defaultTag
+                      }${tags &&
+                        tags.map(
+                          (t, i) =>
+                            `${
+                              i > 0
+                                ? ' '
+                                : `${
+                                    data &&
+                                    data.preferences &&
+                                    data.preferences
+                                      .useAdvancedEditorOptions === false &&
+                                    i === 0
+                                      ? ''
+                                      : ','
+                                  } `
+                            }${t}`,
+                        )}`}
+                      selector={
+                        <TagPicker
+                          useAdvancedMode={
+                            !(
+                              data &&
+                              data.preferences &&
+                              data.preferences.useAdvancedEditorOptions ===
+                                false
+                            )
+                          }
+                          recommendations={tagRecommendations}
+                          defaultTags={[defaultTag]}
+                          value={tags}
+                          onTagChange={handleTagClick}
+                        />
+                      }
+                    />
+                  </div>
+                  {!editMode ||
+                    (data &&
                       data.preferences.useAdvancedEditorOptions === false && (
                         <></>
                       )) || (
@@ -691,39 +739,38 @@ const PostEditor = props => {
                         </div>
                       </>
                     )}
-                    <div className="col-12 pt-2 pl-2 pr-2">
-                      <DetailedExpansionPanel
-                        title={
-                          !permlinkValid ? (
-                            <span>
-                              <WarnIcon />
-                              {'  '}Permlink
-                            </span>
-                          ) : (
-                            'Permlink'
-                          )
-                        }
-                        description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
-                        helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
-                        value={`https://travelfeed.io/@${user}/${permlink ||
-                          getSlug(title)}`}
-                        selector={
-                          <PermlinkInput
-                            onChange={pl => {
-                              setPermlink(pl);
-                              setPermlinkValid(true);
-                            }}
-                            data={permlink}
-                            placeholder={getSlug(title)}
-                          />
-                        }
-                      />
-                    </div>
-                  </>
-                )}
-              </Query>
-            </Fragment>
-          )}
+                  <div className="col-12 pt-2 pl-2 pr-2">
+                    <DetailedExpansionPanel
+                      title={
+                        !permlinkValid ? (
+                          <span>
+                            <WarnIcon />
+                            {'  '}Permlink
+                          </span>
+                        ) : (
+                          'Permlink'
+                        )
+                      }
+                      description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
+                      helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                      value={`https://travelfeed.io/@${user}/${permlink ||
+                        getSlug(title)}`}
+                      selector={
+                        <PermlinkInput
+                          onChange={pl => {
+                            setPermlink(pl);
+                            setPermlinkValid(true);
+                          }}
+                          data={permlink}
+                          placeholder={getSlug(title)}
+                        />
+                      }
+                    />
+                  </div>
+                </>
+              )}
+            </Query>
+          </Fragment>
           <div className="col-12 pt-2 pl-2 pr-2">
             <DetailedExpansionPanel
               withBg
@@ -782,6 +829,7 @@ const PostEditor = props => {
                     <div className="col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6 pt-1">
                       {(!success && (
                         <PublishBtn
+                          fullWidth
                           publishThis={publishThis}
                           pastPublish={res => pastPublish(res)}
                           triggerPublish={triggerPublish}

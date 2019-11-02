@@ -34,12 +34,16 @@ const MobileDialog = props => {
             style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto' }}
           >
             <FixedBackgroundImage
-              backgroundImage="https://img.travelfeed.io/jpphotography%2F20191101T173648373Z-mobile-splash.jpg"
+              backgroundImage="https://img.travelfeed.io/jpphotography%2F20191102T104018981Z-mobile-splash.jpg"
               component={
                 <>
                   <header className="page-header pt-2">
                     <DialogTitle className="text-center ">
-                      <Typography variant="h4" className="font-weight-bold">
+                      <Typography
+                        variant="h4"
+                        color="primary"
+                        className="font-weight-bold"
+                      >
                         Welcome to TravelFeed!
                       </Typography>
                     </DialogTitle>

@@ -11,6 +11,7 @@ export const post = args => {
     jsonMetadata,
     permlink,
     commentOptions,
+    type,
   } = args;
   if (window && window.steem_keychain) {
     const comment_options =
@@ -29,12 +30,16 @@ export const post = args => {
           if (res.success) {
             resolve({
               success: true,
-              message: 'Post was published successfully',
+              message: `${
+                type === 'comment' ? 'Comment' : 'Post'
+              } was published successfully`,
             });
           } else {
             resolve({
               success: false,
-              message: `Post could not be published: ${res.message}`,
+              message: `${
+                type === 'comment' ? 'Comment' : 'Post'
+              } could not be published: ${res.message}`,
             });
           }
         },
@@ -70,7 +75,9 @@ export const post = args => {
       if (res) {
         resolve({
           success: true,
-          message: 'Post was published successfully',
+          message: `${
+            type === 'comment' ? 'Comment' : 'Post'
+          } was published successfully`,
         });
       }
     });
@@ -93,48 +100,6 @@ export const vote = async (author, permlink, weight) => {
         resolve({ success: true });
       }
     });
-  });
-};
-
-export const comment = async (
-  parentAuthor,
-  parentPermlink,
-  permlink,
-  title,
-  body,
-  jsonMetadata,
-  type,
-) => {
-  api.setAccessToken(getScToken());
-  const author = getUser();
-  return new Promise(resolve => {
-    api.comment(
-      parentAuthor,
-      parentPermlink,
-      author,
-      permlink,
-      title,
-      body,
-      jsonMetadata,
-      (err, res) => {
-        if (err) {
-          resolve({
-            success: false,
-            message: `${(type === 'comment' && 'Comment') ||
-              'Post'} could not be published${(typeof err === 'string' &&
-              `: ${err}`) ||
-              (err.error_description && `: ${err.error_description}`)}`,
-          });
-        }
-        if (res) {
-          resolve({
-            success: true,
-            message: `${(type === 'comment' && 'Comment') ||
-              'Post'} was published successfully`,
-          });
-        }
-      },
-    );
   });
 };
 

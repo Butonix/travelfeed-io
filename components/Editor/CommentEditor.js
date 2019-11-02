@@ -64,6 +64,7 @@ const CommentEditor = props => {
       jsonMetadata: JSON.stringify(jsonMetadata),
       permlink,
       commentOptions: undefined,
+      type: 'comment',
     });
   };
 

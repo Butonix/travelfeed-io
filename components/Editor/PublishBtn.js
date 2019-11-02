@@ -67,7 +67,7 @@ const PublishBtn = props => {
   return (
     <>
       <Button
-        fullWidth
+        fullWidth={props.fullWidth}
         variant="contained"
         color="primary"
         onClick={props.triggerPublish}

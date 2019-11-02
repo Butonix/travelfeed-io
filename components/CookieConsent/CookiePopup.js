@@ -18,7 +18,7 @@ class CookiePopup extends Component {
           position: 'fixed',
           bottom: '0px',
           left: '0px',
-          zIndex: 99999999999,
+          zIndex: 1299,
         }}
       >
         <div className="container" id={containerid}>
