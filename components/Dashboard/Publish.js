@@ -782,6 +782,7 @@ const PostEditor = props => {
                     <div className="col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6 pt-1">
                       {(!success && (
                         <PublishBtn
+                          fullWidth
                           publishThis={publishThis}
                           pastPublish={res => pastPublish(res)}
                           triggerPublish={triggerPublish}
