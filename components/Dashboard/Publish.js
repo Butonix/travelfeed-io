@@ -506,6 +506,7 @@ const PostEditor = props => {
             commentOptions && commentOptions !== ''
               ? JSON.stringify(commentOptions)
               : undefined,
+          type: 'post',
         });
       }
     });
