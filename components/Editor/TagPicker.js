@@ -129,7 +129,7 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
 };
 
-function getSuggestions(value) {
+function getSuggestions(value, allowedTagNumber) {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
@@ -138,7 +138,7 @@ function getSuggestions(value) {
     ? []
     : suggestions.filter(suggestion => {
         const keep =
-          count < 10 &&
+          count < allowedTagNumber &&
           suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
         if (keep) {
@@ -154,6 +154,8 @@ const TagPicker = props => {
   const [stateUpdate, setStateUpdate] = useState(true);
 
   const selectedItem = props.value;
+
+  const allowedTagNumber = props.useAdvancedMode ? 10 : 4;
 
   const handleKeyDown = event => {
     if (
@@ -175,7 +177,7 @@ const TagPicker = props => {
       inputValue.length < 20 &&
       inputValue.match(/[a-zA-Z0-9]/) &&
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
-      selectedItem.length < 10
+      selectedItem.length < allowedTagNumber
     ) {
       const item = inputValue
         .toLowerCase()
@@ -193,8 +195,11 @@ const TagPicker = props => {
   };
 
   const handleChange = item => {
-    //  If 10 Tags already, don't autocomplete
-    if (selectedItem.length < 10 && props.defaultTags.indexOf(item) === -1) {
+    //  If *allowedTagNumber* tags already, don't autocomplete
+    if (
+      selectedItem.length < allowedTagNumber &&
+      props.defaultTags.indexOf(item) === -1
+    ) {
       if (selectedItem.indexOf(item) === -1) {
         props.onTagChange([...selectedItem, item]);
         setInputValue('');
@@ -237,14 +242,15 @@ const TagPicker = props => {
                   InputProps: getInputProps({
                     startAdornment: (
                       <Fragment>
-                        {props.defaultTags.map(item => (
-                          <Chip
-                            key={item}
-                            tabIndex={-1}
-                            label={item}
-                            className={classes.chip}
-                          />
-                        ))}
+                        {props.useAdvancedMode &&
+                          props.defaultTags.map(item => (
+                            <Chip
+                              key={item}
+                              tabIndex={-1}
+                              label={item}
+                              className={classes.chip}
+                            />
+                          ))}
                         {selectedItem.map(item => (
                           <Chip
                             key={item}
@@ -263,20 +269,21 @@ const TagPicker = props => {
                     ),
                     onChange: handleInputChange,
                     onKeyDown: handleKeyDown,
-                    placeholder: 'Add tags',
+                    placeholder: 'Add topics',
                   }),
                   label: '',
                 })}
                 {isOpen ? (
                   <Paper className={classes.paper} square>
-                    {getSuggestions(inputValue2).map((suggestion, index) =>
-                      renderSuggestion({
-                        suggestion,
-                        index,
-                        itemProps: getItemProps({ item: suggestion.label }),
-                        highlightedIndex,
-                        selectedItem: selectedItem2,
-                      }),
+                    {getSuggestions(inputValue2, allowedTagNumber).map(
+                      (suggestion, index) =>
+                        renderSuggestion({
+                          suggestion,
+                          index,
+                          itemProps: getItemProps({ item: suggestion.label }),
+                          highlightedIndex,
+                          selectedItem: selectedItem2,
+                        }),
                     )}
                   </Paper>
                 ) : null}
@@ -287,7 +294,7 @@ const TagPicker = props => {
         {props.recommendations.length > 0 && (
           <div className="col-12 pt-4">
             <FormLabel component="legend">
-              Tag recommendations based on your post:
+              Topic recommendations based on your post:
             </FormLabel>
             {props.recommendations.map(r => (
               <Chip
