@@ -84,7 +84,8 @@ class MyApp extends App {
   }
 
   setDarkMode = () => {
-    Cookie.set('use_dark_mode', true);
+    const expires = new Date(new Date().getTime() + 3600 * 1000 * 24 * 365);
+    Cookie.set('use_dark_mode', true, { expires });
     this.setState({
       theme: 'dark',
     });
