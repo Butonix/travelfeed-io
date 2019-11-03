@@ -113,11 +113,11 @@ const FAQAccordion = () => {
         <li>
           By email:{' '}
           <a
-            href="mailto:travelfeed.steemit@gmail.com"
+            href="mailto:contact@travelfeed.io"
             rel="noopener noreferrer nofollow"
             target="_blank"
           >
-            travelfeed.steemit@gmail.com
+            contact@travelfeed.io
           </a>
         </li>
         <li>
