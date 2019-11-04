@@ -79,7 +79,7 @@ const FeaturedImageUpload = props => {
         <Fragment>
           <img
             alt="Featured"
-            className={`img-fluid${rounded && ' rounded-circle'}`}
+            className={`img-fluid${rounded ? ' rounded-circle' : ''}`}
             src={imageProxy(featuredImage, 500)}
             style={(rounded && { height: '200px', width: '200px' }) || {}}
           />

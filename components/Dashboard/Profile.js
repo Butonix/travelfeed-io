@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import { green, indigo, purple, teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import ViewIcon from '@material-ui/icons/RemoveRedEye';
 import React, { Fragment, useEffect, useState } from 'react';
 import { getAccount } from '../../helpers/steem';
 import { getUser } from '../../helpers/token';
@@ -204,35 +205,42 @@ const Profile = () => {
             title="Save Changes"
             background={green[600]}
             content={
-              <Fragment>
-                <UpdateProfileButton
-                  profile={JSON.stringify({
-                    profile: {
-                      name: displayName,
-                      cover_image: coverImage,
-                      profile_image: profileImage,
-                      about,
-                      location,
-                      website,
-                      twitter,
-                      facebook,
-                      instagram,
-                      youtube,
-                      couchsurfing,
-                      pinterest,
-                    },
-                  })}
-                />
-                <Link
-                  color="textPrimary"
-                  as={`/@${getUser()}`}
-                  href={`/blog?author=${getUser()}`}
-                >
-                  <Button color="primary" variant="outlined" className="ml-2">
-                    View your public profile
-                  </Button>
-                </Link>
-              </Fragment>
+              <div className="container">
+                <div className="row">
+                  <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 p-1">
+                    <UpdateProfileButton
+                      profile={JSON.stringify({
+                        profile: {
+                          name: displayName,
+                          cover_image: coverImage,
+                          profile_image: profileImage,
+                          about,
+                          location,
+                          website,
+                          twitter,
+                          facebook,
+                          instagram,
+                          youtube,
+                          couchsurfing,
+                          pinterest,
+                        },
+                      })}
+                    />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 p-1">
+                    <Link
+                      color="textPrimary"
+                      as={`/@${getUser()}`}
+                      href={`/blog?author=${getUser()}`}
+                    >
+                      <Button fullWidth color="primary" variant="outlined">
+                        <ViewIcon />
+                        <span className="pl-2"> View profile </span>
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             }
           />
         </div>

@@ -126,6 +126,10 @@ app
       res.redirect(`/topics`);
     });
 
+    server.get('/steemfest', (req, res) => {
+      res.redirect(`/destinations/thailand/Bangkok`);
+    });
+
     server.get('/created/:tag', (req, res) => {
       const { tag } = req.params;
       res.redirect(`/topics/${tag}`);

@@ -58,6 +58,7 @@ const UpdateProfileButton = props => {
 
   return (
     <Button
+      fullWidth
       color="primary"
       variant="contained"
       onClick={broadcast}

@@ -596,11 +596,11 @@ const Terms = () => {
         work has been copied in a way that constitutes copyright infringement,
         you may notify TravelFeed by contacting:{' '}
         <a
-          href="mailto:travelfeed.steemit@gmail.com"
+          href="mailto:contact@travelfeed.io"
           rel="noopener noreferrer nofollow"
           target="_blank"
         >
-          travelfeed.steemit@gmail.com
+          contact@travelfeed.io
         </a>
         .
       </p>
@@ -716,11 +716,11 @@ const Terms = () => {
         <li>
           By email:{' '}
           <a
-            href="mailto:travelfeed.steemit@gmail.com"
+            href="mailto:contact@travelfeed.io"
             rel="noopener noreferrer nofollow"
             target="_blank"
           >
-            travelfeed.steemit@gmail.com
+            contact@travelfeed.io
           </a>
         </li>
         <li>
