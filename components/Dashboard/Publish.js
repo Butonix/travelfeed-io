@@ -676,11 +676,11 @@ const PostEditor = props => {
                       }
                     />
                   </div>
-                  {!editMode ||
-                    (data &&
-                      data.preferences.useAdvancedEditorOptions === false && (
-                        <></>
-                      )) || (
+                  {!editMode &&
+                    !(
+                      data &&
+                      data.preferences.useAdvancedEditorOptions === false
+                    ) && (
                       <>
                         <div className="col-12 pt-2 pl-2 pr-2">
                           <DetailedExpansionPanel
