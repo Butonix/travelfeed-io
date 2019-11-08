@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Feed from '../components/Feed/Feed';
 import MobileDialog from '../components/Feed/MobileDialog';
+import SteemfestBanner from '../components/Feed/SteemfestBanner';
 import { getUser } from '../helpers/token';
 
 const FeaturedFeed = props => {
@@ -15,6 +16,7 @@ const FeaturedFeed = props => {
   return (
     <>
       {isApp && <MobileDialog />}
+      <SteemfestBanner />
       <Feed
         active="featured"
         selection={3}
