@@ -67,6 +67,12 @@ export const logout = () => {
   Cookie.remove('sc_token');
   api.revokeToken();
 };
+export const hasSteemFestCookie = () => {
+  return Cookie.get('steemfest') === 'true';
+};
+export const removeSteemfestCookie = () => {
+  Cookie.remove('steemfest');
+};
 export const hasCookieConsent = () => {
   return Cookie.get('cookie_consent');
 };
