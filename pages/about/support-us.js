@@ -6,16 +6,28 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Router from 'next/router';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import { getTfDelegation } from '../../helpers/steem';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 
 const SupportUsPage = () => {
   const [delegationAmount, setDelegationAmount] = useState(1000);
+  const [amountDelegated, setAmountDelegated] = useState(0);
+
+  useEffect(() => {
+    const user = getUser();
+    getTfDelegation(user).then(res => {
+      if (res.isDelegator) {
+        setAmountDelegated(res.amountDelegated);
+        setDelegationAmount(res.amountDelegated);
+      }
+    });
+  }, []);
 
   const handleDelegationChange = amount => {
     setDelegationAmount(amount.target.value);
@@ -96,14 +108,27 @@ const SupportUsPage = () => {
                 <Typography gutterBottom variant="h4" className="pt-2">
                   Delegate to @travelfeed
                 </Typography>
-                <p>
-                  Delegations help us give higher rewards to content creators.
-                  Currently, there are no rewards for delegators, but once our
-                  platform is more advanced, and we have published our
-                  whitepaper, we will announce a delegation plan that will also
-                  consider current and past delegations. Be assured that you
-                  won't regret it, if you delegate to @travelfeed today!
-                </p>
+                {(amountDelegated > 0 && (
+                  <p>
+                    You are currently delegating{' '}
+                    <strong>{amountDelegated} SP</strong>. This means that you
+                    are eligible for our airdrop to delegators when we launch
+                    our SMT, congratulations! Your delegation supports the
+                    manual curation of the best travel content on Steem. If you
+                    would like to increase your delegation, you can do so using
+                    the buttons below.
+                  </p>
+                )) || (
+                  <p>
+                    Delegations help us give higher rewards to content creators.
+                    Your delegation does not only supports the growth of this
+                    incredible project, but also helps the entire travel
+                    community on TravelFeed.io and the Steem blockchain. Once we
+                    launch our token, there will be a generous airdrop to
+                    delegators, so delegating now pays off! Use the buttons
+                    below to easily delegate via Steem Keychain or Steemconnect.
+                  </p>
+                )}
                 <div className="text-center pb-3">
                   <Button
                     className="m-1"
@@ -135,7 +160,7 @@ const SupportUsPage = () => {
                     variant="contained"
                     color="secondary"
                   >
-                    1000 SP
+                    1,000 SP
                   </Button>
                   <Button
                     className="m-1"
@@ -143,7 +168,7 @@ const SupportUsPage = () => {
                     variant="contained"
                     color="secondary"
                   >
-                    5000 SP
+                    5,000 SP
                   </Button>
                   <Button
                     className="m-1"
@@ -151,7 +176,15 @@ const SupportUsPage = () => {
                     variant="contained"
                     color="secondary"
                   >
-                    10000 SP
+                    10,000 SP
+                  </Button>
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(10000)}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    50,000 SP
                   </Button>
                 </div>
                 <div className="text-center pb-2">
@@ -159,6 +192,7 @@ const SupportUsPage = () => {
                     Or delegate a custom amount:
                   </Typography>
                   <TextField
+                    style={{ marginLeft: '60px' }}
                     type="number"
                     value={delegationAmount}
                     onChange={handleDelegationChange}

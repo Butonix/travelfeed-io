@@ -1,5 +1,6 @@
 import steem from 'steem';
 import { STEEM_API } from '../config';
+import { round } from './math';
 
 steem.api.setOptions({ url: STEEM_API });
 
@@ -53,6 +54,30 @@ export const getAccount = username => {
       couchsurfing,
       pinterest,
     };
+  });
+};
+
+export const getTfDelegation = account => {
+  return new Promise(resolve => {
+    steem.api.getVestingDelegations(account, 'travelfeed', 100, (err, res) => {
+      if (res && res.length > 0) {
+        steem.api.getDynamicGlobalProperties((error, result) => {
+          if (result) {
+            const { total_vesting_shares, total_vesting_fund_steem } = result;
+            const steemPower = steem.formatter.vestToSteem(
+              res[0].vesting_shares,
+              total_vesting_shares,
+              total_vesting_fund_steem,
+            );
+            const amountDelegated = round(steemPower, 0);
+            resolve({
+              isDelegator: true,
+              amountDelegated,
+            });
+          } else resolve({ isDelegator: false });
+        });
+      } else resolve({ isDelegator: false });
+    });
   });
 };
 
