@@ -77,6 +77,7 @@ const suggestions = [
   { label: 'marketfriday' },
   { label: 'sports' },
   { label: 'transportation' },
+  { label: 'urbex' },
 ];
 
 const renderInput = inputProps => {
