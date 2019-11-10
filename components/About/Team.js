@@ -1,8 +1,31 @@
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import React, { Fragment } from 'react';
+import Link from 'next/link';
+import React, { Fragment, useEffect, useState } from 'react';
+import { getDelegations } from '../../helpers/getDelegations';
+import { getVesting } from '../../helpers/steem';
 import TeamMember from './TeamMember';
 
 const Team = () => {
+  const [delegators, setDelegators] = useState([]);
+  const [totalDelegations, setTotalDelegations] = useState(0);
+
+  useEffect(() => {
+    getVesting().then(vesting => {
+      const { total_vesting_shares, total_vesting_fund_steem } = vesting;
+      getDelegations(total_vesting_shares, total_vesting_fund_steem).then(
+        res => {
+          setDelegators(res);
+          let totalDel = 0;
+          res.forEach(dl => {
+            totalDel += dl.amountDelegated;
+          });
+          setTotalDelegations(totalDel);
+        },
+      );
+    });
+  }, []);
+
   const founders = [
     {
       name: 'Julian Peters',
@@ -103,6 +126,33 @@ const Team = () => {
                   username={member.username}
                   photo={member.photo}
                   content={member.content}
+                />
+              </div>
+            );
+          })}
+          {delegators && delegators.length > 0 && (
+            <div className="col-12 text-center pt-4">
+              <Typography variant="h4" gutterBottom>
+                Delegators
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>{delegators.length} delegators</strong> are delegating a
+                total of <strong>{totalDelegations} SP</strong>
+              </Typography>
+              <Link href="/about/support-us">
+                <Button color="primary" variant="contained">
+                  Become a delegator
+                </Button>
+              </Link>
+            </div>
+          )}
+          {delegators.map(delegation => {
+            const { delegator, amountDelegated } = delegation;
+            return (
+              <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6">
+                <TeamMember
+                  username={delegator}
+                  content={<strong>{amountDelegated} SP</strong>}
                 />
               </div>
             );

@@ -11,7 +11,11 @@ import AboutSelect from '../../components/About/AboutSelect';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
-import { getIsWitnessVote, getTfDelegation } from '../../helpers/steem';
+import {
+  getIsWitnessVote,
+  getTfDelegation,
+  getVesting,
+} from '../../helpers/steem';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 
@@ -23,11 +27,18 @@ const SupportUsPage = () => {
   useEffect(() => {
     const user = getUser();
     if (user) {
-      getTfDelegation(user).then(res => {
-        if (res.isDelegator) {
-          setAmountDelegated(res.amountDelegated);
-          setDelegationAmount(res.amountDelegated);
-        }
+      getVesting().then(vesting => {
+        const { total_vesting_shares, total_vesting_fund_steem } = vesting;
+        getTfDelegation(
+          user,
+          total_vesting_shares,
+          total_vesting_fund_steem,
+        ).then(res => {
+          if (res.isDelegator) {
+            setAmountDelegated(res.amountDelegated);
+            setDelegationAmount(res.amountDelegated);
+          }
+        });
       });
       getIsWitnessVote(user).then(res => {
         setWitnessVoted(res);

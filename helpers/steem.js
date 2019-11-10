@@ -57,24 +57,32 @@ export const getAccount = username => {
   });
 };
 
-export const getTfDelegation = account => {
+export const getVesting = () => {
+  return new Promise(resolve => {
+    steem.api.getDynamicGlobalProperties((error, result) => {
+      const { total_vesting_shares, total_vesting_fund_steem } = result;
+      resolve({ total_vesting_shares, total_vesting_fund_steem });
+    });
+  });
+};
+
+export const getTfDelegation = (
+  account,
+  total_vesting_shares,
+  total_vesting_fund_steem,
+) => {
   return new Promise(resolve => {
     steem.api.getVestingDelegations(account, 'travelfeed', 100, (err, res) => {
       if (res && res.length > 0) {
-        steem.api.getDynamicGlobalProperties((error, result) => {
-          if (result) {
-            const { total_vesting_shares, total_vesting_fund_steem } = result;
-            const steemPower = steem.formatter.vestToSteem(
-              res[0].vesting_shares,
-              total_vesting_shares,
-              total_vesting_fund_steem,
-            );
-            const amountDelegated = round(steemPower, 0);
-            resolve({
-              isDelegator: true,
-              amountDelegated,
-            });
-          } else resolve({ isDelegator: false });
+        const steemPower = steem.formatter.vestToSteem(
+          res[0].vesting_shares,
+          total_vesting_shares,
+          total_vesting_fund_steem,
+        );
+        const amountDelegated = round(steemPower, 0);
+        resolve({
+          isDelegator: true,
+          amountDelegated,
         });
       } else resolve({ isDelegator: false });
     });
