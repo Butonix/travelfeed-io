@@ -197,7 +197,7 @@ const SupportUsPage = () => {
                   </Button>
                   <Button
                     className="m-1"
-                    onClick={() => delegateSp(10000)}
+                    onClick={() => delegateSp(50000)}
                     variant="contained"
                     color="secondary"
                   >
