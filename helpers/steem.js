@@ -81,4 +81,11 @@ export const getTfDelegation = account => {
   });
 };
 
+export const getIsWitnessVote = username => {
+  return steem.api.getAccountsAsync([username]).then(account => {
+    const isWitnessVote = account[0].witness_votes.indexOf('travelfeed') !== -1;
+    return isWitnessVote;
+  });
+};
+
 export default steem;

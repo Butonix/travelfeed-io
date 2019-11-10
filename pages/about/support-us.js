@@ -11,22 +11,28 @@ import AboutSelect from '../../components/About/AboutSelect';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
-import { getTfDelegation } from '../../helpers/steem';
+import { getIsWitnessVote, getTfDelegation } from '../../helpers/steem';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 
 const SupportUsPage = () => {
   const [delegationAmount, setDelegationAmount] = useState(1000);
   const [amountDelegated, setAmountDelegated] = useState(0);
+  const [isWitnessVoted, setWitnessVoted] = useState(false);
 
   useEffect(() => {
     const user = getUser();
-    getTfDelegation(user).then(res => {
-      if (res.isDelegator) {
-        setAmountDelegated(res.amountDelegated);
-        setDelegationAmount(res.amountDelegated);
-      }
-    });
+    if (user) {
+      getTfDelegation(user).then(res => {
+        if (res.isDelegator) {
+          setAmountDelegated(res.amountDelegated);
+          setDelegationAmount(res.amountDelegated);
+        }
+      });
+      getIsWitnessVote(user).then(res => {
+        setWitnessVoted(res);
+      });
+    }
   }, []);
 
   const handleDelegationChange = amount => {
@@ -211,34 +217,45 @@ const SupportUsPage = () => {
                 </div>
                 <Divider />
                 <Typography gutterBottom variant="h4" className="pt-4">
-                  Vote for our Steem Witness
+                  {isWitnessVoted
+                    ? 'Thanks for voting for our Steem witness!'
+                    : 'Vote for our Steem Witness!'}
                 </Typography>
-                <p>
-                  You can support TravelFeed by voting for our Steem witness
-                  @travelfeed. As a witness, we help to operate the
-                  decentralised Steem blockchain. By building a platform with
-                  huge potential and growth on Steem, we are supporting this
-                  amazing blockchain. In order to support other projects
-                  building on Steem, we are publishing large parts of our code
-                  base open source on{' '}
-                  <a
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
-                    href="https://github.com/travelfeed-io"
-                  >
-                    Github
-                  </a>
-                  .
-                </p>
-                <div className="text-center pb-3">
-                  <Button
-                    onClick={voteWitness}
-                    variant="contained"
-                    color="secondary"
-                  >
-                    Vote for our witness
-                  </Button>
-                </div>
+                {isWitnessVoted ? (
+                  <p>
+                    On behalf of the entire team and the TravelFeed community,
+                    we would like to thank you for your witness vote!
+                  </p>
+                ) : (
+                  <>
+                    <p>
+                      You can support TravelFeed by voting for our Steem witness
+                      @travelfeed. As a witness, we help to operate the
+                      decentralised Steem blockchain. By building a platform
+                      with huge potential and growth on Steem, we are supporting
+                      this amazing blockchain. In order to support other
+                      projects building on Steem, we are publishing large parts
+                      of our code base open source on{' '}
+                      <a
+                        target="_blank"
+                        rel="nofollow noreferrer noopener"
+                        href="https://github.com/travelfeed-io"
+                      >
+                        Github
+                      </a>
+                      .
+                    </p>
+                    <div className="text-center pb-3">
+                      <Button
+                        onClick={voteWitness}
+                        variant="contained"
+                        color="secondary"
+                      >
+                        Vote for our witness
+                      </Button>
+                    </div>
+                  </>
+                )}
                 <Divider />
                 <Typography gutterBottom variant="h4" className="pt-4">
                   Support our Crowdfunding Campaign
