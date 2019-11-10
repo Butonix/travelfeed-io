@@ -6,6 +6,11 @@ export const CHANGE_SETTINGS = gql`
     $defaultCommentsVoteWeight: Int
     $showNSFW: Boolean
     $useTfBlacklist: Boolean
+    $trackFollows: Boolean
+    $trackMentions: Boolean
+    $trackReplies: Boolean
+    $trackCuration: Boolean
+    $trackUpdates: Boolean
     $useDarkMode: Boolean
     $hasAcceptedCookies: Boolean
     $useHighPrecisionVotingSlider: Boolean
@@ -17,6 +22,11 @@ export const CHANGE_SETTINGS = gql`
       defaultCommentsVoteWeight: $defaultCommentsVoteWeight
       showNSFW: $showNSFW
       useTfBlacklist: $useTfBlacklist
+      trackFollows: $trackFollows
+      trackMentions: $trackMentions
+      trackReplies: $trackReplies
+      trackCuration: $trackCuration
+      trackUpdates: $trackUpdates
       useDarkMode: $useDarkMode
       hasAcceptedCookies: $hasAcceptedCookies
       useHighPrecisionVotingSlider: $useHighPrecisionVotingSlider
@@ -53,6 +63,11 @@ export const GET_SETTINGS = gql`
       showNSFW
       useDarkMode
       useTfBlacklist
+      trackFollows
+      trackMentions
+      trackReplies
+      trackCuration
+      trackUpdates
       useHighPrecisionVotingSlider
       useAdvancedEditorOptions
       claimRewards
