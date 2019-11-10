@@ -37,6 +37,11 @@ const Settings = props => {
     useHighPrecisionVotingSlider,
     setUseHighPrecisionVotingSlider,
   ] = useState(false);
+  const [trackFollows, setTrackFollows] = useState(false);
+  const [trackMentions, setTrackMentions] = useState(false);
+  const [trackReplies, setTrackReplies] = useState(false);
+  const [trackCuration, setTrackCuration] = useState(false);
+  const [trackUpdates, setTrackUpdates] = useState(false);
   const [useAdvancedEditorOptions, setUseAdvancedEditorOptions] = useState(
     false,
   );
@@ -90,6 +95,16 @@ const Settings = props => {
       setUseHighPrecisionVotingSlider(event.target.checked);
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
+    } else if (name === 'trackFollows') {
+      setTrackFollows(event.target.checked);
+    } else if (name === 'trackMentions') {
+      setTrackMentions(event.target.checked);
+    } else if (name === 'trackReplies') {
+      setTrackReplies(event.target.checked);
+    } else if (name === 'trackCuration') {
+      setTrackCuration(event.target.checked);
+    } else if (name === 'trackUpdates') {
+      setTrackUpdates(event.target.checked);
     } else if (name === 'claimRewards') {
       const { checked } = event.target;
       setClaimRewards(checked);
@@ -125,9 +140,6 @@ const Settings = props => {
           setNotificationPermission(status === 'granted');
           registerServiceWorker();
         });
-      newNotification({
-        message: 'You can disable notifications in your browser settings',
-      });
       setNotificationPermission(false);
     }
   };
@@ -156,6 +168,11 @@ const Settings = props => {
                     );
                     setShowNSFW(data.preferences.showNSFW);
                     setUseTfBlacklist(data.preferences.useTfBlacklist);
+                    setTrackFollows(data.preferences.trackFollows);
+                    setTrackMentions(data.preferences.trackMentions);
+                    setTrackReplies(data.preferences.trackReplies);
+                    setTrackCuration(data.preferences.trackCuration);
+                    setTrackUpdates(data.preferences.trackUpdates);
                     setUseHighPrecisionVotingSlider(
                       data.preferences.useHighPrecisionVotingSlider,
                     );
@@ -173,6 +190,11 @@ const Settings = props => {
                         defaultCommentsVoteWeight,
                         showNSFW,
                         useTfBlacklist,
+                        trackFollows,
+                        trackMentions,
+                        trackReplies,
+                        trackCuration,
+                        trackUpdates,
                         useHighPrecisionVotingSlider,
                         useAdvancedEditorOptions,
                         claimRewards,
@@ -294,21 +316,95 @@ const Settings = props => {
                                   }
                                   label="Use dark mode"
                                 />
-                                <FormControlLabel
-                                  labelPlacement="end"
-                                  control={
-                                    <Switch
-                                      checked={notificationPermission}
-                                      onChange={handleCheckboxChange(
-                                        'notificationPermission',
-                                      )}
-                                      value="notificationPermission"
-                                      color="primary"
+                                {(notificationPermission && (
+                                  <>
+                                    <FormControlLabel
+                                      labelPlacement="end"
+                                      control={
+                                        <Switch
+                                          checked={trackFollows}
+                                          onChange={handleCheckboxChange(
+                                            'trackFollows',
+                                          )}
+                                          color="primary"
+                                          onInput={changeSettings}
+                                        />
+                                      }
+                                      label="Notify for new followers"
                                     />
-                                  }
-                                  label="Display notifications"
-                                />
-
+                                    <FormControlLabel
+                                      labelPlacement="end"
+                                      control={
+                                        <Switch
+                                          checked={trackMentions}
+                                          onChange={handleCheckboxChange(
+                                            'trackMentions',
+                                          )}
+                                          color="primary"
+                                          onInput={changeSettings}
+                                        />
+                                      }
+                                      label="Notify when mentioned"
+                                    />
+                                    <FormControlLabel
+                                      labelPlacement="end"
+                                      control={
+                                        <Switch
+                                          checked={trackReplies}
+                                          onChange={handleCheckboxChange(
+                                            'trackReplies',
+                                          )}
+                                          color="primary"
+                                          onInput={changeSettings}
+                                        />
+                                      }
+                                      label="Notify when someone replies to you"
+                                    />
+                                    <FormControlLabel
+                                      labelPlacement="end"
+                                      control={
+                                        <Switch
+                                          checked={trackCuration}
+                                          onChange={handleCheckboxChange(
+                                            'trackCuration',
+                                          )}
+                                          color="primary"
+                                          onInput={changeSettings}
+                                        />
+                                      }
+                                      label="Notify when your post is featured"
+                                    />
+                                    <FormControlLabel
+                                      labelPlacement="end"
+                                      control={
+                                        <Switch
+                                          checked={trackUpdates}
+                                          onChange={handleCheckboxChange(
+                                            'trackUpdates',
+                                          )}
+                                          color="primary"
+                                          onInput={changeSettings}
+                                        />
+                                      }
+                                      label="Receive notifications about TravelFeed updates"
+                                    />
+                                  </>
+                                )) || (
+                                  <FormControlLabel
+                                    labelPlacement="end"
+                                    control={
+                                      <Switch
+                                        checked={notificationPermission}
+                                        onChange={handleCheckboxChange(
+                                          'notificationPermission',
+                                        )}
+                                        value="notificationPermission"
+                                        color="primary"
+                                      />
+                                    }
+                                    label="Display notifications"
+                                  />
+                                )}
                                 <TextField
                                   select
                                   label="Default miles weight for posts"

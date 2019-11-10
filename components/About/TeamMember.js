@@ -25,7 +25,11 @@ const TeamMember = props => {
           <img
             className="rounded-circle w-100 h-100"
             alt={props.name}
-            src={imageProxy(props.photo, 250, 250)}
+            src={
+              props.photo
+                ? imageProxy(props.photo, 250, 250)
+                : `https://steemitimages.com/u/${props.username}/avatar/large`
+            }
           />
         </div>
       </Link>

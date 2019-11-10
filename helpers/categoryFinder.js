@@ -33,6 +33,10 @@ const categories = [
   },
   { category: 'family', keywords: ['kids', 'children'] },
   {
+    category: 'urbex',
+    keywords: ['abandoned', 'urban exploring', 'urban exploration'],
+  },
+  {
     category: 'outdoor',
     keywords: [
       'mountains',
