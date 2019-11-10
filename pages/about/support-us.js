@@ -3,14 +3,77 @@ import Button from '@material-ui/core/Button';
 import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import React, { Fragment } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Router from 'next/router';
+import React, { Fragment, useState } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 
 const SupportUsPage = () => {
+  const [delegationAmount, setDelegationAmount] = useState(1000);
+
+  const handleDelegationChange = amount => {
+    setDelegationAmount(amount.target.value);
+  };
+
+  const scWitnessVote = () => {
+    window.open(
+      'https://beta.steemconnect.com/sign/account-witness-vote?witness=travelfeed&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fwitnessvote%2Fsuccess',
+      '_blank',
+    );
+  };
+
+  const kcWitnessVote = () => {
+    window.steem_keychain.requestWitnessVote(
+      getUser(),
+      'travelfeed',
+      true,
+      response => {
+        if (response && response.success)
+          Router.push({
+            pathname: '/witnessvote/success',
+          });
+      },
+    );
+  };
+
+  const voteWitness = () => {
+    if (window && window.steem_keychain && getUser()) kcWitnessVote();
+    else scWitnessVote();
+  };
+
+  const scDelegation = sp => {
+    window.open(
+      `https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=${sp}.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess`,
+      '_blank',
+    );
+  };
+
+  const kcDelegation = sp => {
+    window.steem_keychain.requestDelegation(
+      getUser(),
+      'travelfeed',
+      `${sp}.000`,
+      'SP',
+      response => {
+        if (response && response.success)
+          Router.push({
+            pathname: '/delegation/success',
+          });
+      },
+    );
+  };
+
+  const delegateSp = sp => {
+    if (window && window.steem_keychain && getUser()) kcDelegation(sp);
+    else scDelegation(sp);
+  };
+
   const title = 'Support Us';
   return (
     <Fragment>
@@ -30,7 +93,9 @@ const SupportUsPage = () => {
             background={indigo[600]}
             content={
               <div className="textPrimary postcontent">
-                <h4 className="pt-2">Delegate to @travelfeed</h4>
+                <Typography gutterBottom variant="h4" className="pt-2">
+                  Delegate to @travelfeed
+                </Typography>
                 <p>
                   Delegations help us give higher rewards to content creators.
                   Currently, there are no rewards for delegators, but once our
@@ -40,69 +105,110 @@ const SupportUsPage = () => {
                   won't regret it, if you delegate to @travelfeed today!
                 </p>
                 <div className="text-center pb-3">
-                  <a
-                    className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(100)}
+                    variant="contained"
+                    color="secondary"
                   >
-                    <Button variant="contained" color="secondary">
-                      100 SP
-                    </Button>
-                  </a>
-                  <a
-                    className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
+                    100 SP
+                  </Button>
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(250)}
+                    variant="contained"
+                    color="secondary"
                   >
-                    <Button variant="contained" color="secondary">
-                      250 SP
-                    </Button>
-                  </a>
-                  <a
-                    className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
+                    250 SP
+                  </Button>
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(500)}
+                    variant="contained"
+                    color="secondary"
                   >
-                    <Button variant="contained" color="secondary">
-                      500 SP
-                    </Button>
-                  </a>
-                  <a
-                    className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
+                    500 SP
+                  </Button>
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(1000)}
+                    variant="contained"
+                    color="secondary"
                   >
-                    <Button variant="contained" color="secondary">
-                      1000 SP
-                    </Button>
-                  </a>
-                  <a
-                    className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
+                    1000 SP
+                  </Button>
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(5000)}
+                    variant="contained"
+                    color="secondary"
                   >
-                    <Button variant="contained" color="secondary">
-                      5000 SP
-                    </Button>
-                  </a>
-                  <a
-                    className="p-1"
-                    href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess"
-                    target="_blank"
-                    rel="nofollow noreferrer noopener"
+                    5000 SP
+                  </Button>
+                  <Button
+                    className="m-1"
+                    onClick={() => delegateSp(10000)}
+                    variant="contained"
+                    color="secondary"
                   >
-                    <Button variant="contained" color="secondary">
-                      10000 SP
-                    </Button>
-                  </a>
+                    10000 SP
+                  </Button>
+                </div>
+                <div className="text-center pb-2">
+                  <Typography gutterBottom variant="h5" className="pt-2">
+                    Or delegate a custom amount:
+                  </Typography>
+                  <TextField
+                    type="number"
+                    value={delegationAmount}
+                    onChange={handleDelegationChange}
+                    label="SP to delegate"
+                    variant="outlined"
+                  />
+                  <Button
+                    style={{ left: '-60px' }}
+                    className="pt-2 pb-3 pt-3"
+                    onClick={() => delegateSp(delegationAmount)}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Delegate
+                  </Button>
                 </div>
                 <Divider />
-                <h4 className="pt-4">Support our Crowdfunding Campaign</h4>
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Vote for our Steem Witness
+                </Typography>
+                <p>
+                  You can support TravelFeed by voting for our Steem witness
+                  @travelfeed. As a witness, we help to operate the
+                  decentralised Steem blockchain. By building a platform with
+                  huge potential and growth on Steem, we are supporting this
+                  amazing blockchain. In order to support other projects
+                  building on Steem, we are publishing large parts of our code
+                  base open source on{' '}
+                  <a
+                    target="_blank"
+                    rel="nofollow noreferrer noopener"
+                    href="https://github.com/travelfeed-io"
+                  >
+                    Github
+                  </a>
+                  .
+                </p>
+                <div className="text-center pb-3">
+                  <Button
+                    onClick={voteWitness}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Vote for our witness
+                  </Button>
+                </div>
+                <Divider />
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Support our Crowdfunding Campaign
+                </Typography>
                 <p>
                   As of now, all costs for running TravelFeed have been paid out
                   of our own pockets, but taking TravelFeed to the next level
@@ -124,7 +230,9 @@ const SupportUsPage = () => {
                   </a>
                 </div>
                 <Divider />
-                <h4 className="pt-4">Follow the TravelFeed Curation Trail</h4>
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Follow the TravelFeed Curation Trail
+                </Typography>
                 <p>
                   By following our curation trail, you automatically upvote all
                   posts that we curate and help to reward quality content
@@ -139,7 +247,9 @@ const SupportUsPage = () => {
                   explaining how to follow our curation trail.
                 </p>
                 <Divider />
-                <h4 className="pt-4">Upvote our Daily Curation Posts</h4>
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Upvote our Daily Curation Posts
+                </Typography>
                 <p>
                   Upvoting our curation posts helps us to give higher rewards to
                   the featured bloggers, who receive a share of the post
@@ -148,7 +258,9 @@ const SupportUsPage = () => {
                   in the tutorial above and add travelfeed to your "fanbase".
                 </p>
                 <Divider />
-                <h4 className="pt-4">Join the Team!</h4>
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Join the Team!
+                </Typography>
                 <p>
                   We are still looking for more curators to join our curation
                   team! There is no direct financial reward and your TravelFeed
@@ -179,14 +291,18 @@ const SupportUsPage = () => {
                   .
                 </p>
                 <Divider />
-                <h4 className="pt-4">Donate</h4>
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Donate
+                </Typography>
                 <p>
                   We currently pay all server costs out of our own pockets.
                   Donations to the Steem account @travelfeed, whether in Steem,
                   SBD, Steem-Engine tokens or SBI shares, help us a lot.
                 </p>
                 <Divider />
-                <h4 className="pt-4">Report Bugs</h4>
+                <Typography gutterBottom variant="h4" className="pt-4">
+                  Report Bugs
+                </Typography>
                 <p>
                   TravelFeed is still in Beta. If you encounter any bugs, please
                   report them{' '}
