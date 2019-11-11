@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { hasSteemFestCookie, removeSteemfestCookie } from '../../helpers/token';
-import BangkokBanner from '../../images/bangkok-banner.jpg';
+import AppBanner from '../../images/thailand-banner.jpg';
 import Link from '../../lib/Link';
 
 const useStyles = makeStyles(() => ({
@@ -47,14 +47,11 @@ const SteemfestBanner = () => {
           </div>
           <Card className={classes.paper}>
             <Link
-              href="/destinations?country=thailand&subdivision=Bangkok"
-              as="/destinations/thailand/Bangkok"
+              href="/destinations?country=thailand"
+              as="/destinations/thailand"
             >
               <CardActionArea>
-                <CardMedia
-                  style={{ minHeight: '160px' }}
-                  image={BangkokBanner}
-                />
+                <CardMedia style={{ minHeight: '160px' }} image={AppBanner} />
               </CardActionArea>{' '}
             </Link>
           </Card>
