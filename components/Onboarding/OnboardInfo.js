@@ -16,7 +16,6 @@ import { ONBOARD_INFO } from '../../helpers/graphql/onboarding';
 import json2md from '../../helpers/json2md';
 import parseBody from '../../helpers/parseBody';
 import { setInfoToken } from '../../helpers/token';
-import Link from '../../lib/Link';
 import Checks from '../Editor/Checks';
 import EasyEditor from '../Editor/EasyEditor';
 import EditorPreview from '../Editor/EditorPreview';
@@ -88,18 +87,17 @@ const OnboardInfo = props => {
     {
       label: (
         <span>
-          <WarnIcon />
-          {'  '}You need to write more than 250 words in English
+          <WarnIcon /> You need to write at least 10 words
         </span>
       ),
-      hide: readingtime.words > 250,
-      checked: readingtime.words > 250,
+      hide: readingtime.words > 9,
+      checked: readingtime.words > 9,
     },
     {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You need to select at least 1 more tag
+          {'  '}Select between 1 and 4 topics
         </span>
       ),
       hide: tags.length > 0,
@@ -149,7 +147,7 @@ const OnboardInfo = props => {
                 rounded
                 featuredImage={profile_image}
                 setFeaturedImage={res => setProfileImage(res)}
-                placeholder="To upload your profile image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 400x400"
+                placeholder="To upload your profile image (required), drag 'n' drop an image here, or click to select one. Recommended dimensions: 400x400"
               />
             </div>
             <div className="p-2">
@@ -166,13 +164,14 @@ const OnboardInfo = props => {
           <>
             <FormLabel component="legend">
               Now it is time write your first TravelFeed post! In this post you
-              should introduce yourself to the TravelFeed community.
+              should introduce yourself to the TravelFeed community. We
+              recommend to write at least 100 words.
             </FormLabel>
             <FormLabel component="legend">
               <em>
                 Tip: Don't forget to add some images to your post! You can drag
                 'n' drop them into the editor or add images and other elements
-                using the + symbol.
+                using the + symbol. Select text to use the formatting options.
               </em>
             </FormLabel>
             <EasyEditor onChange={handleEditorChange} data={content} />
@@ -184,25 +183,6 @@ const OnboardInfo = props => {
             />
             <div className="pt-5 pb-2">
               <Checks checklist={checklist} />
-            </div>
-            <FormLabel component="legend" className="pt-3 pb-2">
-              Need ideas for your introduction post? Watch this video by
-              TravelFeed user{' '}
-              <Link as="/@coruscate" href="/blog?author=coruscate">
-                @coruscate
-              </Link>
-              .
-            </FormLabel>
-            <div className="pb-3 pt-3">
-              <div className="embed-responsive embed-responsive-16by9">
-                <iframe
-                  title="Steem Onboarding - Passwords, Keys and Security"
-                  className="embed-responsive-item"
-                  src="https://www.youtube.com/embed/6dlqe0ckWhA"
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
             </div>
           </>
         );
@@ -229,7 +209,7 @@ const OnboardInfo = props => {
             </div>
             <Typography
               variant="h4"
-              className="textSecondary"
+              className="textSecondary pt-5"
               align="center"
               gutterBottom
             >
@@ -331,10 +311,9 @@ const OnboardInfo = props => {
                             : handleNext
                         }
                         disabled={
-                          (activeStep === 1 &&
-                            (readingtime.words < 251 || tags.length < 1)) ||
+                          (activeStep === 1 && readingtime.words < 10) ||
                           (activeStep === 0 &&
-                            (!name || !about || !cover_image || !profile_image))
+                            (!name || !about || !profile_image))
                         }
                       >
                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

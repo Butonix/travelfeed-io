@@ -63,7 +63,7 @@
     "graphql": "^14.5.8",
     "graphql-request": "^1.8.2",
     "graphql-tag": "^2.10.1",
-    "html-react-parser": "^0.9.1",
+    "html-react-parser": "^0.10.0",
     "immutable": "^4.0.0-rc.12",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
@@ -121,6 +121,6 @@
     "eslint-plugin-prettier": "3.1.1",
     "eslint-plugin-react": "7.16.0",
     "eslint-plugin-react-hooks": "2.2.0",
-    "prettier": "1.18.2"
+    "prettier": "1.19.1"
   }
 }
