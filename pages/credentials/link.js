@@ -16,8 +16,8 @@ const LinkEmailPage = props => {
 
   return (
     <>
-      <Header subheader="Password Reset" />
-      <Head title="Password Reset" />
+      <Header subheader="EasyLogIn" />
+      <Head title="EasyLogIn" />
       <FixedBackgroundImage
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T184750380Z-easysignup-3.jpg"
         component={
