@@ -73,9 +73,14 @@ class Header extends Component {
             <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
                 <div className="my-auto col-2 col-sm-1 d-xl-none d-lg-none d-md-none">
-                  {(['post', 'blog', 'destination', 'location', 'tag'].indexOf(
-                    active,
-                  ) !== -1 && (
+                  {([
+                    'post',
+                    'blog',
+                    'destination',
+                    'location',
+                    'tag',
+                    'page',
+                  ].indexOf(active) !== -1 && (
                     <>
                       <BackButton />
                       <MenuDrawer

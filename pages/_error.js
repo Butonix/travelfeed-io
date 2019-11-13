@@ -15,7 +15,7 @@ export default class Error extends React.Component {
     const { statusCode } = this.props;
     return (
       <Fragment>
-        <Header />
+        <Header active="page" />
         <ErrorPage statusCode={statusCode} />
       </Fragment>
     );
