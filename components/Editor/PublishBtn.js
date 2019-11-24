@@ -26,12 +26,14 @@ const PublishBtn = props => {
     if (roles && roles.indexOf('easylogin') !== -1) {
       graphQLClient(POST, props.publishThis)
         .then(res => {
+          setLoading(false);
           if (res && res.post) {
             newNotification(res.post);
             props.pastPublish(res.post);
           }
         })
         .catch(err => {
+          setLoading(false);
           newNotification({
             success: false,
             message:
@@ -40,9 +42,9 @@ const PublishBtn = props => {
                 : `Publish failed: ${err.message}`,
           });
         });
-      setLoading(false);
     } else {
       post(props.publishThis).then(res => {
+        setLoading(false);
         if (res) {
           newNotification(res);
           props.pastPublish(res);
@@ -52,25 +54,35 @@ const PublishBtn = props => {
             message: 'Post could not be published',
           });
         }
-        setLoading(false);
+      }).catch((err) => {
+        setLoading(false)
+        newNotification({
+          success: false,
+          message: `Post could not be published: ${err}`,
+        });
       });
     }
   };
 
   useEffect(() => {
-    if (props.publishThis && !loading) {
-      setLoading(true);
+    if (props.publishThis) {
       publishComment();
     }
   }, [props]);
+
+  const onTrigger = () => {
+    props.triggerPublish()
+    setLoading(true)
+  }
 
   return (
     <>
       <Button
         fullWidth={props.fullWidth}
         variant="contained"
+        className={props.mt ? "mt-1" : ''}
         color="primary"
-        onClick={props.triggerPublish}
+        onClick={onTrigger}
         disabled={props.disabled || loading}
       >
         {props.label}
