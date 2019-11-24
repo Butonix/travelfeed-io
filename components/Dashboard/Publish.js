@@ -174,7 +174,7 @@ const PostEditor = props => {
               message:
                 err.message === 'Failed to fetch'
                   ? 'Network Error. Are you online?'
-                  : `Draft could not be saved: ${err.message}`,
+                  : `Publish failed: ${err.message}`,
             });
         });
     } else {

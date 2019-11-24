@@ -59,7 +59,7 @@ const OptIn = () => {
           message:
             err.message === 'Failed to fetch'
               ? 'Network Error. Are you online?'
-              : `Draft could not be saved: ${err.message}`,
+              : `Opt-in failed: ${err.message}`,
         });
       });
   };

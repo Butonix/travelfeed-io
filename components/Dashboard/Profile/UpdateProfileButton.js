@@ -45,7 +45,7 @@ const UpdateProfileButton = props => {
             message:
               err.message === 'Failed to fetch'
                 ? 'Network Error. Are you online?'
-                : `Draft could not be saved: ${err.message}`,
+                : `Profile update failed: ${err.message}`,
           });
         });
     } else {
