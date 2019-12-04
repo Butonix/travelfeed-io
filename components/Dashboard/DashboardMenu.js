@@ -380,6 +380,21 @@ class DashboardMenu extends Component {
                 </ListItem>
               </Link>
             </List>
+            <Divider />
+            <List>
+              <Link
+                color="textPrimary"
+                href={`/dashboard/newsletter?open=${this.state.open}`}
+                as="/dashboard/newsletter"
+              >
+                <ListItem selected={this.props.active === 'newsletter'} button>
+                  <ListItemIcon>
+                    <UserAddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Newsletter" />
+                </ListItem>
+              </Link>
+            </List>
           </>
         )}
       </Drawer>
