@@ -4,7 +4,7 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { post } from '../../helpers/actions';
-import { POST } from '../../helpers/graphql/broadcast';
+import { PAST_PUBLISH, POST } from '../../helpers/graphql/broadcast';
 import graphQLClient from '../../helpers/graphQLClient';
 import { getRoles } from '../../helpers/token';
 
@@ -43,24 +43,29 @@ const PublishBtn = props => {
           });
         });
     } else {
-      post(props.publishThis).then(res => {
-        setLoading(false);
-        if (res) {
-          newNotification(res);
-          props.pastPublish(res);
-        } else {
+      post(props.publishThis)
+        .then(res => {
+          setLoading(false);
+          if (res) {
+            newNotification(res);
+            props.pastPublish(res);
+            graphQLClient(PAST_PUBLISH, {
+              permlink: props.publishThis.permlink,
+            });
+          } else {
+            newNotification({
+              success: false,
+              message: 'Post could not be published',
+            });
+          }
+        })
+        .catch(err => {
+          setLoading(false);
           newNotification({
             success: false,
-            message: 'Post could not be published',
+            message: `Post could not be published: ${err}`,
           });
-        }
-      }).catch((err) => {
-        setLoading(false)
-        newNotification({
-          success: false,
-          message: `Post could not be published: ${err}`,
         });
-      });
     }
   };
 
@@ -71,16 +76,16 @@ const PublishBtn = props => {
   }, [props]);
 
   const onTrigger = () => {
-    props.triggerPublish()
-    setLoading(true)
-  }
+    props.triggerPublish();
+    setLoading(true);
+  };
 
   return (
     <>
       <Button
         fullWidth={props.fullWidth}
         variant="contained"
-        className={props.mt ? "mt-1" : ''}
+        className={props.mt ? 'mt-1' : ''}
         color="primary"
         onClick={onTrigger}
         disabled={props.disabled || loading}
