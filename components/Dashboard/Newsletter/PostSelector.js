@@ -52,6 +52,17 @@ const PostSelector = props => {
                     >
                       <DeleteIcon />
                     </IconButton>
+                    <PostSelectorInput
+                      isEdit
+                      title={b.title}
+                      author={b.author}
+                      permlink={b.permlink}
+                      excerpt={b.excerpt}
+                      posts={posts}
+                      setPosts={setPosts}
+                      loading={loading}
+                      setLoading={setLoading}
+                    />
                   </MuiThemeProvider>
                 </TableCell>
               </TableRow>

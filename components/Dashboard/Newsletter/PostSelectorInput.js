@@ -6,18 +6,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import postExists from '../../../helpers/postExists';
 
 const PostSelectorItem = props => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [permlink, setPermlink] = useState('');
-  const [excerpt, setExcerpt] = useState('');
+  const [title, setTitle] = useState(props.title || '');
+  const [author, setAuthor] = useState(props.author || '');
+  const [permlink, setPermlink] = useState(props.permlink || '');
+  const [excerpt, setExcerpt] = useState(props.excerpt || '');
   const [open, setOpen] = useState(false);
 
-  const { posts, setPosts, loading, setLoading } = props;
+  const { posts, setPosts, loading, setLoading, isEdit } = props;
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -41,7 +42,9 @@ const PostSelectorItem = props => {
     }
     postExists(author, permlink).then(res => {
       if (res) {
-        const newPosts = posts;
+        let newPosts = posts;
+        if (isEdit)
+          newPosts = newPosts.filter(item => item.permlink !== permlink);
         newPosts.push({ title, author, permlink, excerpt });
         setPosts(newPosts);
         setOpen(false);
@@ -61,7 +64,7 @@ const PostSelectorItem = props => {
   return (
     <>
       <IconButton color="primary" onClick={() => setOpen(true)}>
-        <AddIcon />
+        {(isEdit && <EditIcon />) || <AddIcon />}
       </IconButton>
       <Dialog
         open={open}
@@ -71,7 +74,9 @@ const PostSelectorItem = props => {
         disableBackdropClick
         disableEscapeKeyDown
       >
-        <DialogTitle id="alert-dialog-title">Add post</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {isEdit ? 'Edit' : 'Add'} post
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -114,8 +119,17 @@ const PostSelectorItem = props => {
             color="primary"
             disabled={loading}
           >
-            <span className="textPrimary pr-2"> Add</span>
-            <AddIcon />
+            {(isEdit && (
+              <>
+                <span className="textPrimary pr-2"> Edit</span>
+                <EditIcon />
+              </>
+            )) || (
+              <>
+                <span className="textPrimary pr-2"> Add</span>
+                <AddIcon />
+              </>
+            )}
           </Button>
         </DialogActions>
       </Dialog>
