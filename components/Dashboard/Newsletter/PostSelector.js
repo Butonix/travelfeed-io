@@ -18,15 +18,12 @@ const theme = createMuiTheme({
 });
 
 const PostSelector = props => {
-  const { posts, setPosts } = props;
+  const { posts, setPosts, loading, setLoading } = props;
 
-  const handlePostRemove = (author, permlink) => {
+  const handlePostRemove = permlink => {
     let newPosts = posts;
-    newPosts = newPosts.filter(
-      item => item.author !== author && item.permlink !== permlink,
-    );
+    newPosts = newPosts.filter(item => item.permlink !== permlink);
     setPosts(newPosts);
-    props.setPosts(newPosts);
   };
 
   return (
@@ -41,29 +38,35 @@ const PostSelector = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {posts.map(b => (
-            <TableRow hover key={b.username}>
-              <TableCell padding="checkbox">{b.title}</TableCell>
-              <TableCell padding="checkbox">{b.author}</TableCell>
-              <TableCell padding="checkbox">{b.permlink}</TableCell>
-              <TableCell padding="checkbox">
-                <MuiThemeProvider theme={theme}>
-                  <IconButton
-                    color="primary"
-                    onClick={() => handlePostRemove(b.author, b.permlink)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </MuiThemeProvider>
-              </TableCell>
-            </TableRow>
-          ))}
+          {!loading &&
+            posts.map(b => (
+              <TableRow hover key={b.username}>
+                <TableCell padding="checkbox">{b.title}</TableCell>
+                <TableCell padding="checkbox">{b.author}</TableCell>
+                <TableCell padding="checkbox">{b.permlink}</TableCell>
+                <TableCell padding="checkbox">
+                  <MuiThemeProvider theme={theme}>
+                    <IconButton
+                      color="primary"
+                      onClick={() => handlePostRemove(b.permlink)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </MuiThemeProvider>
+                </TableCell>
+              </TableRow>
+            ))}
           <TableRow key="input">
             <TableCell padding="checkbox" />
             <TableCell padding="checkbox" />
             <TableCell padding="checkbox" />
             <TableCell padding="checkbox">
-              <PostSelectorInput posts={posts} setPosts={setPosts} />
+              <PostSelectorInput
+                posts={posts}
+                setPosts={setPosts}
+                loading={loading}
+                setLoading={setLoading}
+              />
             </TableCell>
           </TableRow>
         </TableBody>

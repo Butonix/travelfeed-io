@@ -12,6 +12,8 @@ const NewsletterInput = props => {
     setUpdates,
     posts,
     setPosts,
+    loading,
+    setLoading,
   } = props;
 
   return (
@@ -32,7 +34,12 @@ const NewsletterInput = props => {
         multiline
       />
       Updates input (todo) Featured posts
-      <PostSelector posts={posts} setPosts={setPosts} />
+      <PostSelector
+        posts={posts}
+        setPosts={setPosts}
+        loading={loading}
+        setLoading={setLoading}
+      />
     </>
   );
 };

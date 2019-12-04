@@ -7,6 +7,7 @@ const Newsletter = () => {
   const [intro, setIntro] = useState('');
   const [updates, setUpdates] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -22,6 +23,8 @@ const Newsletter = () => {
               setUpdates={setUpdates}
               posts={posts}
               setPosts={setPosts}
+              loading={loading}
+              setLoading={setLoading}
             />
           </div>
           <div className="col-xl-6 col-lg-6 col-md-10 col-sm-11 col-12">
@@ -30,6 +33,7 @@ const Newsletter = () => {
               intro={intro}
               updates={updates}
               posts={posts}
+              loading={loading}
             />
           </div>
           <div className="col-12">

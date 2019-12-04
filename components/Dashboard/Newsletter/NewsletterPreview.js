@@ -494,6 +494,7 @@ const NewsletterPreview = props => {
     ],
     posts,
   };
+  if (props.loading) data.posts = [];
   const result = template(data);
   return parse(result, {});
 };

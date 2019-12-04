@@ -16,9 +16,8 @@ const PostSelectorItem = props => {
   const [permlink, setPermlink] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const { posts, setPosts } = props;
+  const { posts, setPosts, loading, setLoading } = props;
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -46,6 +45,10 @@ const PostSelectorItem = props => {
         newPosts.push({ title, author, permlink, excerpt });
         setPosts(newPosts);
         setOpen(false);
+        setTitle('');
+        setPermlink('');
+        setExcerpt('');
+        setAuthor('');
       } else
         newNotification({
           message: 'Post does not exist',
