@@ -1,6 +1,8 @@
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import PostSelector from './PostSelector';
+import UpdatesSelector from './UpdatesSelector';
 
 const NewsletterInput = props => {
   const {
@@ -33,7 +35,18 @@ const NewsletterInput = props => {
         fullWidth
         multiline
       />
-      Updates input (todo) Featured posts
+      <Typography gutterBottom variant="h6" className="pt-2">
+        Updates
+      </Typography>
+      <UpdatesSelector
+        updates={updates}
+        setUpdates={setUpdates}
+        loading={loading}
+        setLoading={setLoading}
+      />
+      <Typography gutterBottom variant="h6" className="pt-2">
+        Featured posts
+      </Typography>
       <PostSelector
         posts={posts}
         setPosts={setPosts}

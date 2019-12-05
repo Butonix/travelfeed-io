@@ -466,32 +466,7 @@ const NewsletterPreview = props => {
   const data = {
     title,
     intro,
-    updates: [
-      {
-        title: 'TravelFeed Android App',
-        text:
-          'Head over to the Google Play Store and download our all fresh and new Android app. This is the most convenient way to access TravelFeed on your mobile directly from your homescreen and thanks to push notifications, you will never miss out on what is happening.',
-        c2a_link:
-          'https://play.google.com/store/apps/details?id=io.travelfeed.pwa',
-        c2a_button: 'Get it on Google Play',
-      },
-      {
-        title: 'Vote for our Witness',
-        image:
-          'https://img.travelfeed.io/travelfeed%2F20191110T111013974Z-Screen%20Shot%202019-11-10%20at%2018.08.57.png',
-        text:
-          'We just launched ourwitness server. Steem has enabled us to grow an amazing community and launch an awesome platform, we want to give back and support the decentralization of this blockchain as a <strong>reliable</strong> block producer.',
-      },
-      {
-        title: 'Our Presentation at Steemfest⁴',
-        image:
-          'https://img.travelfeed.io/travelfeed%2F20191110T093126273Z-Julian%20travelfeed.jpg',
-        text:
-          'In case you missed our presentation, this is your chance to watch the recording of the livestream:',
-        c2a_link: 'https://www.youtube.com/watch?v=YgujXYsvpJ8',
-        c2a_button: 'Watch on Youtube',
-      },
-    ],
+    updates,
     posts,
   };
   if (props.loading) data.posts = [];

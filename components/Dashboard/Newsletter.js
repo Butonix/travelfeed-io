@@ -37,7 +37,8 @@ const Newsletter = () => {
             />
           </div>
           <div className="col-12">
-            Send newsletter (todo) | Generate post html
+            Save draft | Clear | Send newsletter (todo, admin only) | Generate
+            post html | Send test mail
           </div>
         </div>
       </div>
