@@ -69,6 +69,7 @@ const PostEditor = props => {
   const [poweredUp, setPoweredUp] = useState(false);
   const [language, setLanguage] = useState('en');
   const [beneficiaries, setBeneficiaries] = useState([]);
+  const [bfloading, setBfLoading] = useState(false);
   const [tagRecommendations, setTagRecommendations] = useState([]);
   const [publishThis, setPublishThis] = useState(undefined);
   const [saved, setSaved] = useState(true);
@@ -723,7 +724,7 @@ const PostEditor = props => {
                             description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here. Remember to click on + to add the beneficiary."
                             helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
                             value={
-                              beneficiaries.length === 0
+                              bfloading || beneficiaries.length === 0
                                 ? 'None'
                                 : `${beneficiaries.length} Beneficiar${
                                     beneficiaries.length === 1 ? 'y' : 'ies'
@@ -731,6 +732,8 @@ const PostEditor = props => {
                             }
                             selector={
                               <BeneficiaryInput
+                                loading={bfloading}
+                                setLoading={setBfLoading}
                                 onChange={setBeneficiaries}
                                 value={beneficiaries}
                               />
