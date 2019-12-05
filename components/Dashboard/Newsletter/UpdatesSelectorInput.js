@@ -51,7 +51,7 @@ const UpdatesSelectorItem = props => {
     }
     let newUpdates = updates;
     if (isEdit) newUpdates = newUpdates.filter(item => item.text !== text);
-    newUpdates.push({ title, image, text, c2a_link: link, c2a_button: button });
+    newUpdates.push({ title, image, text, link, button });
     setUpdates(newUpdates);
     setOpen(false);
     setTimeout(() => setLoading(false), 1);

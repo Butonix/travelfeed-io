@@ -1,6 +1,10 @@
 import Button from '@material-ui/core/Button';
+import Handlebars from 'handlebars';
 import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
+import { generateDraftId } from '../../helpers/drafts';
+import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import { GET_POST_IMAGE } from '../../helpers/graphql/singlePost';
 import {
   GET_NEWSLETTER_DRAFT,
   SAVE_NEWSLETTER,
@@ -41,7 +45,106 @@ const Newsletter = props => {
 
   const sendTestNewsletter = () => {};
   const sendNewsletter = () => {};
-  const savePostDraft = () => {};
+  const savePostDraft = () => {
+    const source = `
+**{{intro}}**
+
+{{#each updates}}
+---
+
+## {{title}}
+
+{{#if image}}
+![]({{image}})
+{{/if}}
+
+{{text}}
+
+{{#if button}}
+[{{button}}]({{link}})
+{{/if}}
+
+{{/each}}
+---
+
+## How to Get Involved?
+
+Are you not on TravelFeed yet? We invite you to check out [TravelFeed.io](https://travelfeed.io/) and to join our over 900-strong [community on Discord](https://discord.gg/jWWu73H). We’re also looking for one more curator to join our team.
+
+As mentioned above, we ❤️ Open Source: We are proud to make TravelFeed fully Open-Source, and support other communities on Steem who want to build on our code, which can be found on Github. We’re still looking for contributors who want to work with us on the future of TravelFeed. We’re in Beta and continuously improving the software, meaning that there are still some bugs. If you notice anything or have feedback for us, please don’t hesitate to contact us on [our Discord](https://discord.gg/jWWu73H), leave a comment or open a bug report on our Github!
+
+## Consider Delegating To Us
+
+Your delegation not only supports the growth of this incredible project, but also helps the entire travel community on the Steem blockchain. Once we launch our token, the airdrop to delegators will be based on the amount of SteemPower delegated and your share of the total delegations for each day delegated. This means an advantage for early investors delegating now. Our Steem Power is fully used for curation of the best TravelFeed posts and we provide temporary delegations to accounts created through us, to help with resource credits. Feel free to use the following links according to the amount you would like to delegate to [@travelfeed](https://travelfeed.io/@travelfeed):
+
+<center><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>100 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>250 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>500 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>1000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=2500%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>2500 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>5000 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>10000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=15000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>15000 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=25000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>25000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=50000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>50000 SP</a></center>
+
+And again, we'd like to thank every single delegator who believes and trusts in us. If TravelFeed becomes as successful as we are confident it will be, delegating to us is probably the investment with the highest ROI on Steem right now. 
+
+---
+
+## Winners of This Week's Round-up
+
+And with all this exciting news, we don't want to forget to highlight our three favorite TravelFeed.io posts from this week. The rewards will go to the first three places as follows: 1st place - **14 STEEM**, 2nd place - **7 STEEM** and 3rd place - **3 STEEM**.
+
+*The thumbnails are directly linked to the original posts. Please, click on the image and enjoy the read!*
+
+{{#each posts}}
+---
+
+<center>**Place {{counter @index}}**</center>
+
+<center> **{{title}}** 
+written by [@{{author}}](https://travelfeed.io/@{{author}}) </center>
+
+> {{excerpt}}
+
+<center>[![]({{image}})](https://travelfeed.io/@{{author}}/{{permlink}})</center>
+
+{{/each}}
+`;
+    Handlebars.registerHelper('counter', index => {
+      return index + 1;
+    });
+    const template = Handlebars.compile(source);
+
+    const data = {
+      title,
+      intro,
+      updates,
+      posts,
+    };
+
+    // Get post images
+    posts.forEach((post, i) => {
+      graphQLClient(GET_POST_IMAGE, {
+        author: post.author,
+        permlink: post.permlink,
+      }).then(res => {
+        posts[i].image = res.post.img_url;
+        if (i === posts.length - 1) {
+          const body = template(data);
+          graphQLClient(SAVE_DRAFT, {
+            id: generateDraftId('travelfeed'),
+            title,
+            body,
+            isCodeEditor: true,
+            json: JSON.stringify({
+              tags: [
+                'travel',
+                'palnet',
+                'neoxian',
+                'steemleo',
+                'fundition-81n9hwooj',
+              ],
+            }),
+          }).then(sdres => {
+            if (sdres.addDraft) newNotification(sdres.addDraft);
+          });
+        }
+      });
+    });
+  };
 
   const onClear = () => {
     setTitle('');
