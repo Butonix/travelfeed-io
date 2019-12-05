@@ -42,7 +42,7 @@ const Profile = () => {
       if (profile.instagram && !instagram) setInstagram(profile.instagram);
       if (profile.youtube && !youtube) setYouTube(profile.youtube);
       if (profile.couchsurfing && !couchsurfing)
-        setCouchsurfing(profile.couchcouchsurfing);
+        setCouchsurfing(profile.couchsurfing);
       if (profile.pinterest && !pinterest) setPinterest(profile.pinterest);
     });
   }, []);
