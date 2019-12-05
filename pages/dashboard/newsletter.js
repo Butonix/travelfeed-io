@@ -7,7 +7,7 @@ const NewsletterPage = props => {
   const { open } = props;
 
   return (
-    <DashboardPage open={open} label="Newsletter" content={<Newsletter />} />
+    <DashboardPage open={open} label="newsletter" content={<Newsletter />} />
   );
 };
 
