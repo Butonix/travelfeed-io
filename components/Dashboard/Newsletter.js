@@ -8,6 +8,7 @@ import { GET_POST_IMAGE } from '../../helpers/graphql/singlePost';
 import {
   GET_NEWSLETTER_DRAFT,
   SAVE_NEWSLETTER,
+  SEND_NEWSLETTER,
 } from '../../helpers/graphql/weeklypost';
 import graphQLClient from '../../helpers/graphQLClient';
 import ConfirmClearBtn from './Newsletter/ConfirmClearBtn';
@@ -43,8 +44,26 @@ const Newsletter = props => {
     });
   };
 
-  const sendTestNewsletter = () => {};
-  const sendNewsletter = () => {};
+  const sendNewsletter = isTest => {
+    const variables = {
+      title,
+      intro,
+      updates: JSON.stringify(updates),
+      posts: JSON.stringify(posts),
+      isTest,
+    };
+    graphQLClient(SEND_NEWSLETTER, variables)
+      .then(res => {
+        if (res.sendNewsletter) newNotification(res.sendNewsletter);
+      })
+      .catch(() => {
+        newNotification({
+          success: false,
+          message:
+            'Newsletter could not be sent. Please wait a few seconds and try again.',
+        });
+      });
+  };
   const savePostDraft = () => {
     const source = `
 **{{intro}}**
@@ -204,7 +223,7 @@ written by [@{{author}}](https://travelfeed.io/@{{author}}) </center>
             <Button
               className="m-1"
               variant="contained"
-              onClick={sendTestNewsletter}
+              onClick={() => sendNewsletter(true)}
               color="primary"
             >
               Send Test Newsletter
@@ -212,7 +231,7 @@ written by [@{{author}}](https://travelfeed.io/@{{author}}) </center>
             <Button
               className="m-1"
               variant="contained"
-              onClick={sendNewsletter}
+              onClick={() => sendNewsletter(false)}
               color="primary"
             >
               Send Newsletter
