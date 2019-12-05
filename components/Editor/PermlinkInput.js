@@ -10,7 +10,7 @@ const PermlinkInput = props => {
   const [timer, setTimer] = useState(undefined);
 
   useEffect(() => {
-    setValue(data);
+    if (!value) setValue(data);
   }, [props]);
 
   const triggerChange = newval => () => {
