@@ -7,6 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DownIcon from '@material-ui/icons/KeyboardArrowDown';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
+import arrayMove from 'array-move';
 import { withSnackbar } from 'notistack';
 import React from 'react';
 import PostSelectorInput from './PostSelectorInput';
@@ -26,6 +29,30 @@ const PostSelector = props => {
     setPosts(newPosts);
   };
 
+  const handleMoveUp = title => {
+    setLoading(true);
+    const index = posts
+      .map(el => {
+        return el.title;
+      })
+      .indexOf(title);
+    const newposts = arrayMove(posts, index, index - 1);
+    setPosts(newposts);
+    setTimeout(() => setLoading(false), 1);
+  };
+
+  const handleMoveDown = title => {
+    setLoading(true);
+    const index = posts
+      .map(el => {
+        return el.title;
+      })
+      .indexOf(title);
+    const newposts = arrayMove(posts, index, index + 1);
+    setPosts(newposts);
+    setTimeout(() => setLoading(false), 1);
+  };
+
   return (
     <div style={{ overflowX: 'auto', wordWrap: 'normal', wordBreak: 'normal' }}>
       <Table>
@@ -39,7 +66,7 @@ const PostSelector = props => {
         </TableHead>
         <TableBody>
           {!loading &&
-            posts.map(b => (
+            posts.map((b, i) => (
               <TableRow hover key={b.username}>
                 <TableCell padding="checkbox">{b.title}</TableCell>
                 <TableCell padding="checkbox">{b.author}</TableCell>
@@ -52,18 +79,32 @@ const PostSelector = props => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                    <PostSelectorInput
-                      isEdit
-                      title={b.title}
-                      author={b.author}
-                      permlink={b.permlink}
-                      excerpt={b.excerpt}
-                      posts={posts}
-                      setPosts={setPosts}
-                      loading={loading}
-                      setLoading={setLoading}
-                    />
                   </MuiThemeProvider>
+                  <IconButton
+                    disabled={i === 0}
+                    color="primary"
+                    onClick={() => handleMoveUp(b.title)}
+                  >
+                    <UpIcon />
+                  </IconButton>
+                  <PostSelectorInput
+                    isEdit
+                    title={b.title}
+                    author={b.author}
+                    permlink={b.permlink}
+                    excerpt={b.excerpt}
+                    posts={posts}
+                    setPosts={setPosts}
+                    loading={loading}
+                    setLoading={setLoading}
+                  />
+                  <IconButton
+                    disabled={i === posts.length - 1}
+                    color="primary"
+                    onClick={() => handleMoveDown(b.title)}
+                  >
+                    <DownIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

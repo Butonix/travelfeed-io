@@ -7,6 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DownIcon from '@material-ui/icons/KeyboardArrowDown';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
+import arrayMove from 'array-move';
 import { withSnackbar } from 'notistack';
 import React from 'react';
 import UpdatesSelectorInput from './UpdatesSelectorInput';
@@ -26,6 +29,30 @@ const UpdatesSelector = props => {
     setUpdates(newUpdates);
   };
 
+  const handleMoveUp = title => {
+    setLoading(true);
+    const index = updates
+      .map(el => {
+        return el.title;
+      })
+      .indexOf(title);
+    const newUpdates = arrayMove(updates, index, index - 1);
+    setUpdates(newUpdates);
+    setTimeout(() => setLoading(false), 1);
+  };
+
+  const handleMoveDown = title => {
+    setLoading(true);
+    const index = updates
+      .map(el => {
+        return el.title;
+      })
+      .indexOf(title);
+    const newUpdates = arrayMove(updates, index, index + 1);
+    setUpdates(newUpdates);
+    setTimeout(() => setLoading(false), 1);
+  };
+
   return (
     <div style={{ overflowX: 'auto', wordWrap: 'normal', wordBreak: 'normal' }}>
       <Table>
@@ -38,7 +65,7 @@ const UpdatesSelector = props => {
         </TableHead>
         <TableBody>
           {!loading &&
-            updates.map(b => (
+            updates.map((b, i) => (
               <TableRow hover key={b.username}>
                 <TableCell padding="checkbox">{b.title}</TableCell>
                 <TableCell padding="checkbox">{b.text}</TableCell>
@@ -50,19 +77,33 @@ const UpdatesSelector = props => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                    <UpdatesSelectorInput
-                      isEdit
-                      title={b.title}
-                      image={b.image}
-                      text={b.text}
-                      link={b.link}
-                      button={b.button}
-                      updates={updates}
-                      setUpdates={setUpdates}
-                      loading={loading}
-                      setLoading={setLoading}
-                    />
                   </MuiThemeProvider>
+                  <IconButton
+                    disabled={i === 0}
+                    color="primary"
+                    onClick={() => handleMoveUp(b.title)}
+                  >
+                    <UpIcon />
+                  </IconButton>
+                  <UpdatesSelectorInput
+                    isEdit
+                    title={b.title}
+                    image={b.image}
+                    text={b.text}
+                    link={b.link}
+                    button={b.button}
+                    updates={updates}
+                    setUpdates={setUpdates}
+                    loading={loading}
+                    setLoading={setLoading}
+                  />
+                  <IconButton
+                    disabled={i === updates.length - 1}
+                    color="primary"
+                    onClick={() => handleMoveDown(b.title)}
+                  >
+                    <DownIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
