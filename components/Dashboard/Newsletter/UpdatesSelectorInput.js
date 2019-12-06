@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import isURL from 'validator/lib/isURL';
+import FeaturedImageUpload from '../../Editor/FeaturedImageUpload';
 
 const UpdatesSelectorItem = props => {
   const [title, setTitle] = useState(props.title || '');
@@ -92,24 +93,23 @@ const UpdatesSelectorItem = props => {
           />
           <TextField
             margin="dense"
-            value={image}
-            onChange={event => setImage(event.target.value)}
-            label="Image"
-            fullWidth
-          />
-          <TextField
-            margin="dense"
             value={link}
             onChange={event => setLink(event.target.value)}
-            label="Link"
+            label="Button Link (optional)"
             fullWidth
           />
           <TextField
             margin="dense"
             value={button}
             onChange={event => setButton(event.target.value)}
-            label="Button Text"
+            label="Button Text (optional)"
+            className="pb-3"
             fullWidth
+          />
+          <FeaturedImageUpload
+            featuredImage={image}
+            setFeaturedImage={input => setImage(input)}
+            placeholder="Drag 'n drop or click to upload an image for this update (optional)"
           />
         </DialogContent>
         <DialogActions>
