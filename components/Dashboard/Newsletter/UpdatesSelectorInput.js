@@ -56,6 +56,11 @@ const UpdatesSelectorItem = props => {
     setUpdates(newUpdates);
     setOpen(false);
     setTimeout(() => setLoading(false), 1);
+    setTitle('');
+    setImage('');
+    setText('');
+    setLink('');
+    setButton('');
   };
 
   return (
