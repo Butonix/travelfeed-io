@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
+import sanitize from 'sanitize-html';
 import isURL from 'validator/lib/isURL';
 import FeaturedImageUpload from '../../Editor/FeaturedImageUpload';
 
@@ -52,7 +54,10 @@ const UpdatesSelectorItem = props => {
     }
     let newUpdates = updates;
     if (isEdit) newUpdates = newUpdates.filter(item => item.title !== title);
-    newUpdates.push({ title, image, text, link, button });
+    const sanitized = sanitize(text, {
+      allowedTags: ['b', 'i', 'em', 'strong', 'a', 'br', 'p'],
+    });
+    newUpdates.push({ title, image, text: sanitized, link, button });
     setUpdates(newUpdates);
     setOpen(false);
     setTimeout(() => setLoading(false), 1);
@@ -88,6 +93,10 @@ const UpdatesSelectorItem = props => {
             label="Title*"
             fullWidth
           />
+          <DialogContentText className="pt-3 pb-0">
+            You can use some basic HTML to format the text ('b', 'i', 'em',
+            'strong', 'a', 'br', 'p'):{' '}
+          </DialogContentText>
           <TextField
             margin="dense"
             value={text}

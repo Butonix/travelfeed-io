@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
+import sanitize from 'sanitize-html';
 
 const IntroSelector = props => {
   const { intro, setIntro, loading } = props;
@@ -23,7 +25,10 @@ const IntroSelector = props => {
   };
 
   const handleSave = () => {
-    setIntro(introText);
+    const sanitized = sanitize(introText, {
+      allowedTags: ['b', 'i', 'em', 'strong', 'a', 'br', 'p'],
+    });
+    setIntro(sanitized);
     setOpen(false);
   };
 
@@ -50,6 +55,10 @@ const IntroSelector = props => {
           {isEdit ? 'Edit' : 'Add'} Intro
         </DialogTitle>
         <DialogContent>
+          <DialogContentText>
+            You can use some basic HTML to format the text ('b', 'i', 'em',
+            'strong', 'a', 'br', 'p'):{' '}
+          </DialogContentText>
           <TextField
             autoFocus
             margin="dense"

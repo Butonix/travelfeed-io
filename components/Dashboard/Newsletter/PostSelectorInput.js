@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
+import sanitize from 'sanitize-html';
 import postExists from '../../../helpers/postExists';
 
 const PostSelectorItem = props => {
@@ -45,7 +46,10 @@ const PostSelectorItem = props => {
         let newPosts = posts;
         if (isEdit)
           newPosts = newPosts.filter(item => item.permlink !== permlink);
-        newPosts.push({ title, author, permlink, excerpt });
+        const sanitized = sanitize(excerpt, {
+          allowedTags: [],
+        });
+        newPosts.push({ title, author, permlink, excerpt: sanitized });
         setPosts(newPosts);
         setOpen(false);
         setTitle('');
