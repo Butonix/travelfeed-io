@@ -57,7 +57,7 @@ const AuthorProfileHeader = props => {
             <Typography variant="subtitle1" className="textSecondary pt-2">
               {about}
             </Typography>
-            <BlogMenu author={props.data.name} />
+            <BlogMenu author={props.data.name} isCurator={props.data.isCurator} />
           </div>
           {props.moreContent}
         </div>

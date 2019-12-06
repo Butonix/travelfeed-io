@@ -4,7 +4,7 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { post } from '../../helpers/actions';
-import { POST } from '../../helpers/graphql/broadcast';
+import { PAST_PUBLISH, POST } from '../../helpers/graphql/broadcast';
 import graphQLClient from '../../helpers/graphQLClient';
 import { getRoles } from '../../helpers/token';
 
@@ -26,51 +26,68 @@ const PublishBtn = props => {
     if (roles && roles.indexOf('easylogin') !== -1) {
       graphQLClient(POST, props.publishThis)
         .then(res => {
+          setLoading(false);
           if (res && res.post) {
             newNotification(res.post);
             props.pastPublish(res.post);
           }
         })
         .catch(err => {
+          setLoading(false);
           newNotification({
             success: false,
             message:
               err.message === 'Failed to fetch'
                 ? 'Network Error. Are you online?'
-                : `Draft could not be saved: ${err.message}`,
+                : `Publish failed: ${err.message}`,
           });
         });
-      setLoading(false);
     } else {
-      post(props.publishThis).then(res => {
-        if (res) {
-          newNotification(res);
-          props.pastPublish(res);
-        } else {
+      post(props.publishThis)
+        .then(res => {
+          setLoading(false);
+          if (res) {
+            newNotification(res);
+            props.pastPublish(res);
+            graphQLClient(PAST_PUBLISH, {
+              permlink: props.publishThis.permlink,
+            });
+          } else {
+            newNotification({
+              success: false,
+              message: 'Post could not be published',
+            });
+          }
+        })
+        .catch(err => {
+          setLoading(false);
           newNotification({
             success: false,
-            message: 'Post could not be published',
+            message: `Post could not be published: ${err}`,
           });
-        }
-        setLoading(false);
-      });
+        });
     }
   };
 
   useEffect(() => {
-    if (props.publishThis && !loading) {
-      setLoading(true);
+    if (props.publishThis) {
       publishComment();
     }
   }, [props]);
+
+  const onTrigger = () => {
+    props.triggerPublish();
+    setLoading(true);
+  };
 
   return (
     <>
       <Button
         fullWidth={props.fullWidth}
         variant="contained"
+        className={props.mt ? 'mt-1' : ''}
         color="primary"
-        onClick={props.triggerPublish}
+        onClick={onTrigger}
         disabled={props.disabled || loading}
       >
         {props.label}

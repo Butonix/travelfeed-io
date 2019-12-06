@@ -57,7 +57,7 @@ const ResteemButton = props => {
             message:
               err.message === 'Failed to fetch'
                 ? 'Network Error. Are you online?'
-                : `Draft could not be saved: ${err.message}`,
+                : `Resteem failed: ${err.message}`,
           });
         });
     } else {

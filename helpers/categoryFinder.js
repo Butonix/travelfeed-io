@@ -24,7 +24,7 @@ const categories = [
   },
   { category: 'budgettravel', keywords: ['budget', 'money', 'spending'] },
   {
-    category: 'digitalnomdads',
+    category: 'digitalnomads',
     keywords: ['nomad', 'work', 'income', 'freelancer'],
   },
   {

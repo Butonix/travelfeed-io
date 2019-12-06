@@ -26,6 +26,8 @@ const BeneficiaryInput = props => {
   const [username, setUsername] = useState('');
   const [percentage, setPercentage] = useState(1);
 
+  const { loading, setLoading } = props;
+
   const newNotification = notification => {
     if (notification !== undefined) {
       let variant = 'success';
@@ -94,6 +96,7 @@ const BeneficiaryInput = props => {
       });
       return;
     }
+    setLoading(true);
     // Check if Steem account exists
     accountExists(username).then(res => {
       if (res) {
@@ -106,6 +109,7 @@ const BeneficiaryInput = props => {
           message: 'Username does not exist',
           success: false,
         });
+      setLoading(false);
     });
   };
 
@@ -167,6 +171,7 @@ const BeneficiaryInput = props => {
             <TableCell padding="checkbox">
               <IconButton
                 color="primary"
+                disabled={loading}
                 onClick={() => handleBeneficiaryAdd()}
               >
                 <AddIcon />

@@ -251,7 +251,7 @@ const countries = [
   { alpha2: 'pg', name: 'Papua New Guinea', slug: 'papua-new-guinea' },
   { alpha2: 'py', name: 'Paraguay', slug: 'paraguay' },
   { alpha2: 'pe', name: 'Peru', slug: 'peru' },
-  { alpha2: 'ph', name: 'the Philippines', slug: 'philippines' },
+  { alpha2: 'ph', name: 'The Philippines', slug: 'philippines' },
   { alpha2: 'pn', name: 'Pitcairn', slug: 'pitcairn' },
   { alpha2: 'pl', name: 'Poland', slug: 'poland' },
   { alpha2: 'pt', name: 'Portugal', slug: 'portugal' },

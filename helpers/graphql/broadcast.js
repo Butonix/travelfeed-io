@@ -69,3 +69,21 @@ export const UNFOLLOW = gql`
     }
   }
 `;
+
+export const PAST_PUBLISH = gql`
+  mutation pastPublish($permlink: String!) {
+    pastPublish(permlink: $permlink) {
+      success
+      message
+    }
+  }
+`;
+
+export const PAST_ACCOUNT_UPDATE = gql`
+  mutation pastAccountUpdate {
+    pastAccountUpdate {
+      success
+      message
+    }
+  }
+`;

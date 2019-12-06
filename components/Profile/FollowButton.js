@@ -65,7 +65,7 @@ const FollowButton = props => {
             message:
               err.message === 'Failed to fetch'
                 ? 'Network Error. Are you online?'
-                : `Draft could not be saved: ${err.message}`,
+                : `Could not follow: ${err.message}`,
           });
         });
     } else {

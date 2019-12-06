@@ -16,7 +16,7 @@ class ExitPage extends Component {
     return (
       <Fragment>
         <Head title="External Link | TravelFeed" />
-        <Header />
+        <Header active="page" />
         <Grid
           container
           spacing={0}

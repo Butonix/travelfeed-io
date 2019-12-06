@@ -90,7 +90,7 @@ const CommentEditor = props => {
         <EasyEditor
           holderId={`${props.editMode ? 're' : 'edit'}_${props.parent_author}_${
             props.parent_permlink
-          }`}
+            }`}
           onChange={handleEditorChange}
           data={content}
           placeholder="Reply"
@@ -114,6 +114,7 @@ const CommentEditor = props => {
             </MuiThemeProvider>
             <div className="pl-2 d-inline">
               <PublishBtn
+                mt
                 publishThis={publishThis}
                 pastPublish={res => pastPublish(res)}
                 triggerPublish={triggerPublish}

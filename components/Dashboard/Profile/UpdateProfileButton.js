@@ -5,7 +5,10 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { accountUpdate } from '../../../helpers/actions';
-import { ACCOUNT_UPDATE } from '../../../helpers/graphql/broadcast';
+import {
+  ACCOUNT_UPDATE,
+  PAST_ACCOUNT_UPDATE,
+} from '../../../helpers/graphql/broadcast';
 import graphQLClient from '../../../helpers/graphQLClient';
 import { getRoles, getUser } from '../../../helpers/token';
 
@@ -45,12 +48,15 @@ const UpdateProfileButton = props => {
             message:
               err.message === 'Failed to fetch'
                 ? 'Network Error. Are you online?'
-                : `Draft could not be saved: ${err.message}`,
+                : `Profile update failed: ${err.message}`,
           });
         });
     } else {
       accountUpdate(user, profile).then(res => {
-        if (res) newNotification(res);
+        if (res) {
+          newNotification(res);
+          graphQLClient(PAST_ACCOUNT_UPDATE);
+        }
         setChanging(false);
       });
     }
