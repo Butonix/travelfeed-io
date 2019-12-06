@@ -1,6 +1,7 @@
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import IntroSelector from './IntroSelector';
 import PostSelector from './PostSelector';
 import UpdatesSelector from './UpdatesSelector';
 
@@ -27,13 +28,11 @@ const NewsletterInput = props => {
         label="Title"
         fullWidth
       />
-      <TextField
-        margin="dense"
-        value={intro}
-        onChange={event => setIntro(event.target.value)}
-        label="Intro"
-        fullWidth
-        multiline
+      <IntroSelector
+        intro={intro}
+        setIntro={setIntro}
+        loading={loading}
+        setLoading={setLoading}
       />
       <Typography gutterBottom variant="h6" className="pt-2">
         Updates
