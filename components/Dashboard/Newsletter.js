@@ -66,7 +66,7 @@ const Newsletter = props => {
   };
   const savePostDraft = () => {
     const source = `
-**{{intro}}**
+{{{intro}}}
 
 {{#each updates}}
 ---
@@ -77,13 +77,19 @@ const Newsletter = props => {
 ![]({{image}})
 {{/if}}
 
-{{text}}
+{{{text}}}
 
 {{#if button}}
 [{{button}}]({{link}})
 {{/if}}
 
 {{/each}}
+---
+
+## Changelog
+
+Paste the changelog and link to Github
+
 ---
 
 ## How to Get Involved?
