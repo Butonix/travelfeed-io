@@ -74,9 +74,7 @@ const iframeWhitelist = [
       const m = src.match(/url=(.+?)[&?]/);
       if (!m || m.length !== 2) return null;
       return (
-        `https://w.soundcloud.com/player/?url=${
-          m[1]
-        }&auto_play=false&hide_related=false&show_comments=true` +
+        `https://w.soundcloud.com/player/?url=${m[1]}&auto_play=false&hide_related=false&show_comments=true` +
         '&show_user=true&show_reposts=false&visual=true'
       );
     },
@@ -102,6 +100,7 @@ export default ({
   noImage = false,
   sanitizeErrors = [],
   secureLinks = false,
+  allLinksBlank = false,
 }) => ({
   allowedTags,
   // figure, figcaption,
@@ -213,6 +212,7 @@ export default ({
         href = `/exit?url=${encodeURIComponent(href)}`;
         attys.rel = 'nofollow';
       } else if (
+        allLinksBlank ||
         (secureLinks &&
           ownDomains.indexOf(hostname) === -1 &&
           ['https', 'http'].indexOf(url.protocol)) ||

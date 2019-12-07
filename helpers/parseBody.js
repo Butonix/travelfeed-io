@@ -118,6 +118,7 @@ const parseBody = (body, options) => {
     parsedBody,
     sanitizeConfig({
       secureLinks: options.secureLinks !== false,
+      allLinksBlank: options.allLinksBlank === true,
     }),
   );
 
