@@ -33,6 +33,7 @@ const PostContent = props => {
               country_code: props.country_code,
               subdivision: props.subdivision,
             }}
+            tags={props.tags}
           />
         }
       />

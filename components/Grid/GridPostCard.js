@@ -140,6 +140,7 @@ class GridPostCard extends Component {
                 country_code: this.props.post.country_code,
                 subdivision: this.props.post.subdivision,
               }}
+              tags={this.props.post.tags}
             />
           }
         />
@@ -203,7 +204,7 @@ class GridPostCard extends Component {
           permlink={this.props.post.permlink}
           votes={this.props.post.votes}
           total_votes={this.props.post.total_votes}
-          tags={this.props.post.tags}
+          children={this.props.post.children}
           mode="gridcard"
           depth={this.props.post.depth}
         />{' '}

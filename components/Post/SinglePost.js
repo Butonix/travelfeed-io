@@ -31,7 +31,7 @@ import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
 import SimilarPosts from './SimilarPosts';
-import VoteSlider from './VoteSlider';
+import SliderTags from './SliderTags';
 
 const styles = () => ({
   card: {
@@ -318,6 +318,7 @@ class SinglePost extends Component {
                         longitude={longitude}
                         country_code={country_code}
                         subdivision={subdivision}
+                        tags={tags}
                       />
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
@@ -381,18 +382,7 @@ class SinglePost extends Component {
                           </div>
                         </div>
                       </div>
-                      {data && data.post && (
-                        <VoteSlider
-                          author={author}
-                          permlink={permlink}
-                          votes={votes}
-                          total_votes={total_votes}
-                          tags={tags}
-                          depth={depth}
-                          mode="post"
-                          onCommentAdd={this.onCommentAdd}
-                        />
-                      )}
+                      {data && data.post && <SliderTags tags={tags} />}
                     </Card>
                   </div>
                   <div className="pt-2">

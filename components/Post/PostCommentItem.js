@@ -197,7 +197,6 @@ class PostCommentItem extends Component {
             votes={this.props.post.votes}
             total_votes={this.props.post.total_votes}
             children={this.props.post.children}
-            tags={[]}
             mode="comment"
             handleClick={this.handleClick}
             isEdit={this.state.isEdit}

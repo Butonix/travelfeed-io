@@ -4,13 +4,16 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import cleanTags from '../../helpers/cleanTags';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import Link from '../../lib/Link';
 
 dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
 const SubHeader = props => {
-  const { created_at, readtime, location } = props;
+  const { created_at, readtime, location, tags } = props;
+  const taglist = cleanTags(tags, {});
+  const tag = taglist && taglist[0] ? taglist[0] : undefined;
   let createdAt;
   if (!created_at) createdAt = dayjs();
   else createdAt = dayjs(created_at);
@@ -69,6 +72,19 @@ const SubHeader = props => {
             </Tooltip>
           </Link>
         </Fragment>
+      )}
+      {tag && (
+        <>
+          <span> · </span>
+          <Link
+            color="textSecondary"
+            as={`/topics/${tag}`}
+            href={`/tag?tags=${tag}`}
+            key={tag}
+          >
+            <span>#{tag}</span>
+          </Link>
+        </>
       )}
     </Fragment>
   );
