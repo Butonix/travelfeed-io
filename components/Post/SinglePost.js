@@ -89,7 +89,6 @@ class SinglePost extends Component {
     let is_travelfeed,
       is_blacklisted,
       is_nsfw,
-      app,
       root_title,
       tags,
       latitude,
@@ -101,7 +100,6 @@ class SinglePost extends Component {
       parent_permlink,
       root_author,
       root_permlink,
-      country_code,
       json,
       category;
 
@@ -115,6 +113,9 @@ class SinglePost extends Component {
       lazy_img_url,
       created_at,
       depth,
+      country_code,
+      subdivision,
+      app,
     } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
@@ -148,6 +149,7 @@ class SinglePost extends Component {
               img_url = data.post.img_url;
               created_at = data.post.created_at;
               country_code = data.post.country_code;
+              subdivision = data.post.subdivision;
               json = data.post.json;
               category = data.post.category;
             }
@@ -314,6 +316,8 @@ class SinglePost extends Component {
                         content={bodycontent}
                         latitude={latitude}
                         longitude={longitude}
+                        country_code={country_code}
+                        subdivision={subdivision}
                       />
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
@@ -392,7 +396,7 @@ class SinglePost extends Component {
                     </Card>
                   </div>
                   <div className="pt-2">
-                    {country_code && (
+                    {country_code && post_id && (
                       <SimilarPosts country_code={country_code} />
                     )}
                   </div>

@@ -14,6 +14,9 @@ class PostPage extends Component {
       lazy_img_url,
       created_at,
       depth,
+      country_code,
+      subdivision,
+      app,
     } = props.query;
     return {
       author,
@@ -25,6 +28,9 @@ class PostPage extends Component {
       lazy_img_url,
       created_at,
       depth,
+      country_code,
+      subdivision,
+      app,
     };
   }
 

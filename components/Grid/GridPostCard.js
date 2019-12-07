@@ -154,7 +154,11 @@ class GridPostCard extends Component {
             cardImage,
           )}&created_at=${encodeURIComponent(
             this.props.post.created_at,
-          )}&depth=0`}
+          )}&depth=0&country_code=${
+            this.props.post.country_code
+          }&subdivision=${encodeURIComponent(
+            this.props.post.subdivision,
+          )}&app=${encodeURIComponent(this.props.post.app)}`}
         >
           <CardActionArea>
             {this.props.post.img_url !== undefined &&

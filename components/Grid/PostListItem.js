@@ -91,7 +91,11 @@ class PostListItem extends Component {
           this.props.post.img_url,
         )}&created_at=${encodeURIComponent(
           this.props.post.created_at,
-        )}&depth=0`}
+        )}&depth=0&country_code=${
+          this.props.post.country_code
+        }&subdivision=${encodeURIComponent(
+          this.props.post.subdivision,
+        )}&app=${encodeURIComponent(this.props.post.app)}`}
       >
         <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">

@@ -29,6 +29,10 @@ const PostContent = props => {
           <SubHeader
             created_at={props.created_at ? String(props.created_at) : undefined}
             readtime={props.readtime}
+            location={{
+              country_code: props.country_code,
+              subdivision: props.subdivision,
+            }}
           />
         }
       />
