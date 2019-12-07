@@ -149,6 +149,16 @@ class PostListItem extends Component {
                     </div>
                   </Tooltip>
                 )}
+                {this.props.isScheduleFailed && (
+                  <Tooltip
+                    title="This scheduled post could not be posted. This could be either due to a problem with Steem or a problem with your post. Please check your post and reschedule it."
+                    placement="bottom"
+                  >
+                    <div className="pr-2 d-inline">
+                      <WarningIcon />
+                    </div>
+                  </Tooltip>
+                )}
                 {this.props.post.title || 'Untitled'}
               </Typography>
               <Excerpt text={this.props.post.excerpt} />
@@ -156,7 +166,7 @@ class PostListItem extends Component {
           </CardContent>
           <CardActions
             className={
-              this.props.warnWhenHidden
+              this.props.warnWhenHidden || this.props.isScheduleFailed
                 ? classNames(classes.areahidden)
                 : classNames(classes.areabg)
             }
