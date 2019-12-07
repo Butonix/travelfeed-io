@@ -81,7 +81,7 @@ const iframeWhitelist = [
   },
   {
     re: /^(https?:)?\/\/(?:www\.)?(?:(player.)?twitch.tv\/)(.*)?$/i,
-    fn: src => src, // handled by embedjs
+    fn: src => src,
   },
 ];
 export const noImageText = '(Image not shown due to low ratings)';

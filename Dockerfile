@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:12-alpine
 
 # Install git which is required for installing packages
 RUN apk add --no-cache git
