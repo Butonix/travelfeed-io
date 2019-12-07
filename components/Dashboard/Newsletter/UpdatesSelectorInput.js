@@ -52,13 +52,18 @@ const UpdatesSelectorItem = props => {
       setLoading(false);
       return;
     }
-    let newUpdates = updates;
-    if (isEdit) newUpdates = newUpdates.filter(item => item.title !== title);
     const sanitized = sanitize(text, {
       allowedTags: ['b', 'i', 'em', 'strong', 'a', 'br', 'p'],
     });
-    newUpdates.push({ title, image, text: sanitized, link, button });
-    setUpdates(newUpdates);
+    if (isEdit) {
+      const index = updates
+        .map(el => {
+          return el.title;
+        })
+        .indexOf(title);
+      updates[index] = { title, image, text: sanitized, link, button };
+    } else updates.push({ title, image, text: sanitized, link, button });
+    setUpdates(updates);
     setOpen(false);
     setTimeout(() => setLoading(false), 1);
     setTitle('');
@@ -82,17 +87,19 @@ const UpdatesSelectorItem = props => {
         disableEscapeKeyDown
       >
         <DialogTitle id="alert-dialog-title">
-          {isEdit ? 'Edit' : 'Add'} Update
+          {isEdit ? 'Edit' : 'Add'} Update{isEdit ? `: ${title}` : ''}
         </DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            value={title}
-            onChange={event => setTitle(event.target.value)}
-            label="Title*"
-            fullWidth
-          />
+          {!isEdit && (
+            <TextField
+              autoFocus
+              margin="dense"
+              value={title}
+              onChange={event => setTitle(event.target.value)}
+              label="Title*"
+              fullWidth
+            />
+          )}
           <DialogContentText className="pt-3 pb-0">
             You can use some basic HTML to format the text ('b', 'i', 'em',
             'strong', 'a', 'br', 'p'):{' '}

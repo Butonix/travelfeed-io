@@ -43,14 +43,18 @@ const PostSelectorItem = props => {
     }
     postExists(author, permlink).then(res => {
       if (res) {
-        let newPosts = posts;
-        if (isEdit)
-          newPosts = newPosts.filter(item => item.permlink !== permlink);
         const sanitized = sanitize(excerpt, {
           allowedTags: [],
         });
-        newPosts.push({ title, author, permlink, excerpt: sanitized });
-        setPosts(newPosts);
+        if (isEdit) {
+          const index = posts
+            .map(el => {
+              return el.title;
+            })
+            .indexOf(title);
+          posts[index] = { title, author, permlink, excerpt: sanitized };
+        } else posts.push({ title, author, permlink, excerpt: sanitized });
+        setPosts(posts);
         setOpen(false);
         setTitle('');
         setPermlink('');
@@ -79,17 +83,19 @@ const PostSelectorItem = props => {
         disableEscapeKeyDown
       >
         <DialogTitle id="alert-dialog-title">
-          {isEdit ? 'Edit' : 'Add'} post
+          {isEdit ? 'Edit' : 'Add'} post{isEdit ? `: ${title}` : ''}
         </DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            value={title}
-            onChange={event => setTitle(event.target.value)}
-            label="Title"
-            fullWidth
-          />
+          {!isEdit && (
+            <TextField
+              autoFocus
+              margin="dense"
+              value={title}
+              onChange={event => setTitle(event.target.value)}
+              label="Title"
+              fullWidth
+            />
+          )}
           <TextField
             margin="dense"
             value={author}
