@@ -71,14 +71,6 @@ class GridPostCard extends Component {
           permlink={this.props.post.permlink}
         />
       );
-    } else if (this.props.isBookmark === true) {
-      action = (
-        <BookmarkIcon
-          author={this.props.post.author}
-          permlink={this.props.post.permlink}
-          onBmChange={this.hide}
-        />
-      );
     } else {
       action = (
         <Fragment>
@@ -200,6 +192,20 @@ class GridPostCard extends Component {
           </CardActionArea>
         </Link>
         <VoteSlider
+          commentLink={`/post?author=${this.props.post.author}&permlink=${
+            this.props.post.permlink
+          }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+            this.props.post.img_url,
+          )}&lazy_img_url=${encodeURIComponent(
+            cardImage,
+          )}&created_at=${encodeURIComponent(
+            this.props.post.created_at,
+          )}&depth=0&country_code=${
+            this.props.post.country_code
+          }&subdivision=${encodeURIComponent(
+            this.props.post.subdivision,
+          )}&app=${encodeURIComponent(this.props.post.app)}`}
+          onBmChange={this.props.isBookmark ? this.hide : undefined}
           author={this.props.post.author}
           permlink={this.props.post.permlink}
           votes={this.props.post.votes}

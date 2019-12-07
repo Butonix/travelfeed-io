@@ -3,28 +3,94 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { red, teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  withStyles,
+} from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/AddComment';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
-import FlightVotedIcon from '@material-ui/icons/Flight';
-import FlightIcon from '@material-ui/icons/FlightTakeoff';
+import EmojiIcon from '@material-ui/icons/EmojiEmotions';
 import LinkIcon from '@material-ui/icons/Link';
 import dynamic from 'next/dynamic';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
+import { vote } from '../../helpers/actions';
+import { VOTE } from '../../helpers/graphql/broadcast';
 import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
-import { getUser } from '../../helpers/token';
+import graphQLClient from '../../helpers/graphQLClient';
+import { getRoles, getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import LoginButton from '../Header/LoginButton';
-import SliderTags from './SliderTags';
+import BookmarkIcon from './BookmarkIcon';
 import VoteButton from './VoteButton';
+
+const downVoteTheme = createMuiTheme({
+  palette: {
+    primary: red,
+  },
+});
+
+const upVoteTheme = createMuiTheme({
+  palette: {
+    primary: teal,
+  },
+});
+
+const EmojiSlider = withStyles({
+  thumb: {
+    height: 30,
+    width: 30,
+    backgroundColor: '#fff',
+    border: '1px solid currentColor',
+    marginTop: -12,
+    marginLeft: -12,
+    boxShadow: '#ebebeb 0px 2px 2px',
+    '&:focus,&:hover,&$active': {
+      boxShadow: '#ccc 0px 2px 3px 1px',
+    },
+  },
+})(Slider);
+
+const ValueLabelComponent = props => {
+  const { children, open, value } = props;
+
+  const popperRef = React.useRef(null);
+  React.useEffect(() => {
+    if (popperRef.current) {
+      popperRef.current.update();
+    }
+  });
+
+  return (
+    <Tooltip
+      PopperProps={{
+        popperRef,
+      }}
+      open={open}
+      enterTouchDelay={0}
+      placement="top"
+      title={value}
+    >
+      {children}
+    </Tooltip>
+  );
+};
+
+ValueLabelComponent.propTypes = {
+  children: PropTypes.element.isRequired,
+  open: PropTypes.bool.isRequired,
+  value: PropTypes.number.isRequired,
+};
 
 class VoteSlider extends Component {
   state = {
@@ -65,12 +131,26 @@ class VoteSlider extends Component {
     }
   }
 
+  EmojiThumbComponent = props => {
+    return (
+      <span {...props}>
+        {(this.state.loading !== undefined && (
+          <CircularProgress
+            value={this.state.loading}
+            size={19}
+            thickness={4}
+          />
+        )) || <VoteButton weight={this.state.weight} size="35" />}
+      </span>
+    );
+  };
+
   pastVote = res => {
     if (!res.success) this.newNotification(res);
     else
       this.setState(prevState => ({
         hasVoted: true,
-        totalmiles: prevState.totalmiles + prevState.weight,
+        totalmiles: prevState.totalmiles + Math.round(prevState.weight),
       }));
     this.setState({ loading: undefined });
     this.collapseVoteBar();
@@ -115,6 +195,40 @@ class VoteSlider extends Component {
     }
   }
 
+  votePost() {
+    this.setState({ loading: 0 });
+    const roles = getRoles();
+    const weight = this.state.weight * 1000;
+    const { author, permlink } = this.props;
+    if (roles && roles.indexOf('easylogin') !== -1) {
+      const variables = {
+        author,
+        permlink,
+        weight,
+      };
+      graphQLClient(VOTE, variables)
+        .then(res => {
+          if (res && res.vote) this.pastVote(res.vote);
+        })
+        .catch(err => {
+          this.newNotification({
+            success: false,
+            message:
+              err.message === 'Failed to fetch'
+                ? 'Network Error. Are you online?'
+                : `Could not vote: ${err.message}`,
+          });
+          this.setState({ loading: undefined });
+        });
+    } else {
+      vote(author, permlink, weight).then(res => {
+        if (res) {
+          this.pastVote(res);
+        }
+      });
+    }
+  }
+
   render() {
     const actions = [];
     let sliderstyle = {};
@@ -130,104 +244,81 @@ class VoteSlider extends Component {
       rowitem1 = 'col-12 p-0';
       rowitem2 = 'd-none';
     }
-    let cardFooter = <Fragment />;
-    let voteButton = (
-      <IconButton
-        aria-label="Upvote"
-        onClick={() => this.setState({ open: true })}
-      >
-        <FlightIcon className="mr" />
-      </IconButton>
+    const commentButton = (
+      <Typography color="textSecondary" component="span">
+        <Button
+          fullWidth
+          onClick={
+            this.state.user != null
+              ? () => this.expandCommentBar()
+              : () => this.setState({ open: true })
+          }
+          size="small"
+          color="inherit"
+        >
+          <CommentIcon className="mr mr-1" />
+          {this.props.children > 0 && (
+            <Box
+              className="pl-1 pr-1"
+              fontSize={16}
+              color="text.icon"
+              fontWeight="fontWeightBold"
+              component="span"
+            >
+              {this.props.children}
+            </Box>
+          )}
+          <Typography noWrap variant="inherit" className="p-1">
+            {this.props.children > 0 ? 'Comments' : 'Comment'}
+          </Typography>
+        </Button>
+      </Typography>
     );
-    if (this.state.user != null) {
-      voteButton = (
-        <Tooltip title="Upvote" placement="bottom">
-          <IconButton aria-label="Upvote" onClick={() => this.expandVoteBar()}>
-            <FlightIcon className="mr" />
-          </IconButton>
-        </Tooltip>
-      );
-    }
-    if (this.state.hasVoted === true) {
-      voteButton = (
-        <Tooltip title="Upvote" placement="bottom">
-          <IconButton
-            aria-label="Upvote"
-            onClick={() => this.expandVoteBar()}
-            color="primary"
-          >
-            <FlightVotedIcon className="mr" />
-          </IconButton>
-        </Tooltip>
-      );
-    }
+    let cardFooter = <Fragment />;
     actions.push(
       <Fragment>
-        {voteButton}
-        <Typography
-          component="div"
-          display="inline"
-          color="inherit"
-          className="pr-2"
-        >
-          <Box
-            fontSize={16}
-            className="pl-1"
-            color="text.icon"
-            fontWeight="fontWeightBold"
-            component="span"
+        <Typography color="textSecondary" component="span">
+          <Button
+            fullWidth
+            onClick={
+              this.state.user != null
+                ? () => this.expandVoteBar()
+                : () => this.setState({ open: true })
+            }
+            size="small"
+            color={this.state.hasVoted ? 'primary' : 'inherit'}
           >
-            {this.state.totalmiles || this.props.total_votes}
-          </Box>
+            {(this.state.hasVoted && (
+              <VoteButton weight={this.state.weight} size="24" />
+            )) || <EmojiIcon />}
+            <Box
+              className="pl-2 pr-1"
+              fontSize={16}
+              color={this.state.hasVoted ? 'primary' : 'inherit'}
+              fontWeight="fontWeightBold"
+              component="span"
+            >
+              {this.state.totalmiles || this.props.total_votes}
+            </Box>
+            <Typography noWrap variant="inherit" className="p-1">
+              Vote
+            </Typography>
+          </Button>
         </Typography>
       </Fragment>,
     );
-    let numberreplies = '';
-    if (this.props.children !== 0)
-      numberreplies = (
-        <Typography
-          component="div"
-          display="inline"
-          className="pr-2 d-none d-xl-block d-lg-block d-md-block d-sm-block"
+    if (this.props.mode === 'gridcard') {
+      actions.push(
+        <Link
+          color="textPrimary"
+          as={`/@${this.props.author}/${this.props.permlink}#comments`}
+          href={`${this.props.commentLink}#comments`}
         >
-          <Box
-            fontSize={16}
-            color="text.icon"
-            fontWeight="fontWeightBold"
-            component="span"
-          >
-            {this.props.children}
-          </Box>
-        </Typography>
+          {commentButton}
+        </Link>,
       );
-    if (this.props.mode !== 'gridcard') {
-      if (this.state.user != null) {
-        actions.push(
-          <Typography color="textSecondary" component="span">
-            <Button
-              onClick={() => this.expandCommentBar()}
-              size="small"
-              color="inherit"
-            >
-              <CommentIcon className="mr pr-1 mr-1" />
-              {numberreplies} Reply
-            </Button>
-          </Typography>,
-        );
-      } else {
-        actions.push(
-          <Typography color="textSecondary" component="span">
-            <Button
-              size="small"
-              color="inherit"
-              onClick={() => this.setState({ open: true })}
-            >
-              <CommentIcon className="mr pr-1 mr-1" />
-              {numberreplies} Reply
-            </Button>
-          </Typography>,
-        );
-      }
+    } else {
+      actions.push(<>{commentButton}</>);
     }
     if (this.props.mode === 'comment') {
       actions.push(
@@ -236,19 +327,33 @@ class VoteSlider extends Component {
           as={`/@${this.props.author}/${this.props.permlink}`}
           href={`/post?author=${this.props.author}&permlink=${this.props.permlink}`}
         >
-          <Tooltip title="Link to comment" placement="bottom">
-            <IconButton aria-label="Link">
-              <LinkIcon className="mr" />
-            </IconButton>
-          </Tooltip>
+          <Typography color="textSecondary" component="span">
+            <Button fullWidth size="small" color="inherit">
+              <LinkIcon />
+              <Typography noWrap variant="inherit" className="pl-2 p-1">
+                View
+              </Typography>
+            </Button>
+          </Typography>
         </Link>,
       );
     }
+    actions.push(
+      <Typography color="textSecondary" component="span">
+        <BookmarkIcon
+          onBmChange={this.props.onBmChange}
+          isButton
+          author={this.props.author}
+          permlink={this.props.permlink}
+        />
+      </Typography>,
+    );
     if (this.props.handleClick !== undefined) {
       if (this.props.isEdit === true) {
         actions.push(
           <Typography color="textSecondary">
             <Button
+              fullWidth
               onClick={() => {
                 this.props.handleClick();
               }}
@@ -256,7 +361,9 @@ class VoteSlider extends Component {
               color="inherit"
             >
               <EditIcon className="mr pr-1 mr-1" />
-              Edit
+              <Typography noWrap variant="inherit" className="p-1">
+                Edit
+              </Typography>
             </Button>
           </Typography>,
         );
@@ -266,57 +373,16 @@ class VoteSlider extends Component {
       cardFooter = (
         <Fragment>
           <Divider variant="middle" />
-          <div className="container-fluid">
-            <div className="row">
-              <SliderTags
-                cutTags={this.props.mode === 'gridcard'}
-                sliderstyle={sliderstyle}
-                classes={rowitem2}
-                tags={this.props.tags}
-              />
-              <div className={rowitem1}>
-                {this.props.mode !== 'gridcard' &&
-                  this.props.mode !== 'comment' && (
-                    <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
-                      <Divider />
-                    </div>
-                  )}
-                <CardActions disableSpacing>
-                  {actions.map(action => {
-                    return <div className="actionli">{action}</div>;
-                  })}
-                </CardActions>
+          <CardActions>
+            <div className="container w-100">
+              <div className="row">
+                {actions.map(action => {
+                  return <div className="col p-0">{action}</div>;
+                })}
               </div>
-              <style jsx>{`
-                .actionli::after {
-                  content: '•';
-                  color: #ccc;
-                  top: 1px;
-                }
-                .actionli:last-child:after {
-                  content: '';
-                }
-              `}</style>
             </div>
-          </div>
+          </CardActions>
         </Fragment>
-      );
-    }
-    let weightIndicator = (
-      <Typography component="div" display="inline" className="pr-1">
-        <Box
-          fontSize={16}
-          color="text.icon"
-          fontWeight="fontWeightBold"
-          component="span"
-        >
-          {this.state.weight}
-        </Box>
-      </Typography>
-    );
-    if (this.state.loading !== undefined) {
-      weightIndicator = (
-        <CircularProgress value={this.state.loading} size={19} thickness={4} />
       );
     }
     if (this.state.voteExpanded === true) {
@@ -342,48 +408,42 @@ class VoteSlider extends Component {
             }
             return (
               <Fragment>
-                {this.props.mode !== 'gridcard' &&
-                  this.props.mode !== 'comment' && (
-                    <div className="d-block d-sm-block d-xl-none d-lg-none d-md-none">
-                      <Divider variant="middle" />
-                      <SliderTags
-                        cutTags={this.props.mode === 'gridcard'}
-                        sliderstyle={sliderstyle}
-                        classes={rowitem2}
-                        tags={this.props.tags}
-                      />
-                    </div>
-                  )}
                 <Divider variant="middle" />
                 <CardActions>
-                  <Tooltip title="Upvote now" placement="bottom">
-                    <VoteButton
-                      author={this.props.author}
-                      permlink={this.props.permlink}
-                      weight={this.state.weight}
-                      pastVote={success => this.pastVote(success)}
-                      setLoading={() => this.setState({ loading: 0 })}
-                    />
-                  </Tooltip>
-                  <div className="pr-2">{weightIndicator}</div>
-                  <Slider
-                    value={this.state.weight}
-                    min={1}
-                    max={10}
-                    step={
-                      data &&
-                      data.preferences &&
-                      data.preferences.useHighPrecisionVotingSlider
-                        ? 0.1
-                        : 1
-                    }
-                    onChange={this.setWeight}
-                  />
-                  <Tooltip title="Close" placement="bottom">
-                    <IconButton onClick={() => this.collapseVoteBar()}>
-                      <CloseIcon />
-                    </IconButton>
-                  </Tooltip>
+                  <div className="pl-2 pr-2 w-100">
+                    <MuiThemeProvider
+                      theme={
+                        this.state.weight < 0 ? downVoteTheme : upVoteTheme
+                      }
+                    >
+                      <EmojiSlider
+                        ValueLabelComponent={ValueLabelComponent}
+                        ThumbComponent={this.EmojiThumbComponent}
+                        track={false}
+                        valueLabelFormat={x => {
+                          const number =
+                            data &&
+                            data.preferences &&
+                            data.preferences.useHighPrecisionVotingSlider
+                              ? x
+                              : Math.round(x);
+                          return x > 0 ? '+' + number : number;
+                        }}
+                        value={this.state.weight}
+                        min={-10}
+                        max={10}
+                        step={0.001}
+                        onChange={this.setWeight}
+                        onChangeCommitted={this.votePost.bind(this)}
+                      />
+                    </MuiThemeProvider>
+                  </div>
+                  <IconButton
+                    size="small"
+                    onClick={() => this.collapseVoteBar()}
+                  >
+                    <CloseIcon />
+                  </IconButton>
                 </CardActions>
               </Fragment>
             );

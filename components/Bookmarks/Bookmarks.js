@@ -132,6 +132,7 @@ class Bookmarks extends Component {
                               curation_score: post.curation_score,
                               app: post.app,
                               depth: post.depth,
+                              children: post.children,
                             }}
                           />
                         </Grid>

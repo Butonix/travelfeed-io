@@ -394,11 +394,13 @@ class SinglePost extends Component {
               );
             }
             // Don't load comment area  if there are no comments
-            let comments = <Fragment />;
+            let comments = (
+              <div className="anchor" id="comments" name="comments" />
+            );
             if (children !== 0) {
               comments = (
                 <Fragment>
-                  <div className="anchor" id="comments" />
+                  <div className="anchor" id="comments" name="comments" />
                   <div className="container">
                     <div className="row">
                       <div className="col">
