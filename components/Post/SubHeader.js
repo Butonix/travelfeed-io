@@ -7,6 +7,7 @@ import React, { Fragment } from 'react';
 import cleanTags from '../../helpers/cleanTags';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import Link from '../../lib/Link';
+import IsCurated from './IsCurated';
 
 dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
@@ -29,6 +30,7 @@ const SubHeader = props => {
 
   return (
     <Fragment>
+      <IsCurated isTf={props.isTf} curationScore={props.curationScore} />
       <Tooltip title={createdAt.format('MMMM DD YYYY H:mm')} placement="bottom">
         <span>
           {createdAt.isBefore(

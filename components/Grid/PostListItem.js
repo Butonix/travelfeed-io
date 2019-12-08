@@ -59,22 +59,6 @@ class PostListItem extends Component {
     if (!this.state.show) {
       return <Fragment />;
     }
-    let appIcon = <Fragment />;
-    if (
-      this.props.post.app &&
-      this.props.post.app.split('/')[0] === 'travelfeed'
-    ) {
-      appIcon = (
-        <Tooltip title="Published with TravelFeed" placement="bottom">
-          <img
-            alt="TravelFeed"
-            width="25"
-            className="mr-1"
-            src="https://travelfeed.io/favicon.ico"
-          />
-        </Tooltip>
-      );
-    }
     let button2 = (
       <Link
         color="textPrimary"
@@ -255,7 +239,6 @@ class PostListItem extends Component {
                         <NoLocationIcon />
                       </Tooltip>
                     )}
-                  {appIcon}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   !this.props.isDraftMode &&
                     ((new Date(this.props.post.created_at) <

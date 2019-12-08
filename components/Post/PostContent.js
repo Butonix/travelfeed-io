@@ -14,7 +14,6 @@ const PostContent = props => {
         avatar={<ProfileAvatar author={props.author} />}
         action={
           <Fragment>
-            <span>{props.appIcon}</span>
             <PostMenu
               author={props.author}
               permlink={props.permlink}
@@ -34,6 +33,8 @@ const PostContent = props => {
               subdivision: props.subdivision,
             }}
             tags={props.tags}
+            isTf={props.isTf}
+            curationScore={props.curationScore}
           />
         }
       />
@@ -55,7 +56,6 @@ PostContent.propTypes = {
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
   readtime: PropTypes.objectOf(PropTypes.any).isRequired,
-  appIcon: PropTypes.func.isRequired,
   hideAuthorProfile: PropTypes.bool,
 };
 

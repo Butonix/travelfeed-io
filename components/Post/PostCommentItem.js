@@ -12,7 +12,6 @@ import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import CommentMenu from '../CuratorMenu/CommentMenu';
-import BookmarkIcon from '../Post/BookmarkIcon';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
 import PostComments from './PostComments';
@@ -69,6 +68,19 @@ class PostCommentItem extends Component {
   render() {
     const { classes } = this.props;
 
+    let bodyUri = '';
+    let displayNameUri = '';
+    try {
+      bodyUri = encodeURIComponent(this.props.post.body);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      displayNameUri = encodeURIComponent(this.props.post.display_name);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
     const bodyText = parseHtmlToReact(htmlBody, {});
     let children = <Fragment />;
@@ -86,22 +98,8 @@ class PostCommentItem extends Component {
       depth = `${String(this.props.post.depth * 10)}px`;
     }
     let title = <Fragment />;
-    let appIcon = <Fragment />;
     // Set the caninical URL to travelfeed.io if the post was authored through
     // the dApp
-    if (
-      this.props.post.app &&
-      this.props.post.app.split('/')[0] === 'travelfeed'
-    ) {
-      appIcon = (
-        <img
-          alt="TravelFeed"
-          width="25"
-          className="mr-1"
-          src="https://travelfeed.io/favicon.ico"
-        />
-      );
-    }
     let parent = <Fragment />;
     if (this.props.post.depth > 1) {
       parent = (
@@ -122,9 +120,21 @@ class PostCommentItem extends Component {
           className={`border p-3 mb-2 
         ${classNames(classes.areabg)}`}
         >
-          <Typography gutterBottom variant="h6" component="h4">
-            {`Re: ${this.props.post.root_title}`}
-          </Typography>
+          <Link
+            color="textPrimary"
+            as={`/@${this.props.post.author}/${this.props.post.permlink}`}
+            href={`/post?author=${this.props.post.author}&permlink=${
+              this.props.post.permlink
+            }&depth=${
+              this.props.post.depth
+            }&body=${bodyUri}&display_name=${displayNameUri}&created_at=${encodeURIComponent(
+              this.props.post.created_at,
+            )}`}
+          >
+            <Typography gutterBottom variant="h6" component="h4">
+              {`Re: ${this.props.post.root_title || ''}`}
+            </Typography>
+          </Link>
           <div>
             <Link
               color="textPrimary"
@@ -168,11 +178,6 @@ class PostCommentItem extends Component {
             avatar={<ProfileAvatar author={this.props.post.author} />}
             action={
               <Fragment>
-                {appIcon}
-                <BookmarkIcon
-                  author={this.props.post.author}
-                  permlink={this.props.post.permlink}
-                />
                 <CommentMenu
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}

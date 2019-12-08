@@ -8,8 +8,7 @@ import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
-import BookmarkIcon from '../Post/BookmarkIcon';
-import IsCurated from '../Post/IsCurated';
+import DotMenu from '../Post/DotMenu';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
 import ProfileAvatar from '../Profile/ProfileAvatar';
@@ -63,24 +62,6 @@ class GridPostCard extends Component {
     if (!this.state.show) {
       return <Fragment />;
     }
-    let action = <Fragment />;
-    if (this.props.showBookmark === true) {
-      action = (
-        <BookmarkIcon
-          author={this.props.post.author}
-          permlink={this.props.post.permlink}
-        />
-      );
-    } else {
-      action = (
-        <Fragment>
-          <IsCurated
-            app={this.props.post.app}
-            curationScore={this.props.post.curation_score}
-          />
-        </Fragment>
-      );
-    }
     const cardImage = this.props.post.img_url
       ? imageProxy(
           this.props.post.img_url,
@@ -117,7 +98,11 @@ class GridPostCard extends Component {
         <CardHeader
           className={classes.cardHeader}
           avatar={<ProfileAvatar author={this.props.post.author} />}
-          action={<Fragment>{action}</Fragment>}
+          action={
+            <Fragment>
+              <DotMenu />
+            </Fragment>
+          }
           title={
             <ProfileName
               author={this.props.post.author}
@@ -133,6 +118,11 @@ class GridPostCard extends Component {
                 subdivision: this.props.post.subdivision,
               }}
               tags={this.props.post.tags}
+              isTf={
+                this.props.post.app &&
+                this.props.post.app.split('/')[0] === 'travelfeed'
+              }
+              curationScore={this.props.post.curation_score}
             />
           }
         />

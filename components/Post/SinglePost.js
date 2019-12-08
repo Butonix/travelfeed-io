@@ -101,7 +101,8 @@ class SinglePost extends Component {
       root_author,
       root_permlink,
       json,
-      category;
+      category,
+      curation_score;
 
     let {
       author,
@@ -152,6 +153,7 @@ class SinglePost extends Component {
               subdivision = data.post.subdivision;
               json = data.post.json;
               category = data.post.category;
+              curation_score = data.post.curation_score;
             }
             tags = cleanTags(tags);
             // 404 for error and if post does not exist
@@ -234,19 +236,8 @@ class SinglePost extends Component {
               author,
               permlink,
             );
-            let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored
             // through the dApp
-            if (app && app.split('/')[0] === 'travelfeed') {
-              appIcon = (
-                <img
-                  alt="TravelFeed"
-                  width="25"
-                  className="mr-1"
-                  src="https://travelfeed.io/favicon.ico"
-                />
-              );
-            }
             if (depth > 0) {
               head = (
                 <Head
@@ -307,7 +298,6 @@ class SinglePost extends Component {
                     <Card className={classes.card}>
                       <PostContent
                         author={author}
-                        appIcon={appIcon}
                         isTf={app && app.split('/')[0] === 'travelfeed'}
                         permlink={permlink}
                         display_name={display_name}
@@ -319,6 +309,7 @@ class SinglePost extends Component {
                         country_code={country_code}
                         subdivision={subdivision}
                         tags={tags}
+                        curationScore={curation_score}
                       />
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
