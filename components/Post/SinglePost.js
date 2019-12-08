@@ -125,6 +125,7 @@ class SinglePost extends Component {
     } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
+    const isTf = app && app.split('/')[0] === 'travelfeed';
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
@@ -191,6 +192,7 @@ class SinglePost extends Component {
             const htmlBody = parseBody(body, {});
             const bodyText = parseHtmlToReact(htmlBody, {
               cardWidth: this.state.cardWidth,
+              hideimgcaptions: !isTf,
             });
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
@@ -303,7 +305,7 @@ class SinglePost extends Component {
                     <Card className={classes.card}>
                       <PostContent
                         author={author}
-                        isTf={app && app.split('/')[0] === 'travelfeed'}
+                        isTf={isTf}
                         permlink={permlink}
                         display_name={display_name}
                         created_at={created_at}
