@@ -19,10 +19,11 @@ import {
 } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import CommentIcon from '@material-ui/icons/AddComment';
+import AddCommentIcon from '@material-ui/icons/AddComment';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import EmojiIcon from '@material-ui/icons/EmojiEmotions';
+import CommentIcon from '@material-ui/icons/ModeComment';
 import dynamic from 'next/dynamic';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -263,7 +264,9 @@ class VoteSlider extends Component {
             size="small"
             color="inherit"
           >
-            <CommentIcon className="mr mr-1" />
+            {(this.props.mode === 'gridcard' && (
+              <CommentIcon className="mr mr-1" />
+            )) || <AddCommentIcon className="mr mr-1" />}
             {this.props.children > 0 && (
               <Box
                 className="pl-1 pr-1"
