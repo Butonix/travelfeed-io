@@ -47,7 +47,7 @@ class SinglePost extends Component {
   }
 
   state = {
-    title: 'Most miles',
+    title: 'Most smiles',
     orderby: 'total_votes',
     orderdir: 'DESC',
     userComment: undefined,
@@ -430,7 +430,7 @@ class SinglePost extends Component {
                       <div className="col">
                         <OrderBySelect
                           handleClick={this.handleClick}
-                          selection={this.state.title || 'Most miles'}
+                          selection={this.state.title || 'Most smiles'}
                         />
                       </div>
                     </div>

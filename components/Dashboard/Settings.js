@@ -407,7 +407,7 @@ const Settings = props => {
                                 )}
                                 <TextField
                                   select
-                                  label="Default miles weight for posts"
+                                  label="Default smiles weight for posts"
                                   value={defaultVoteWeight}
                                   onChange={value => {
                                     setDefaultVoteWeight(value.target.value);
@@ -428,7 +428,7 @@ const Settings = props => {
 
                                 <TextField
                                   select
-                                  label="Default miles weight on comments"
+                                  label="Default smiles weight on comments"
                                   value={defaultCommentsVoteWeight}
                                   onChange={value => {
                                     setDefaultCommentsVoteWeight(
