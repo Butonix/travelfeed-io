@@ -45,8 +45,13 @@ const IsCurated = props => {
               />
             )) ||
               (curationScore > 4000 && (
-                <HonourIcon color={isTf ? 'primary' : undefined} />
-              )) || <EmptyIcon color="primary" />}
+                <HonourIcon
+                  className={classes.iconButton}
+                  color={isTf ? 'primary' : undefined}
+                />
+              )) || (
+                <EmptyIcon className={classes.iconButton} color="primary" />
+              )}
           </IconButton>
         </div>
       </Tooltip>

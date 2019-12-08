@@ -106,8 +106,7 @@ class SinglePost extends Component {
       root_author,
       root_permlink,
       json,
-      category,
-      curation_score;
+      category;
 
     let {
       author,
@@ -122,6 +121,7 @@ class SinglePost extends Component {
       country_code,
       subdivision,
       app,
+      curation_score,
     } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';

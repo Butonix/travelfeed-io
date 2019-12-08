@@ -90,6 +90,22 @@ class GridPostCard extends Component {
       console.warn('Could not encode URI');
     }
 
+    const linkHref = `/post?author=${this.props.post.author}&permlink=${
+      this.props.post.permlink
+    }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+      this.props.post.img_url,
+    )}&lazy_img_url=${encodeURIComponent(
+      cardImage,
+    )}&created_at=${encodeURIComponent(
+      this.props.post.created_at,
+    )}&depth=0&country_code=${
+      this.props.post.country_code
+    }&subdivision=${encodeURIComponent(
+      this.props.post.subdivision,
+    )}&app=${encodeURIComponent(
+      this.props.post.app,
+    )}&curation_score=${encodeURIComponent(this.props.post.curation_score)}`;
+
     return (
       <Card
         key={this.props.post.permlink}
@@ -136,19 +152,7 @@ class GridPostCard extends Component {
         <Link
           color="textPrimary"
           as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-          href={`/post?author=${this.props.post.author}&permlink=${
-            this.props.post.permlink
-          }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
-            this.props.post.img_url,
-          )}&lazy_img_url=${encodeURIComponent(
-            cardImage,
-          )}&created_at=${encodeURIComponent(
-            this.props.post.created_at,
-          )}&depth=0&country_code=${
-            this.props.post.country_code
-          }&subdivision=${encodeURIComponent(
-            this.props.post.subdivision,
-          )}&app=${encodeURIComponent(this.props.post.app)}`}
+          href={linkHref}
         >
           <CardActionArea>
             {this.props.post.img_url !== undefined &&
@@ -189,19 +193,7 @@ class GridPostCard extends Component {
           </CardActionArea>
         </Link>
         <VoteSlider
-          commentLink={`/post?author=${this.props.post.author}&permlink=${
-            this.props.post.permlink
-          }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
-            this.props.post.img_url,
-          )}&lazy_img_url=${encodeURIComponent(
-            cardImage,
-          )}&created_at=${encodeURIComponent(
-            this.props.post.created_at,
-          )}&depth=0&country_code=${
-            this.props.post.country_code
-          }&subdivision=${encodeURIComponent(
-            this.props.post.subdivision,
-          )}&app=${encodeURIComponent(this.props.post.app)}`}
+          commentLink={linkHref}
           onBmChange={this.props.isBookmark ? this.hide : undefined}
           author={this.props.post.author}
           permlink={this.props.post.permlink}

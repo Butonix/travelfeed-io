@@ -18,6 +18,7 @@ class PostPage extends Component {
       subdivision,
       app,
       scrollToComments,
+      curation_score,
     } = props.query;
     return {
       author,
@@ -33,6 +34,7 @@ class PostPage extends Component {
       subdivision,
       app,
       scrollToComments,
+      curation_score,
     };
   }
 

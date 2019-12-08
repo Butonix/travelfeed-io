@@ -79,7 +79,11 @@ class PostListItem extends Component {
           this.props.post.country_code
         }&subdivision=${encodeURIComponent(
           this.props.post.subdivision,
-        )}&app=${encodeURIComponent(this.props.post.app)}`}
+        )}&app=${encodeURIComponent(
+          this.props.post.app,
+        )}&curation_score=${encodeURIComponent(
+          this.props.post.curation_score,
+        )}`}
       >
         <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">
