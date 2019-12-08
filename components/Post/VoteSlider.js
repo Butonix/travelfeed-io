@@ -23,7 +23,6 @@ import CommentIcon from '@material-ui/icons/AddComment';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import EmojiIcon from '@material-ui/icons/EmojiEmotions';
-import LinkIcon from '@material-ui/icons/Link';
 import dynamic from 'next/dynamic';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -248,38 +247,40 @@ class VoteSlider extends Component {
   render() {
     const actions = [];
     const commentButton = (
-      <Typography color="textSecondary" component="span">
-        <Button
-          fullWidth
-          onClick={
-            this.state.user != null
-              ? () => this.expandCommentBar()
-              : () => this.setState({ open: true })
-          }
-          size="small"
-          color="inherit"
-        >
-          <CommentIcon className="mr mr-1" />
-          {this.props.children > 0 && (
-            <Box
-              className="pl-1 pr-1"
-              fontSize={16}
-              color="text.icon"
-              fontWeight="fontWeightBold"
-              component="span"
-            >
-              {this.props.children}
-            </Box>
-          )}
-          <Typography noWrap variant="inherit" className="p-1">
-            {this.props.children > 0 ? 'Comments' : 'Comment'}
-          </Typography>
-        </Button>
-      </Typography>
+      <div className="col p-0">
+        <Typography color="textSecondary" component="span">
+          <Button
+            fullWidth
+            onClick={
+              this.state.user != null
+                ? () => this.expandCommentBar()
+                : () => this.setState({ open: true })
+            }
+            size="small"
+            color="inherit"
+          >
+            <CommentIcon className="mr mr-1" />
+            {this.props.children > 0 && (
+              <Box
+                className="pl-1 pr-1"
+                fontSize={16}
+                color="text.icon"
+                fontWeight="fontWeightBold"
+                component="span"
+              >
+                {this.props.children}
+              </Box>
+            )}
+            <Typography noWrap variant="inherit" className="p-1">
+              {this.props.children > 1 ? 'Comments' : 'Comment'}
+            </Typography>
+          </Button>
+        </Typography>
+      </div>
     );
     let cardFooter = <Fragment />;
     actions.push(
-      <Fragment>
+      <div className="col p-0">
         <Typography color="textSecondary" component="span">
           <Button
             fullWidth
@@ -308,67 +309,55 @@ class VoteSlider extends Component {
             </Typography>
           </Button>
         </Typography>
-      </Fragment>,
+      </div>,
     );
     if (this.props.mode === 'gridcard') {
       actions.push(
-        <Link
-          color="textPrimary"
-          as={`/@${this.props.author}/${this.props.permlink}#comments`}
-          href={`${this.props.commentLink}#comments`}
-        >
-          {commentButton}
-        </Link>,
+        <div className="col p-0">
+          <Link
+            color="textPrimary"
+            as={`/@${this.props.author}/${this.props.permlink}#comments`}
+            href={`${this.props.commentLink}#comments`}
+          >
+            {commentButton}
+          </Link>
+        </div>,
       );
     } else {
       actions.push(<>{commentButton}</>);
     }
-    if (this.props.mode === 'comment') {
-      actions.push(
-        <Link
-          color="textPrimary"
-          as={`/@${this.props.author}/${this.props.permlink}`}
-          href={`/post?author=${this.props.author}&permlink=${this.props.permlink}`}
-        >
-          <Typography color="textSecondary" component="span">
-            <Button fullWidth size="small" color="inherit">
-              <LinkIcon />
-              <Typography noWrap variant="inherit" className="pl-2 p-1">
-                View
-              </Typography>
-            </Button>
-          </Typography>
-        </Link>,
-      );
-    }
     actions.push(
-      <Typography color="textSecondary" component="span">
-        <BookmarkIcon
-          onBmChange={this.props.onBmChange}
-          isButton
-          author={this.props.author}
-          permlink={this.props.permlink}
-        />
-      </Typography>,
+      <div className="col p-0 d-none d-xl-block d-lg-block d-md-block d-sm-block">
+        <Typography color="textSecondary" component="span">
+          <BookmarkIcon
+            onBmChange={this.props.onBmChange}
+            isButton
+            author={this.props.author}
+            permlink={this.props.permlink}
+          />
+        </Typography>
+      </div>,
     );
     if (this.props.handleClick !== undefined) {
       if (this.props.isEdit === true) {
         actions.push(
-          <Typography color="textSecondary">
-            <Button
-              fullWidth
-              onClick={() => {
-                this.props.handleClick();
-              }}
-              size="small"
-              color="inherit"
-            >
-              <EditIcon className="mr pr-1 mr-1" />
-              <Typography noWrap variant="inherit" className="p-1">
-                Edit
-              </Typography>
-            </Button>
-          </Typography>,
+          <div className="col p-0 d-none d-xl-block d-lg-block d-md-block d-sm-block">
+            <Typography color="textSecondary">
+              <Button
+                fullWidth
+                onClick={() => {
+                  this.props.handleClick();
+                }}
+                size="small"
+                color="inherit"
+              >
+                <EditIcon className="mr pr-1 mr-1" />
+                <Typography noWrap variant="inherit" className="p-1">
+                  Edit
+                </Typography>
+              </Button>
+            </Typography>
+          </div>,
         );
       }
     }
@@ -380,7 +369,7 @@ class VoteSlider extends Component {
             <div className="container w-100">
               <div className="row">
                 {actions.map(action => {
-                  return <div className="col p-0">{action}</div>;
+                  return action;
                 })}
               </div>
             </div>

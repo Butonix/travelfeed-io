@@ -100,7 +100,14 @@ class GridPostCard extends Component {
           avatar={<ProfileAvatar author={this.props.post.author} />}
           action={
             <Fragment>
-              <DotMenu />
+              <DotMenu
+                author={this.props.post.author}
+                permlink={this.props.post.permlink}
+                title={this.props.post.title}
+                img_url={this.props.post.img_url}
+                tags={this.props.post.tags}
+                onBmChange={this.props.isBookmark ? this.hide : undefined}
+              />
             </Fragment>
           }
           title={

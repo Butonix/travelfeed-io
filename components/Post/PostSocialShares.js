@@ -25,6 +25,7 @@ const PostSocialShares = props => {
     tags,
     enqueueSnackbar,
     comments,
+    hideBookmarkButton,
   } = props;
 
   const newNotification = notification => {
@@ -112,7 +113,9 @@ const PostSocialShares = props => {
             // eslint-disable-next-line no-shadow
           ) => (
             <div className="text-center">
-              <BookmarkIcon author={author} permlink={permlink} />
+              {!hideBookmarkButton && (
+                <BookmarkIcon author={author} permlink={permlink} />
+              )}
               {social.map(s => {
                 return (
                   <a

@@ -32,22 +32,22 @@ const VoteButton = props => {
         )) ||
         (weight < 3 && (
           <span className="emoji" role="img" aria-label="Up">
-            😏
+            🙂
           </span>
         )) ||
         (weight < 5 && (
           <span className="emoji" role="img" aria-label="Up">
-            🙂
+            😊
           </span>
         )) ||
         (weight < 7 && (
           <span className="emoji" role="img" aria-label="Up">
-            😊
+            😃
           </span>
         )) ||
         (weight < 9 && (
           <span className="emoji" role="img" aria-label="Up">
-            😀
+            😁
           </span>
         )) || (
           <span className="emoji" role="img" aria-label="Up">

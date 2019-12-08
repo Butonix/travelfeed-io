@@ -18,7 +18,7 @@ const IsCurated = props => {
   const classes = useStyles();
   const { curationScore, isTf } = props;
 
-  if (!isTf && curationScore < 4000) return <></>;
+  if (!isTf || curationScore < 4000) return <></>;
   return (
     <>
       <Tooltip

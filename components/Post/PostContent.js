@@ -1,9 +1,9 @@
 import CardHeader from '@material-ui/core/CardHeader';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import PostMenu from '../CuratorMenu/PostMenu';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
+import DotMenu from './DotMenu';
 import SubHeader from './SubHeader';
 
 const PostContent = props => {
@@ -14,10 +14,12 @@ const PostContent = props => {
         avatar={<ProfileAvatar author={props.author} />}
         action={
           <Fragment>
-            <PostMenu
+            <DotMenu
               author={props.author}
               permlink={props.permlink}
-              isTf={props.isTf}
+              title={props.title}
+              img_url={props.img_url}
+              tags={props.tags}
             />
           </Fragment>
         }

@@ -11,9 +11,9 @@ import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
-import CommentMenu from '../CuratorMenu/CommentMenu';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
+import DotMenu from './DotMenu';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
@@ -178,9 +178,12 @@ class PostCommentItem extends Component {
             avatar={<ProfileAvatar author={this.props.post.author} />}
             action={
               <Fragment>
-                <CommentMenu
+                <DotMenu
+                  onEditClick={this.state.isEdit ? this.handleClick : undefined}
+                  isEdit={this.state.isEdit}
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
+                  title={`Re: ${this.props.post.root_title || ''}`}
                 />
               </Fragment>
             }

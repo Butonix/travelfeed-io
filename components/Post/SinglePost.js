@@ -310,6 +310,8 @@ class SinglePost extends Component {
                         subdivision={subdivision}
                         tags={tags}
                         curationScore={curation_score}
+                        title={title}
+                        img_url={img_url}
                       />
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">

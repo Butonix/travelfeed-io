@@ -4,8 +4,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import BlockIcon from '@material-ui/icons/Block';
+import CheckIcon from '@material-ui/icons/Check';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
@@ -23,10 +27,12 @@ class PostBlacklist extends React.Component {
   };
 
   handleClickOpen = () => {
+    this.props.setListenClickAway(false);
     this.setState({ open: true });
   };
 
   handleClose = () => {
+    this.props.setListenClickAway(true);
     this.setState({ open: false });
   };
 
@@ -88,7 +94,10 @@ class PostBlacklist extends React.Component {
                     return (
                       <Fragment>
                         <MenuItem onClick={this.handleClickOpen}>
-                          Remove post from blacklist
+                          <ListItemIcon>
+                            <CheckIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary="Remove post from blacklist" />
                         </MenuItem>
                         <Dialog
                           open={open}
@@ -162,7 +171,10 @@ class PostBlacklist extends React.Component {
                     return (
                       <Fragment>
                         <MenuItem onClick={this.handleClickOpen}>
-                          Blacklist post
+                          <ListItemIcon>
+                            <BlockIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary="Blacklist post" />
                         </MenuItem>
                         <Dialog
                           open={open}
@@ -208,7 +220,12 @@ class PostBlacklist extends React.Component {
                 </Mutation>
               );
             }
-            return <Fragment />;
+            return (
+              <MenuItem>
+                <ListItemIcon />
+                <ListItemText />
+              </MenuItem>
+            );
           }}
         </Query>
       </div>

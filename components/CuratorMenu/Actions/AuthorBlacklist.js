@@ -5,9 +5,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
+import BlockIcon from '@material-ui/icons/Block';
+import CheckIcon from '@material-ui/icons/Check';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
@@ -34,10 +38,12 @@ class AuthorBlacklist extends React.Component {
   };
 
   handleClickOpen = () => {
+    if (this.props.setListenClickAway) this.props.setListenClickAway(false);
     this.setState({ open: true });
   };
 
   handleClose = () => {
+    if (this.props.setListenClickAway) this.props.setListenClickAway(true);
     this.setState({ open: false });
   };
 
@@ -99,7 +105,10 @@ class AuthorBlacklist extends React.Component {
                     return (
                       <Fragment>
                         <MenuItem onClick={this.handleClickOpen}>
-                          Remove author from blacklist
+                          <ListItemIcon>
+                            <CheckIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary="Remove author from blacklist" />
                         </MenuItem>
                         <Dialog
                           open={this.state.open}
@@ -184,7 +193,10 @@ class AuthorBlacklist extends React.Component {
                     return (
                       <Fragment>
                         <MenuItem onClick={this.handleClickOpen}>
-                          Blacklist author
+                          <ListItemIcon>
+                            <BlockIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary="Blacklist author" />
                         </MenuItem>
                         <Dialog
                           open={this.state.open}
@@ -245,7 +257,12 @@ class AuthorBlacklist extends React.Component {
                 </Mutation>
               );
             }
-            return <Fragment />;
+            return (
+              <MenuItem>
+                <ListItemIcon />
+                <ListItemText />
+              </MenuItem>
+            );
           }}
         </Query>
       </div>
