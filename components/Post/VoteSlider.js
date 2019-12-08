@@ -38,6 +38,10 @@ import LoginButton from '../Header/LoginButton';
 import BookmarkIcon from './BookmarkIcon';
 import VoteButton from './VoteButton';
 
+const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
+  ssr: false,
+});
+
 const downVoteTheme = createMuiTheme({
   palette: {
     primary: red,
@@ -364,7 +368,7 @@ class VoteSlider extends Component {
     if (this.state.voteExpanded === false) {
       cardFooter = (
         <Fragment>
-          <Divider variant="middle" />
+          {!this.props.noDivider && <Divider variant="middle" />}
           <CardActions>
             <div className="container w-100">
               <div className="row">
@@ -400,7 +404,7 @@ class VoteSlider extends Component {
             }
             return (
               <Fragment>
-                <Divider variant="middle" />
+                {!this.props.noDivider && <Divider variant="middle" />}
                 <CardActions>
                   <div className="pl-2 pr-2 w-100">
                     <MuiThemeProvider
@@ -444,9 +448,6 @@ class VoteSlider extends Component {
       );
     }
     if (this.props.mode !== 'gridcard' && this.state.commentExpanded === true) {
-      const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
-        ssr: false,
-      });
       cardFooter = (
         <Fragment>
           <Divider variant="middle" />

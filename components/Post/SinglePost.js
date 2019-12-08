@@ -32,6 +32,7 @@ import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
 import SimilarPosts from './SimilarPosts';
 import SliderTags from './SliderTags';
+import StickyVoteSlider from './StickyVoteSlider';
 
 const styles = () => ({
   card: {
@@ -126,6 +127,24 @@ class SinglePost extends Component {
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
     const isTf = app && app.split('/')[0] === 'travelfeed';
+    let titleUri = '';
+    let bodyUri = '';
+    let displayNameUri = '';
+    try {
+      titleUri = encodeURIComponent(this.props.post.title);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      bodyUri = encodeURIComponent(this.props.post.body);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      displayNameUri = encodeURIComponent(this.props.post.display_name);
+    } catch {
+      console.warn('Could not encode URI');
+    }
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
@@ -320,6 +339,7 @@ class SinglePost extends Component {
                         title={title}
                         img_url={img_url}
                       />
+                      {data && data.post && <SliderTags tags={tags} />}
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
                           <Divider variant="middle" />
@@ -382,13 +402,8 @@ class SinglePost extends Component {
                           </div>
                         </div>
                       </div>
-                      {data && data.post && <SliderTags tags={tags} />}
+                      <div className="pt-4" />
                     </Card>
-                  </div>
-                  <div className="pt-2">
-                    {country_code && post_id && (
-                      <SimilarPosts country_code={country_code} />
-                    )}
                   </div>
                 </>
               );
@@ -465,6 +480,35 @@ class SinglePost extends Component {
                         {depth === 0 && <PostTitle title={title} />}
                         {card}
                       </Grid>
+                      <StickyVoteSlider
+                        commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+                          img_url,
+                        )}&lazy_img_url=${encodeURIComponent(
+                          lazy_img_url,
+                        )}&created_at=${encodeURIComponent(
+                          created_at,
+                        )}&depth=0&country_code=${country_code}&subdivision=${encodeURIComponent(
+                          subdivision,
+                        )}&app=${encodeURIComponent(
+                          app,
+                        )}&curation_score=${encodeURIComponent(
+                          curation_score,
+                        )}`}
+                        author={author}
+                        permlink={permlink}
+                        votes={votes}
+                        total_votes={total_votes}
+                        children={children}
+                        mode="gridcard"
+                        depth={depth}
+                      />
+                      <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
+                        <div className="pt-2">
+                          {country_code && post_id && (
+                            <SimilarPosts country_code={country_code} />
+                          )}
+                        </div>
+                      </Grid>
                       <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
                         {// "Fake" display new user comment after submitting comment without refreshing from the API
                         this.state.userComment && (
@@ -485,11 +529,11 @@ class SinglePost extends Component {
                                   author: getUser(),
                                   display_name: '',
                                   permlink: this.state.userComment.permlink,
-                                  depth: this.props.post.depth + 1,
+                                  depth: depth + 1,
                                   total_votes: 0,
                                   votes: '',
-                                  parent_author: this.props.post.author,
-                                  parent_permlink: this.props.post.permlink,
+                                  parent_author: author,
+                                  parent_permlink: permlink,
                                   root_title: '',
                                 }}
                               />

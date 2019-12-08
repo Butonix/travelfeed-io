@@ -56,7 +56,6 @@ const SocialShareDialog = props => {
         </DialogTitle>{' '}
         <DialogContent>
           <PostSocialShares
-            hideBookmarkButton
             author={author}
             permlink={permlink}
             tags={tags}
