@@ -4,6 +4,11 @@ import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { red, teal } from '@material-ui/core/colors';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
@@ -103,6 +108,7 @@ class VoteSlider extends Component {
     user: null,
     totalmiles: null,
     open: false,
+    downvoteConfirmOpen: false,
   };
 
   async componentDidMount() {
@@ -195,6 +201,16 @@ class VoteSlider extends Component {
     }
   }
 
+  triggerVote() {
+    if (this.state.weight > 0) this.votePost();
+    else this.setState({ downvoteConfirmOpen: true });
+  }
+
+  confirmDownvote() {
+    this.setState({ downvoteConfirmOpen: false });
+    this.votePost();
+  }
+
   votePost() {
     this.setState({ loading: 0 });
     const roles = getRoles();
@@ -231,19 +247,6 @@ class VoteSlider extends Component {
 
   render() {
     const actions = [];
-    let sliderstyle = {};
-    let rowitem1 =
-      'col-xl-4 col-lg-5 col-md-5 col-sm-12 col-12 order-xl-1 order-lg-1 order-md-1 order-sm-2 order-2 p-0';
-    let rowitem2 =
-      'col-xl-8 col-lg-7 col-md-7 col-sm-12 col-12 order-2 order-xl-2 order-lg-2 order-md-2 order-sm-1 order-1 my-auto taglist p-3';
-    if (this.props.mode === 'gridcard') {
-      sliderstyle = { fontSize: '0.6rem' };
-      rowitem1 = 'col-6 p-0 order-1';
-      rowitem2 = 'col-6 p-0 text-right my-auto pr-2 order-2';
-    } else if (this.props.mode === 'comment') {
-      rowitem1 = 'col-12 p-0';
-      rowitem2 = 'd-none';
-    }
     const commentButton = (
       <Typography color="textSecondary" component="span">
         <Button
@@ -434,7 +437,7 @@ class VoteSlider extends Component {
                         max={10}
                         step={0.001}
                         onChange={this.setWeight}
-                        onChangeCommitted={this.votePost.bind(this)}
+                        onChangeCommitted={this.triggerVote.bind(this)}
                       />
                     </MuiThemeProvider>
                   </div>
@@ -482,6 +485,37 @@ class VoteSlider extends Component {
           />
         )}
         {cardFooter}
+        <Dialog
+          open={this.state.downvoteConfirmOpen}
+          onClose={() => this.setState({ downvoteConfirmOpen: false })}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Confirm Downvote?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure that you want to downvote this post? Downvoting
+              removes rewards from this post.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => this.setState({ downvoteConfirmOpen: false })}
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <MuiThemeProvider theme={downVoteTheme}>
+              <Button
+                variant="contained"
+                onClick={this.confirmDownvote.bind(this)}
+                color="primary"
+              >
+                Downvote
+              </Button>
+            </MuiThemeProvider>
+          </DialogActions>
+        </Dialog>
       </Fragment>
     );
   }
