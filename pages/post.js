@@ -17,6 +17,7 @@ class PostPage extends Component {
       country_code,
       subdivision,
       app,
+      scrollToComments,
     } = props.query;
     return {
       author,
@@ -31,6 +32,7 @@ class PostPage extends Component {
       country_code,
       subdivision,
       app,
+      scrollToComments,
     };
   }
 

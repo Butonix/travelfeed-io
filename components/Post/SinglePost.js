@@ -67,6 +67,11 @@ class SinglePost extends Component {
     }
     // Update lazyLoad after first rendering of every image
     document.lazyLoadInstance.update();
+    if (this.props.post.scrollToComments) {
+      const comments = document.getElementById('comments');
+      const topPos = comments.offsetTop;
+      document.getElementById('__next').scrollTop = topPos;
+    }
   }
 
   // Update lazyLoad after rerendering of every image
@@ -294,7 +299,7 @@ class SinglePost extends Component {
               );
               card = (
                 <>
-                  <div ref={this.myInput}>
+                  <div ref={this.myInput} id="post">
                     <Card className={classes.card}>
                       <PostContent
                         author={author}
