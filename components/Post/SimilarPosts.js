@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Query } from 'react-apollo';
-import { nameFromCC } from '../../helpers/countryCodes';
+import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import PostPreview from './PostPreview';
 import SimilarPostCard from './SimilarPostCard';
@@ -29,7 +29,7 @@ const SimilarPosts = props => {
           orderby: 'random',
           country_code,
           min_curation_score: 5000,
-          limit: 3,
+          limit: 4,
         }}
       >
         {({ data }) => {
@@ -37,22 +37,37 @@ const SimilarPosts = props => {
             return (
               <>
                 <div className="d-xl-block d-lg-block d-md-block d-sm-none d-none">
-                  <Typography align="center" variant="h4" className="pt-4 pb-3">
-                    Discover more from {nameFromCC(country_code)}
+                  <Typography
+                    align="center"
+                    variant="h4"
+                    className="pt-4 pb-3"
+                    gutterBottom
+                  >
+                    More from {nameFromCC(country_code)}
                   </Typography>
                   <div className="container">
                     <div className="row">
                       {data.posts.map((post, i) => {
-                        const { author, permlink, title, img_url } = post;
+                        const {
+                          author,
+                          permlink,
+                          title,
+                          img_url,
+                          subdivision,
+                          city,
+                        } = post;
                         return (
                           <>
-                            <div className="col-4 m-0 p-0" key={permlink}>
+                            <div className="col-3 m-0 p-0" key={permlink}>
                               <SimilarPostCard
+                                slug={slugFromCC(country_code)}
                                 post={{
                                   author,
                                   permlink,
                                   title,
                                   img_url,
+                                  subdivision,
+                                  city,
                                 }}
                                 padding={i > 0 ? `pl-2` : ''}
                                 cardHeight="200"
@@ -72,7 +87,7 @@ const SimilarPosts = props => {
                       variant="h5"
                       className="pt-4"
                     >
-                      Discover more from {nameFromCC(country_code)}
+                      More from {nameFromCC(country_code)}
                     </Typography>
                     {data.posts.map((post, i) => {
                       const { author, permlink, title, img_url } = post;

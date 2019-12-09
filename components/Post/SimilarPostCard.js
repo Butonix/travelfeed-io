@@ -34,21 +34,45 @@ const SimilarPostCard = props => {
               {props.post.img_url && (
                 <CardMedia
                   className="h-100"
-                  style={{ minHeight: '150px' }}
+                  style={{ minHeight: '200px' }}
                   image={imageProxy(props.post.img_url, 300)}
                 />
               )}
               <CardContent>
-                <Excerpt title={props.post.title} />
-                <em>
-                  <Link
-                    color="textSecondary"
-                    as={`/@${props.post.author}`}
-                    href={`/blog?author=${props.post.author}`}
-                  >
-                    by @{props.post.author}
-                  </Link>
-                </em>
+                <div className="container" style={{ height: '150px' }}>
+                  <div className="row h-100">
+                    <div className="my-auto col-12 text-center">
+                      {(props.post.subdivision || props.post.city) && (
+                        <Link
+                          href={`/destinations?country=${props.slug}${
+                            !props.post.subdivision
+                              ? ''
+                              : `&subdivision=${props.post.subdivision}`
+                          }${
+                            !props.post.city ? '' : `&city=${props.post.city}`
+                          }`}
+                          as={`/destinations/${props.slug}${
+                            !props.post.subdivision
+                              ? ''
+                              : `/${props.post.subdivision}`
+                          }${!props.post.city ? '' : `/${props.post.city}`}`}
+                        >
+                          {props.post.city || props.post.subdivision}
+                        </Link>
+                      )}
+                      <Excerpt title={props.post.title} />
+                      <em>
+                        <Link
+                          color="textSecondary"
+                          as={`/@${props.post.author}`}
+                          href={`/blog?author=${props.post.author}`}
+                        >
+                          by @{props.post.author}
+                        </Link>
+                      </em>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </CardActionArea>
           </Card>

@@ -503,7 +503,14 @@ class SinglePost extends Component {
                         depth={depth}
                         onCommentAdd={this.onCommentAdd}
                       />
-                      <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
+                      <Grid
+                        item
+                        lg={11}
+                        md={11}
+                        sm={11}
+                        xs={12}
+                        className="pb-4"
+                      >
                         <div className="pt-2">
                           {country_code && post_id && (
                             <SimilarPosts country_code={country_code} />
