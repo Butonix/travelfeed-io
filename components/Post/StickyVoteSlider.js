@@ -94,6 +94,7 @@ class StickyVoteSlider extends Component {
                   depth={this.props.depth}
                   onCommentAdd={this.props.onCommentAdd}
                   noDivider
+                  mode="sticky"
                 />
               </Card>
             </Grid>

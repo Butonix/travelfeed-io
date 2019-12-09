@@ -53,7 +53,7 @@ const SocialShareDialog = props => {
               <CloseIcon />
             </IconButton>
           </div>
-        </DialogTitle>{' '}
+        </DialogTitle>
         <DialogContent>
           <PostSocialShares
             author={author}

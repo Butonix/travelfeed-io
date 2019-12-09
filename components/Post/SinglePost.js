@@ -33,6 +33,7 @@ import PostTitle from './PostTitle';
 import SimilarPosts from './SimilarPosts';
 import SliderTags from './SliderTags';
 import StickyVoteSlider from './StickyVoteSlider';
+import VoteDetailsBtn from './VoteDetailsBtn';
 
 const styles = () => ({
   card: {
@@ -402,7 +403,13 @@ class SinglePost extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="pt-4" />
+                      <div className="pb-4">
+                        <VoteDetailsBtn
+                          numberreplies={children}
+                          votes={votes}
+                          total_votes={total_votes}
+                        />
+                      </div>
                     </Card>
                   </div>
                 </>

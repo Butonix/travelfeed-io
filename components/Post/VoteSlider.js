@@ -12,11 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  withStyles,
-} from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddCommentIcon from '@material-ui/icons/AddComment';
@@ -267,7 +263,7 @@ class VoteSlider extends Component {
             {(this.props.mode === 'gridcard' && (
               <CommentIcon className="mr mr-1" />
             )) || <AddCommentIcon className="mr mr-1" />}
-            {this.props.children > 0 && (
+            {this.props.children > 0 && this.props.mode !== 'sticky' && (
               <Box
                 className="pl-1 pr-1"
                 fontSize={16}
@@ -279,7 +275,9 @@ class VoteSlider extends Component {
               </Box>
             )}
             <Typography noWrap variant="inherit" className="p-1">
-              {this.props.children > 1 ? 'Comments' : 'Comment'}
+              {this.props.children > 1 && this.props.mode !== 'sticky'
+                ? 'Comments'
+                : 'Comment'}
             </Typography>
           </Button>
         </Typography>
@@ -302,15 +300,17 @@ class VoteSlider extends Component {
             {(this.state.hasVoted && (
               <VoteButton weight={this.state.weight} size="24" />
             )) || <EmojiIcon />}
-            <Box
-              className="pl-2 pr-1"
-              fontSize={16}
-              color={this.state.hasVoted ? 'primary' : 'inherit'}
-              fontWeight="fontWeightBold"
-              component="span"
-            >
-              {this.state.totalmiles || this.props.total_votes}
-            </Box>
+            {this.props.mode !== 'sticky' && (
+              <Box
+                className="pl-2 pr-1"
+                fontSize={16}
+                color={this.state.hasVoted ? 'primary' : 'inherit'}
+                fontWeight="fontWeightBold"
+                component="span"
+              >
+                {this.state.totalmiles || this.props.total_votes}
+              </Box>
+            )}
             <Typography noWrap variant="inherit" className="p-1">
               Vote
             </Typography>
