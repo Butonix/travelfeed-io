@@ -487,7 +487,7 @@ class SinglePost extends Component {
                         {depth === 0 && <PostTitle title={title} />}
                         {card}
                       </Grid>
-                      {depth === 0 && (
+                      {depth === 0 && votes !== undefined && (
                         <StickyVoteSlider
                           commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
                             img_url,
