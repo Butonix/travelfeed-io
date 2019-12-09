@@ -14,10 +14,24 @@ const SocialShareDialog = props => {
   const [open, setOpen] = useState(false);
 
   const { author, permlink, tags, title, img_url, setListenClickAway } = props;
+  let tagString = '';
+  if (tags)
+    tags.forEach((t, i) => {
+      if (i > 0) tagString += ', ';
+      tagString += `#${t}`;
+    });
 
   const handleOpen = () => {
-    setListenClickAway(false);
-    setOpen(true);
+    if (navigator.share)
+      navigator.share({
+        title,
+        text: `${title} ${tagString}`,
+        url: window.location.href,
+      });
+    else {
+      setListenClickAway(false);
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
