@@ -5,6 +5,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { GET_POSTS } from '../../helpers/graphql/posts';
+import Link from '../../lib/Link';
 import PostPreview from './PostPreview';
 import SimilarPostCard from './SimilarPostCard';
 
@@ -20,6 +21,8 @@ const SimilarPosts = props => {
   const classes = useStyles();
 
   const { country_code } = props;
+
+  const slug = slugFromCC(country_code);
 
   return (
     <>
@@ -40,10 +43,16 @@ const SimilarPosts = props => {
                   <Typography
                     align="center"
                     variant="h4"
-                    className="pt-4 pb-3"
+                    className="pt-5 pb-2"
                     gutterBottom
                   >
-                    More from {nameFromCC(country_code)}
+                    <Link
+                      color="inherit"
+                      href={`/destinations?country=${slug}`}
+                      as={`/destinations/${slug}`}
+                    >
+                      More from {nameFromCC(country_code)}
+                    </Link>
                   </Typography>
                   <div className="container">
                     <div className="row">
@@ -60,7 +69,7 @@ const SimilarPosts = props => {
                           <>
                             <div className="col-3 m-0 p-0" key={permlink}>
                               <SimilarPostCard
-                                slug={slugFromCC(country_code)}
+                                slug={slug}
                                 post={{
                                   author,
                                   permlink,
@@ -87,7 +96,13 @@ const SimilarPosts = props => {
                       variant="h5"
                       className="pt-4"
                     >
-                      More from {nameFromCC(country_code)}
+                      <Link
+                        color="inherit"
+                        href={`/destinations?country=${slug}`}
+                        as={`/destinations/${slug}`}
+                      >
+                        More from {nameFromCC(country_code)}
+                      </Link>
                     </Typography>
                     {data.posts.map((post, i) => {
                       const { author, permlink, title, img_url } = post;

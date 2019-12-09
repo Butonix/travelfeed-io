@@ -509,10 +509,10 @@ class SinglePost extends Component {
                         md={11}
                         sm={11}
                         xs={12}
-                        className="pb-4"
+                        className="pb-5"
                       >
                         <div className="pt-2">
-                          {country_code && post_id && (
+                          {country_code && (
                             <SimilarPosts country_code={country_code} />
                           )}
                         </div>
