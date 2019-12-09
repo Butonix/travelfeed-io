@@ -92,6 +92,7 @@ class StickyVoteSlider extends Component {
                   total_votes={this.props.total_votes}
                   children={this.props.children}
                   depth={this.props.depth}
+                  onCommentAdd={this.props.onCommentAdd}
                   noDivider
                 />
               </Card>

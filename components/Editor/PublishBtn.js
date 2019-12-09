@@ -72,7 +72,7 @@ const PublishBtn = props => {
   };
 
   useEffect(() => {
-    if (props.publishThis) {
+    if (props.publishThis && loading) {
       publishComment();
     }
   }, [props]);

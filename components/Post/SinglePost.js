@@ -501,6 +501,7 @@ class SinglePost extends Component {
                         children={children}
                         mode="gridcard"
                         depth={depth}
+                        onCommentAdd={this.onCommentAdd}
                       />
                       <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
                         <div className="pt-2">
