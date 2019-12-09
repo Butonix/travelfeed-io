@@ -67,7 +67,12 @@ const SimilarPosts = props => {
                         } = post;
                         return (
                           <>
-                            <div className="col-3 m-0 p-0" key={permlink}>
+                            <div
+                              className={`col-xl-3 col-lg-3 col-md-4 m-0 p-0 ${i >
+                                2 &&
+                                'd-xl-block d-lg-block d-md-none d-sm-none d-none'}`}
+                              key={permlink}
+                            >
                               <SimilarPostCard
                                 slug={slug}
                                 post={{
