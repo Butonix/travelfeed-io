@@ -48,10 +48,12 @@ const PublishBtn = props => {
           setLoading(false);
           if (res) {
             newNotification(res);
-            props.pastPublish(res);
-            graphQLClient(PAST_PUBLISH, {
-              permlink: props.publishThis.permlink,
-            });
+            if (res.success) {
+              props.pastPublish(res);
+              graphQLClient(PAST_PUBLISH, {
+                permlink: props.publishThis.permlink,
+              });
+            }
           } else {
             newNotification({
               success: false,

@@ -55,7 +55,7 @@ const UpdateProfileButton = props => {
       accountUpdate(user, profile).then(res => {
         if (res) {
           newNotification(res);
-          graphQLClient(PAST_ACCOUNT_UPDATE);
+          if (res.success) graphQLClient(PAST_ACCOUNT_UPDATE);
         }
         setChanging(false);
       });
