@@ -480,43 +480,47 @@ class SinglePost extends Component {
                         {depth === 0 && <PostTitle title={title} />}
                         {card}
                       </Grid>
-                      <StickyVoteSlider
-                        commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
-                          img_url,
-                        )}&lazy_img_url=${encodeURIComponent(
-                          lazy_img_url,
-                        )}&created_at=${encodeURIComponent(
-                          created_at,
-                        )}&depth=0&country_code=${country_code}&subdivision=${encodeURIComponent(
-                          subdivision,
-                        )}&app=${encodeURIComponent(
-                          app,
-                        )}&curation_score=${encodeURIComponent(
-                          curation_score,
-                        )}`}
-                        author={author}
-                        permlink={permlink}
-                        votes={votes}
-                        total_votes={total_votes}
-                        children={children}
-                        mode="gridcard"
-                        depth={depth}
-                        onCommentAdd={this.onCommentAdd}
-                      />
-                      <Grid
-                        item
-                        lg={11}
-                        md={11}
-                        sm={11}
-                        xs={12}
-                        className="pb-5"
-                      >
-                        <div className="pt-2">
-                          {country_code && (
-                            <SimilarPosts country_code={country_code} />
-                          )}
-                        </div>
-                      </Grid>
+                      {depth === 0 && (
+                        <StickyVoteSlider
+                          commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+                            img_url,
+                          )}&lazy_img_url=${encodeURIComponent(
+                            lazy_img_url,
+                          )}&created_at=${encodeURIComponent(
+                            created_at,
+                          )}&depth=0&country_code=${country_code}&subdivision=${encodeURIComponent(
+                            subdivision,
+                          )}&app=${encodeURIComponent(
+                            app,
+                          )}&curation_score=${encodeURIComponent(
+                            curation_score,
+                          )}`}
+                          author={author}
+                          permlink={permlink}
+                          votes={votes}
+                          total_votes={total_votes}
+                          children={children}
+                          mode="gridcard"
+                          depth={depth}
+                          onCommentAdd={this.onCommentAdd}
+                        />
+                      )}
+                      {depth === 0 && (
+                        <Grid
+                          item
+                          lg={11}
+                          md={11}
+                          sm={11}
+                          xs={12}
+                          className="pb-5"
+                        >
+                          <div className="pt-2">
+                            {country_code && (
+                              <SimilarPosts country_code={country_code} />
+                            )}
+                          </div>
+                        </Grid>
+                      )}
                       <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
                         {// "Fake" display new user comment after submitting comment without refreshing from the API
                         this.state.userComment && (
