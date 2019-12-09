@@ -150,7 +150,7 @@ const OnboardCreate = props => {
                 </span>
               )}
               Your Steem keys <strong>cannot be recovered</strong> - if you
-              forget them, you loose access to your account and any funds that
+              forget them, you lose access to your account and any funds that
               are on it <strong>forever</strong>. This is why it is extremely
               important that you store them savely. We recommend to download
               your Steem keys and store them offline and/or print them out.
@@ -182,9 +182,9 @@ const OnboardCreate = props => {
           <>
             <FormLabel component="legend" className="pb-2">
               To confirm that you have stored your Steem passphrase securely,
-              please reenter it below. Remember, if you ever loose your
+              please reenter it below. Remember, if you ever lose your
               passphrase, <strong>we cannot recover it</strong> and you will
-              loose access to your account and all funds on it permanently!
+              lose access to your account and all funds on it permanently!
             </FormLabel>
             <div className="pb-2">
               <PasswordPicker
