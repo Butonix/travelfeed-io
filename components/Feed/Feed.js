@@ -80,7 +80,7 @@ const Feed = props => {
                   exclude_authors: ['travelfeed', 'steemitworldmap'],
                 }}
                 grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
-                cardHeight={350}
+                cardHeight={330}
                 poststyle="grid"
               />
             )}

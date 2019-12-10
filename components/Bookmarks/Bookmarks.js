@@ -116,7 +116,7 @@ class Bookmarks extends Component {
                         >
                           <GridPostCard
                             isBookmark
-                            cardHeight={250}
+                            cardHeight={220}
                             post={{
                               author: post.author,
                               display_name: post.display_name,

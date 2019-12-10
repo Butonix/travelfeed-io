@@ -66,8 +66,8 @@ class GridPostCard extends Component {
       ? imageProxy(
           this.props.post.img_url,
           this.state.cardWidth,
-          this.props.cardHeight,
           undefined,
+          'fit',
           'webp',
         )
       : undefined;
@@ -169,16 +169,22 @@ class GridPostCard extends Component {
                     height={this.props.cardHeight}
                     width="100%"
                     alt={this.props.post.title}
-                    className="lazy"
+                    className="lazy img-fluid"
+                    style={{
+                      maxHeight: this.props.cardHeight,
+                      minHeight: this.props.cardHeight / 1.5,
+                    }}
                     src={`${imageProxy(
                       this.props.post.img_url,
                       this.state.cardWidth * 0.1,
-                      this.props.cardHeight * 0.1,
+                      undefined,
+                      'fit',
                     )}`}
                     data-src={`${imageProxy(
                       this.props.post.img_url,
                       this.state.cardWidth,
-                      this.props.cardHeight,
+                      undefined,
+                      'fit',
                     )}`}
                     data-sizes="100w"
                   />
