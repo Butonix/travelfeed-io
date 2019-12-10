@@ -10,6 +10,7 @@ import { getRoles } from '../../helpers/token';
 
 const PublishBtn = props => {
   const [loading, setLoading] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -72,14 +73,16 @@ const PublishBtn = props => {
   };
 
   useEffect(() => {
-    if (props.publishThis && loading) {
+    if (props.publishThis && trigger) {
       publishComment();
+      setTrigger(false);
     }
   }, [props]);
 
   const onTrigger = () => {
     props.triggerPublish();
     setLoading(true);
+    setTrigger(true);
   };
 
   return (
