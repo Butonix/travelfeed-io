@@ -12,7 +12,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
-import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  withStyles,
+} from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddCommentIcon from '@material-ui/icons/AddComment';
@@ -263,19 +267,23 @@ class VoteSlider extends Component {
             {(this.props.mode === 'gridcard' && (
               <CommentIcon className="mr mr-1" />
             )) || <AddCommentIcon className="mr mr-1" />}
-            {this.props.children > 0 && this.props.mode !== 'sticky' && (
-              <Box
-                className="pl-1 pr-1"
-                fontSize={16}
-                color="text.icon"
-                fontWeight="fontWeightBold"
-                component="span"
-              >
-                {this.props.children}
-              </Box>
-            )}
+            {this.props.children > 0 &&
+              this.props.mode !== 'sticky' &&
+              !this.props.hideCommentNumber && (
+                <Box
+                  className="pl-1 pr-1"
+                  fontSize={16}
+                  color="text.icon"
+                  fontWeight="fontWeightBold"
+                  component="span"
+                >
+                  {this.props.children}
+                </Box>
+              )}
             <Typography noWrap variant="inherit" className="p-1">
-              {this.props.children > 1 && this.props.mode !== 'sticky'
+              {this.props.children > 1 &&
+              this.props.mode !== 'sticky' &&
+              !this.props.hideCommentNumber
                 ? 'Comments'
                 : 'Comment'}
             </Typography>

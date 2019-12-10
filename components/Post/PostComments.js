@@ -90,6 +90,7 @@ class PostComments extends Component {
                       >
                         <div className="pt-2">
                           <PostCommentItem
+                            hideCommentNumber={this.props.hideCommentNumber}
                             post={{
                               post_id: post.post_id,
                               body: post.body,

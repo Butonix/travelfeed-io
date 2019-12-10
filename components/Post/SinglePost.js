@@ -551,6 +551,7 @@ class SinglePost extends Component {
                           <Fragment>
                             <div className="pr-2 pl-2">
                               <PostComments
+                                hideCommentNumber
                                 post_id={post_id}
                                 orderby={this.state.orderby || 'total_votes'}
                                 orderdir={this.state.orderdir || 'DESC'}

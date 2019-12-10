@@ -87,6 +87,7 @@ class PostCommentItem extends Component {
     if (this.props.post.children !== 0 && this.props.loadreplies === true) {
       children = (
         <PostComments
+          hideCommentNumber={this.props.hideCommentNumber}
           post_id={this.props.post.post_id}
           orderby={this.props.orderby}
           orderdir={this.props.orderdir}
@@ -200,6 +201,7 @@ class PostCommentItem extends Component {
             {cardcontent}
           </>
           <VoteSlider
+            hideCommentNumber={this.props.hideCommentNumber}
             author={this.props.post.author}
             permlink={this.props.post.permlink}
             votes={this.props.post.votes}
