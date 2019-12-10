@@ -1,18 +1,38 @@
-// TODO: Add form & functionality
-
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import CloseIcon from '@material-ui/icons/Close';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import ReportIcon from '@material-ui/icons/Flag';
+import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
+import { REPORT_POST } from '../../helpers/graphql/curation';
+import graphQLClient from '../../helpers/graphQLClient';
+
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const ReportDialog = props => {
+  const classes = useStyles();
+
   const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState('');
+  const [details, setDetails] = useState('');
 
   const { author, permlink, setListenClickAway } = props;
 
@@ -26,6 +46,35 @@ const ReportDialog = props => {
     setOpen(false);
   };
 
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
+  const handleReport = () => {
+    graphQLClient(REPORT_POST, {
+      author,
+      permlink,
+      reason,
+      details,
+    })
+      .then(res => {
+        newNotification(res.reportPost);
+        if (res.reportPost.success) handleClose();
+      })
+      .catch(() => {
+        newNotification({
+          success: false,
+          message: 'Report could not be sent. Please try again!',
+        });
+      });
+  };
+
   return (
     <>
       <MenuItem onClick={handleOpen}>
@@ -35,6 +84,7 @@ const ReportDialog = props => {
         <ListItemText primary="Report" />
       </MenuItem>
       <Dialog
+        maxWidth="lg"
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -42,23 +92,47 @@ const ReportDialog = props => {
       >
         <DialogTitle className="text-center" id="form-dialog-title">
           Report Post
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              padding: '2px',
-            }}
+        </DialogTitle>
+        <DialogContent>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Reason</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={reason}
+              onChange={event => setReason(event.target.value)}
+            >
+              <MenuItem value="spam">Spam</MenuItem>
+              <MenuItem value="image plagiarism">Image Plagiarism</MenuItem>
+              <MenuItem value="plagiarism">Plagiarism / Copy-Paste</MenuItem>
+              <MenuItem value="identity theft">Identity Theft</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            fullWidth
+            multiline
+            onChange={event => setDetails(event.target.value)}
+            value={details}
+            label="Details"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleReport}
+            color="primary"
+            variant="contained"
+            disabled={!reason}
+            autoFocus
           >
-            <IconButton onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </DialogTitle>{' '}
-        <DialogContent>Report</DialogContent>
+            Send Report
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default ReportDialog;
+export default withSnackbar(ReportDialog);
