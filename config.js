@@ -26,7 +26,7 @@ export const photoTags = [
   'photomatic',
   'photomag',
   'photofriend',
-  'phototalent'
+  'phototalent',
 ];
 
 export const removeTags = [
@@ -87,5 +87,7 @@ export const removeTags = [
   'cervantes',
   'bdvoter',
   'actnearn',
-  'dblog'
+  'dblog',
+  'posh',
+  'bdcommunity',
 ];

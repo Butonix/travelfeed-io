@@ -11,7 +11,7 @@ const cleanTags = (tags, options) => {
     }
   });
   // remove 'travelfeed' from tags
-  let taglist = tags.filter(item => {
+  const taglist = tags.filter(item => {
     // Tags on Steem are often advertising or generic,
     // tags on TravelFeed  are  for discovering post about specific topics,
     // generic tags like "travel" are useless.
@@ -19,10 +19,16 @@ const cleanTags = (tags, options) => {
     // -> hide these tags
     return removeTags.indexOf(item) === -1;
   });
+  let tl = [];
+  taglist.forEach(tag => {
+    if (tag.substring(0, 4) !== 'hive') {
+      tl.push(tag);
+    }
+  });
   // use only first tag for preview cards
-  if (options && options.cutTags) taglist = [taglist[0]];
-  if (!taglist || taglist.length < 1) taglist = ['travelfeed'];
-  return taglist;
+  if (options && options.cutTags) tl = [tl[0]];
+  if (!taglist || taglist.length < 1) tl = [];
+  return tl;
 };
 
 export default cleanTags;

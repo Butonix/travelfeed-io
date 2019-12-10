@@ -340,7 +340,12 @@ class SinglePost extends Component {
                         title={title}
                         img_url={img_url}
                       />
-                      {data && data.post && <SliderTags tags={tags} />}
+                      {data && data.post && tags && tags.length > 0 && (
+                        <>
+                          <Divider variant="middle" />
+                          <SliderTags tags={tags} />
+                        </>
+                      )}
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
                           <Divider variant="middle" />
