@@ -416,43 +416,6 @@ class SinglePost extends Component {
               );
             }
             // Don't load comment area  if there are no comments
-            let comments = (
-              <div className="anchor" id="comments" name="comments" />
-            );
-            if (children !== 0) {
-              comments = (
-                <Fragment>
-                  <div className="anchor" id="comments" name="comments" />
-                  <div className="container">
-                    <div className="row">
-                      <div className="col">
-                        <Typography
-                          variant="h5"
-                          className="p-2 d-inline"
-                          gutterBottom
-                        >
-                          Comments
-                        </Typography>
-                      </div>
-                      <div className="col">
-                        <OrderBySelect
-                          handleClick={this.handleClick}
-                          selection={this.state.title || 'Most smiles'}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pr-2 pl-2">
-                    <PostComments
-                      post_id={post_id}
-                      orderby={this.state.orderby || 'total_votes'}
-                      orderdir={this.state.orderdir || 'DESC'}
-                      ismain
-                    />
-                  </div>
-                </Fragment>
-              );
-            }
             return (
               <Fragment>
                 {head}
@@ -529,6 +492,26 @@ class SinglePost extends Component {
                         </Grid>
                       )}
                       <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
+                        <div className="anchor" id="comments" name="comments" />
+                        <div className="container">
+                          <div className="row">
+                            <div className="col">
+                              <Typography
+                                variant="h5"
+                                className="p-2 d-inline"
+                                gutterBottom
+                              >
+                                Comments
+                              </Typography>
+                            </div>
+                            <div className="col">
+                              <OrderBySelect
+                                handleClick={this.handleClick}
+                                selection={this.state.title || 'Most smiles'}
+                              />
+                            </div>
+                          </div>
+                        </div>
                         {// "Fake" display new user comment after submitting comment without refreshing from the API
                         this.state.userComment && (
                           <Grid
@@ -559,7 +542,18 @@ class SinglePost extends Component {
                             </div>
                           </Grid>
                         )}
-                        {comments}
+                        {children !== 0 && (
+                          <Fragment>
+                            <div className="pr-2 pl-2">
+                              <PostComments
+                                post_id={post_id}
+                                orderby={this.state.orderby || 'total_votes'}
+                                orderdir={this.state.orderdir || 'DESC'}
+                                ismain
+                              />
+                            </div>
+                          </Fragment>
+                        )}
                       </Grid>
                     </Grid>
                   </div>
