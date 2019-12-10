@@ -12,7 +12,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
-import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  withStyles,
+} from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddCommentIcon from '@material-ui/icons/AddComment';
@@ -51,8 +55,8 @@ const upVoteTheme = createMuiTheme({
 
 const EmojiSlider = withStyles({
   thumb: {
-    height: 30,
-    width: 30,
+    height: 29,
+    width: 29,
     backgroundColor: '#fff',
     border: '1px solid currentColor',
     marginTop: -12,
@@ -392,29 +396,33 @@ class VoteSlider extends Component {
         <Fragment>
           {!this.props.noDivider && <Divider variant="middle" />}
           <CardActions>
-            <div className="pl-2 pr-2 w-100">
-              <MuiThemeProvider
-                theme={this.state.weight < 0 ? downVoteTheme : upVoteTheme}
-              >
-                <EmojiSlider
-                  ValueLabelComponent={ValueLabelComponent}
-                  ThumbComponent={this.EmojiThumbComponent}
-                  track={false}
-                  valueLabelFormat={x => {
-                    let number = x;
-                    if (number > -0.5 && number < 0) number = -1;
-                    else if (number >= 0 && number < 0.5) number = 1;
-                    number = Math.round(number);
-                    return x >= 0 ? '+' + number : number;
-                  }}
-                  value={this.state.weight}
-                  min={-10}
-                  max={10}
-                  step={0.001}
-                  onChange={this.setWeight}
-                  onChangeCommitted={this.triggerVote.bind(this)}
-                />
-              </MuiThemeProvider>
+            <div className="container w-100" style={{ height: '38px' }}>
+              <div className="row h-100">
+                <div className="my-auto col-12 text-center">
+                  <MuiThemeProvider
+                    theme={this.state.weight < 0 ? downVoteTheme : upVoteTheme}
+                  >
+                    <EmojiSlider
+                      ValueLabelComponent={ValueLabelComponent}
+                      ThumbComponent={this.EmojiThumbComponent}
+                      track={false}
+                      valueLabelFormat={x => {
+                        let number = x;
+                        if (number > -0.5 && number < 0) number = -1;
+                        else if (number >= 0 && number < 0.5) number = 1;
+                        number = Math.round(number);
+                        return x >= 0 ? '+' + number : number;
+                      }}
+                      value={this.state.weight}
+                      min={-10}
+                      max={10}
+                      step={0.001}
+                      onChange={this.setWeight}
+                      onChangeCommitted={this.triggerVote.bind(this)}
+                    />
+                  </MuiThemeProvider>
+                </div>
+              </div>
             </div>
             <IconButton size="small" onClick={() => this.collapseVoteBar()}>
               <CloseIcon />
