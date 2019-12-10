@@ -4,9 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
@@ -28,15 +26,9 @@ const Settings = props => {
   const useDarkMode = theme === 'dark';
   const [loaded, setLoaded] = useState(false);
   const [saved, setSaved] = useState(true);
-  const [defaultVoteWeight, setDefaultVoteWeight] = useState(0);
-  const [defaultCommentsVoteWeight, setDefaultCommentsVoteWeight] = useState(0);
   const [showNSFW, setShowNSFW] = useState(false);
   const [useTfBlacklist, setUseTfBlacklist] = useState(true);
   const [notificationPermission, setNotificationPermission] = useState(false);
-  const [
-    useHighPrecisionVotingSlider,
-    setUseHighPrecisionVotingSlider,
-  ] = useState(false);
   const [trackFollows, setTrackFollows] = useState(false);
   const [trackMentions, setTrackMentions] = useState(false);
   const [trackReplies, setTrackReplies] = useState(false);
@@ -91,8 +83,6 @@ const Settings = props => {
       setShowNSFW(event.target.checked);
     } else if (name === 'useTfBlacklist') {
       setUseTfBlacklist(event.target.checked);
-    } else if (name === 'useHighPrecisionVotingSlider') {
-      setUseHighPrecisionVotingSlider(event.target.checked);
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
     } else if (name === 'trackFollows') {
@@ -162,10 +152,6 @@ const Settings = props => {
                 {({ data }) => {
                   if (loaded === false && data && data.preferences) {
                     setLoaded(true);
-                    setDefaultVoteWeight(data.preferences.defaultVoteWeight);
-                    setDefaultCommentsVoteWeight(
-                      data.preferences.defaultCommentsVoteWeight,
-                    );
                     setShowNSFW(data.preferences.showNSFW);
                     setUseTfBlacklist(data.preferences.useTfBlacklist);
                     setTrackFollows(data.preferences.trackFollows);
@@ -173,9 +159,6 @@ const Settings = props => {
                     setTrackReplies(data.preferences.trackReplies);
                     setTrackCuration(data.preferences.trackCuration);
                     setTrackUpdates(data.preferences.trackUpdates);
-                    setUseHighPrecisionVotingSlider(
-                      data.preferences.useHighPrecisionVotingSlider,
-                    );
                     setUseAdvancedEditorOptions(
                       data.preferences.useAdvancedEditorOptions !== false,
                     );
@@ -186,8 +169,6 @@ const Settings = props => {
                     <Mutation
                       mutation={CHANGE_SETTINGS}
                       variables={{
-                        defaultVoteWeight,
-                        defaultCommentsVoteWeight,
                         showNSFW,
                         useTfBlacklist,
                         trackFollows,
@@ -195,7 +176,6 @@ const Settings = props => {
                         trackReplies,
                         trackCuration,
                         trackUpdates,
-                        useHighPrecisionVotingSlider,
                         useAdvancedEditorOptions,
                         claimRewards,
                       }}
@@ -251,22 +231,6 @@ const Settings = props => {
                                     />
                                   }
                                   label="Use TravelFeed blacklist"
-                                />
-
-                                <FormControlLabel
-                                  labelPlacement="end"
-                                  control={
-                                    <Switch
-                                      checked={useHighPrecisionVotingSlider}
-                                      onChange={handleCheckboxChange(
-                                        'useHighPrecisionVotingSlider',
-                                      )}
-                                      onInput={changeSettings}
-                                      value="useHighPrecisionVotingSlider"
-                                      color="primary"
-                                    />
-                                  }
-                                  label="High precision voting slider"
                                 />
 
                                 <FormControlLabel
@@ -405,50 +369,6 @@ const Settings = props => {
                                     label="Display notifications"
                                   />
                                 )}
-                                <TextField
-                                  select
-                                  label="Default smiles weight for posts"
-                                  value={defaultVoteWeight}
-                                  onChange={value => {
-                                    setDefaultVoteWeight(value.target.value);
-                                    changeSettings({
-                                      variables: {
-                                        defaultVoteWeight: value.target.value,
-                                      },
-                                    });
-                                  }}
-                                  margin="normal"
-                                >
-                                  {weights.map(w => (
-                                    <MenuItem key={w} value={w}>
-                                      {w}
-                                    </MenuItem>
-                                  ))}
-                                </TextField>
-
-                                <TextField
-                                  select
-                                  label="Default smiles weight on comments"
-                                  value={defaultCommentsVoteWeight}
-                                  onChange={value => {
-                                    setDefaultCommentsVoteWeight(
-                                      value.target.value,
-                                    );
-                                    changeSettings({
-                                      variables: {
-                                        defaultCommentsVoteWeight:
-                                          value.target.value,
-                                      },
-                                    });
-                                  }}
-                                  margin="normal"
-                                >
-                                  {weights.map(w => (
-                                    <MenuItem key={w} value={w}>
-                                      {w}
-                                    </MenuItem>
-                                  ))}
-                                </TextField>
                               </FormGroup>
                             </FormControl>
                           </Fragment>
