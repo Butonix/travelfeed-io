@@ -30,7 +30,9 @@ const SubHeader = props => {
 
   return (
     <Fragment>
-      <IsCurated isTf={props.isTf} curationScore={props.curationScore} />
+      {(props.curationScore !== undefined || props.isTf !== undefined) && (
+        <IsCurated isTf={props.isTf} curationScore={props.curationScore} />
+      )}
       <Tooltip title={createdAt.format('MMMM DD YYYY H:mm')} placement="bottom">
         <span>
           {createdAt.isBefore(
