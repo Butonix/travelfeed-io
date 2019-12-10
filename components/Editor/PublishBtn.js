@@ -29,8 +29,15 @@ const PublishBtn = props => {
         .then(res => {
           setLoading(false);
           if (res && res.post) {
-            newNotification(res.post);
-            props.pastPublish(res.post);
+            if (res.post.success) {
+              props.pastPublish(res.post);
+              if (props.publishThis.type === 'comment')
+                newNotification({
+                  success: true,
+                  message: 'Comment was published successfully',
+                });
+              else newNotification(res.post);
+            } else newNotification(res.post);
           }
         })
         .catch(err => {
