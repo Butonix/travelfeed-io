@@ -325,14 +325,18 @@ class SinglePost extends Component {
                     <Card className={classes.card}>
                       <PostContent
                         author={author}
+                        id={post_id}
+                        body={body}
+                        json={json}
+                        latitude={latitude}
+                        longitude={longitude}
+                        category={category}
                         isTf={isTf}
                         permlink={permlink}
                         display_name={display_name}
                         created_at={created_at}
                         readtime={readtime}
                         content={bodycontent}
-                        latitude={latitude}
-                        longitude={longitude}
                         country_code={country_code}
                         subdivision={subdivision}
                         tags={tags}

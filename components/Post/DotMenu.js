@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import CuratorIcon from '@material-ui/icons/MoreVert';
 import React, { useEffect, useState } from 'react';
 import { getRoles } from '../../helpers/token';
+import Link from '../../lib/Link';
 import AuthorBlacklist from '../CuratorMenu/Actions/AuthorBlacklist';
 import PostBlacklist from '../CuratorMenu/Actions/PostBlacklist';
 import FollowButton from '../Profile/FollowButton';
@@ -28,6 +29,7 @@ const DotMenu = props => {
     img_url,
     onEditClick,
     alwaysShowSaveBtn,
+    editLink,
   } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -69,6 +71,22 @@ const DotMenu = props => {
         </MenuItem>
       </div>,
     );
+
+  if (editLink) {
+    menuItems.push(
+      <Link as="/dashboard/publish" href={editLink}>
+        <MenuItem>
+          <ListItemIcon>
+            <EditIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primary="Edit"
+            primaryTypographyProps={{ color: 'textPrimary' }}
+          />
+        </MenuItem>
+      </Link>,
+    );
+  }
 
   menuItems.push(
     <div

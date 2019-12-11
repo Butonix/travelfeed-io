@@ -115,7 +115,7 @@ const OnboardCreate = props => {
         return (
           <>
             <FormLabel component="legend" className="pt-2 pb-2">
-              TravelFeed is built on the Steem blockchain, a next generation
+              TravelFeed is built on the Steem blockchain, a next-generation
               technology powered by a decentralised ledger and strong
               encryption. Thanks to TravelFeed EasyLogin, you can use TravelFeed
               with the password that you picked in the previous step, but you
