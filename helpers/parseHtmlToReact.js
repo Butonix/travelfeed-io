@@ -49,9 +49,13 @@ const parseHtmlToReact = (htmlBody, options) => {
         }
         if (options.amp) {
           return (
-            <figure className="figure">
+            <figure className="ampstart-image-with-caption m0 relative mb4">
               <amp-img
-                src={imageProxy(attribs.src, undefined, 400, 'fit')}
+                src={
+                  doNotConvert
+                    ? attribs.src
+                    : imageProxy(attribs.src, undefined, 400, 'fit')
+                }
                 layout="fixed-height"
                 height="400"
               />

@@ -68,6 +68,7 @@ class Header extends Component {
     );
     return (
       <Fragment>
+        <div style={{ paddingTop: '65px' }} />
         <div style={{ flexGrow: 1 }}>
           <AppBar position="fixed" color="secondary" className={classes.root}>
             <div className="container" style={{ height: '65px' }}>

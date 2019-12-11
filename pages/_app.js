@@ -118,7 +118,6 @@ class MyApp extends App {
           <CssBaseline />
           {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-          <div style={{ paddingTop: '65px' }} />
           <SnackbarProvider maxSnack={3}>
             <ApolloProvider client={apollo}>
               <CookieConsent />
