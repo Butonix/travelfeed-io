@@ -1,6 +1,7 @@
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import { ROOTURL } from '../../config';
 import { imageProxy } from '../../helpers/getImage';
 
 const Head = ({
@@ -20,7 +21,9 @@ const Head = ({
         : `${title} - TravelFeed: Travel, Write, Earn`}
     </title>
     <meta name="description" content={description} />
-    {noIndex && <meta name="robots" content="noindex" />}
+    {(noIndex || ROOTURL === 'https://staging.travelfeed.io') && (
+      <meta name="robots" content="noindex" />
+    )}
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
