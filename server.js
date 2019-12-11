@@ -108,6 +108,7 @@ app
       const queryParams = {
         author: req.params.author,
         permlink: req.params.permlink,
+        amp: req.query.amp,
       };
       app.render(req, res, actualPage, queryParams);
     });

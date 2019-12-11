@@ -1,47 +1,50 @@
+import { useAmp } from 'next/amp';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import SinglePost from '../components/Post/SinglePost';
 
-class PostPage extends Component {
-  static async getInitialProps(props) {
-    const {
-      author,
-      permlink,
-      title,
-      body,
-      display_name,
-      img_url,
-      lazy_img_url,
-      created_at,
-      depth,
-      country_code,
-      subdivision,
-      app,
-      scrollToComments,
-      curation_score,
-    } = props.query;
-    return {
-      author,
-      permlink,
-      title,
-      body,
-      display_name,
-      img_url,
-      lazy_img_url,
-      created_at,
-      depth,
-      country_code,
-      subdivision,
-      app,
-      scrollToComments,
-      curation_score,
-    };
-  }
+export const config = { amp: 'hybrid' };
 
-  render() {
-    return <SinglePost post={this.props} />;
-  }
-}
+const PostPage = props => {
+  const isAmp = useAmp();
+
+  return <>{isAmp ? <p>Amp test</p> : <SinglePost post={props} />}</>;
+};
+
+PostPage.getInitialProps = props => {
+  const {
+    author,
+    permlink,
+    title,
+    body,
+    display_name,
+    img_url,
+    lazy_img_url,
+    created_at,
+    depth,
+    country_code,
+    subdivision,
+    app,
+    scrollToComments,
+    curation_score,
+  } = props.query;
+  return {
+    author,
+    permlink,
+    title,
+    body,
+    display_name,
+    img_url,
+    lazy_img_url,
+    created_at,
+    depth,
+    country_code,
+    subdivision,
+    app,
+    scrollToComments,
+    curation_score,
+  };
+};
 
 PostPage.defaultProps = {
   query: undefined,
