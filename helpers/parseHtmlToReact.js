@@ -50,15 +50,17 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (options.amp) {
           return (
             <figure className="ampstart-image-with-caption m0 relative mb4">
-              <amp-img
-                src={
-                  doNotConvert
-                    ? attribs.src
-                    : imageProxy(attribs.src, undefined, 400, 'fit')
-                }
-                layout="fixed-height"
-                height="400"
-              />
+              <div className="fixed-height-container">
+                <amp-img
+                  src={
+                    doNotConvert
+                      ? attribs.src
+                      : imageProxy(attribs.src, undefined, 500, 'fit')
+                  }
+                  class="contain"
+                  layout="fill"
+                />
+              </div>
               {attribs.alt !== undefined &&
                 // ignore alt texts with image name
                 !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&

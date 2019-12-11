@@ -18,7 +18,9 @@ body {
 .postcontent h3,
 .postcontent h4,
 .postcontent h5,
-.postcontent h6 {
+.postcontent h6,
+sup,
+figcaption {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   margin-bottom: 1.5rem;
@@ -136,6 +138,30 @@ figcaption {
 
 blockquote > center {
   margin: 0 -50px 0 -50px !important;
+}
+
+.fixed-height-container {
+  position: relative;
+  width: 100%;
+}
+@media (max-width: 576px) {
+  .fixed-height-container {
+    height: 300px;
+  }
+}
+@media (min-width: 577px) {
+  .fixed-height-container {
+    height: 400px;
+  }
+}
+@media (min-width: 992px) {
+  .fixed-height-container {
+    height: 500px;
+  }
+}
+
+amp-img.contain img {
+  object-fit: contain;
 }
 
 article,
