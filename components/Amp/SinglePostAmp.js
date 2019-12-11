@@ -77,8 +77,7 @@ const SinglePostAmp = props => {
                         custom-element="amp-sidebar"
                         src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"
                       />
-                      <script type="application/ld+json">
-                        {`
+                      <script type="application/ld+json" dangerouslySetInnerHTML={ { __html: `
                       {
                         "@context" : "http://schema.org",
                         "@type" : "Article",
@@ -111,8 +110,7 @@ const SinglePostAmp = props => {
                         "description" : "${excerpt.replace(/"/g, `'`)}",
                         "mainEntityOfPage" : "${canonicalUrl}"
                       }
-                      `}
-                      </script>
+                      `}} />
                     </>
                   }
                 />
