@@ -1,6 +1,6 @@
 import { ServerStyleSheets } from '@material-ui/core/styles';
 import * as Sentry from '@sentry/node';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 import { GMAPS_API_KEY } from '../config';
 import theme from '../lib/theme';
@@ -59,7 +59,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <html lang="en">
+      <Html>
         <Head>
           <link
             rel="apple-touch-icon"
@@ -108,7 +108,7 @@ class MyDocument extends Document {
             />
           </noscript>
         </body>
-      </html>
+      </Html>
     );
   }
 }
