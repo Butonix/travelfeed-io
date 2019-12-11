@@ -11,6 +11,7 @@ const Head = ({
   canonicalUrl,
   type,
   noIndex,
+  scripts,
 }) => (
   <NextHead>
     <title>
@@ -62,6 +63,7 @@ const Head = ({
       </Fragment>
     )}
     <link rel="canonical" href={canonicalUrl} />
+    {scripts}
   </NextHead>
 );
 // todo: if  canonical undefined no canonical!

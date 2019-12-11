@@ -47,6 +47,23 @@ const parseHtmlToReact = (htmlBody, options) => {
             </figure>
           );
         }
+        if (options.amp) {
+          return (
+            <figure className="figure">
+              <amp-img
+                src={imageProxy(attribs.src, undefined, 400, 'fit')}
+                layout="fixed-height"
+                height="400"
+              />
+              {attribs.alt !== undefined &&
+                // ignore alt texts with image name
+                !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
+                !options.hideimgcaptions && (
+                  <figcaption>{attribs.alt}</figcaption>
+                )}
+            </figure>
+          );
+        }
         return (
           <figure>
             <picture>

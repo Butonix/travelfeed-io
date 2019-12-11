@@ -1,6 +1,7 @@
 import { useAmp } from 'next/amp';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SinglePostAmp from '../components/Amp/SinglePostAmp';
 import SinglePost from '../components/Post/SinglePost';
 
 export const config = { amp: 'hybrid' };
@@ -8,7 +9,9 @@ export const config = { amp: 'hybrid' };
 const PostPage = props => {
   const isAmp = useAmp();
 
-  return <>{isAmp ? <p>Amp test</p> : <SinglePost post={props} />}</>;
+  return (
+    <>{isAmp ? <SinglePostAmp post={props} /> : <SinglePost post={props} />}</>
+  );
 };
 
 PostPage.getInitialProps = props => {
