@@ -127,7 +127,6 @@ class SinglePost extends Component {
     } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
-    const isTf = app && app.split('/')[0] === 'travelfeed';
     let titleUri = '';
     let bodyUri = '';
     let displayNameUri = '';
@@ -146,6 +145,7 @@ class SinglePost extends Component {
     } catch {
       console.warn('Could not encode URI');
     }
+    let isTf = app && app.split('/')[0] === 'travelfeed';
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
@@ -181,6 +181,7 @@ class SinglePost extends Component {
               category = data.post.category;
               curation_score = data.post.curation_score;
             }
+            isTf = app && app.split('/')[0] === 'travelfeed';
             tags = cleanTags(tags);
             // 404 for error and if post does not exist
             if (data && data.post && data.post.post_id === null) {
