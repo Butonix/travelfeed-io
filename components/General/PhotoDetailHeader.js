@@ -66,6 +66,7 @@ const PhotoDetailHeader = props => {
             return (
               <Fragment>
                 <Head
+                  noIndex={props.noIndex}
                   shorttitle={`${detailTitle}: Top Travel Blogs`}
                   description={description}
                 />

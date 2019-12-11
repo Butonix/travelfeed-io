@@ -15,7 +15,7 @@ class ExitPage extends Component {
     const { url } = this.props;
     return (
       <Fragment>
-        <Head title="External Link | TravelFeed" />
+        <Head title="External Link | TravelFeed" noIndex />
         <Header active="page" />
         <Grid
           container

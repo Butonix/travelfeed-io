@@ -28,7 +28,7 @@ const NewsletterConfirmPage = props => {
   return (
     <>
       <Header subheader="Newsletter" />
-      <Head title="Newsletter" />
+      <Head title="Newsletter" noIndex />
       <FixedBackgroundImage
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T184750380Z-easysignup-3.jpg"
         component={

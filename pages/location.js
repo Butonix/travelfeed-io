@@ -23,6 +23,7 @@ const LocationPage = props => {
     <Fragment>
       <Header active="location" />
       <PhotoDetailHeader
+        noIndex
         noEdit
         query={{
           search: props.formatted_address,

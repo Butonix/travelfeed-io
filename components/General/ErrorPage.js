@@ -102,7 +102,7 @@ const ErrorPage = props => {
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T190403125Z-easysignup-2.jpg"
         component={
           <>
-            <Head title={`${error.title} | TravelFeed`} />
+            <Head title={`${error.title} | TravelFeed`} noIndex />
             <Grid
               container
               spacing={0}

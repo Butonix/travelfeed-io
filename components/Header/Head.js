@@ -10,6 +10,7 @@ const Head = ({
   description,
   canonicalUrl,
   type,
+  noIndex,
 }) => (
   <NextHead>
     <title>
@@ -18,6 +19,7 @@ const Head = ({
         : `${title} - TravelFeed: Travel, Write, Earn`}
     </title>
     <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex" />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"

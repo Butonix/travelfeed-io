@@ -19,6 +19,7 @@ const DashboardPage = props => {
         <Head
           title={`TravelBlog: ${props.label.charAt(0).toUpperCase() +
             props.label.slice(1)}`}
+          noIndex
         />
         <DashboardMenu
           active={props.label}
@@ -35,6 +36,7 @@ const DashboardPage = props => {
       <Head
         title={`TravelBlog: ${props.label.charAt(0).toUpperCase() +
           props.label.slice(1)}`}
+        noIndex
       />
       <DashboardMenu active={props.label} content={<></>} open={open} />
     </>

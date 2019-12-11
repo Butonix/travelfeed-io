@@ -12,7 +12,7 @@ const WitnessvoteSuccessPage = () => {
   return (
     <>
       <Header subheader="Witness" />
-      <Head title="Witness" />
+      <Head title="Witness" noIndex />
       <FixedBackgroundImage
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T184750380Z-easysignup-3.jpg"
         component={

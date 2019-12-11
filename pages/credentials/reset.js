@@ -17,7 +17,7 @@ const ResetPasswordPage = props => {
   return (
     <>
       <Header subheader="Password Reset" />
-      <Head title="Password Reset" />
+      <Head title="Password Reset" noIndex />
       <FixedBackgroundImage
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T184750380Z-easysignup-3.jpg"
         component={
