@@ -117,6 +117,7 @@ class GridPostCard extends Component {
           action={
             <Fragment>
               <DotMenu
+                alwaysShowSaveBtn={this.props.hideSaveBtn}
                 author={this.props.post.author}
                 permlink={this.props.post.permlink}
                 title={this.props.post.title}
@@ -199,6 +200,7 @@ class GridPostCard extends Component {
           </CardActionArea>
         </Link>
         <VoteSlider
+          hideSaveBtn={this.props.hideSaveBtn}
           commentLink={linkHref}
           onBmChange={this.props.isBookmark ? this.hide : undefined}
           author={this.props.post.author}

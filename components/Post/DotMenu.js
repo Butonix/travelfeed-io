@@ -27,6 +27,7 @@ const DotMenu = props => {
     title,
     img_url,
     onEditClick,
+    alwaysShowSaveBtn,
   } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -70,7 +71,11 @@ const DotMenu = props => {
     );
 
   menuItems.push(
-    <div className="d-block d-xl-none d-lg-none d-md-none d-sm-none">
+    <div
+      className={`d-block ${
+        alwaysShowSaveBtn ? '' : 'd-xl-none d-lg-none d-md-none d-sm-none'
+      }`}
+    >
       <BookmarkIcon
         onBmChange={onBmChange}
         isMenuItem

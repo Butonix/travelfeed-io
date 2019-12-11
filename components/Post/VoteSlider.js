@@ -272,7 +272,7 @@ class VoteSlider extends Component {
                 <Box
                   className="pl-1 pr-1"
                   fontSize={16}
-                  color="text.icon"
+                  color="inherit"
                   fontWeight="fontWeightBold"
                   component="span"
                 >
@@ -340,18 +340,19 @@ class VoteSlider extends Component {
     } else {
       actions.push(<>{commentButton}</>);
     }
-    actions.push(
-      <div className="col p-0 d-none d-xl-block d-lg-block d-md-block d-sm-block">
-        <Typography color="textSecondary" component="span">
-          <BookmarkIcon
-            onBmChange={this.props.onBmChange}
-            isButton
-            author={this.props.author}
-            permlink={this.props.permlink}
-          />
-        </Typography>
-      </div>,
-    );
+    if (!this.props.hideSaveBtn)
+      actions.push(
+        <div className="col p-0 d-none d-xl-block d-lg-block d-md-block d-sm-block">
+          <Typography color="textSecondary" component="span">
+            <BookmarkIcon
+              onBmChange={this.props.onBmChange}
+              isButton
+              author={this.props.author}
+              permlink={this.props.permlink}
+            />
+          </Typography>
+        </div>,
+      );
     if (this.props.handleClick !== undefined) {
       if (this.props.isEdit === true) {
         actions.push(
