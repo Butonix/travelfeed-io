@@ -10,7 +10,7 @@ import Popper from '@material-ui/core/Popper';
 import EditIcon from '@material-ui/icons/Edit';
 import CuratorIcon from '@material-ui/icons/MoreVert';
 import React, { useEffect, useState } from 'react';
-import { getRoles } from '../../helpers/token';
+import { getRoles, getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import AuthorBlacklist from '../CuratorMenu/Actions/AuthorBlacklist';
 import PostBlacklist from '../CuratorMenu/Actions/PostBlacklist';
@@ -114,7 +114,8 @@ const DotMenu = props => {
     />,
   );
 
-  menuItems.push(<FollowButton author={author} btnstyle="menuItem" />);
+  if (getUser() !== author)
+    menuItems.push(<FollowButton author={author} btnstyle="menuItem" />);
 
   if (isCurator) {
     menuItems.push(
