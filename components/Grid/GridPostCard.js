@@ -173,7 +173,7 @@ class GridPostCard extends Component {
                     className="lazy img-fluid"
                     style={{
                       maxHeight: this.props.cardHeight,
-                      minHeight: this.props.cardHeight / 1.5,
+                      minHeight: this.props.cardHeight / 1.7,
                     }}
                     src={`${imageProxy(
                       this.props.post.img_url,

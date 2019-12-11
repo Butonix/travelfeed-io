@@ -19,7 +19,7 @@ const SteemKeys = props => {
     {
       name: 'Passphrase',
       description:
-        'The passphrase has all the permissions of your other keys. Write it down on paper and store it safely.',
+        'The passphrase has all the permissions of your other keys. It is very powerful and should only be used in emergencies, e.g. if you forgot your other keys. Write it down on paper and store it safely. Memorise it if you can.',
       value: passPhrase,
     },
     {
@@ -37,7 +37,7 @@ const SteemKeys = props => {
     {
       name: 'Posting',
       description:
-        'The posting key is needed to interact, e.g. login, post and vote. Store it in a password manager.',
+        'The posting key is needed to interact, e.g. login, post and vote. Thanks to TravelFeed EasyLogin, you will not need it on TravelFeed. Store it in a password manager.',
       value: posting,
     },
     {
@@ -61,6 +61,11 @@ const SteemKeys = props => {
 
   return (
     <>
+      <div className="pt-3 pb-3">
+        <Button variant="contained" color="primary" onClick={handleTxtSave}>
+          Download wallet keys
+        </Button>
+      </div>
       {keyList.map(k => (
         <FormGroup className="pt-2">
           <TextField
@@ -73,11 +78,6 @@ const SteemKeys = props => {
           <FormHelperText>{k.description}</FormHelperText>
         </FormGroup>
       ))}
-      <div className="pt-3 pb-3">
-        <Button variant="contained" color="primary" onClick={handleTxtSave}>
-          Download keys
-        </Button>
-      </div>
     </>
   );
 };

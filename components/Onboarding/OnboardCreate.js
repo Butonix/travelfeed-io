@@ -13,7 +13,6 @@ import { ONBOARD_CREATE } from '../../helpers/graphql/onboarding';
 import steem from '../../helpers/steem';
 import generateSteemPassphrase from '../../helpers/steeminvite/generateSteemPassphrase';
 import Link from '../../lib/Link';
-import AccountTypePicker from './AccountTypePicker';
 import EasyLogin from './EasyLogin';
 import PasswordPicker from './PasswordPicker';
 import SteemKeys from './SteemKeys';
@@ -41,7 +40,6 @@ const OnboardCreate = props => {
 
   const [username, setUserName] = useState('');
   const [activeStep, setActiveStep] = React.useState(0);
-  const [accountType, setAccountType] = useState(0);
   const [passPhrase, setPassPhrase] = useState(undefined);
   const [passPhraseConfirm, setPassPhraseConfirm] = useState(undefined);
   const [password, setPassword] = useState(undefined);
@@ -63,7 +61,6 @@ const OnboardCreate = props => {
   function getSteps() {
     return [
       'Pick a username',
-      'Pick your account type',
       'Choose your password',
       'Save your keys',
       'Confirm',
@@ -73,12 +70,6 @@ const OnboardCreate = props => {
   function handleNext() {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   }
-
-  const pickAccountType = res => () => {
-    setAccountType(res);
-    if (res === 1) setActiveStep(3);
-    else handleNext();
-  };
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
@@ -91,7 +82,7 @@ const OnboardCreate = props => {
                   You have chosen the username @<strong>{username}</strong>
                 </span>
               )) ||
-                'Choose a username below. Unlike your blog name, your username cannot be changed once your account has been created!'}
+                'Choose a username below. Unlike your blog name, your username cannot be changed once your account has been created.'}
             </FormLabel>
             <div className="pb-3">
               <UsernamePicker
@@ -106,57 +97,39 @@ const OnboardCreate = props => {
         return (
           <>
             <FormLabel component="legend" className="pb-3">
-              TravelFeed is built on the Steem blockchain, a next generation
-              technology powered by a decentralised ledger and strong
-              encryption. For most users, a regular Steem account is too
-              uncomfortable to use, this is why we offer you to set up your
-              STEEM account with TravelFeed EasyLogin.
+              Choose your TravelFeed EasyLogin password here. Your password
+              should be at least 10 characters long.
             </FormLabel>
-            <div className="pt-3 pb-3">
-              <AccountTypePicker setAccountType={pickAccountType} />
+            <div className="pb-2">
+              <EasyLogin
+                pwstrength={pwstrength}
+                password={password}
+                setPassword={setPassword}
+                passwordConfirm={passwordConfirm}
+                setPasswordConfirm={setPasswordConfirm}
+              />
             </div>
           </>
         );
       case 2:
-        if (accountType === 0)
-          return (
-            <>
-              <FormLabel component="legend" className="pb-3">
-                Choose your TravelFeed password here. With your TravelFeed
-                password you can log in to TravelFeed. Your password should be
-                between 10 and 72 characters long.
-              </FormLabel>
-              <div className="pb-2">
-                <EasyLogin
-                  pwstrength={pwstrength}
-                  password={password}
-                  setPassword={setPassword}
-                  passwordConfirm={passwordConfirm}
-                  setPasswordConfirm={setPasswordConfirm}
-                />
-              </div>
-            </>
-          );
-        return '';
-      case 3:
         return (
           <>
             <FormLabel component="legend" className="pt-2 pb-2">
-              {accountType === 0 && (
-                <span>
-                  Since you have chosen EasyLogin, you will only need your Steem
-                  keys to perform actions such as transferring your funds or
-                  using other Steem dApps.{' '}
-                </span>
-              )}
-              Your Steem keys <strong>cannot be recovered</strong> - if you
-              forget them, you lose access to your account and any funds that
-              are on it <strong>forever</strong>. This is why it is extremely
-              important that you store them savely. We recommend to download
-              your Steem keys and store them offline and/or print them out.
+              TravelFeed is built on the Steem blockchain, a next generation
+              technology powered by a decentralised ledger and strong
+              encryption. Thanks to TravelFeed EasyLogin, you can use TravelFeed
+              with the password that you picked in the previous step, but you
+              will need your Steem wallet keys to perform advanced actions such
+              as transferring your earnings. Like a physical wallet, your Steem
+              keys <strong>cannot be recovered</strong> - if you forget them,
+              you will lose access to your account and any funds that are on it{' '}
+              <strong>forever</strong>. This is why it is extremely important
+              that you <strong>store them savely</strong>. We recommend to
+              download your Steem wallet keys and store them offline and/or
+              print them out.
             </FormLabel>
             <SteemKeys username={username} passPhrase={passPhrase} />
-            <FormLabel component="legend" className="pt-2 pb-2">
+            <FormLabel component="legend" className="pt-5">
               Want to know more about your Steem keys? Watch this video by
               TravelFeed user{' '}
               <Link as="/@coruscate" href="/blog?author=coruscate">
@@ -177,7 +150,7 @@ const OnboardCreate = props => {
             </div>
           </>
         );
-      case 4:
+      case 3:
         return (
           <>
             <FormLabel component="legend" className="pb-2">
@@ -210,8 +183,7 @@ const OnboardCreate = props => {
   const steps = getSteps();
 
   function handleBack() {
-    if (accountType === 1 && activeStep === 3) setActiveStep(1);
-    else setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
   }
 
   const { claimToken } = props;
@@ -227,7 +199,7 @@ const OnboardCreate = props => {
           activePubKey: pubKeys.active,
           memoPubKey: pubKeys.memo,
           ownerPubKey: pubKeys.owner,
-          password: accountType === 0 ? password : undefined,
+          password,
         }}
       >
         {(onboardCreate, { data, loading, error }) => {
@@ -270,7 +242,6 @@ const OnboardCreate = props => {
               <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map((label, i) => {
                   const stepProps = {};
-                  if (accountType === 1 && i === 2) stepProps.completed = false;
                   return (
                     <Step key={label} {...stepProps}>
                       <StepLabel>{label}</StepLabel>
@@ -304,12 +275,12 @@ const OnboardCreate = props => {
                         }
                         disabled={
                           (activeStep === 0 && username === '') ||
-                          (activeStep === 2 &&
+                          (activeStep === 1 &&
                             (!password ||
                               password !== passwordConfirm ||
                               (pwstrength.errors &&
                                 pwstrength.errors.length > 0))) ||
-                          (activeStep === 4 && passPhrase !== passPhraseConfirm)
+                          (activeStep === 3 && passPhrase !== passPhraseConfirm)
                         }
                       >
                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

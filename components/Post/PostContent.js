@@ -11,20 +11,31 @@ const PostContent = props => {
   return (
     <Fragment>
       <CardHeader
-        avatar={<ProfileAvatar author={props.author} />}
+        avatar={
+          <ProfileAvatar
+            authorAvatar={props.authorAvatar}
+            author={props.author}
+          />
+        }
         action={
           <Fragment>
-            <DotMenu
-              author={props.author}
-              permlink={props.permlink}
-              title={props.title}
-              img_url={props.img_url}
-              tags={props.tags}
-            />
+            {!props.authorNotClickable && (
+              <DotMenu
+                author={props.author}
+                permlink={props.permlink}
+                title={props.title}
+                img_url={props.img_url}
+                tags={props.tags}
+              />
+            )}
           </Fragment>
         }
         title={
-          <ProfileName author={props.author} displayName={props.display_name} />
+          <ProfileName
+            author={props.author}
+            displayName={props.display_name}
+            authorNotClickable={props.authorNotClickable}
+          />
         }
         subheader={
           <SubHeader

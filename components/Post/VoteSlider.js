@@ -61,10 +61,6 @@ const EmojiSlider = withStyles({
     border: '1px solid currentColor',
     marginTop: -12,
     marginLeft: -12,
-    boxShadow: '#ebebeb 0px 2px 2px',
-    '&:focus,&:hover,&$active': {
-      boxShadow: '#ccc 0px 2px 3px 1px',
-    },
   },
 })(Slider);
 

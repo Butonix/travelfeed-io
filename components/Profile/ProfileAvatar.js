@@ -14,6 +14,17 @@ const ProfileAvatar = props => {
 
   const { author } = props;
 
+  if (props.authorAvatar)
+    return (
+      <>
+        <Avatar
+          className={classes.avatar}
+          src={props.authorAvatar}
+          alt={author}
+        />
+      </>
+    );
+
   return (
     <>
       <Link

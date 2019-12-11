@@ -5,6 +5,12 @@ import Link from '../../lib/Link';
 const ProfileName = props => {
   const { author, displayName } = props;
 
+  if (props.authorNotClickable)
+    return (
+      <span className="textPrimary">
+        <strong>{displayName}</strong>
+      </span>
+    );
   return (
     <Link
       color="textPrimary"
