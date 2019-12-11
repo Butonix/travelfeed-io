@@ -31,6 +31,7 @@ const SinglePostAmp = props => {
               json,
               category,
               permlink,
+              updated_at,
             } = data.post;
             const isTf = app && app.split('/')[0] === 'travelfeed';
             const htmlBody = parseBody(body, {});
@@ -77,6 +78,42 @@ const SinglePostAmp = props => {
                         async=""
                       />
                       <link rel="stylesheet" type="text/css" href="/amp.css" />
+                      <script type="application/ld+json">
+                        {`
+                      {
+                        "@context" : "http://schema.org",
+                        "@type" : "Article",
+                        "author" : {
+                          "@type" : "Person",
+                          "name" : "${display_name}"
+                        },
+                        "datePublished" : "${dayjs(created_at).format(
+                          'YYYY-MM-DDTHH:MM',
+                        )}",
+                        "image" : [
+                            "${imageProxy(img_url, 1920, 1920)}",
+                            "${imageProxy(img_url, 1920, 1440)}",
+                            "${imageProxy(img_url, 1920, 1080)}"
+                          ],
+                        "headline" : "${title.substring(0, 110)}",
+                        "publisher" : {
+                            "@type": "Organization",
+                            "logo" : {
+                                "@type": "ImageObject",
+                                "width" : "378",
+                                "height" : "60",
+                                "url" : "https://img.travelfeed.io/amp-logo.png"
+                            },
+                            "name" : "TravelFeed"
+                        },
+                        "dateModified" : "${dayjs(updated_at).format(
+                          'YYYY-MM-DDTHH:MM',
+                        )}",
+                        "description" : "${excerpt.replace(/"/g, `'`)}",
+                        "mainEntityOfPage" : "${canonicalUrl}"
+                      }
+                      `}
+                      </script>
                     </>
                   }
                 />
