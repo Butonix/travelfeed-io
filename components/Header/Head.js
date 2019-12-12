@@ -21,7 +21,7 @@ const Head = ({
         : `${title} - TravelFeed: Travel, Write, Earn`}
     </title>
     <meta name="description" content={description} />
-    {(noIndex || ROOTURL === 'https://staging.travelfeed.io') && (
+    {(noIndex || ROOTURL !== 'https://travelfeed.io') && (
       <meta name="robots" content="noindex" />
     )}
     <meta name="twitter:card" content="summary_large_image" />

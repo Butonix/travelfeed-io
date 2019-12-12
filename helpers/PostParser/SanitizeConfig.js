@@ -119,7 +119,7 @@ export default ({
     ],
 
     // class attribute is strictly whitelisted (below)
-    div: ['class'],
+    div: ['class', 'json'],
 
     // style is subject to attack, filtering more below
     td: ['style'],
@@ -177,6 +177,7 @@ export default ({
     },
     div: (tagName, attribs) => {
       const attys = {};
+      if (attribs.json) attys.json = attribs.json;
       const classWhitelist = [
         'pull-right',
         'pull-left',

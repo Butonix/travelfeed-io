@@ -8,7 +8,8 @@ export const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
 export const GMAPS_API_KEY = process.env.GMAPS_API_KEY;
 export const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY;
 export const ROOTURL = process.env.ROOTURL;
-export const GRAPHQL_URL = process.env.GRAPHQL_URL;
+export const API_URL = process.env.GRAPHQL_URL;
+export const GRAPHQL_URL = `${process.env.GRAPHQL_URL}/graphql`;
 export const WEB_PUSH_PUB = process.env.WEB_PUSH_PUB;
 export const STEEM_API = process.env.STEEM_API;
 

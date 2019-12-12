@@ -17,6 +17,8 @@ export const swmregex = /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90
 
 export const allURLs = /(?:https?|ftp):\/\/[\n\S]+/g;
 
+export const tfJSON = /<div json='{(.*)}'>(.*)<\/div>/;
+
 export const htmlComment = /<!--([\s\S]+?)(-->|$)/g;
 
 export const markdownComment = /\[\/\/\]:\S?\s\(.*\)/g;

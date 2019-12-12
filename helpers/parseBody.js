@@ -18,6 +18,7 @@ import {
   imgFullSize,
   markdownComment,
   swmregex,
+  tfJSON,
 } from './regex';
 
 const renderer = new DefaultRenderer({
@@ -76,6 +77,19 @@ const parseBody = (body, options) => {
     /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong.*d3scr/gi,
     '',
   );
+
+  // Remove tfjson Steem placeholders
+  let tfjsonMatch = tfJSON.exec(parsedBody);
+  while (tfjsonMatch != null) {
+    tfjsonMatch = tfJSON.exec(parsedBody);
+    if (tfjsonMatch && tfjsonMatch[1] && tfjsonMatch[2]) {
+      parsedBody = parsedBody.replace(
+        tfJSON,
+        `<div json='{${tfjsonMatch[1]}}' />`,
+      );
+    }
+  }
+
   // Remove preview images in dtube posts with dtube embeds
   const dtubeMatch = dtubeImageRegex.exec(parsedBody);
   if (dtubeMatch && dtubeMatch[1] && dtubeMatch[2])

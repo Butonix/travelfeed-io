@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
+import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
 import { exitUrl, mentionUrl, postUrl } from './regex';
@@ -151,6 +152,36 @@ const parseHtmlToReact = (htmlBody, options) => {
             </Link>
           );
         }
+      }
+      if (attribs.json) {
+        let json = {};
+        let title = '';
+        let description = '';
+        let image = '';
+        let author = '';
+        let permlink = '';
+        try {
+          json = JSON.parse(attribs.json);
+          title = json.data.meta.title;
+          description = json.data.meta.description;
+          image = json.data.meta.image;
+          author = json.data.meta.author;
+          permlink = json.data.meta.permlink;
+        } catch {
+          return;
+        }
+        if (json.type === 'linkTool')
+          return (
+            <>
+              <LinkTool
+                author={author}
+                permlink={permlink}
+                title={title}
+                description={description}
+                image={image}
+              />
+            </>
+          );
       }
     },
   };
