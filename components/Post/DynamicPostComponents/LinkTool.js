@@ -10,19 +10,20 @@ const LinkTool = props => {
   const { title, description, image, author, permlink } = props;
   return (
     <>
-      <Card className="mb-3">
+      <Card className="mb-3 mb3">
         <CardContent>
           <div className="container">
             <div className="row">
               {image && (
                 <div
-                  className="col-12 col-xl-4 col-lg-4 cl-md-4 col-sm-4"
+                  className="col-12 col-xl-4 col-lg-4 cl-md-4 col-sm-4 p-0"
                   style={{
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0,0.5)),
             url("${imageProxy(image, undefined, 400, 'fit')}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
+                    minHeight: '150px',
                   }}
                 >
                   <Link

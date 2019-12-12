@@ -124,7 +124,7 @@ const OnboardCreate = props => {
               keys <strong>cannot be recovered</strong> - if you forget them,
               you will lose access to your account and any funds that are on it{' '}
               <strong>forever</strong>. This is why it is extremely important
-              that you <strong>store them savely</strong>. We recommend to
+              that you <strong>store them securely</strong>. We recommend to
               download your Steem wallet keys and store them offline and/or
               print them out.
             </FormLabel>
