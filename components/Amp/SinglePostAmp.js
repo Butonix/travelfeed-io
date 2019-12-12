@@ -250,7 +250,7 @@ const SinglePostAmp = props => {
                                   href={`/destinations?country=${slug}`}
                                   as={`/destinations/${slug}`}
                                 >
-                                  <a>{`More from ${countryName}`}</a>
+                                  <a>{countryName ? `More from ${countryName}` : 'Recommended for you'}</a>
                                 </Link>
                               </h2>
                               <ul className="ampstart-related-section-items list-reset flex flex-wrap m0">
@@ -427,7 +427,7 @@ figcaption {
   font-size: 1.15em;
   line-height: 1.48;
   letter-spacing: -0.012em;
-  padding: 0 50px 0 50px;
+  quotes: "“" "“";
 }
 .postcontent blockquote:before {
   content: open-quote;
