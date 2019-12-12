@@ -66,7 +66,6 @@ const SinglePostAmp = props => {
                   scripts={
                     <>
                       <script async src="https://cdn.ampproject.org/v0.js" />
-                      <script async src="https://cdn.ampproject.org/v0.js" />
                       <script
                         async
                         custom-element="amp-social-share"
@@ -77,6 +76,10 @@ const SinglePostAmp = props => {
                         custom-element="amp-sidebar"
                         src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"
                       />
+                      <script 
+                        async 
+                        custom-element="amp-youtube" 
+                        src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"/>
                       <script type="application/ld+json" dangerouslySetInnerHTML={ { __html: `
                       {
                         "@context" : "http://schema.org",

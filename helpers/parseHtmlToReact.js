@@ -183,6 +183,25 @@ const parseHtmlToReact = (htmlBody, options) => {
             </>
           );
       }
+      if (
+        options.amp &&
+        attribs.src &&
+        attribs.frameborder !== undefined &&
+        attribs.allowfullscreen !== undefined
+      ) {
+        const match = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
+          attribs.src,
+        );
+        if (!match) return;
+        return (
+          <amp-youtube
+            data-videoid={match[1]}
+            layout="responsive"
+            width={attribs.width}
+            height={attribs.height}
+          />
+        );
+      }
     },
   };
 
