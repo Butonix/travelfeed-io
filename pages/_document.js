@@ -5,13 +5,16 @@ import React from 'react';
 import { GMAPS_API_KEY } from '../config';
 import theme from '../lib/theme';
 
-process.on('unhandledRejection', err => {
-  Sentry.captureException(err);
-});
+if (process.env.NODE_ENV === 'production')
+  process.on('unhandledRejection', err => {
+    Sentry.captureException(err);
+  });
 
-process.on('uncaughtException', err => {
-  Sentry.captureException(err);
-});
+if (process.env.NODE_ENV === 'production')
+  process.on('uncaughtException', err => {
+    Sentry.captureException(err);
+  });
+
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
     // Resolution order
