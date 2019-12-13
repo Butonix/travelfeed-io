@@ -1,4 +1,5 @@
 import parseBody from './parseBody';
+import { tfJSON } from './regex';
 
 const md2json = d => {
   try {
@@ -9,8 +10,20 @@ const md2json = d => {
     paragraphs.forEach(para => {
       const p = para.replace(/^\n/, '');
       let block;
+      // TFJsoon
+      const tfjsonMatch = tfJSON.exec(p);
+      console.log(p);
+      console.log(tfjsonMatch);
+      if (tfjsonMatch) {
+        console.log(tfjsonMatch[1]);
+        try {
+          block = JSON.parse(`{${tfjsonMatch[1]}}`);
+        } catch {
+          console.warn('Could not parse tfJSON block');
+        }
+      }
       // Header
-      if (p.match(/^#/)) {
+      else if (p.match(/^#/)) {
         let level = 1;
         let text = p;
         if (p.match(/^# /)) {
@@ -97,7 +110,8 @@ const md2json = d => {
       if (block) json.blocks.push(block);
     });
     return { success: true, json };
-  } catch {
+  } catch (err) {
+    console.warn(err);
     return { success: false };
   }
 };
