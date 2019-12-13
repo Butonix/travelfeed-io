@@ -32,6 +32,7 @@ const PostContent = props => {
           <Fragment>
             {!props.authorNotClickable && (
               <DotMenu
+                showCuratorOptions
                 editLink={
                   getUser() === props.author
                     ? `/dashboard/publish?id=${
