@@ -11,7 +11,7 @@ import {
   SEND_NEWSLETTER,
 } from '../../helpers/graphql/weeklypost';
 import graphQLClient from '../../helpers/graphQLClient';
-import ConfirmClearBtn from './Newsletter/ConfirmClearBtn';
+import ConfirmBtn from './Newsletter/ConfirmBtn';
 import NewsletterInput from './Newsletter/NewsletterInput';
 import NewsletterPreview from './Newsletter/NewsletterPreview';
 
@@ -217,7 +217,11 @@ written by [@{{author}}](https://travelfeed.io/@{{author}}) </center>
             />
           </div>
           <div className="col-12">
-            <ConfirmClearBtn onClear={onClear} />
+            <ConfirmBtn
+              btnText="Clear"
+              dialogText="Clear the form?"
+              onConfirm={onClear}
+            />
             <Button
               className="m-1"
               variant="contained"

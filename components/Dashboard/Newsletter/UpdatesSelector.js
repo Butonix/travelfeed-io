@@ -1,6 +1,6 @@
 import red from '@material-ui/core/colors/red';
 import IconButton from '@material-ui/core/IconButton';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,6 +12,7 @@ import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import arrayMove from 'array-move';
 import { withSnackbar } from 'notistack';
 import React from 'react';
+import ConfirmBtn from './ConfirmBtn';
 import UpdatesSelectorInput from './UpdatesSelectorInput';
 
 const theme = createMuiTheme({
@@ -70,14 +71,13 @@ const UpdatesSelector = props => {
                 <TableCell padding="checkbox">{b.title}</TableCell>
                 <TableCell padding="checkbox">{b.text}</TableCell>
                 <TableCell padding="checkbox">
-                  <MuiThemeProvider theme={theme}>
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleUpdateRemove(b.title)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </MuiThemeProvider>
+                  <ConfirmBtn
+                    btnText="Delete"
+                    btntheme={theme}
+                    icon={<DeleteIcon />}
+                    dialogText="Delete this update?"
+                    onConfirm={() => handleUpdateRemove(b.title)}
+                  />
                   <IconButton
                     disabled={i === 0}
                     color="primary"
