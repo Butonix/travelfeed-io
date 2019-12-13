@@ -10,12 +10,9 @@ const md2json = d => {
     paragraphs.forEach(para => {
       const p = para.replace(/^\n/, '');
       let block;
-      // TFJsoon
+      // tfJSON handling
       const tfjsonMatch = tfJSON.exec(p);
-      console.log(p);
-      console.log(tfjsonMatch);
       if (tfjsonMatch) {
-        console.log(tfjsonMatch[1]);
         try {
           block = JSON.parse(`{${tfjsonMatch[1]}}`);
         } catch {

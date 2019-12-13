@@ -178,7 +178,7 @@ const DotMenu = props => {
         permlink={permlink}
       />,
     );
-  } else
+  } else {
     menuItems.push(
       <>
         <ReportDialog
@@ -188,6 +188,7 @@ const DotMenu = props => {
         />
       </>,
     );
+  }
 
   return (
     <>

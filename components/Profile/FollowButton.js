@@ -111,8 +111,11 @@ const FollowButton = props => {
         variables={{ author: props.author }}
       >
         {({ data, loading, error }) => {
-          if (loading || error || data.profile === null) {
-            <>{props.btnstyle === 'menuItem' && <MenuItem />}</>;
+          if (
+            props.btnstyle === 'menuItem' &&
+            (loading || error || data.profile === null)
+          ) {
+            return <MenuItem />;
           }
           if (data && data.profile && !isLoaded) {
             setFollowed(data.profile.isFollowed);

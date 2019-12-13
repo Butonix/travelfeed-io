@@ -1,7 +1,7 @@
 import React from 'react';
 
 const VoteButton = props => {
-  const { weight, onClick } = props;
+  const { weight } = props;
 
   return (
     <>

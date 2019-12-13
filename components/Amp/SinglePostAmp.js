@@ -239,8 +239,8 @@ const SinglePostAmp = props => {
                       limit: 3,
                     }}
                   >
-                    {({ data }) => {
-                      if (data && data.posts) {
+                    {recommendations => {
+                      if (recommendations && recommendations.data && recommendations.data.posts) {
                         return (
                           <>
                             <section className="ampstart-related-section mb4 px3">
@@ -254,7 +254,7 @@ const SinglePostAmp = props => {
                                 </Link>
                               </h2>
                               <ul className="ampstart-related-section-items list-reset flex flex-wrap m0">
-                                {data.posts.map(post => {
+                                {recommendations.data.posts.map(post => {
                                   return (
                                     <li className="col-12 sm-col-4 md-col-4 lg-col-4 pr2 py2">
                                       <figure className="ampstart-image-with-caption m0 relative mb4">
