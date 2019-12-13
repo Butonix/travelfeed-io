@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
+import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
 import { exitUrl, mentionUrl, postUrl } from './regex';
@@ -38,6 +39,29 @@ const parseHtmlToReact = (htmlBody, options) => {
                     : imageProxy(attribs.src, 1800, undefined, 'fit')
                 }
               />
+              {attribs.alt !== undefined &&
+                // ignore alt texts with image name
+                !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
+                !options.hideimgcaptions && (
+                  <figcaption>{attribs.alt}</figcaption>
+                )}
+            </figure>
+          );
+        }
+        if (options.amp) {
+          return (
+            <figure className="ampstart-image-with-caption m0 relative mb4">
+              <div className="fixed-height-container">
+                <amp-img
+                  src={
+                    doNotConvert
+                      ? attribs.src
+                      : imageProxy(attribs.src, undefined, 500, 'fit')
+                  }
+                  class="contain"
+                  layout="fill"
+                />
+              </div>
               {attribs.alt !== undefined &&
                 // ignore alt texts with image name
                 !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
@@ -128,6 +152,55 @@ const parseHtmlToReact = (htmlBody, options) => {
             </Link>
           );
         }
+      }
+      if (attribs.json) {
+        let json = {};
+        let title = '';
+        let description = '';
+        let image = '';
+        let author = '';
+        let permlink = '';
+        try {
+          json = JSON.parse(attribs.json);
+          title = json.data.meta.title;
+          description = json.data.meta.description;
+          image = json.data.meta.image;
+          author = json.data.meta.author;
+          permlink = json.data.meta.permlink;
+        } catch {
+          return;
+        }
+        if (json.type === 'linkTool')
+          return (
+            <>
+              <LinkTool
+                author={author}
+                permlink={permlink}
+                title={title}
+                description={description}
+                image={image}
+              />
+            </>
+          );
+      }
+      if (
+        options.amp &&
+        attribs.src &&
+        attribs.frameborder !== undefined &&
+        attribs.allowfullscreen !== undefined
+      ) {
+        const match = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
+          attribs.src,
+        );
+        if (!match) return;
+        return (
+          <amp-youtube
+            data-videoid={match[1]}
+            layout="responsive"
+            width={attribs.width}
+            height={attribs.height}
+          />
+        );
       }
     },
   };

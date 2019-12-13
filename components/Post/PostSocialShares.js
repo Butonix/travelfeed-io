@@ -13,7 +13,6 @@ import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { CONTEST_SOCIAL } from '../../helpers/graphql/contest';
-import BookmarkIcon from './BookmarkIcon';
 import ResteemButton from './ResteemButton';
 
 const PostSocialShares = props => {
@@ -112,7 +111,6 @@ const PostSocialShares = props => {
             // eslint-disable-next-line no-shadow
           ) => (
             <div className="text-center">
-              <BookmarkIcon author={author} permlink={permlink} />
               {social.map(s => {
                 return (
                   <a

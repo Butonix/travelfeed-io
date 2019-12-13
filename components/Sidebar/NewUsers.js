@@ -12,6 +12,7 @@ const NewUsers = () => {
         query={GET_POSTS}
         variables={{
           tags: ['introduceyourself'],
+          min_curation_score: 1,
           limit: 3,
         }}
       >

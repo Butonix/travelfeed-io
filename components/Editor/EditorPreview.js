@@ -20,7 +20,9 @@ const EditorPreview = props => {
   return (
     <div>
       <Grid container spacing={0} alignItems="center" justify="center">
-        <PostTitle img_url={props.img_url} title={props.title} />
+        {!props.authorNotClickable && (
+          <PostTitle img_url={props.img_url} title={props.title} />
+        )}
         <Grid
           item
           lg={props.fullsize ? 12 : 7}
@@ -31,6 +33,8 @@ const EditorPreview = props => {
         >
           <Card>
             <PostContent
+              authorAvatar={props.authorAvatar}
+              authorNotClickable={props.authorNotClickable}
               author={props.author}
               permlink={props.permlink}
               display_name={props.author}

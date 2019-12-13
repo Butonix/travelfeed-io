@@ -39,9 +39,8 @@ const SetNewPasswordResetForm = props => {
           return (
             <>
               <FormLabel component="legend" className="pb-3">
-                Choose your TravelFeed password here. With your TravelFeed
-                password you can log in to TravelFeed. Your password should be
-                between 10 and 72 characters long.
+                Choose your TravelFeed EasyLogin password here. Your password
+                should be at least 10 characters long.
               </FormLabel>
               <div className="pb-2">
                 <EasyLogin

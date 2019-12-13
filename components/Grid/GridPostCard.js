@@ -8,8 +8,7 @@ import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
-import BookmarkIcon from '../Post/BookmarkIcon';
-import IsCurated from '../Post/IsCurated';
+import DotMenu from '../Post/DotMenu';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
 import ProfileAvatar from '../Profile/ProfileAvatar';
@@ -63,38 +62,12 @@ class GridPostCard extends Component {
     if (!this.state.show) {
       return <Fragment />;
     }
-    let action = <Fragment />;
-    if (this.props.showBookmark === true) {
-      action = (
-        <BookmarkIcon
-          author={this.props.post.author}
-          permlink={this.props.post.permlink}
-        />
-      );
-    } else if (this.props.isBookmark === true) {
-      action = (
-        <BookmarkIcon
-          author={this.props.post.author}
-          permlink={this.props.post.permlink}
-          onBmChange={this.hide}
-        />
-      );
-    } else {
-      action = (
-        <Fragment>
-          <IsCurated
-            app={this.props.post.app}
-            curationScore={this.props.post.curation_score}
-          />
-        </Fragment>
-      );
-    }
     const cardImage = this.props.post.img_url
       ? imageProxy(
           this.props.post.img_url,
           this.state.cardWidth,
-          this.props.cardHeight,
           undefined,
+          'fit',
           'webp',
         )
       : undefined;
@@ -117,6 +90,22 @@ class GridPostCard extends Component {
       console.warn('Could not encode URI');
     }
 
+    const linkHref = `/post?author=${this.props.post.author}&permlink=${
+      this.props.post.permlink
+    }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+      this.props.post.img_url,
+    )}&lazy_img_url=${encodeURIComponent(
+      cardImage,
+    )}&created_at=${encodeURIComponent(
+      this.props.post.created_at,
+    )}&depth=0&country_code=${
+      this.props.post.country_code
+    }&subdivision=${encodeURIComponent(
+      this.props.post.subdivision,
+    )}&app=${encodeURIComponent(
+      this.props.post.app,
+    )}&curation_score=${encodeURIComponent(this.props.post.curation_score)}`;
+
     return (
       <Card
         key={this.props.post.permlink}
@@ -125,7 +114,19 @@ class GridPostCard extends Component {
         <CardHeader
           className={classes.cardHeader}
           avatar={<ProfileAvatar author={this.props.post.author} />}
-          action={<Fragment>{action}</Fragment>}
+          action={
+            <Fragment>
+              <DotMenu
+                alwaysShowSaveBtn={this.props.hideSaveBtn}
+                author={this.props.post.author}
+                permlink={this.props.post.permlink}
+                title={this.props.post.title}
+                img_url={this.props.post.img_url}
+                tags={this.props.post.tags}
+                onBmChange={this.props.isBookmark ? this.hide : undefined}
+              />
+            </Fragment>
+          }
           title={
             <ProfileName
               author={this.props.post.author}
@@ -140,21 +141,19 @@ class GridPostCard extends Component {
                 country_code: this.props.post.country_code,
                 subdivision: this.props.post.subdivision,
               }}
+              tags={this.props.post.tags}
+              isTf={
+                this.props.post.app &&
+                this.props.post.app.split('/')[0] === 'travelfeed'
+              }
+              curationScore={this.props.post.curation_score}
             />
           }
         />
         <Link
           color="textPrimary"
           as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-          href={`/post?author=${this.props.post.author}&permlink=${
-            this.props.post.permlink
-          }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
-            this.props.post.img_url,
-          )}&lazy_img_url=${encodeURIComponent(
-            cardImage,
-          )}&created_at=${encodeURIComponent(
-            this.props.post.created_at,
-          )}&depth=0`}
+          href={linkHref}
         >
           <CardActionArea>
             {this.props.post.img_url !== undefined &&
@@ -171,16 +170,22 @@ class GridPostCard extends Component {
                     height={this.props.cardHeight}
                     width="100%"
                     alt={this.props.post.title}
-                    className="lazy"
+                    className="lazy img-fluid"
+                    style={{
+                      maxHeight: this.props.cardHeight,
+                      minHeight: this.props.cardHeight / 1.7,
+                    }}
                     src={`${imageProxy(
                       this.props.post.img_url,
                       this.state.cardWidth * 0.1,
-                      this.props.cardHeight * 0.1,
+                      undefined,
+                      'fit',
                     )}`}
                     data-src={`${imageProxy(
                       this.props.post.img_url,
                       this.state.cardWidth,
-                      this.props.cardHeight,
+                      undefined,
+                      'fit',
                     )}`}
                     data-sizes="100w"
                   />
@@ -195,11 +200,14 @@ class GridPostCard extends Component {
           </CardActionArea>
         </Link>
         <VoteSlider
+          hideSaveBtn={this.props.hideSaveBtn}
+          commentLink={linkHref}
+          onBmChange={this.props.isBookmark ? this.hide : undefined}
           author={this.props.post.author}
           permlink={this.props.post.permlink}
           votes={this.props.post.votes}
           total_votes={this.props.post.total_votes}
-          tags={this.props.post.tags}
+          children={this.props.post.children}
           mode="gridcard"
           depth={this.props.post.depth}
         />{' '}

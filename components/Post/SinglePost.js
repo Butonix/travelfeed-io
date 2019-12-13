@@ -31,7 +31,9 @@ import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
 import PostTitle from './PostTitle';
 import SimilarPosts from './SimilarPosts';
-import VoteSlider from './VoteSlider';
+import SliderTags from './SliderTags';
+import StickyVoteSlider from './StickyVoteSlider';
+import VoteDetailsBtn from './VoteDetailsBtn';
 
 const styles = () => ({
   card: {
@@ -46,7 +48,7 @@ class SinglePost extends Component {
   }
 
   state = {
-    title: 'Most miles',
+    title: 'Most smiles',
     orderby: 'total_votes',
     orderdir: 'DESC',
     userComment: undefined,
@@ -67,6 +69,11 @@ class SinglePost extends Component {
     }
     // Update lazyLoad after first rendering of every image
     document.lazyLoadInstance.update();
+    if (this.props.post.scrollToComments) {
+      const comments = document.getElementById('comments');
+      const topPos = comments.offsetTop;
+      document.getElementById('__next').scrollTop = topPos;
+    }
   }
 
   // Update lazyLoad after rerendering of every image
@@ -89,7 +96,6 @@ class SinglePost extends Component {
     let is_travelfeed,
       is_blacklisted,
       is_nsfw,
-      app,
       root_title,
       tags,
       latitude,
@@ -101,7 +107,6 @@ class SinglePost extends Component {
       parent_permlink,
       root_author,
       root_permlink,
-      country_code,
       json,
       category;
 
@@ -115,9 +120,32 @@ class SinglePost extends Component {
       lazy_img_url,
       created_at,
       depth,
+      country_code,
+      subdivision,
+      app,
+      curation_score,
     } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
+    let titleUri = '';
+    let bodyUri = '';
+    let displayNameUri = '';
+    try {
+      titleUri = encodeURIComponent(this.props.post.title);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      bodyUri = encodeURIComponent(this.props.post.body);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    try {
+      displayNameUri = encodeURIComponent(this.props.post.display_name);
+    } catch {
+      console.warn('Could not encode URI');
+    }
+    let isTf = app && app.split('/')[0] === 'travelfeed';
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
@@ -148,9 +176,12 @@ class SinglePost extends Component {
               img_url = data.post.img_url;
               created_at = data.post.created_at;
               country_code = data.post.country_code;
+              subdivision = data.post.subdivision;
               json = data.post.json;
               category = data.post.category;
+              curation_score = data.post.curation_score;
             }
+            isTf = app && app.split('/')[0] === 'travelfeed';
             tags = cleanTags(tags);
             // 404 for error and if post does not exist
             if (data && data.post && data.post.post_id === null) {
@@ -182,6 +213,7 @@ class SinglePost extends Component {
             const htmlBody = parseBody(body, {});
             const bodyText = parseHtmlToReact(htmlBody, {
               cardWidth: this.state.cardWidth,
+              hideimgcaptions: !isTf,
             });
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
@@ -232,19 +264,8 @@ class SinglePost extends Component {
               author,
               permlink,
             );
-            let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored
             // through the dApp
-            if (app && app.split('/')[0] === 'travelfeed') {
-              appIcon = (
-                <img
-                  alt="TravelFeed"
-                  width="25"
-                  className="mr-1"
-                  src="https://travelfeed.io/favicon.ico"
-                />
-              );
-            }
             if (depth > 0) {
               head = (
                 <Head
@@ -301,20 +322,35 @@ class SinglePost extends Component {
               );
               card = (
                 <>
-                  <div ref={this.myInput}>
+                  <div ref={this.myInput} id="post">
                     <Card className={classes.card}>
                       <PostContent
                         author={author}
-                        appIcon={appIcon}
-                        isTf={app && app.split('/')[0] === 'travelfeed'}
+                        id={post_id}
+                        body={body}
+                        json={json}
+                        latitude={latitude}
+                        longitude={longitude}
+                        category={category}
+                        isTf={isTf}
                         permlink={permlink}
                         display_name={display_name}
                         created_at={created_at}
                         readtime={readtime}
                         content={bodycontent}
-                        latitude={latitude}
-                        longitude={longitude}
+                        country_code={country_code}
+                        subdivision={subdivision}
+                        tags={tags}
+                        curationScore={curation_score}
+                        title={title}
+                        img_url={img_url}
                       />
+                      {data && data.post && tags && tags.length > 0 && (
+                        <>
+                          <Divider variant="middle" />
+                          <SliderTags tags={tags} />
+                        </>
+                      )}
                       {data && data.post && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
                           <Divider variant="middle" />
@@ -377,64 +413,19 @@ class SinglePost extends Component {
                           </div>
                         </div>
                       </div>
-                      {data && data.post && (
-                        <VoteSlider
-                          author={author}
-                          permlink={permlink}
+                      <div className="pb-4">
+                        <VoteDetailsBtn
+                          numberreplies={children}
                           votes={votes}
                           total_votes={total_votes}
-                          tags={tags}
-                          depth={depth}
-                          mode="post"
-                          onCommentAdd={this.onCommentAdd}
                         />
-                      )}
+                      </div>
                     </Card>
-                  </div>
-                  <div className="pt-2">
-                    {country_code && (
-                      <SimilarPosts country_code={country_code} />
-                    )}
                   </div>
                 </>
               );
             }
             // Don't load comment area  if there are no comments
-            let comments = <Fragment />;
-            if (children !== 0) {
-              comments = (
-                <Fragment>
-                  <div className="anchor" id="comments" />
-                  <div className="container">
-                    <div className="row">
-                      <div className="col">
-                        <Typography
-                          variant="h5"
-                          className="p-2 d-inline"
-                          gutterBottom
-                        >
-                          Comments
-                        </Typography>
-                      </div>
-                      <div className="col">
-                        <OrderBySelect
-                          handleClick={this.handleClick}
-                          selection={this.state.title || 'Most miles'}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pr-2 pl-2">
-                    <PostComments
-                      post_id={post_id}
-                      orderby={this.state.orderby || 'total_votes'}
-                      orderdir={this.state.orderdir || 'DESC'}
-                      ismain
-                    />
-                  </div>
-                </Fragment>
-              );
-            }
             return (
               <Fragment>
                 {head}
@@ -469,7 +460,68 @@ class SinglePost extends Component {
                         {depth === 0 && <PostTitle title={title} />}
                         {card}
                       </Grid>
+                      {depth === 0 && votes !== undefined && (
+                        <StickyVoteSlider
+                          commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+                            img_url,
+                          )}&lazy_img_url=${encodeURIComponent(
+                            lazy_img_url,
+                          )}&created_at=${encodeURIComponent(
+                            created_at,
+                          )}&depth=0&country_code=${country_code}&subdivision=${encodeURIComponent(
+                            subdivision,
+                          )}&app=${encodeURIComponent(
+                            app,
+                          )}&curation_score=${encodeURIComponent(
+                            curation_score,
+                          )}`}
+                          author={author}
+                          permlink={permlink}
+                          votes={votes}
+                          total_votes={total_votes}
+                          children={children}
+                          mode="gridcard"
+                          depth={depth}
+                          onCommentAdd={this.onCommentAdd}
+                        />
+                      )}
+                      {depth === 0 && (
+                        <Grid
+                          item
+                          lg={11}
+                          md={11}
+                          sm={11}
+                          xs={12}
+                          className="pb-5"
+                        >
+                          <div className="pt-2">
+                            {country_code && (
+                              <SimilarPosts country_code={country_code} />
+                            )}
+                          </div>
+                        </Grid>
+                      )}
                       <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
+                        <div className="anchor" id="comments" name="comments" />
+                        <div className="container">
+                          <div className="row">
+                            <div className="col">
+                              <Typography
+                                variant="h5"
+                                className="p-2 d-inline"
+                                gutterBottom
+                              >
+                                Comments
+                              </Typography>
+                            </div>
+                            <div className="col">
+                              <OrderBySelect
+                                handleClick={this.handleClick}
+                                selection={this.state.title || 'Most smiles'}
+                              />
+                            </div>
+                          </div>
+                        </div>
                         {// "Fake" display new user comment after submitting comment without refreshing from the API
                         this.state.userComment && (
                           <Grid
@@ -489,18 +541,30 @@ class SinglePost extends Component {
                                   author: getUser(),
                                   display_name: '',
                                   permlink: this.state.userComment.permlink,
-                                  depth: this.props.post.depth + 1,
+                                  depth: depth + 1,
                                   total_votes: 0,
                                   votes: '',
-                                  parent_author: this.props.post.author,
-                                  parent_permlink: this.props.post.permlink,
+                                  parent_author: author,
+                                  parent_permlink: permlink,
                                   root_title: '',
                                 }}
                               />
                             </div>
                           </Grid>
                         )}
-                        {comments}
+                        {children !== 0 && (
+                          <Fragment>
+                            <div className="pr-2 pl-2">
+                              <PostComments
+                                hideCommentNumber
+                                post_id={post_id}
+                                orderby={this.state.orderby || 'total_votes'}
+                                orderdir={this.state.orderdir || 'DESC'}
+                                ismain
+                              />
+                            </div>
+                          </Fragment>
+                        )}
                       </Grid>
                     </Grid>
                   </div>

@@ -402,11 +402,14 @@ class DashboardMenu extends Component {
     );
 
     return (
-      <div className={classes.root}>
-        {appbar}
-        {drawer}
-        <main className={classes.content}>{this.props.content}</main>
-      </div>
+      <>
+        <div style={{ paddingTop: '65px' }} />
+        <div className={classes.root}>
+          {appbar}
+          {drawer}
+          <main className={classes.content}>{this.props.content}</main>
+        </div>
+      </>
     );
   }
 }

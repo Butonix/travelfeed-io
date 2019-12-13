@@ -1,21 +1,68 @@
-import { ServerStyleSheets } from '@material-ui/styles';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 import * as Sentry from '@sentry/node';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 import { GMAPS_API_KEY } from '../config';
 import theme from '../lib/theme';
 
-process.on('unhandledRejection', err => {
-  Sentry.captureException(err);
-});
+if (process.env.NODE_ENV === 'production')
+  process.on('unhandledRejection', err => {
+    Sentry.captureException(err);
+  });
 
-process.on('uncaughtException', err => {
-  Sentry.captureException(err);
-});
+if (process.env.NODE_ENV === 'production')
+  process.on('uncaughtException', err => {
+    Sentry.captureException(err);
+  });
+
 class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    // Resolution order
+    //
+    // On the server:
+    // 1. app.getInitialProps
+    // 2. page.getInitialProps
+    // 3. document.getInitialProps
+    // 4. app.render
+    // 5. page.render
+    // 6. document.render
+    //
+    // On the server with error:
+    // 1. document.getInitialProps
+    // 2. app.render
+    // 3. page.render
+    // 4. document.render
+    //
+    // On the client
+    // 1. app.getInitialProps
+    // 2. page.getInitialProps
+    // 3. app.render
+    // 4. page.render
+
+    // Render app and page and get the context of the page with collected side effects.
+    const sheets = new ServerStyleSheets();
+    const originalRenderPage = ctx.renderPage;
+
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: App => props => sheets.collect(<App {...props} />),
+      });
+
+    const initialProps = await Document.getInitialProps(ctx);
+
+    return {
+      ...initialProps,
+      // Styles fragment is rendered after the app and page rendering finish.
+      styles: [
+        ...React.Children.toArray(initialProps.styles),
+        sheets.getStyleElement(),
+      ],
+    };
+  }
+
   render() {
     return (
-      <html lang="en">
+      <Html>
         <Head>
           <link
             rel="apple-touch-icon"
@@ -64,56 +111,9 @@ class MyDocument extends Document {
             />
           </noscript>
         </body>
-      </html>
+      </Html>
     );
   }
 }
-
-MyDocument.getInitialProps = async ctx => {
-  // Resolution order
-  //
-  // On the server:
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. document.getInitialProps
-  // 4. app.render
-  // 5. page.render
-  // 6. document.render
-  //
-  // On the server with error:
-  // 1. document.getInitialProps
-  // 2. app.render
-  // 3. page.render
-  // 4. document.render
-  //
-  // On the client
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. app.render
-  // 4. page.render
-
-  // Render app and page and get the context of the page with
-  // collected side effects.
-  const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
-
-  ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />),
-    });
-
-  const initialProps = await Document.getInitialProps(ctx);
-
-  return {
-    ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
-    styles: [
-      <React.Fragment key="styles">
-        {initialProps.styles}
-        {sheets.getStyleElement()}
-      </React.Fragment>,
-    ],
-  };
-};
 
 export default MyDocument;

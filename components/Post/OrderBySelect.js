@@ -63,26 +63,26 @@ class OrderBySelect extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: 'Most Miles',
+                title: 'Most Smiles',
                 orderby: 'total_votes',
                 orderdir: 'DESC',
               });
               this.handleClose();
             }}
           >
-            Most Miles
+            Most Smiles
           </MenuItem>
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: 'Least Miles',
+                title: 'Least Smiles',
                 orderby: 'total_votes',
                 orderdir: 'ASC',
               });
               this.handleClose();
             }}
           >
-            Least Miles
+            Least Smiles
           </MenuItem>
           <MenuItem
             onClick={() => {

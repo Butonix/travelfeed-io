@@ -1,5 +1,5 @@
-import TurndownService from 'turndown';
 import sanitize from 'sanitize-html';
+import TurndownService from 'turndown';
 
 const turndownService = new TurndownService({ emDelimiter: '*' });
 
@@ -61,6 +61,14 @@ const json2md = data => {
         html += '\n';
       });
       html += '\n';
+    } else if (b.type === 'linkTool' && b.data.meta) {
+      html += `\n\n<div json='${JSON.stringify(b)}'><a href='${
+        b.data.link
+      }'><center><img src='${b.data.meta.image}' alt='${
+        b.data.meta.title
+      }'/><h3>Read "${
+        b.data.meta.title
+      }" on TravelFeed.io</h3></center></a></div>\n\n`;
     }
   });
   return html;

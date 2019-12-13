@@ -1,9 +1,11 @@
 import Delimiter from '@editorjs/delimiter';
 import Header from '@editorjs/header';
 import Image from '@editorjs/image';
+import LinkTool from '@editorjs/link';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 import Table from '@editorjs/table';
+import { API_URL } from '../../../config';
 import uploadFile from '../../../helpers/imageUpload';
 import Embed from './tools/embed/index';
 import Quote from './tools/quote/index';
@@ -15,6 +17,12 @@ export default {
   header: Header,
   delimiter: Delimiter,
   list: List,
+  linkTool: {
+    class: LinkTool,
+    config: {
+      endpoint: `${API_URL}/fetchUrl`, // Your backend endpoint for url data fetching
+    },
+  },
   image: {
     class: Image,
     config: {

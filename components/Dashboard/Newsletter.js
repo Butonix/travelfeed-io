@@ -11,7 +11,7 @@ import {
   SEND_NEWSLETTER,
 } from '../../helpers/graphql/weeklypost';
 import graphQLClient from '../../helpers/graphQLClient';
-import ConfirmClearBtn from './Newsletter/ConfirmClearBtn';
+import ConfirmBtn from './Newsletter/ConfirmBtn';
 import NewsletterInput from './Newsletter/NewsletterInput';
 import NewsletterPreview from './Newsletter/NewsletterPreview';
 
@@ -117,14 +117,7 @@ And with all this exciting news, we don't want to forget to highlight our three 
 {{#each posts}}
 ---
 
-<center>**Place {{counter @index}}**</center>
-
-<center> **{{title}}** 
-written by [@{{author}}](https://travelfeed.io/@{{author}}) </center>
-
-> {{excerpt}}
-
-<center>[![]({{image}})](https://travelfeed.io/@{{author}}/{{permlink}})</center>
+<div json='{"type":"linkTool","data":{"link":"https://travelfeed.io/@{{author}}/{{permlink}}","meta":{"title":"Place {{counter @index}}: {{title}}","description":"{{excerpt}}","image":"{{image}}","author":"{{author}}","permlink":"{{permlink}}"}}}'><center><strong>Place {{counter @index}}</strong></center><center><strong>{{title}}</strong> written by <a href="https://travelfeed.io/@{{author}}">@{{author}}</a></center><blockquote>{{excerpt}}</blockquote><center><a href="https://travelfeed.io/@{{author}}/{{permlink}}"><img src="{{image}}" /></img></a></center></div>
 
 {{/each}}
 `;
@@ -217,7 +210,11 @@ written by [@{{author}}](https://travelfeed.io/@{{author}}) </center>
             />
           </div>
           <div className="col-12">
-            <ConfirmClearBtn onClear={onClear} />
+            <ConfirmBtn
+              btnText="Clear"
+              dialogText="Clear the form?"
+              onConfirm={onClear}
+            />
             <Button
               className="m-1"
               variant="contained"

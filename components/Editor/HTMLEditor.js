@@ -55,7 +55,11 @@ const HtmlEditor = props => {
         }}
         value={data}
         renderHTML={text =>
-          parseBody(text, { parseImages: true, secureLinks: false })
+          parseBody(text, {
+            parseImages: true,
+            secureLinks: false,
+            allLinksBlank: true,
+          })
         }
         onChange={handleHtmlEditorChange}
         onImageUpload={handleImageUpload}

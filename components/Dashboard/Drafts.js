@@ -157,6 +157,7 @@ const Drafts = props => {
                           }
                           scheduledDate={draft.scheduledDate}
                           publishedDate={draft.publishedDate}
+                          isScheduleFailed={draft.isScheduleFailed}
                         />
                       );
                     })}

@@ -20,9 +20,10 @@ import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
 
-Sentry.init({
-  dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
-});
+if (process.env.NODE_ENV === 'production')
+  Sentry.init({
+    dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
+  });
 
 // eslint-disable-next-line no-unused-vars
 const Piwik = new ReactPiwik({
@@ -72,15 +73,16 @@ class MyApp extends App {
   }
 
   componentDidCatch(error, errorInfo) {
-    Sentry.withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
-        scope.setExtra(key, errorInfo[key]);
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.withScope(scope => {
+        Object.keys(errorInfo).forEach(key => {
+          scope.setExtra(key, errorInfo[key]);
+        });
+
+        Sentry.captureException(error);
       });
-
-      Sentry.captureException(error);
-    });
-
-    super.componentDidCatch(error, errorInfo);
+      super.componentDidCatch(error, errorInfo);
+    }
   }
 
   setDarkMode = () => {
@@ -118,7 +120,6 @@ class MyApp extends App {
           <CssBaseline />
           {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-          <div style={{ paddingTop: '65px' }} />
           <SnackbarProvider maxSnack={3}>
             <ApolloProvider client={apollo}>
               <CookieConsent />

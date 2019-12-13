@@ -17,7 +17,7 @@ const RegisterInfoPage = props => {
   return (
     <>
       <Header subheader="Register" />
-      <Head title="Register" />
+      <Head title="Register" noIndex />
       <FixedBackgroundImage
         backgroundImage="https://img.travelfeed.io/jpphotography%2F20190928T184750380Z-easysignup-3.jpg"
         component={

@@ -85,7 +85,6 @@ const handle = (req, res) => {
   // them with a cookie consent popup that is nor legally required for
   // their country
   if (!euCountries.includes(country_code)) res.cookie('cookie_consent', true);
-  if (country_code === 'TH') res.cookie('steemfest', true);
   handleNextRequests(req, res);
 };
 
@@ -109,6 +108,7 @@ app
       const queryParams = {
         author: req.params.author,
         permlink: req.params.permlink,
+        amp: req.query.amp,
       };
       app.render(req, res, actualPage, queryParams);
     });

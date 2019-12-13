@@ -55,6 +55,7 @@ export const GET_DRAFTS = gql`
       isCodeEditor
       scheduledDate
       publishedDate
+      isScheduleFailed
     }
   }
 `;

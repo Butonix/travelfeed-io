@@ -43,6 +43,7 @@ export const GET_BOOKMARKS = gql`
       parent_permlink
       root_title
       depth
+      children
     }
   }
 `;

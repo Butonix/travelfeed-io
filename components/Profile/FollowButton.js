@@ -3,6 +3,9 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
 import FollowIcon from '@material-ui/icons/PersonAdd';
 import UnfollowIcon from '@material-ui/icons/PersonAddDisabled';
 import { withSnackbar } from 'notistack';
@@ -108,8 +111,11 @@ const FollowButton = props => {
         variables={{ author: props.author }}
       >
         {({ data, loading, error }) => {
-          if (loading || error || data.profile === null) {
-            return <Fragment />;
+          if (
+            props.btnstyle === 'menuItem' &&
+            (loading || error || data.profile === null)
+          ) {
+            return <MenuItem />;
           }
           if (data && data.profile && !isLoaded) {
             setFollowed(data.profile.isFollowed);
@@ -137,25 +143,48 @@ const FollowButton = props => {
                       </IconButton>
                     </span>
                   </>
-                )) || (
-                  <Button
-                    style={(changing && { opacity: 0.8 }) || {}}
-                    variant={variant}
-                    size="small"
-                    color={color}
-                    onClick={() => toggleFollowAuthor()}
-                    className={btnclass}
-                  >
-                    {isFollowed ? 'Unfollow' : 'Follow'}
-                    {changing && (
-                      <CircularProgress
-                        color="secondary"
-                        className="ml-2"
-                        size={24}
+                )) ||
+                  (props.btnstyle === 'menuItem' && (
+                    <MenuItem
+                      onClick={() =>
+                        changing ? undefined : toggleFollowAuthor()
+                      }
+                    >
+                      <ListItemIcon>
+                        {(changing && (
+                          <CircularProgress color="primary" size={24} />
+                        )) ||
+                          (isFollowed && <UnfollowIcon fontSize="small" />) || (
+                            <FollowIcon fontSize="small" />
+                          )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          isFollowed
+                            ? `Unfollow @${props.author}`
+                            : `Follow @${props.author}`
+                        }
                       />
-                    )}
-                  </Button>
-                )}
+                    </MenuItem>
+                  )) || (
+                    <Button
+                      style={(changing && { opacity: 0.8 }) || {}}
+                      variant={variant}
+                      size="small"
+                      color={color}
+                      onClick={() => toggleFollowAuthor()}
+                      className={btnclass}
+                    >
+                      {isFollowed ? 'Unfollow' : 'Follow'}
+                      {changing && (
+                        <CircularProgress
+                          color="secondary"
+                          className="ml-2"
+                          size={24}
+                        />
+                      )}
+                    </Button>
+                  )}
               </Fragment>
             </>
           );

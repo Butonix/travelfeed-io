@@ -40,8 +40,7 @@ const CommentEditor = props => {
     const parentPermlink = props.parent_permlink;
     const commenttime = getSlug(new Date().toJSON()).replace(/-/g, '');
     const permlink =
-      (props.editMode && props.permlink) ||
-      `re-${parentPermlink}-${commenttime}`;
+      (props.editMode && props.permlink) || `re-${parentAuthor}-${commenttime}`;
     const body = json2md(content);
     const jsonMetadata = {};
     jsonMetadata.tags = ['travelfeed'];
@@ -90,7 +89,7 @@ const CommentEditor = props => {
         <EasyEditor
           holderId={`${props.editMode ? 're' : 'edit'}_${props.parent_author}_${
             props.parent_permlink
-            }`}
+          }`}
           onChange={handleEditorChange}
           data={content}
           placeholder="Reply"

@@ -74,16 +74,14 @@ const iframeWhitelist = [
       const m = src.match(/url=(.+?)[&?]/);
       if (!m || m.length !== 2) return null;
       return (
-        `https://w.soundcloud.com/player/?url=${
-          m[1]
-        }&auto_play=false&hide_related=false&show_comments=true` +
+        `https://w.soundcloud.com/player/?url=${m[1]}&auto_play=false&hide_related=false&show_comments=true` +
         '&show_user=true&show_reposts=false&visual=true'
       );
     },
   },
   {
     re: /^(https?:)?\/\/(?:www\.)?(?:(player.)?twitch.tv\/)(.*)?$/i,
-    fn: src => src, // handled by embedjs
+    fn: src => src,
   },
 ];
 export const noImageText = '(Image not shown due to low ratings)';
@@ -102,6 +100,7 @@ export default ({
   noImage = false,
   sanitizeErrors = [],
   secureLinks = false,
+  allLinksBlank = false,
 }) => ({
   allowedTags,
   // figure, figcaption,
@@ -120,7 +119,7 @@ export default ({
     ],
 
     // class attribute is strictly whitelisted (below)
-    div: ['class'],
+    div: ['class', 'json'],
 
     // style is subject to attack, filtering more below
     td: ['style'],
@@ -178,6 +177,7 @@ export default ({
     },
     div: (tagName, attribs) => {
       const attys = {};
+      if (attribs.json) attys.json = attribs.json;
       const classWhitelist = [
         'pull-right',
         'pull-left',
@@ -213,6 +213,7 @@ export default ({
         href = `/exit?url=${encodeURIComponent(href)}`;
         attys.rel = 'nofollow';
       } else if (
+        allLinksBlank ||
         (secureLinks &&
           ownDomains.indexOf(hostname) === -1 &&
           ['https', 'http'].indexOf(url.protocol)) ||

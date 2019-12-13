@@ -20,6 +20,7 @@ export const GET_POST = gql`
       title
       img_url
       created_at
+      updated_at
       is_travelfeed
       is_declined
       is_hidden

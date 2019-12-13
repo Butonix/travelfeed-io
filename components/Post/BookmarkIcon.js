@@ -1,4 +1,9 @@
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 import BookmarkIconFilled from '@material-ui/icons/Bookmark';
 import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
 import PropTypes from 'prop-types';
@@ -13,7 +18,7 @@ import { getUser } from '../../helpers/token';
 import LoginButton from '../Header/LoginButton';
 
 const BookmarkIcon = props => {
-  const { isHeader } = props;
+  const { isHeader, isButton, isMenuItem } = props;
   const [open, setOpen] = useState(false);
 
   return (
@@ -39,6 +44,8 @@ const BookmarkIcon = props => {
             return (
               <IsBookmarked
                 isHeader={isHeader}
+                isButton={isButton}
+                isMenuItem={isMenuItem}
                 author={props.author}
                 permlink={props.permlink}
                 onBmChange={props.onBmChange}
@@ -49,6 +56,8 @@ const BookmarkIcon = props => {
           return (
             <IsNotBookmarked
               isHeader={isHeader}
+              isButton={isButton}
+              isMenuItem={isMenuItem}
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
@@ -62,7 +71,7 @@ const BookmarkIcon = props => {
 };
 
 const IsBookmarked = props => {
-  const { isHeader } = props;
+  const { isHeader, isButton, isMenuItem } = props;
   return (
     <Mutation
       mutation={DELETE_BOOKMARK}
@@ -79,6 +88,8 @@ const IsBookmarked = props => {
           return (
             <IsNotBookmarked
               isHeader={isHeader}
+              isButton={isButton}
+              isMenuItem={isMenuItem}
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
@@ -97,6 +108,31 @@ const IsBookmarked = props => {
               </IconButton>
             </div>
           );
+        if (props.isButton)
+          return (
+            <Button
+              fullWidth
+              size="small"
+              color="inherit"
+              onClick={getUser() ? deleteBookmark : props.setOpen}
+            >
+              <BookmarkIconFilled />
+              <Typography noWrap variant="inherit" className="p-1">
+                Unsave
+              </Typography>
+            </Button>
+          );
+        if (props.isMenuItem)
+          return (
+            <>
+              <MenuItem onClick={getUser() ? deleteBookmark : props.setOpen}>
+                <ListItemIcon>
+                  <BookmarkIconFilled fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Unsave" />
+              </MenuItem>
+            </>
+          );
         return (
           <IconButton onClick={getUser() ? deleteBookmark : props.setOpen}>
             <BookmarkIconFilled />
@@ -108,7 +144,7 @@ const IsBookmarked = props => {
 };
 
 const IsNotBookmarked = props => {
-  const { isHeader } = props;
+  const { isHeader, isButton, isMenuItem } = props;
   return (
     <Mutation
       mutation={ADD_BOOKMARK}
@@ -125,6 +161,8 @@ const IsNotBookmarked = props => {
           return (
             <IsBookmarked
               isHeader={isHeader}
+              isButton={isButton}
+              isMenuItem={isMenuItem}
               author={props.author}
               permlink={props.permlink}
               onBmChange={props.onBmChange}
@@ -142,6 +180,31 @@ const IsNotBookmarked = props => {
                 <BookmarkIconBorder />
               </IconButton>
             </div>
+          );
+        if (props.isButton)
+          return (
+            <Button
+              fullWidth
+              size="small"
+              color="inherit"
+              onClick={getUser() ? addBookmark : props.setOpen}
+            >
+              <BookmarkIconBorder />
+              <Typography noWrap variant="inherit" className="p-1">
+                Save
+              </Typography>
+            </Button>
+          );
+        if (props.isMenuItem)
+          return (
+            <>
+              <MenuItem onClick={getUser() ? addBookmark : props.setOpen}>
+                <ListItemIcon>
+                  <BookmarkIconBorder fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Save" />
+              </MenuItem>
+            </>
           );
         return (
           <IconButton onClick={getUser() ? addBookmark : props.setOpen}>

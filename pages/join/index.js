@@ -117,7 +117,7 @@ const JoinPage = props => {
                         Ready to start your own travel blog? We offer you a free
                         blog hosted on the uncensorable Steem Blockchain. When
                         readers like your post, they will hit the 'take off'
-                        button and assign miles to it. Seven days after
+                        button and assign smiles to it. Seven days after
                         publishing your post, you can then claim the reward for
                         your post in cryptocurrency.
                       </Typography>

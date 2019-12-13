@@ -15,7 +15,7 @@ const rows = [
     label: 'Title',
   },
   { id: 'created_at', numeric: true, disablePadding: false, label: 'Created' },
-  { id: 'total_votes', numeric: true, disablePadding: false, label: 'Miles' },
+  { id: 'total_votes', numeric: true, disablePadding: false, label: 'Smiles' },
   { id: 'payout', numeric: true, disablePadding: false, label: 'Earnings' },
 ];
 

@@ -22,6 +22,8 @@ module.exports = {
     'jsx-a11y/href-no-hash': ['off'],
     'react/no-unused-state': ['off'],
     'react/state-in-constructor': ['off'],
+    'jsx-a11y/anchor-is-valid': ['off'],
+    'react/button-has-type': ['off'],
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
     'max-len': [
       'warn',

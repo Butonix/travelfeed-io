@@ -59,22 +59,6 @@ class PostListItem extends Component {
     if (!this.state.show) {
       return <Fragment />;
     }
-    let appIcon = <Fragment />;
-    if (
-      this.props.post.app &&
-      this.props.post.app.split('/')[0] === 'travelfeed'
-    ) {
-      appIcon = (
-        <Tooltip title="Published with TravelFeed" placement="bottom">
-          <img
-            alt="TravelFeed"
-            width="25"
-            className="mr-1"
-            src="https://travelfeed.io/favicon.ico"
-          />
-        </Tooltip>
-      );
-    }
     let button2 = (
       <Link
         color="textPrimary"
@@ -91,7 +75,15 @@ class PostListItem extends Component {
           this.props.post.img_url,
         )}&created_at=${encodeURIComponent(
           this.props.post.created_at,
-        )}&depth=0`}
+        )}&depth=0&country_code=${
+          this.props.post.country_code
+        }&subdivision=${encodeURIComponent(
+          this.props.post.subdivision,
+        )}&app=${encodeURIComponent(
+          this.props.post.app,
+        )}&curation_score=${encodeURIComponent(
+          this.props.post.curation_score,
+        )}`}
       >
         <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">
@@ -149,6 +141,16 @@ class PostListItem extends Component {
                     </div>
                   </Tooltip>
                 )}
+                {this.props.isScheduleFailed && (
+                  <Tooltip
+                    title="This scheduled post could not be posted. This could be either due to a problem with Steem or a problem with your post. Please check your post and reschedule it."
+                    placement="bottom"
+                  >
+                    <div className="pr-2 d-inline">
+                      <WarningIcon />
+                    </div>
+                  </Tooltip>
+                )}
                 {this.props.post.title || 'Untitled'}
               </Typography>
               <Excerpt text={this.props.post.excerpt} />
@@ -156,7 +158,7 @@ class PostListItem extends Component {
           </CardContent>
           <CardActions
             className={
-              this.props.warnWhenHidden
+              this.props.warnWhenHidden || this.props.isScheduleFailed
                 ? classNames(classes.areahidden)
                 : classNames(classes.areabg)
             }
@@ -241,7 +243,6 @@ class PostListItem extends Component {
                         <NoLocationIcon />
                       </Tooltip>
                     )}
-                  {appIcon}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   !this.props.isDraftMode &&
                     ((new Date(this.props.post.created_at) <

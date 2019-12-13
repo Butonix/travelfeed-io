@@ -10,6 +10,7 @@ import { getRoles } from '../../helpers/token';
 
 const PublishBtn = props => {
   const [loading, setLoading] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -28,8 +29,15 @@ const PublishBtn = props => {
         .then(res => {
           setLoading(false);
           if (res && res.post) {
-            newNotification(res.post);
-            props.pastPublish(res.post);
+            if (res.post.success) {
+              props.pastPublish(res.post);
+              if (props.publishThis.type === 'comment')
+                newNotification({
+                  success: true,
+                  message: 'Comment was published successfully',
+                });
+              else newNotification(res.post);
+            } else newNotification(res.post);
           }
         })
         .catch(err => {
@@ -48,10 +56,12 @@ const PublishBtn = props => {
           setLoading(false);
           if (res) {
             newNotification(res);
-            props.pastPublish(res);
-            graphQLClient(PAST_PUBLISH, {
-              permlink: props.publishThis.permlink,
-            });
+            if (res.success) {
+              props.pastPublish(res);
+              graphQLClient(PAST_PUBLISH, {
+                permlink: props.publishThis.permlink,
+              });
+            }
           } else {
             newNotification({
               success: false,
@@ -70,14 +80,16 @@ const PublishBtn = props => {
   };
 
   useEffect(() => {
-    if (props.publishThis) {
+    if (props.publishThis && trigger) {
       publishComment();
+      setTrigger(false);
     }
   }, [props]);
 
   const onTrigger = () => {
     props.triggerPublish();
     setLoading(true);
+    setTrigger(true);
   };
 
   return (

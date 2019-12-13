@@ -11,7 +11,6 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
-import categoryFinder from '../../helpers/categoryFinder';
 import { ONBOARD_INFO } from '../../helpers/graphql/onboarding';
 import json2md from '../../helpers/json2md';
 import parseBody from '../../helpers/parseBody';
@@ -20,7 +19,6 @@ import Checks from '../Editor/Checks';
 import EasyEditor from '../Editor/EasyEditor';
 import EditorPreview from '../Editor/EditorPreview';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
-import TagPicker from '../Editor/TagPicker';
 import AuthorProfileHeader from '../Profile/AuthorProfileHeader';
 
 const useStyles = makeStyles(theme => ({
@@ -41,13 +39,11 @@ const OnboardInfo = props => {
 
   const defaultTags = ['travelfeed', 'introduceyourself'];
   const [content, setContent] = useState('');
-  const [name, setName] = useState(undefined);
+  const [name, setName] = useState('');
   const [about, setAbout] = useState(undefined);
   const [profile_image, setProfileImage] = useState(undefined);
   const [cover_image, setCoverImage] = useState(undefined);
   const [activeStep, setActiveStep] = React.useState(0);
-  const [tags, setTags] = useState([]);
-  const [tagRecommendations, setTagRecommendations] = useState([]);
 
   const sanitized = sanitize(
     parseBody(json2md(content), {
@@ -62,21 +58,6 @@ const OnboardInfo = props => {
 
   const handleEditorChange = value => {
     setContent(value);
-    setTagRecommendations(
-      categoryFinder(
-        sanitize(
-          parseBody(json2md(value), {
-            lazy: false,
-            hideimgcaptions: true,
-          }),
-          { allowedTags: [] },
-        ),
-      ),
-    );
-  };
-
-  const handleTagClick = taglist => {
-    setTags(taglist);
   };
 
   function getSteps() {
@@ -92,16 +73,6 @@ const OnboardInfo = props => {
       ),
       hide: readingtime.words > 9,
       checked: readingtime.words > 9,
-    },
-    {
-      label: (
-        <span>
-          <WarnIcon />
-          {'  '}Select between 1 and 4 topics
-        </span>
-      ),
-      hide: tags.length > 0,
-      checked: tags.length > 0,
     },
     {
       label:
@@ -174,13 +145,9 @@ const OnboardInfo = props => {
                 using the + symbol. Select text to use the formatting options.
               </em>
             </FormLabel>
-            <EasyEditor onChange={handleEditorChange} data={content} />
-            <TagPicker
-              recommendations={tagRecommendations}
-              defaultTags={defaultTags}
-              value={tags}
-              onTagChange={handleTagClick}
-            />
+            <div className="border">
+              <EasyEditor onChange={handleEditorChange} data={content} />
+            </div>
             <div className="pt-5 pb-2">
               <Checks checklist={checklist} />
             </div>
@@ -216,14 +183,15 @@ const OnboardInfo = props => {
               Your post
             </Typography>
             <EditorPreview
+              authorAvatar={profile_image}
+              authorNotClickable
               fullsize
-              author="null"
+              author={name}
               img_url={cover_image}
               title={`Introducing myself to TravelFeed: ${name}`}
               // permlink={permlink}
               readtime={readingtime}
               content={json2md(content)}
-              tags={tags}
             />
           </>
         );
@@ -253,7 +221,7 @@ const OnboardInfo = props => {
         variables={{
           infoToken,
           post: json2md(content),
-          tags,
+          tags: defaultTags,
           accountMetadata: JSON.stringify({
             name,
             about,
@@ -287,40 +255,38 @@ const OnboardInfo = props => {
                 ))}
               </Stepper>
               <div>
-                {
-                  <>
-                    <div>
-                      <Typography className={classes.instructions}>
-                        {getStepContent(activeStep)}
-                      </Typography>
-                    </div>
-                    <div className="w-100 text-right pt-2">
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.backButton}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={
-                          activeStep === steps.length - 1
-                            ? onboardInformation
-                            : handleNext
-                        }
-                        disabled={
-                          (activeStep === 1 && readingtime.words < 10) ||
-                          (activeStep === 0 &&
-                            (!name || !about || !profile_image))
-                        }
-                      >
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                      </Button>
-                    </div>
-                  </>
-                }
+                <>
+                  <div>
+                    <Typography className={classes.instructions}>
+                      {getStepContent(activeStep)}
+                    </Typography>
+                  </div>
+                  <div className="w-100 text-right pt-2">
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={
+                        activeStep === steps.length - 1
+                          ? onboardInformation
+                          : handleNext
+                      }
+                      disabled={
+                        (activeStep === 1 && readingtime.words < 10) ||
+                        (activeStep === 0 &&
+                          (!name || !about || !profile_image))
+                      }
+                    >
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
+                </>
               </div>
             </>
           );

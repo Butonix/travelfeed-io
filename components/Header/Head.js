@@ -1,6 +1,7 @@
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import { ROOTURL } from '../../config';
 import { imageProxy } from '../../helpers/getImage';
 
 const Head = ({
@@ -10,6 +11,8 @@ const Head = ({
   description,
   canonicalUrl,
   type,
+  noIndex,
+  scripts,
 }) => (
   <NextHead>
     <title>
@@ -18,6 +21,9 @@ const Head = ({
         : `${title} - TravelFeed: Travel, Write, Earn`}
     </title>
     <meta name="description" content={description} />
+    {(noIndex || ROOTURL !== 'https://travelfeed.io') && (
+      <meta name="robots" content="noindex" />
+    )}
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -60,6 +66,7 @@ const Head = ({
       </Fragment>
     )}
     <link rel="canonical" href={canonicalUrl} />
+    {scripts}
   </NextHead>
 );
 // todo: if  canonical undefined no canonical!

@@ -210,7 +210,9 @@ class PostGrid extends Component {
                               depth: post.depth,
                               country_code: post.country_code,
                               subdivision: post.subdivision,
+                              children: post.children,
                             }}
+                            hideSaveBtn={this.props.grid.lg < 8}
                           />
                         );
                       }
