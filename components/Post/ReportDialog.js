@@ -107,14 +107,14 @@ const ReportDialog = props => {
               <MenuItem value="plagiarism">Plagiarism / Copy-Paste</MenuItem>
               <MenuItem value="identity theft">Identity Theft</MenuItem>
             </Select>
+            <TextField
+              fullWidth
+              multiline
+              onChange={event => setDetails(event.target.value)}
+              value={details}
+              label="Details"
+            />
           </FormControl>
-          <TextField
-            fullWidth
-            multiline
-            onChange={event => setDetails(event.target.value)}
-            value={details}
-            label="Details"
-          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
