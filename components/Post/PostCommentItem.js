@@ -73,12 +73,12 @@ class PostCommentItem extends Component {
     try {
       bodyUri = encodeURIComponent(this.props.post.body);
     } catch {
-      console.warn('Could not encode URI');
+      console.log('Could not encode URI');
     }
     try {
       displayNameUri = encodeURIComponent(this.props.post.display_name);
     } catch {
-      console.warn('Could not encode URI');
+      console.log('Could not encode URI');
     }
 
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});

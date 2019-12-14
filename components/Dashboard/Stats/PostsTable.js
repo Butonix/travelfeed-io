@@ -154,7 +154,7 @@ class PostsTable extends React.Component {
                       try {
                         titleUri = encodeURIComponent(n.title);
                       } catch {
-                        console.warn('Could not encode URI');
+                        console.log('Could not encode URI');
                       }
                       return (
                         <TableRow

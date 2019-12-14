@@ -109,7 +109,7 @@ class PostListItem extends Component {
     try {
       titleUri = encodeURIComponent(this.props.post.title);
     } catch {
-      console.warn('Could not encode URI');
+      console.log('Could not encode URI');
     }
     let postDate;
     if (this.props.publishedDate) postDate = dayjs(this.props.publishedDate);

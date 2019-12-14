@@ -19,7 +19,7 @@ const PostPreview = props => {
   try {
     titleUri = encodeURIComponent(post.title);
   } catch {
-    console.warn('Could not encode URI');
+    console.log('Could not encode URI');
   }
   return (
     <div key={props.author + props.permlink}>

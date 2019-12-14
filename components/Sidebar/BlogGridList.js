@@ -42,7 +42,7 @@ const BlogGridList = () => {
                       try {
                         titleUri = encodeURIComponent(post.title);
                       } catch {
-                        console.warn('Could not encode URI');
+                        console.log('Could not encode URI');
                       }
                       return (
                         <Fragment>

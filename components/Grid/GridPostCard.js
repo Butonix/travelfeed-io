@@ -77,17 +77,17 @@ class GridPostCard extends Component {
     try {
       titleUri = encodeURIComponent(this.props.post.title);
     } catch {
-      console.warn('Could not encode URI');
+      console.log('Could not encode URI');
     }
     try {
       bodyUri = encodeURIComponent(this.props.post.body);
     } catch {
-      console.warn('Could not encode URI');
+      console.log('Could not encode URI');
     }
     try {
       displayNameUri = encodeURIComponent(this.props.post.display_name);
     } catch {
-      console.warn('Could not encode URI');
+      console.log('Could not encode URI');
     }
 
     const linkHref = `/post?author=${this.props.post.author}&permlink=${

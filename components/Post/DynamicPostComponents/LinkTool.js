@@ -8,6 +8,12 @@ import Link from '../../../lib/Link';
 
 const LinkTool = props => {
   const { title, description, image, author, permlink } = props;
+  let titleUri = '';
+  try {
+    titleUri = encodeURIComponent(title);
+  } catch {
+    console.log('Could not encode URI');
+  }
   return (
     <>
       <Card className="mb-3 mb3">
@@ -28,9 +34,9 @@ const LinkTool = props => {
                 >
                   <Link
                     as={`/@${author}/${permlink}`}
-                    href={`/post?author=${author}&permlink=${permlink}&title=${encodeURIComponent(
-                      title,
-                    )}&img_url=${encodeURIComponent(image)}`}
+                    href={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&img_url=${encodeURIComponent(
+                      image,
+                    )}`}
                   >
                     <div className="w-100 h-100" />
                   </Link>

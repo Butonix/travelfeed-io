@@ -16,7 +16,7 @@ const PostContent = props => {
   try {
     titleUri = encodeURIComponent(props.title);
   } catch {
-    console.warn('Could not encode URI');
+    console.log('Could not encode URI');
   }
   // Prevent SSR
   return (
