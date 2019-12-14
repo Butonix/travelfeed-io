@@ -15,6 +15,7 @@ module.exports = {
     'react/destructuring-assignment': [0, 'always'],
     'import/prefer-default-export': ['off'],
     'react/jsx-fragments': ['off'],
+    'react/prop-types': ['off'],
     'prefer-object-spread': ['off'],
     'react/jsx-props-no-spreading': ['off'],
     'react/forbid-prop-types': ['off'],

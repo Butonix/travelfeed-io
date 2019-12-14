@@ -37,10 +37,6 @@ import LoginButton from '../Header/LoginButton';
 import BookmarkIcon from './BookmarkIcon';
 import VoteButton from './VoteButton';
 
-const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
-  ssr: false,
-});
-
 const downVoteTheme = createMuiTheme({
   palette: {
     primary: red,
@@ -245,6 +241,12 @@ class VoteSlider extends Component {
   }
 
   render() {
+    let CommentEditor;
+    if (this.props.mode !== 'gridcard')
+      CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
+        ssr: false,
+      });
+
     const actions = [];
     const commentButton = (
       <div className="col p-0">

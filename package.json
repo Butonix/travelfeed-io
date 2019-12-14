@@ -71,6 +71,7 @@
     "jwt-decode": "^2.2.0",
     "keyword-extractor": "0.0.18",
     "lodash.deburr": "^4.1.0",
+    "lru-cache": "^5.1.1",
     "mapbox-gl": "^1.6.0",
     "markdown-it": "^10.0.0",
     "mui-places-autocomplete": "^2.0.0",

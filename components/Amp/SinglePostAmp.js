@@ -83,7 +83,7 @@ const SinglePostAmp = props => {
                       <script type="application/ld+json" dangerouslySetInnerHTML={ { __html: `
                       {
                         "@context" : "http://schema.org",
-                        "@type" : "Article",
+                        "@type" : "BlogPosting",
                         "author" : {
                           "@type" : "Person",
                           "name" : "${display_name}"
