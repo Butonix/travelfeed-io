@@ -127,24 +127,6 @@ class SinglePost extends Component {
     } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
-    let titleUri = '';
-    let bodyUri = '';
-    let displayNameUri = '';
-    try {
-      titleUri = encodeURIComponent(this.props.post.title);
-    } catch {
-      console.log('Could not encode URI');
-    }
-    try {
-      bodyUri = encodeURIComponent(this.props.post.body);
-    } catch {
-      console.log('Could not encode URI');
-    }
-    try {
-      displayNameUri = encodeURIComponent(this.props.post.display_name);
-    } catch {
-      console.log('Could not encode URI');
-    }
     let isTf = app && app.split('/')[0] === 'travelfeed';
     return (
       <Fragment>
@@ -462,19 +444,6 @@ class SinglePost extends Component {
                       </Grid>
                       {depth === 0 && votes !== undefined && (
                         <StickyVoteSlider
-                          commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
-                            img_url,
-                          )}&lazy_img_url=${encodeURIComponent(
-                            lazy_img_url,
-                          )}&created_at=${encodeURIComponent(
-                            created_at,
-                          )}&depth=0&country_code=${country_code}&subdivision=${encodeURIComponent(
-                            subdivision,
-                          )}&app=${encodeURIComponent(
-                            app,
-                          )}&curation_score=${encodeURIComponent(
-                            curation_score,
-                          )}`}
                           author={author}
                           permlink={permlink}
                           votes={votes}

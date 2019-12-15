@@ -92,7 +92,7 @@ class GridPostCard extends Component {
 
     const linkHref = `/post?author=${this.props.post.author}&permlink=${
       this.props.post.permlink
-    }&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+    }&title=${titleUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
       this.props.post.img_url,
     )}&lazy_img_url=${encodeURIComponent(
       cardImage,
@@ -104,7 +104,9 @@ class GridPostCard extends Component {
       this.props.post.subdivision,
     )}&app=${encodeURIComponent(
       this.props.post.app,
-    )}&curation_score=${encodeURIComponent(this.props.post.curation_score)}`;
+    )}&curation_score=${encodeURIComponent(
+      this.props.post.curation_score,
+    )}&body=${bodyUri}`;
 
     return (
       <Card

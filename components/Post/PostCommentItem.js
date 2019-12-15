@@ -128,9 +128,9 @@ class PostCommentItem extends Component {
               this.props.post.permlink
             }&depth=${
               this.props.post.depth
-            }&body=${bodyUri}&display_name=${displayNameUri}&created_at=${encodeURIComponent(
+            }&display_name=${displayNameUri}&created_at=${encodeURIComponent(
               this.props.post.created_at,
-            )}`}
+            )}&body=${bodyUri}`}
           >
             <Typography gutterBottom variant="h6" component="h4">
               {`Re: ${this.props.post.root_title || ''}`}

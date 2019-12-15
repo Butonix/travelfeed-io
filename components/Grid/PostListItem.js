@@ -67,8 +67,6 @@ class PostListItem extends Component {
           this.props.post.permlink
         }&title=${encodeURIComponent(
           this.props.post.title,
-        )}&body=${encodeURIComponent(
-          this.props.post.body,
         )}&display_name=${encodeURIComponent(
           this.props.post.display_name,
         )}&img_url=${encodeURIComponent(
@@ -83,7 +81,7 @@ class PostListItem extends Component {
           this.props.post.app,
         )}&curation_score=${encodeURIComponent(
           this.props.post.curation_score,
-        )}`}
+        )}&body=${encodeURIComponent(this.props.post.body)}`}
       >
         <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">
@@ -176,9 +174,7 @@ class PostListItem extends Component {
                             : this.props.post.id
                         }&permlink=${encodeURIComponent(
                           this.props.post.permlink,
-                        )}&title=${titleUri}&body=${encodeURIComponent(
-                          cleanBody,
-                        )}&isCodeEditor=${encodeURIComponent(
+                        )}&title=${titleUri}&isCodeEditor=${encodeURIComponent(
                           this.props.post.isCodeEditor,
                         )}&jsonMeta=${encodeURIComponent(
                           this.props.isDraftMode ? '' : this.props.post.json,
@@ -193,7 +189,7 @@ class PostListItem extends Component {
                             featuredImage: this.props.post.img_url,
                             category: this.props.post.category,
                           })}&editmode=${(this.props.isDraftMode && 'false') ||
-                          'true'}`}
+                          'true'}&body=${encodeURIComponent(cleanBody)}`}
                         as="/dashboard/publish"
                       >
                         <Button className="p-0 pl-2 pr-2">
