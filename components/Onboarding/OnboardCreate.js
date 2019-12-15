@@ -240,7 +240,7 @@ const OnboardCreate = props => {
           return (
             <>
               <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map((label, i) => {
+                {steps.map(label => {
                   const stepProps = {};
                   return (
                     <Step key={label} {...stepProps}>
@@ -250,44 +250,42 @@ const OnboardCreate = props => {
                 })}
               </Stepper>
               <div>
-                {
-                  <>
-                    <div>
-                      <Typography className={classes.instructions}>
-                        {getStepContent(activeStep)}
-                      </Typography>
-                    </div>
-                    <div className="w-100 text-right">
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.backButton}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={
-                          activeStep === steps.length - 1
-                            ? onboardCreate
-                            : handleNext
-                        }
-                        disabled={
-                          (activeStep === 0 && username === '') ||
-                          (activeStep === 1 &&
-                            (!password ||
-                              password !== passwordConfirm ||
-                              (pwstrength.errors &&
-                                pwstrength.errors.length > 0))) ||
-                          (activeStep === 3 && passPhrase !== passPhraseConfirm)
-                        }
-                      >
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                      </Button>
-                    </div>
-                  </>
-                }
+                <>
+                  <div>
+                    <Typography className={classes.instructions}>
+                      {getStepContent(activeStep)}
+                    </Typography>
+                  </div>
+                  <div className="w-100 text-right">
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={
+                        activeStep === steps.length - 1
+                          ? onboardCreate
+                          : handleNext
+                      }
+                      disabled={
+                        (activeStep === 0 && username === '') ||
+                        (activeStep === 1 &&
+                          (!password ||
+                            password !== passwordConfirm ||
+                            (pwstrength.errors &&
+                              pwstrength.errors.length > 0))) ||
+                        (activeStep === 3 && passPhrase !== passPhraseConfirm)
+                      }
+                    >
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
+                </>
               </div>
             </>
           );

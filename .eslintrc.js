@@ -18,6 +18,7 @@ module.exports = {
     'react/prop-types': ['off'],
     'prefer-object-spread': ['off'],
     'react/jsx-props-no-spreading': ['off'],
+    'react/no-children-prop': ['off'],
     'react/forbid-prop-types': ['off'],
     'react/require-default-props': ['off'],
     'jsx-a11y/href-no-hash': ['off'],

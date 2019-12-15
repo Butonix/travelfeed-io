@@ -85,7 +85,6 @@ class StickyVoteSlider extends Component {
                 }
               >
                 <VoteSlider
-                  commentLink={this.props.commentLink}
                   author={this.props.author}
                   permlink={this.props.permlink}
                   votes={this.props.votes}

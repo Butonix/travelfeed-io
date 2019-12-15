@@ -55,13 +55,13 @@ const Referrals = () => {
                       </Table>
                     </div>
                   )) ||
-                    ((data && data.referrals && data.referrals.length === 0 && (
+                    (data && data.referrals && data.referrals.length === 0 && (
                       <Typography variant="body1">
                         Once your referrals join TravelFeed, they will show up
                         here.
                       </Typography>
                     )) ||
-                      '')}
+                    ''}
                 </>
               }
             />

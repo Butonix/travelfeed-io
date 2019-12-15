@@ -39,9 +39,7 @@ const PostContent = props => {
                         props.id
                       }&permlink=${encodeURIComponent(
                         props.permlink,
-                      )}&title=${titleUri}&body=${encodeURIComponent(
-                        cleanBody,
-                      )}&isCodeEditor=false&jsonMeta=${encodeURIComponent(
+                      )}&title=${titleUri}&isCodeEditor=false&jsonMeta=${encodeURIComponent(
                         props.json,
                       )}&json=${JSON.stringify({
                         tags: props.tags,
@@ -51,7 +49,9 @@ const PostContent = props => {
                         },
                         featuredImage: props.img_url,
                         category: props.category,
-                      })}&isCodeEditor=false&editmode=true`
+                      })}&isCodeEditor=false&editmode=true&body=${encodeURIComponent(
+                        cleanBody,
+                      )}`
                     : undefined
                 }
                 author={props.author}

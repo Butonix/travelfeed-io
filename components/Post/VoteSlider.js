@@ -37,6 +37,10 @@ import LoginButton from '../Header/LoginButton';
 import BookmarkIcon from './BookmarkIcon';
 import VoteButton from './VoteButton';
 
+const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
+  ssr: false,
+});
+
 const downVoteTheme = createMuiTheme({
   palette: {
     primary: red,
@@ -92,18 +96,23 @@ ValueLabelComponent.propTypes = {
 };
 
 class VoteSlider extends Component {
-  state = {
-    loaded: false,
-    voteExpanded: false,
-    commentExpanded: false,
-    loading: undefined,
-    weight: 0,
-    hasVoted: false,
-    user: null,
-    totalmiles: null,
-    open: false,
-    downvoteConfirmOpen: false,
-  };
+  constructor(...args) {
+    super(...args);
+    this.triggerVote = this.triggerVote.bind(this);
+    this.confirmDownvote = this.confirmDownvote.bind(this);
+    this.state = {
+      loaded: false,
+      voteExpanded: false,
+      commentExpanded: false,
+      loading: undefined,
+      weight: 0,
+      hasVoted: false,
+      user: null,
+      totalmiles: null,
+      open: false,
+      downvoteConfirmOpen: false,
+    };
+  }
 
   async componentDidMount() {
     const user = getUser();
@@ -241,12 +250,6 @@ class VoteSlider extends Component {
   }
 
   render() {
-    let CommentEditor;
-    if (this.props.mode !== 'gridcard')
-      CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
-        ssr: false,
-      });
-
     const actions = [];
     const commentButton = (
       <div className="col p-0">
@@ -410,14 +413,14 @@ class VoteSlider extends Component {
                         if (number > -0.5 && number < 0) number = -1;
                         else if (number >= 0 && number < 0.5) number = 1;
                         number = Math.round(number);
-                        return x >= 0 ? '+' + number : number;
+                        return x >= 0 ? `+${number}` : number;
                       }}
                       value={this.state.weight}
                       min={-10}
                       max={10}
                       step={0.001}
                       onChange={this.setWeight}
-                      onChangeCommitted={this.triggerVote.bind(this)}
+                      onChangeCommitted={this.triggerVote}
                     />
                   </MuiThemeProvider>
                 </div>
@@ -481,7 +484,7 @@ class VoteSlider extends Component {
             <MuiThemeProvider theme={downVoteTheme}>
               <Button
                 variant="contained"
-                onClick={this.confirmDownvote.bind(this)}
+                onClick={this.confirmDownvote}
                 color="primary"
               >
                 Downvote

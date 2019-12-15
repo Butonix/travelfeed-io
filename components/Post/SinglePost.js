@@ -4,6 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -25,7 +26,6 @@ import PostMap from '../Maps/PostMap';
 import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
-import PostComments from './PostComments';
 import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
@@ -34,6 +34,10 @@ import SimilarPosts from './SimilarPosts';
 import SliderTags from './SliderTags';
 import StickyVoteSlider from './StickyVoteSlider';
 import VoteDetailsBtn from './VoteDetailsBtn';
+
+const PostComments = dynamic(() => import('./PostComments'), {
+  ssr: false,
+});
 
 const styles = () => ({
   card: {
@@ -93,22 +97,22 @@ class SinglePost extends Component {
     const { classes } = this.props;
 
     let children = 0;
-    let is_travelfeed,
-      is_blacklisted,
-      is_nsfw,
-      root_title,
-      tags,
-      latitude,
-      longitude,
-      votes,
-      total_votes,
-      post_id,
-      parent_author,
-      parent_permlink,
-      root_author,
-      root_permlink,
-      json,
-      category;
+    let is_travelfeed;
+    let is_blacklisted;
+    let is_nsfw;
+    let root_title;
+    let tags;
+    let latitude;
+    let longitude;
+    let votes;
+    let total_votes;
+    let post_id;
+    let parent_author;
+    let parent_permlink;
+    let root_author;
+    let root_permlink;
+    let json;
+    let category;
 
     let {
       author,
@@ -117,7 +121,6 @@ class SinglePost extends Component {
       body,
       display_name,
       img_url,
-      lazy_img_url,
       created_at,
       depth,
       country_code,
@@ -125,26 +128,9 @@ class SinglePost extends Component {
       app,
       curation_score,
     } = this.props.post;
+    const { lazy_img_url } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
-    let titleUri = '';
-    let bodyUri = '';
-    let displayNameUri = '';
-    try {
-      titleUri = encodeURIComponent(this.props.post.title);
-    } catch {
-      console.log('Could not encode URI');
-    }
-    try {
-      bodyUri = encodeURIComponent(this.props.post.body);
-    } catch {
-      console.log('Could not encode URI');
-    }
-    try {
-      displayNameUri = encodeURIComponent(this.props.post.display_name);
-    } catch {
-      console.log('Could not encode URI');
-    }
     let isTf = app && app.split('/')[0] === 'travelfeed';
     return (
       <Fragment>
@@ -462,19 +448,6 @@ class SinglePost extends Component {
                       </Grid>
                       {depth === 0 && votes !== undefined && (
                         <StickyVoteSlider
-                          commentLink={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&body=${bodyUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
-                            img_url,
-                          )}&lazy_img_url=${encodeURIComponent(
-                            lazy_img_url,
-                          )}&created_at=${encodeURIComponent(
-                            created_at,
-                          )}&depth=0&country_code=${country_code}&subdivision=${encodeURIComponent(
-                            subdivision,
-                          )}&app=${encodeURIComponent(
-                            app,
-                          )}&curation_score=${encodeURIComponent(
-                            curation_score,
-                          )}`}
                           author={author}
                           permlink={permlink}
                           votes={votes}
