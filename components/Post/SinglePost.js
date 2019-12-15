@@ -4,6 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -25,7 +26,6 @@ import PostMap from '../Maps/PostMap';
 import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
-import PostComments from './PostComments';
 import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
@@ -34,6 +34,10 @@ import SimilarPosts from './SimilarPosts';
 import SliderTags from './SliderTags';
 import StickyVoteSlider from './StickyVoteSlider';
 import VoteDetailsBtn from './VoteDetailsBtn';
+
+const PostComments = dynamic(() => import('./PostComments'), {
+  ssr: false,
+});
 
 const styles = () => ({
   card: {

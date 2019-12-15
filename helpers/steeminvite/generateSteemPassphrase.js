@@ -1664,7 +1664,7 @@ const generateSteemPassphrase = () => {
     crypto.getRandomValues(random);
     return passPhrase;
   } else {
-    alert('Please use a current browser, for a lot of reasons.');
+    console.log('Please use a current browser, for a lot of reasons.');
   }
 };
 
