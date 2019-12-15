@@ -23,7 +23,9 @@ const BlogMenu = props => {
           component={
             <>
               <AuthorBlacklist author={author} />
-              {isAdmin && <ChangeRoles author={author} isCurator={props.isCurator} />}
+              {isAdmin && (
+                <ChangeRoles author={author} isCurator={props.isCurator} />
+              )}
             </>
           }
         />
