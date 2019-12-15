@@ -61,7 +61,7 @@ const Referrals = () => {
                         here.
                       </Typography>
                     )) ||
-                      ''}
+                    ''}
                 </>
               }
             />

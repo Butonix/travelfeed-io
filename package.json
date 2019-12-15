@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "NODE_ENV=production node --max-old-space-size=8192 server.js",
     "bundle-analyze": "BUNDLE_ANALYZE=browser yarn build",
-    "lint": "eslint '**/*.js'",
+    "lint": "eslint '**/*.js' --fix",
     "prettier": "prettier --write '**/*.js'"
   },
   "engines": {

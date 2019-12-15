@@ -93,22 +93,22 @@ class SinglePost extends Component {
     const { classes } = this.props;
 
     let children = 0;
-    let is_travelfeed,
-      is_blacklisted,
-      is_nsfw,
-      root_title,
-      tags,
-      latitude,
-      longitude,
-      votes,
-      total_votes,
-      post_id,
-      parent_author,
-      parent_permlink,
-      root_author,
-      root_permlink,
-      json,
-      category;
+    let is_travelfeed;
+    let is_blacklisted;
+    let is_nsfw;
+    let root_title;
+    let tags;
+    let latitude;
+    let longitude;
+    let votes;
+    let total_votes;
+    let post_id;
+    let parent_author;
+    let parent_permlink;
+    let root_author;
+    let root_permlink;
+    let json;
+    let category;
 
     let {
       author,
@@ -117,7 +117,6 @@ class SinglePost extends Component {
       body,
       display_name,
       img_url,
-      lazy_img_url,
       created_at,
       depth,
       country_code,
@@ -125,6 +124,7 @@ class SinglePost extends Component {
       app,
       curation_score,
     } = this.props.post;
+    const { lazy_img_url } = this.props.post;
     if (depth) depth = parseInt(depth, 10);
     if (!body) body = '';
     let isTf = app && app.split('/')[0] === 'travelfeed';

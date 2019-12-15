@@ -27,7 +27,7 @@ const greenTheme = createMuiTheme({
   },
 });
 
-const OptIn = () => {
+const OptIn = props => {
   const [optedIn, setOptedIn] = useState(undefined);
   const [querying, setQuerying] = useState(false);
 
@@ -90,40 +90,38 @@ const OptIn = () => {
             if (!optedIn) setOptedIn(data.contestIsOptedIn);
             return (
               <>
-                {
-                  <>
-                    <HeaderCard
-                      title={
-                        (optedIn &&
-                          'You are Participating in the Steemfest Contest') ||
-                        'Opt in to Participate'
-                      }
-                      background={(optedIn && green[600]) || red[600]}
-                      content={
-                        <>
-                          <FormLabel component="legend" className="pt-4">
-                            {(optedIn &&
-                              'By participating, you agree that the ticket can only be used by yourself and not be sold. If you cannot attend Steemfest, you can opt out of the contest by clicking the button below.') ||
-                              'Click the button to opt in to participate in the Steemfest contest. By participating, you agree that the ticket can only be used by yourself and not be sold.'}
-                          </FormLabel>
-                          <MuiThemeProvider
-                            theme={(optedIn && redTheme) || greenTheme}
-                          >
-                            {(!querying && (
-                              <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={broadcastJson}
-                              >
-                                {(optedIn && 'Opt Out') || 'Opt In'}
-                              </Button>
-                            )) || <CircularProgress />}
-                          </MuiThemeProvider>
-                        </>
-                      }
-                    />
-                  </>
-                }
+                <>
+                  <HeaderCard
+                    title={
+                      (optedIn &&
+                        'You are Participating in the Steemfest Contest') ||
+                      'Opt in to Participate'
+                    }
+                    background={(optedIn && green[600]) || red[600]}
+                    content={
+                      <>
+                        <FormLabel component="legend" className="pt-4">
+                          {(optedIn &&
+                            'By participating, you agree that the ticket can only be used by yourself and not be sold. If you cannot attend Steemfest, you can opt out of the contest by clicking the button below.') ||
+                            'Click the button to opt in to participate in the Steemfest contest. By participating, you agree that the ticket can only be used by yourself and not be sold.'}
+                        </FormLabel>
+                        <MuiThemeProvider
+                          theme={(optedIn && redTheme) || greenTheme}
+                        >
+                          {(!querying && (
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              onClick={broadcastJson}
+                            >
+                              {(optedIn && 'Opt Out') || 'Opt In'}
+                            </Button>
+                          )) || <CircularProgress />}
+                        </MuiThemeProvider>
+                      </>
+                    }
+                  />
+                </>
               </>
             );
           }
