@@ -17,7 +17,7 @@ import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
 import { generateDraftId } from '../../helpers/drafts';
-import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import { GET_DRAFT_BY_ID, SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import { USE_ADVANCED_EDITOR_OPTIONS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import graphQLClient from '../../helpers/graphQLClient';
@@ -58,9 +58,12 @@ const PostEditor = props => {
   const dmp = new DiffMatchPatch();
 
   const theme = useTheme();
+
   const [title, setTitle] = useState('');
   const [originalBody, setOriginalBody] = useState('');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(
+    props.permlink || props.draftId ? undefined : '',
+  );
   const [tags, setTags] = useState([]);
   const [primaryTag, setPrimaryTag] = useState(undefined);
   const [completed, setCompleted] = useState(true);
@@ -91,17 +94,67 @@ const PostEditor = props => {
 
   // eslint-disable-next-line no-shadow
   const fetchDraft = id => {
-    if (!props.clone) setId(id);
-    setMeta('');
-    // TODO: Implement
-    // console.log(draftId);
-    // graphQLClient(GET_DRAFT_BY_ID, { id })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //   });
+    graphQLClient(GET_DRAFT_BY_ID, { id })
+      .then(({ draft }) => {
+        if (!props.clone) setId(id);
+        const jsonMeta = draft.jsonMeta
+          ? JSON.parse(draft.jsonMeta)
+          : undefined;
+        if (jsonMeta) setMeta(jsonMeta);
+        const json =
+          draft.json && draft.json !== 'undefined'
+            ? JSON.parse(draft.json)
+            : undefined;
+        if (draft.title) setTitle(draft.title);
+        if (draft.body) {
+          setContent(
+            draft.isCodeEditor === false ? JSON.parse(draft.body) : draft.body,
+          );
+          if (draft.isCodeEditor !== false) setCodeEditor(true);
+        }
+        if (json) {
+          if (editMode && json.category) {
+            setPrimaryTag(json.category);
+            if (json.tags && json.tags.length > 0) {
+              const jstags = [];
+              json.tags.forEach(tag => {
+                if (tag !== json.category) jstags.push(tag);
+              });
+              if (editMode && !json.category)
+                setPrimaryTag(json.tags.splice(0, 1));
+              setTags(jstags);
+            }
+          } else if (json.tags && json.tags.length > 0) {
+            if (editMode && !json.category)
+              setPrimaryTag(json.tags.splice(0, 1));
+            setTags(json.tags);
+          }
+          if (
+            json.location &&
+            json.location.longitude &&
+            json.location.latitude
+          ) {
+            if (
+              json.location.longitude <= 180 &&
+              json.location.longitude >= -180 &&
+              json.location.latitude <= 90 &&
+              json.location.latitude >= -90
+            ) {
+              setLocation(json.location);
+              if (json.locationCategory)
+                setLocationCategory(json.locationCategory);
+            }
+          }
+          if (json.featuredImage) setFeaturedImage(json.featuredImage);
+          if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
+          if (json.poweredUp) setPoweredUp(json.poweredUp);
+          if (json.language) setLanguage(json.language);
+          if (json.permlink) setPermlink(json.permlink);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   // eslint-disable-next-line no-shadow
@@ -130,9 +183,17 @@ const PostEditor = props => {
           json.location.longitude &&
           json.location.latitude
         ) {
-          setLocation(json.location);
+          if (
+            json.location.longitude <= 180 &&
+            json.location.longitude >= -180 &&
+            json.location.latitude <= 90 &&
+            json.location.latitude >= -90
+          ) {
+            setLocation(json.location);
+            if (json.locationCategory)
+              setLocationCategory(json.locationCategory);
+          }
         }
-        if (json.locationCategory) setLocationCategory(json.locationCategory);
       })
       .catch(err => {
         console.error(err);
@@ -149,10 +210,11 @@ const PostEditor = props => {
     }
   };
 
-  const sanitized = sanitize(
-    parseBody(codeEditor ? content : json2md(content), {}),
-    { allowedTags: [] },
-  );
+  const sanitized = content
+    ? sanitize(parseBody(codeEditor ? content : json2md(content), {}), {
+        allowedTags: [],
+      })
+    : '';
   const readingtime = content
     ? readingTime(sanitized)
     : { words: 0, text: '0 min read' };
@@ -249,56 +311,6 @@ const PostEditor = props => {
   useEffect(() => {
     if (props.draftId) fetchDraft(props.draftId);
     else if (props.permlink) fetchPost(props.permlink);
-    // if (
-    //   !(
-    //     Object.entries(props.edit).length === 0 &&
-    //     props.edit.constructor === Object
-    //   )
-    // ) {
-    //   const jsonMeta = props.edit.jsonMeta
-    //     ? JSON.parse(props.edit.jsonMeta)
-    //     : undefined;
-    //   if (jsonMeta) setMeta(jsonMeta);
-    //   const json =
-    //     props.edit.json && props.edit.json !== 'undefined'
-    //       ? JSON.parse(props.edit.json)
-    //       : undefined;
-    //   if (props.edit.title) setTitle(props.edit.title);
-    //   if (props.edit.body) {
-    //     setContent(
-    //       props.edit.isCodeEditor === 'false'
-    //         ? JSON.parse(props.edit.body)
-    //         : props.edit.body,
-    //     );
-    //     if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
-    //   }
-    //   if (json) {
-    //     if (editMode && json.category) {
-    //       setPrimaryTag(json.category);
-    //       if (json.tags && json.tags.length > 0) {
-    //         const jstags = [];
-    //         json.tags.forEach(tag => {
-    //           if (tag !== json.category) jstags.push(tag);
-    //         });
-    //         if (editMode && !json.category)
-    //           setPrimaryTag(json.tags.splice(0, 1));
-    //         setTags(jstags);
-    //       }
-    //     } else if (json.tags && json.tags.length > 0) {
-    //       if (editMode && !json.category) setPrimaryTag(json.tags.splice(0, 1));
-    //       setTags(json.tags);
-    //     }
-    //     if (json.location && json.location.longitude && json.location.latitude)
-    //       setLocation(json.location);
-    //     if (json.locationCategory) setLocationCategory(json.locationCategory);
-    //     if (json.featuredImage) setFeaturedImage(json.featuredImage);
-    //     if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
-    //     if (json.poweredUp) setPoweredUp(json.poweredUp);
-    //     if (json.language) setLanguage(json.language);
-    //     if (json.permlink) setPermlink(json.permlink);
-    //   }
-    //   if (props.edit.id) setId(props.edit.id);
-    // }
     setMounted(true);
     // Save draft every 20 seconds
     const interval = setInterval(() => setSaved(false), 20000);
@@ -476,7 +488,6 @@ const PostEditor = props => {
           'Your post does not meet the requirements. Refer to the checklist for details.',
         success: false,
       });
-      setCompleted(true);
       return;
     }
     const username = user;
@@ -493,7 +504,6 @@ const PostEditor = props => {
             'The permlink of your post has been used in a previous post. Please change it.',
           success: false,
         });
-        setCompleted(true);
       } else {
         const parentAuthor = '';
         let parentPermlink;
@@ -557,7 +567,6 @@ const PostEditor = props => {
           const patches = dmp.patch_make(originalBody, content);
           if (patches.length > 0) body = dmp.patch_toText(patches);
         }
-        console.log(body);
         setPublishThis({
           author,
           title,
@@ -605,22 +614,24 @@ const PostEditor = props => {
           <div className="col-xl-12 col-md-12 pt-2 pl-2 pr-2">
             <Card>
               <CardContent>
-                <div>
-                  {(codeEditor && mounted && (
-                    <Fragment>
-                      <HtmlEditor data={content} onChange={setContent} />
-                    </Fragment>
-                  )) || (
-                    <div>
-                      {mounted && (
-                        <EasyEditor
-                          onChange={handleEditorChange}
-                          data={content}
-                        />
-                      )}
-                    </div>
-                  )}
-                </div>
+                {content !== undefined && (
+                  <div>
+                    {(codeEditor && mounted && (
+                      <Fragment>
+                        <HtmlEditor data={content} onChange={setContent} />
+                      </Fragment>
+                    )) || (
+                      <div>
+                        {mounted && (
+                          <EasyEditor
+                            onChange={handleEditorChange}
+                            data={content}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="text-right">
                   <SwitchEditorModeButton
                     switchMode={() => changeEditorMode()}
