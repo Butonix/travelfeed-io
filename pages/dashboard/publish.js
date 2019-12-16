@@ -1,10 +1,9 @@
 import dynamic from 'next/dynamic';
-import PropTypes from 'prop-types';
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 
 const PublishPage = props => {
-  const { open, edit } = props;
+  const { open, permlink, draftId, clone } = props;
 
   const Publish = dynamic(() => import('../../components/Dashboard/Publish'), {
     ssr: false,
@@ -14,43 +13,19 @@ const PublishPage = props => {
     <DashboardPage
       open={open}
       label="publish"
-      content={<Publish edit={edit} />}
+      content={<Publish permlink={permlink} draftId={draftId} clone={clone} />}
     />
   );
 };
 
 PublishPage.getInitialProps = props => {
-  const {
-    id,
-    permlink,
-    savedate,
-    title,
-    body,
-    jsonMeta,
-    json,
-    open,
-    editmode,
-    isCodeEditor,
-  } = props.query;
+  const { permlink, draftId, open, clone } = props.query;
   return {
-    edit: {
-      id,
-      permlink,
-      savedate,
-      title,
-      body,
-      jsonMeta,
-      json,
-      editmode,
-      isCodeEditor,
-    },
+    permlink,
+    draftId,
+    clone,
     open,
   };
-};
-
-PublishPage.propTypes = {
-  open: PropTypes.string,
-  edit: PropTypes.object,
 };
 
 export default PublishPage;
