@@ -23,7 +23,7 @@ const Head = ({
     </title>
     {includeMapbox && (
       <link
-        href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css"
+        href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css"
         rel="stylesheet"
       />
     )}
