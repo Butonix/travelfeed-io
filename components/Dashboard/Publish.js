@@ -587,11 +587,15 @@ const PostEditor = props => {
   };
 
   if (completed && success) {
-    setTimeout(() => {}, 5000);
-    Router.push({
-      pathname: '/dashboard/drafts',
-      query: { sortby: 'published' },
-    });
+    setTimeout(() => {
+      // Force hard reload
+      window.open(
+        `/@${user}/${props.permlink || permlink || getSlug(title)}`,
+        '_self',
+        undefined,
+        true,
+      );
+    }, 8000);
   }
 
   if (!saved) {
@@ -925,12 +929,13 @@ const PostEditor = props => {
                         />
                       )) || (
                         <Button
+                          fullWidth
                           className="mt-1"
                           variant="contained"
                           color="primary"
                           disabled
                         >
-                          Published
+                          Published, loading post...
                         </Button>
                       )}
                     </div>
