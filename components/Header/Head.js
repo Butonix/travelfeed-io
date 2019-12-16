@@ -13,6 +13,7 @@ const Head = ({
   type,
   noIndex,
   scripts,
+  includeMapbox,
 }) => (
   <NextHead>
     <title>
@@ -20,6 +21,12 @@ const Head = ({
         ? `${shorttitle} - TravelFeed`
         : `${title} - TravelFeed: Travel, Write, Earn`}
     </title>
+    {includeMapbox && (
+      <link
+        href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css"
+        rel="stylesheet"
+      />
+    )}
     <meta name="description" content={description} />
     {(noIndex || ROOTURL !== 'https://travelfeed.io') && (
       <meta name="robots" content="noindex" />

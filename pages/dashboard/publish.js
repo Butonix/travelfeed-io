@@ -11,6 +11,7 @@ const PublishPage = props => {
 
   return (
     <DashboardPage
+      includeMapbox
       open={open}
       label="publish"
       content={<Publish permlink={permlink} draftId={draftId} clone={clone} />}

@@ -36,7 +36,7 @@ const MapPage = props => {
   return (
     <Fragment>
       <Header subheader={title} active="map" />
-      <Head title="Travel Blog Map" />
+      <Head title="Travel Blog Map" includeMapbox />
       {
         // Fetches all posts with a location and a minimum upvote of 50%.
         // Not-curated posts are not displayed since they are usually

@@ -2,7 +2,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import MapGL, {
