@@ -103,6 +103,8 @@ function getCacheKey(req) {
 }
 
 async function renderAndCache(req, res, pagePath, queryParams) {
+  const country_code = req.header('CF-IPCountry');
+  if (!euCountries.includes(country_code)) res.cookie('cookie_consent', true);
   // TODO add a way to purge cache for a specific url
   const key = getCacheKey(req);
 
