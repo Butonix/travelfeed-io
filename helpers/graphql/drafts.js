@@ -59,3 +59,14 @@ export const GET_DRAFTS = gql`
     }
   }
 `;
+
+export const GET_DRAFT_BY_ID = gql`
+  query draft($id: String!) {
+    draft(id: $id) {
+      title
+      body
+      json
+      isCodeEditor
+    }
+  }
+`;

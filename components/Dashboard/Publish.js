@@ -6,9 +6,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/SaveAlt';
 import WarnIcon from '@material-ui/icons/Warning';
 import { useTheme } from '@material-ui/styles';
+import DiffMatchPatch from 'diff-match-patch';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
-import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
@@ -17,8 +17,9 @@ import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
 import { generateDraftId } from '../../helpers/drafts';
-import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import { GET_DRAFT_BY_ID, SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import { USE_ADVANCED_EDITOR_OPTIONS } from '../../helpers/graphql/settings';
+import { GET_POST } from '../../helpers/graphql/singlePost';
 import graphQLClient from '../../helpers/graphQLClient';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
@@ -29,7 +30,11 @@ import {
   getMentionList,
 } from '../../helpers/parsePostContents';
 import postExists from '../../helpers/postExists';
-import { invalidPermlink } from '../../helpers/regex';
+import {
+  invalidPermlink,
+  markdownComment,
+  swmregex,
+} from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
@@ -50,16 +55,21 @@ import TitleEditor from '../Editor/TitleEditor';
 
 const PostEditor = props => {
   const user = getUser();
+  const dmp = new DiffMatchPatch();
 
   const theme = useTheme();
+
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [originalBody, setOriginalBody] = useState('');
+  const [content, setContent] = useState(
+    props.permlink || props.draftId ? undefined : '',
+  );
   const [tags, setTags] = useState([]);
   const [primaryTag, setPrimaryTag] = useState(undefined);
   const [completed, setCompleted] = useState(true);
   const [location, setLocation] = useState(undefined);
   const [locationCategory, setLocationCategory] = useState(undefined);
-  const [codeEditor, setCodeEditor] = useState(false);
+  const [codeEditor, setCodeEditor] = useState(props.permlink !== undefined);
   const [featuredImage, setFeaturedImage] = useState(undefined);
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
@@ -75,12 +85,120 @@ const PostEditor = props => {
   const [saved, setSaved] = useState(true);
   const [meta, setMeta] = useState({});
 
-  const editMode = props.edit.editmode === 'true';
+  const editMode = props.permlink;
 
   let defaultTag = primaryTag;
   if (!primaryTag) {
     defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
   }
+
+  // eslint-disable-next-line no-shadow
+  const fetchDraft = id => {
+    graphQLClient(GET_DRAFT_BY_ID, { id })
+      .then(({ draft }) => {
+        if (!props.clone) setId(id);
+        const jsonMeta = draft.jsonMeta
+          ? JSON.parse(draft.jsonMeta)
+          : undefined;
+        if (jsonMeta) setMeta(jsonMeta);
+        const json =
+          draft.json && draft.json !== 'undefined'
+            ? JSON.parse(draft.json)
+            : undefined;
+        if (draft.title) setTitle(draft.title);
+        if (draft.body) {
+          setContent(
+            draft.isCodeEditor === false ? JSON.parse(draft.body) : draft.body,
+          );
+          if (draft.isCodeEditor !== false) setCodeEditor(true);
+        }
+        if (json) {
+          if (editMode && json.category) {
+            setPrimaryTag(json.category);
+            if (json.tags && json.tags.length > 0) {
+              const jstags = [];
+              json.tags.forEach(tag => {
+                if (tag !== json.category) jstags.push(tag);
+              });
+              if (editMode && !json.category)
+                setPrimaryTag(json.tags.splice(0, 1));
+              setTags(jstags);
+            }
+          } else if (json.tags && json.tags.length > 0) {
+            if (editMode && !json.category)
+              setPrimaryTag(json.tags.splice(0, 1));
+            setTags(json.tags);
+          }
+          if (
+            json.location &&
+            json.location.longitude &&
+            json.location.latitude
+          ) {
+            if (
+              json.location.longitude <= 180 &&
+              json.location.longitude >= -180 &&
+              json.location.latitude <= 90 &&
+              json.location.latitude >= -90
+            ) {
+              setLocation(json.location);
+              if (json.locationCategory)
+                setLocationCategory(json.locationCategory);
+            }
+          }
+          if (json.featuredImage) setFeaturedImage(json.featuredImage);
+          if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
+          if (json.poweredUp) setPoweredUp(json.poweredUp);
+          if (json.language) setLanguage(json.language);
+          if (json.permlink) setPermlink(json.permlink);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  // eslint-disable-next-line no-shadow
+  const fetchPost = permlink => {
+    graphQLClient(GET_POST, { author: user, permlink })
+      .then(({ post }) => {
+        setTitle(post.title);
+        setOriginalBody(post.body);
+        const cleanBody = post.body
+          .replace(markdownComment, '')
+          .replace(swmregex, '');
+        setContent(cleanBody);
+        setPrimaryTag(post.category);
+        setPermlink(post.permlink);
+        if (post.img_url) setFeaturedImage(post.img_url);
+        const json = JSON.parse(post.json);
+        if (json.tags && json.tags.length > 0) {
+          const jstags = [];
+          json.tags.forEach(tag => {
+            if (tag !== post.category) jstags.push(tag);
+          });
+          setTags(jstags);
+        }
+        if (
+          json.location &&
+          json.location.longitude &&
+          json.location.latitude
+        ) {
+          if (
+            json.location.longitude <= 180 &&
+            json.location.longitude >= -180 &&
+            json.location.latitude <= 90 &&
+            json.location.latitude >= -90
+          ) {
+            setLocation(json.location);
+            if (json.locationCategory)
+              setLocationCategory(json.locationCategory);
+          }
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 
   const newNotification = notification => {
     if (notification !== undefined) {
@@ -92,10 +210,11 @@ const PostEditor = props => {
     }
   };
 
-  const sanitized = sanitize(
-    parseBody(codeEditor ? content : json2md(content), {}),
-    { allowedTags: [] },
-  );
+  const sanitized = content
+    ? sanitize(parseBody(codeEditor ? content : json2md(content), {}), {
+        allowedTags: [],
+      })
+    : '';
   const readingtime = content
     ? readingTime(sanitized)
     : { words: 0, text: '0 min read' };
@@ -190,56 +309,8 @@ const PostEditor = props => {
   };
 
   useEffect(() => {
-    if (
-      !(
-        Object.entries(props.edit).length === 0 &&
-        props.edit.constructor === Object
-      )
-    ) {
-      const jsonMeta = props.edit.jsonMeta
-        ? JSON.parse(props.edit.jsonMeta)
-        : undefined;
-      if (jsonMeta) setMeta(jsonMeta);
-      const json =
-        props.edit.json && props.edit.json !== 'undefined'
-          ? JSON.parse(props.edit.json)
-          : undefined;
-      if (props.edit.title) setTitle(props.edit.title);
-      if (props.edit.body) {
-        setContent(
-          props.edit.isCodeEditor === 'false'
-            ? JSON.parse(props.edit.body)
-            : props.edit.body,
-        );
-        if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
-      }
-      if (json) {
-        if (editMode && json.category) {
-          setPrimaryTag(json.category);
-          if (json.tags && json.tags.length > 0) {
-            const jstags = [];
-            json.tags.forEach(tag => {
-              if (tag !== json.category) jstags.push(tag);
-            });
-            if (editMode && !json.category)
-              setPrimaryTag(json.tags.splice(0, 1));
-            setTags(jstags);
-          }
-        } else if (json.tags && json.tags.length > 0) {
-          if (editMode && !json.category) setPrimaryTag(json.tags.splice(0, 1));
-          setTags(json.tags);
-        }
-        if (json.location && json.location.longitude && json.location.latitude)
-          setLocation(json.location);
-        if (json.locationCategory) setLocationCategory(json.locationCategory);
-        if (json.featuredImage) setFeaturedImage(json.featuredImage);
-        if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
-        if (json.poweredUp) setPoweredUp(json.poweredUp);
-        if (json.language) setLanguage(json.language);
-        if (json.permlink) setPermlink(json.permlink);
-      }
-      if (props.edit.id) setId(props.edit.id);
-    }
+    if (props.draftId) fetchDraft(props.draftId);
+    else if (props.permlink) fetchPost(props.permlink);
     setMounted(true);
     // Save draft every 20 seconds
     const interval = setInterval(() => setSaved(false), 20000);
@@ -405,24 +476,24 @@ const PostEditor = props => {
   const triggerPublish = () => {
     setCompleted(false);
     if (
-      !checklist[0].checked ||
-      !checklist[1].checked ||
-      !checklist[2].checked ||
-      !checklist[3].checked ||
-      !checklist[4].checked
+      !editMode &&
+      (!checklist[0].checked ||
+        !checklist[1].checked ||
+        !checklist[2].checked ||
+        !checklist[3].checked ||
+        !checklist[4].checked)
     ) {
       newNotification({
         message:
           'Your post does not meet the requirements. Refer to the checklist for details.',
         success: false,
       });
-      setCompleted(true);
       return;
     }
     const username = user;
     let perm = permlink;
     if (editMode) {
-      perm = props.edit.permlink;
+      perm = props.permlink;
     }
     if (perm === '') perm = getSlug(title);
     postExists(username, perm).then(res => {
@@ -433,7 +504,6 @@ const PostEditor = props => {
             'The permlink of your post has been used in a previous post. Please change it.',
           success: false,
         });
-        setCompleted(true);
       } else {
         const parentAuthor = '';
         let parentPermlink;
@@ -464,9 +534,7 @@ const PostEditor = props => {
             latitude: location.latitude,
             longitude: location.longitude,
           };
-          if (location !== props.edit.location) {
-            body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
-          }
+          body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
         }
         if (locationCategory) {
           metadata.location.category = locationCategory;
@@ -495,6 +563,10 @@ const PostEditor = props => {
         }
         const jsonMetadata = JSON.stringify(metadata);
         const author = user;
+        if (editMode) {
+          const patches = dmp.patch_make(originalBody, content);
+          if (patches.length > 0) body = dmp.patch_toText(patches);
+        }
         setPublishThis({
           author,
           title,
@@ -515,11 +587,15 @@ const PostEditor = props => {
   };
 
   if (completed && success) {
-    setTimeout(() => {}, 5000);
-    Router.push({
-      pathname: '/dashboard/drafts',
-      query: { sortby: 'published' },
-    });
+    setTimeout(() => {
+      // Force hard reload
+      window.open(
+        `/@${user}/${props.permlink || permlink || getSlug(title)}`,
+        '_self',
+        undefined,
+        true,
+      );
+    }, 8000);
   }
 
   if (!saved) {
@@ -542,22 +618,24 @@ const PostEditor = props => {
           <div className="col-xl-12 col-md-12 pt-2 pl-2 pr-2">
             <Card>
               <CardContent>
-                <div>
-                  {(codeEditor && mounted && (
-                    <Fragment>
-                      <HtmlEditor data={content} onChange={setContent} />
-                    </Fragment>
-                  )) || (
-                    <div>
-                      {mounted && (
-                        <EasyEditor
-                          onChange={handleEditorChange}
-                          data={content}
-                        />
-                      )}
-                    </div>
-                  )}
-                </div>
+                {content !== undefined && (
+                  <div>
+                    {(codeEditor && mounted && (
+                      <Fragment>
+                        <HtmlEditor data={content} onChange={setContent} />
+                      </Fragment>
+                    )) || (
+                      <div>
+                        {mounted && (
+                          <EasyEditor
+                            onChange={handleEditorChange}
+                            data={content}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="text-right">
                   <SwitchEditorModeButton
                     switchMode={() => changeEditorMode()}
@@ -740,36 +818,36 @@ const PostEditor = props => {
                             }
                           />
                         </div>
+                        <div className="col-12 pt-2 pl-2 pr-2">
+                          <DetailedExpansionPanel
+                            title={
+                              !permlinkValid ? (
+                                <span>
+                                  <WarnIcon />
+                                  {'  '}Permlink
+                                </span>
+                              ) : (
+                                'Permlink'
+                              )
+                            }
+                            description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
+                            helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                            value={`https://travelfeed.io/@${user}/${permlink ||
+                              getSlug(title)}`}
+                            selector={
+                              <PermlinkInput
+                                onChange={pl => {
+                                  setPermlink(pl);
+                                  setPermlinkValid(true);
+                                }}
+                                data={permlink}
+                                placeholder={getSlug(title)}
+                              />
+                            }
+                          />
+                        </div>
                       </>
                     )}
-                  <div className="col-12 pt-2 pl-2 pr-2">
-                    <DetailedExpansionPanel
-                      title={
-                        !permlinkValid ? (
-                          <span>
-                            <WarnIcon />
-                            {'  '}Permlink
-                          </span>
-                        ) : (
-                          'Permlink'
-                        )
-                      }
-                      description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
-                      helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
-                      value={`https://travelfeed.io/@${user}/${permlink ||
-                        getSlug(title)}`}
-                      selector={
-                        <PermlinkInput
-                          onChange={pl => {
-                            setPermlink(pl);
-                            setPermlinkValid(true);
-                          }}
-                          data={permlink}
-                          placeholder={getSlug(title)}
-                        />
-                      }
-                    />
-                  </div>
                 </>
               )}
             </Query>
@@ -803,7 +881,7 @@ const PostEditor = props => {
               value="Publish your post"
               selector={
                 <Fragment>
-                  <Checks checklist={checklist} />
+                  {!editMode && <Checks checklist={checklist} />}
                   <div className="row">
                     <div className="col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6 pt-1">
                       {!editMode && (
@@ -851,12 +929,13 @@ const PostEditor = props => {
                         />
                       )) || (
                         <Button
+                          fullWidth
                           className="mt-1"
                           variant="contained"
                           color="primary"
                           disabled
                         >
-                          Published
+                          Published, loading post...
                         </Button>
                       )}
                     </div>
@@ -869,15 +948,6 @@ const PostEditor = props => {
       </div>
     </Fragment>
   );
-};
-
-PostEditor.defaultProps = {
-  edit: {},
-};
-
-PostEditor.propTypes = {
-  edit: PropTypes.objectOf(PropTypes.any),
-  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(PostEditor);

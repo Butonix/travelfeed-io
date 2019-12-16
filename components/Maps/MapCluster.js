@@ -1,7 +1,6 @@
 import { teal } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -157,7 +156,7 @@ class MapCluster extends Component {
           mapStyle={
             this.props.dark ? 'mapbox://styles/mapbox/dark-v9' : undefined
           }
-          onViewportChange={viewport => this.setState({ viewport })}
+          onViewportChange={vp => this.setState({ viewport: vp })}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           ref={this.mapRef}
           onLoad={() => this.setState({ map: this.mapRef.current.getMap() })}
@@ -184,11 +183,11 @@ class MapCluster extends Component {
                 )}
               >
                 {this.props.data &&
-                  this.props.data.map((point, i) => {
+                  this.props.data.map(point => {
                     if (point.longitude !== null) {
                       return (
                         <Marker
-                          key={i}
+                          key={`${point.author}=${point.permlink}`}
                           longitude={point.longitude}
                           latitude={point.latitude}
                           author={point.author}
@@ -203,6 +202,7 @@ class MapCluster extends Component {
                         </Marker>
                       );
                     }
+                    return <></>;
                   })}
               </Cluster>
             </>

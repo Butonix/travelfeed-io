@@ -55,6 +55,7 @@ const AuthorProfile = props => {
                   display_name,
                   username: name,
                 }}
+                includeMapbox
               />
               <Header active="blog" subheader={display_name} author={name} />
               <AuthorProfileHeader

@@ -19,10 +19,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
-import { generateDraftId } from '../../helpers/drafts';
 import { imageProxy } from '../../helpers/getImage';
-import { markdownComment, swmregex } from '../../helpers/regex';
-import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 import UnScheduleButton from '../Dashboard/Drafts/UnScheduleButton';
@@ -50,10 +47,6 @@ class PostListItem extends Component {
 
   render() {
     const { classes } = this.props;
-
-    const cleanBody = this.props.post.body
-      .replace(markdownComment, '')
-      .replace(swmregex, '');
 
     // Hide if deleted (for drafts)
     if (!this.state.show) {
@@ -103,12 +96,6 @@ class PostListItem extends Component {
       this.props.post.country_code !== null
         ? nameFromCC(this.props.post.country_code)
         : undefined;
-    let titleUri = '';
-    try {
-      titleUri = encodeURIComponent(this.props.post.title);
-    } catch {
-      console.log('Could not encode URI');
-    }
     let postDate;
     if (this.props.publishedDate) postDate = dayjs(this.props.publishedDate);
     else if (this.props.scheduledDate)
@@ -168,29 +155,16 @@ class PostListItem extends Component {
                     {!this.props.isScheduled && (
                       <Link
                         className="textPrimary"
-                        href={`/dashboard/publish?id=${
-                          this.props.isPublished
-                            ? generateDraftId(getUser())
-                            : this.props.post.id
-                        }&permlink=${encodeURIComponent(
-                          this.props.post.permlink,
-                        )}&title=${titleUri}&isCodeEditor=${encodeURIComponent(
-                          this.props.post.isCodeEditor,
-                        )}&jsonMeta=${encodeURIComponent(
-                          this.props.isDraftMode ? '' : this.props.post.json,
-                        )}&json=${(this.props.isDraftMode &&
-                          this.props.post.json) ||
-                          JSON.stringify({
-                            tags: this.props.post.tags,
-                            location: {
-                              latitude: this.props.post.latitude,
-                              longitude: this.props.post.longitude,
-                            },
-                            featuredImage: this.props.post.img_url,
-                            category: this.props.post.category,
-                          })}&editmode=${(this.props.isDraftMode && 'false') ||
-                          'true'}&body=${encodeURIComponent(cleanBody)}`}
-                        as="/dashboard/publish"
+                        href={`/dashboard/publish?${
+                          this.props.isDraftMode
+                            ? `draftId=${this.props.post.id}${
+                                this.props.isPublished ? `&clone=true` : ''
+                              }`
+                            : `permlink=${encodeURIComponent(
+                                this.props.post.permlink,
+                              )}`
+                        }`}
+                        // as="/dashboard/publish"
                       >
                         <Button className="p-0 pl-2 pr-2">
                           <span className="textPrimary pr-1">

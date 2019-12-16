@@ -5,7 +5,7 @@ const turndownService = new TurndownService({ emDelimiter: '*' });
 
 const json2md = data => {
   let html = '';
-  if (!data) return '';
+  if (!data || !data.blocks) return '';
   data.blocks.forEach(b => {
     if (b.type === 'paragraph') {
       html += `${turndownService.turndown(b.data.text)}\n\n`;

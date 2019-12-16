@@ -81,6 +81,7 @@ const PublishBtn = props => {
 
   useEffect(() => {
     if (props.publishThis && trigger) {
+      setLoading(true);
       publishComment();
       setTrigger(false);
     }
@@ -88,7 +89,6 @@ const PublishBtn = props => {
 
   const onTrigger = () => {
     props.triggerPublish();
-    setLoading(true);
     setTrigger(true);
   };
 

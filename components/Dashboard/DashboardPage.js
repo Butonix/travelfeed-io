@@ -20,6 +20,7 @@ const DashboardPage = props => {
           title={`TravelBlog: ${props.label.charAt(0).toUpperCase() +
             props.label.slice(1)}`}
           noIndex
+          includeMapbox={props.includeMapbox}
         />
         <DashboardMenu
           active={props.label}
