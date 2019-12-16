@@ -16,13 +16,12 @@ const SinglePostAmp = props => {
   return (
     <>
       <Query query={GET_POST} variables={props.post}>
-        {({ data, error }) => {
+        {({ data }) => {
           if (data && data.post) {
             const {
               app,
               body,
               img_url,
-              title,
               author,
               created_at,
               country_code,
@@ -32,7 +31,13 @@ const SinglePostAmp = props => {
               category,
               permlink,
               updated_at,
+              depth,
+              root_title,
+              root_author,
+              root_permlink,
             } = data.post;
+            let { title } = data.post;
+            if (depth > 0) title = `Re: ${root_title}`;
             const isTf = app && app.split('/')[0] === 'travelfeed';
             const htmlBody = parseBody(body, {});
             const bodyText = parseHtmlToReact(htmlBody, {
@@ -83,6 +88,7 @@ const SinglePostAmp = props => {
                       />
                       <script
                         type="application/ld+json"
+                        // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={{
                           __html: `
                       {
@@ -95,11 +101,15 @@ const SinglePostAmp = props => {
                         "datePublished" : "${dayjs(created_at).format(
                           'YYYY-MM-DDTHH:MM',
                         )}",
-                        "image" : [
+                        "image" : ${
+                          img_url
+                            ? `[
                             "${imageProxy(img_url, 1920, 1920)}",
                             "${imageProxy(img_url, 1920, 1440)}",
                             "${imageProxy(img_url, 1920, 1080)}"
-                          ],
+                          ]`
+                            : `"https://steemitimages.com/u/${author}/avatar/large"`
+                        },
                         "headline" : "${title.substring(0, 110)}",
                         "publisher" : {
                             "@type": "Organization",
@@ -183,47 +193,74 @@ const SinglePostAmp = props => {
                     </li>
                   </ul>
                 </amp-sidebar>
-                <figure className="ampstart-image-fullpage-hero m0 relative mb4">
-                  <amp-img
-                    height="720"
-                    alt="The Year&#39;s Best Animal Photos"
-                    layout="fixed-height"
-                    src={imageProxy(img_url, undefined, 720, 'fit')}
-                  />
-                  <div className="absolute top-0 right-0 bottom-0 left-0">
-                    <header className="p3">
-                      <h1 className="ampstart-fullpage-hero-heading mb3">
-                        <span className="ampstart-fullpage-hero-heading-text">
-                          {title}
-                        </span>
-                      </h1>
+                {depth === 0 && (
+                  <figure className="ampstart-image-fullpage-hero m0 relative mb4">
+                    <amp-img
+                      height="720"
+                      alt={title}
+                      layout="fixed-height"
+                      src={imageProxy(img_url, undefined, 720, 'fit')}
+                    />
+                    <div className="absolute top-0 right-0 bottom-0 left-0">
+                      <header className="p3">
+                        <h1 className="ampstart-fullpage-hero-heading mb3">
+                          <span className="ampstart-fullpage-hero-heading-text">
+                            {title}
+                          </span>
+                        </h1>
 
-                      <span className="ampstart-image-credit h4">
-                        By{' '}
-                        <Link
-                          as={`/@${author}`}
-                          href={`/blog?author=${author}`}
-                        >
-                          <a>{display_name}</a>
-                        </Link>
-                        ,<br /> {dayjs(created_at).format('MMMM DD, YYYY')}
-                      </span>
-                    </header>
-                    <footer className="absolute left-0 right-0 bottom-0">
-                      <a
-                        className="ampstart-readmore py3 caps line-height-2 text-decoration-none center block h5"
-                        href="#content"
-                      >
-                        <span className="ampstart-readmore-text px1">
-                          Read more
+                        <span className="ampstart-image-credit h4">
+                          By{' '}
+                          <Link
+                            as={`/@${author}`}
+                            href={`/blog?author=${author}`}
+                          >
+                            <a>{display_name}</a>
+                          </Link>
+                          ,<br /> {dayjs(created_at).format('MMMM DD, YYYY')}
                         </span>
-                      </a>
-                    </footer>
-                  </div>
-                </figure>
+                      </header>
+                      <footer className="absolute left-0 right-0 bottom-0">
+                        <a
+                          className="ampstart-readmore py3 caps line-height-2 text-decoration-none center block h5"
+                          href="#content"
+                        >
+                          <span className="ampstart-readmore-text px1">
+                            Read more
+                          </span>
+                        </a>
+                      </footer>
+                    </div>
+                  </figure>
+                )}
                 <main id="content" role="main" className="">
                   <article className="photo-article">
-                    <div className="postcontent">{bodyText}</div>
+                    <div className="postcontent">
+                      {depth > 0 && (
+                        <>
+                          <h1 className="pt3">
+                            <Link
+                              as={`/@${root_author}/${root_permlink}?amp=1`}
+                              href={`/post?author=${root_author}&permlink=${root_permlink}&amp=1`}
+                            >
+                              {title}
+                            </Link>
+                          </h1>
+                          <p>
+                            <em>
+                              by{' '}
+                              <Link
+                                as={`/@${author}`}
+                                href={`/blog?author=${author}`}
+                              >
+                                <a>{display_name}</a>
+                              </Link>
+                            </em>
+                          </p>
+                        </>
+                      )}
+                      {bodyText}
+                    </div>
                   </article>
                   <p className="heading">
                     <amp-social-share type="twitter" width="45" height="33" />
@@ -295,7 +332,7 @@ const SinglePostAmp = props => {
                                             as={`/@${post.author}`}
                                             href={`/blog?author=${post.author}`}
                                           >
-                                            <a>{post.author}</a>
+                                            <a>{post.display_name}</a>
                                           </Link>
                                         </figcaption>
                                       </figure>
