@@ -34,6 +34,8 @@ import {
   invalidPermlink,
   markdownComment,
   swmregex,
+  tfAdBottom,
+  tfAdTop,
 } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
@@ -178,10 +180,8 @@ const PostEditor = props => {
           const cleanBody = post.body
             .replace(markdownComment, '')
             .replace(swmregex, '')
-            .replace(
-              /\n\n---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./gi,
-              '',
-            );
+            .replace(tfAdTop, '')
+            .replace(tfAdBottom, '');
           setContent(cleanBody);
         }
         if (json.tags && json.tags.length > 0) {
@@ -541,6 +541,11 @@ const PostEditor = props => {
         if (imageList.length > 0) metadata.image = imageList;
         if (linkList.length > 0) metadata.links = linkList;
         if (mentionList.length > 0) metadata.users = mentionList;
+        body = `<a href="https://travelfeed.io/@${username}/${perm}"><center>${
+          imageList.length > 0
+            ? `<img src="${imageList[0]}" alt="${title}"/>`
+            : ''
+        }<h3>Read "${title}" on TravelFeed.io for the best experience</h3></center></a><hr />\n\n${body}`;
         body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
         if (location) {
           metadata.location = {
