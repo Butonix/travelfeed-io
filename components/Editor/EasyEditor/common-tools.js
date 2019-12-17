@@ -1,3 +1,4 @@
+import CodeTool from '@editorjs/code';
 import Delimiter from '@editorjs/delimiter';
 import Header from '@editorjs/header';
 import Image from '@editorjs/image';
@@ -21,6 +22,12 @@ export default {
     class: LinkTool,
     config: {
       endpoint: `${API_URL}/fetchUrl`, // Your backend endpoint for url data fetching
+    },
+  },
+  code: {
+    class: CodeTool,
+    config: {
+      placeholder: 'Enter HTML or Markdown here',
     },
   },
   image: {

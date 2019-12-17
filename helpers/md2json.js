@@ -4,7 +4,7 @@ import { tfJSON } from './regex';
 const md2json = d => {
   try {
     const json = { time: 1564842925324, blocks: [], version: '2.15.0' };
-    if (!d) return json;
+    if (!d) return { success: true, json };
     const data = `${d}\n\n`.replace(/\n([a-zA-Z!#])/, '\n\n$1');
     const paragraphs = data.split('\n\n');
     paragraphs.forEach(para => {
@@ -16,7 +16,10 @@ const md2json = d => {
         try {
           block = JSON.parse(`{${tfjsonMatch[1]}}`);
         } catch {
-          console.warn('Could not parse tfJSON block');
+          block = {
+            data: { code: parseBody(p, { secureLinks: false }) },
+            type: 'code',
+          };
         }
       }
       // Header
@@ -97,11 +100,11 @@ const md2json = d => {
         block = { data: { items, style: 'unordered' }, type: 'list' };
       }
       // TODO: table
-      // paragraph
+      // else: HTML code block
       else if (p !== '') {
         block = {
-          data: { text: parseBody(p, { secureLinks: false }) },
-          type: 'paragraph',
+          data: { code: parseBody(p, { secureLinks: false }) },
+          type: 'code',
         };
       }
       if (block) json.blocks.push(block);

@@ -1,5 +1,6 @@
 import sanitize from 'sanitize-html';
 import TurndownService from 'turndown';
+import sanitizeConfig from './PostParser/SanitizeConfig';
 
 const turndownService = new TurndownService({ emDelimiter: '*' });
 
@@ -9,6 +10,14 @@ const json2md = data => {
   data.blocks.forEach(b => {
     if (b.type === 'paragraph') {
       html += `${turndownService.turndown(b.data.text)}\n\n`;
+    } else if (b.type === 'code') {
+      html += sanitize(
+        b.data.code,
+        sanitizeConfig({
+          secureLinks: false,
+          allLinksBlank: false,
+        }),
+      );
     } else if (b.type === 'header') {
       Array(b.data.level)
         .fill()
