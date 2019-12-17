@@ -103,6 +103,13 @@ const SinglePostAmp = props => {
                           src="https://cdn.ampproject.org/v0/amp-vimeo-0.1.js"
                         />
                       )}
+                      {embeds.instagram && (
+                        <script
+                          async
+                          custom-element="amp-instagram"
+                          src="https://cdn.ampproject.org/v0/amp-instagram-0.1.js"
+                        />
+                      )}
                       <script
                         type="application/ld+json"
                         // eslint-disable-next-line react/no-danger
