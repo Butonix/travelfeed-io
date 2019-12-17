@@ -40,10 +40,11 @@ const SinglePostAmp = props => {
             if (depth > 0) title = `Re: ${root_title}`;
             const isTf = app && app.split('/')[0] === 'travelfeed';
             const htmlBody = parseBody(body, {});
-            const bodyText = parseHtmlToReact(htmlBody, {
+            const reactParsed = parseHtmlToReact(htmlBody, {
               amp: true,
               hideimgcaptions: !isTf,
             });
+            const { bodyText, embeds } = reactParsed;
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
             const excerpt = `${sanitized.substring(0, 180)}[...] by ${author}`;
             const canonicalUrl = canonicalLinker(
@@ -81,11 +82,27 @@ const SinglePostAmp = props => {
                         custom-element="amp-sidebar"
                         src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"
                       />
-                      <script
-                        async
-                        custom-element="amp-youtube"
-                        src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"
-                      />
+                      {embeds.youtube && (
+                        <script
+                          async
+                          custom-element="amp-youtube"
+                          src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"
+                        />
+                      )}
+                      {embeds.iframe && (
+                        <script
+                          async
+                          custom-element="amp-iframe"
+                          src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"
+                        />
+                      )}
+                      {embeds.vimeo && (
+                        <script
+                          async
+                          custom-element="amp-vimeo"
+                          src="https://cdn.ampproject.org/v0/amp-vimeo-0.1.js"
+                        />
+                      )}
                       <script
                         type="application/ld+json"
                         // eslint-disable-next-line react/no-danger
@@ -193,7 +210,7 @@ const SinglePostAmp = props => {
                     </li>
                   </ul>
                 </amp-sidebar>
-                {depth === 0 && (
+                {depth === 0 && img_url && (
                   <figure className="ampstart-image-fullpage-hero m0 relative mb4">
                     <amp-img
                       height="720"
@@ -236,14 +253,14 @@ const SinglePostAmp = props => {
                 <main id="content" role="main" className="">
                   <article className="photo-article">
                     <div className="postcontent">
-                      {depth > 0 && (
+                      {(depth > 0 || !img_url) && (
                         <>
                           <h1 className="pt3">
                             <Link
                               as={`/@${root_author}/${root_permlink}?amp=1`}
                               href={`/post?author=${root_author}&permlink=${root_permlink}&amp=1`}
                             >
-                              {title}
+                              <a>{title}</a>
                             </Link>
                           </h1>
                           <p>

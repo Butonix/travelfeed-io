@@ -76,7 +76,7 @@ const DotMenu = props => {
 
   if (editLink) {
     menuItems.push(
-      <Link as="/dashboard/publish" href={editLink}>
+      <Link href={editLink}>
         <MenuItem>
           <ListItemIcon>
             <EditIcon fontSize="small" />

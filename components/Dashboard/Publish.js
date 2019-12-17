@@ -564,7 +564,7 @@ const PostEditor = props => {
         const jsonMetadata = JSON.stringify(metadata);
         const author = user;
         if (editMode) {
-          const patches = dmp.patch_make(originalBody, content);
+          const patches = dmp.patch_make(originalBody, body);
           if (patches.length > 0) body = dmp.patch_toText(patches);
         }
         setPublishThis({

@@ -13,7 +13,6 @@ import { imageProxy } from './getImage';
 import sanitizeConfig from './PostParser/SanitizeConfig';
 import {
   dtubeImageRegex,
-  dtubeLinkRegex,
   htmlComment,
   imgFullSize,
   markdownComment,
@@ -91,33 +90,7 @@ const parseBody = (body, options) => {
   }
 
   // Remove preview images in dtube posts with dtube embeds
-  const dtubeMatch = dtubeImageRegex.exec(parsedBody);
-  if (dtubeMatch && dtubeMatch[1] && dtubeMatch[2])
-    parsedBody = parsedBody.replace(
-      dtubeImageRegex,
-      `<iframe
-      src="https://emb.d.tube/#!/${dtubeMatch[1]}/${dtubeMatch[2]}"
-        height="300"
-        scrolling="no"
-        frameborder="0"
-        allowtransparency="true"
-        allowfullscreen
-        style="width: 100%;"
-      />`,
-    );
-  // Replace dtube links with dtube embeds
-  parsedBody = parsedBody.replace(
-    dtubeLinkRegex,
-    `\n<iframe
-  src="https://emb.d.tube/#!/$1"
-    height="300"
-    scrolling="no"
-    frameborder="0"
-    allowtransparency="true"
-    allowfullscreen
-    style="width: 100%;"
-  />\n`,
-  );
+  parsedBody = parsedBody.replace(dtubeImageRegex, '');
   // remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, '');
   // Render markdown to HTML
