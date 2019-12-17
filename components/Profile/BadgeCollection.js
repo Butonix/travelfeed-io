@@ -14,24 +14,26 @@ const BadgeCollection = props => {
             </Typography>{' '}
           </div>
           {props.badges.map(b => {
-            return (
-              <div className="col-3 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
-                <Tooltip
-                  disableFocusListener
-                  disableTouchListener
-                  title={b.name}
-                >
-                  <span
-                    style={{ fontSize: '4em' }}
-                    className={`cpointer ${
-                      b.visited === false ? ' notvisited' : ''
-                    }`}
+            if (b)
+              return (
+                <div className="col-3 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
+                  <Tooltip
+                    disableFocusListener
+                    disableTouchListener
+                    title={b.name}
                   >
-                    {b.emoji}
-                  </span>
-                </Tooltip>
-              </div>
-            );
+                    <span
+                      style={{ fontSize: '4em' }}
+                      className={`cpointer ${
+                        b.visited === false ? ' notvisited' : ''
+                      }`}
+                    >
+                      {b.emoji}
+                    </span>
+                  </Tooltip>
+                </div>
+              );
+            return <></>;
           })}
         </div>
       </div>
