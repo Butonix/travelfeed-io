@@ -15,6 +15,22 @@ const Curation = () => {
   const [posts, setPosts] = useState([]);
   const [postPosition, setPostPosition] = useState(0);
 
+  const handleFetchedPosts = fetchedPosts => {
+    setPosts(fetchedPosts);
+    const newPosts = fetchedPosts;
+    fetchedPosts.forEach((post, i) => {
+      fetch(`https://blacklist.usesteem.com/user/${post.author}`)
+        .then(response => {
+          return response.json();
+        })
+        .then(res => {
+          if (res.blacklisted.length > 0)
+            newPosts[i].blacklisted = res.blacklisted;
+        });
+    });
+    setPosts(newPosts);
+  };
+
   const handleNext = () => {
     const newPostPosition = postPosition + 1;
     if (posts.length > newPostPosition) setPostPosition(newPostPosition);
@@ -36,7 +52,7 @@ const Curation = () => {
         }}
       >
         {({ data }) => {
-          if (data && data.posts) setPosts(data.posts);
+          if (data && data.posts) handleFetchedPosts(data.posts);
           if (posts.length < postPosition) return <>No more posts </>;
           if (posts && posts.length > 0) {
             const {
@@ -57,6 +73,7 @@ const Curation = () => {
               title,
               img_url,
               app,
+              blacklisted,
             } = posts[postPosition];
             const isTf = app && app.split('/')[0] === 'travelfeed';
             const htmlBody = parseBody(body, {});
@@ -79,7 +96,12 @@ const Curation = () => {
                   <CardContent>
                     <div className="container">
                       <div className="row">
-                        <div className="col">Author notes</div>
+                        <div className="col">
+                          Author notes:
+                          {blacklisted && blacklisted.length > 0
+                            ? `Blacklisted by ${blacklisted}`
+                            : ''}{' '}
+                        </div>
                         <div className="col">Author score</div>
                         <div className="col">Author posts submitted</div>
                         <div className="col">Author notes</div>
