@@ -163,14 +163,27 @@ const PostEditor = props => {
       .then(({ post }) => {
         setTitle(post.title);
         setOriginalBody(post.body);
-        const cleanBody = post.body
-          .replace(markdownComment, '')
-          .replace(swmregex, '');
-        setContent(cleanBody);
         setPrimaryTag(post.category);
         setPermlink(post.permlink);
         if (post.img_url) setFeaturedImage(post.img_url);
         const json = JSON.parse(post.json);
+        if (
+          json.easyEditor &&
+          json.app &&
+          json.app.split('/')[0] === 'travelfeed'
+        ) {
+          setCodeEditor(false);
+          setContent(JSON.parse(json.easyEditor));
+        } else {
+          const cleanBody = post.body
+            .replace(markdownComment, '')
+            .replace(swmregex, '')
+            .replace(
+              /\n\n---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./gi,
+              '',
+            );
+          setContent(cleanBody);
+        }
         if (json.tags && json.tags.length > 0) {
           const jstags = [];
           json.tags.forEach(tag => {
@@ -520,15 +533,15 @@ const PostEditor = props => {
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = meta;
+        if (!codeEditor) metadata.easyEditor = JSON.stringify(content);
+        else metadata.easyEditor = undefined;
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
         if (imageList.length > 0) metadata.image = imageList;
         if (linkList.length > 0) metadata.links = linkList;
         if (mentionList.length > 0) metadata.users = mentionList;
-        if (!editMode) {
-          body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
-        }
+        body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
         if (location) {
           metadata.location = {
             latitude: location.latitude,

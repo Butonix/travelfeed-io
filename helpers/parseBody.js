@@ -49,7 +49,7 @@ const parseBody = (body, options) => {
     '',
   );
   parsedBody = parsedBody.replace(
-    /---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./gi,
+    /\n\n---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./gi,
     '',
   );
   // Remove dclick ads
