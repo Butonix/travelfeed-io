@@ -90,9 +90,7 @@ const parseBody = (body, options) => {
   }
 
   // Remove preview images in dtube posts with dtube embeds
-  const dtubeMatch = dtubeImageRegex.exec(parsedBody);
-  if (dtubeMatch && dtubeMatch[1] && dtubeMatch[2])
-    parsedBody = parsedBody.replace(dtubeImageRegex, '');
+  parsedBody = parsedBody.replace(dtubeImageRegex, '');
   // remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, '');
   // Render markdown to HTML

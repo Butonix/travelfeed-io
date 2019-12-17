@@ -7,6 +7,7 @@ import { imageProxy } from './getImage';
 import { exitUrl, mentionUrl, postUrl } from './regex';
 
 const parseHtmlToReact = (htmlBody, options) => {
+  const embeds = {};
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
 
   const parseOptions = {
@@ -15,6 +16,7 @@ const parseHtmlToReact = (htmlBody, options) => {
 
       // Open links in new tab
       if (parseLinksToBlank && attribs.href) {
+        // eslint-disable-next-line no-param-reassign
         attribs.target = '_blank';
         return;
       }
@@ -183,29 +185,52 @@ const parseHtmlToReact = (htmlBody, options) => {
             </>
           );
       }
-      if (
-        options.amp &&
-        attribs.src &&
-        attribs.frameborder !== undefined &&
-        attribs.allowfullscreen !== undefined
-      ) {
-        const match = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
+      if (options.amp && attribs.src && attribs.frameborder !== undefined) {
+        const ytmatch = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
           attribs.src,
         );
-        if (!match) return;
+        if (ytmatch) {
+          embeds.youtube = true;
+          return (
+            <amp-youtube
+              data-videoid={ytmatch[1]}
+              layout="responsive"
+              width={attribs.width}
+              height={attribs.height}
+            />
+          );
+        }
+        const vmmatch = /https:\/\/player\.vimeo\.com\/video\/([0-9]*)/.exec(
+          attribs.src,
+        );
+        if (vmmatch) {
+          embeds.vimeo = true;
+          return (
+            <amp-vimeo
+              data-videoid={vmmatch[1]}
+              layout="responsive"
+              width={attribs.width || '960'}
+              height={attribs.height || '540'}
+            />
+          );
+        }
+        embeds.iframe = true;
         return (
-          <amp-youtube
-            data-videoid={match[1]}
+          <amp-iframe
+            allowfullscreen={attribs.allowfullscreen}
+            width={attribs.width || '800'}
+            height={attribs.height || '400'}
+            sandbox="allow-scripts allow-same-origin"
             layout="responsive"
-            width={attribs.width}
-            height={attribs.height}
+            frameborder="0"
+            src={attribs.src}
           />
         );
       }
     },
   };
 
-  return parse(htmlBody, parseOptions);
+  return { bodyText: parse(htmlBody, parseOptions), embeds };
 };
 
 export default parseHtmlToReact;
