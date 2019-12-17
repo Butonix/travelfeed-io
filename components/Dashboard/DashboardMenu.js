@@ -23,6 +23,7 @@ import ProfileIcon from '@material-ui/icons/Person';
 import UserAddIcon from '@material-ui/icons/PersonAdd';
 import RepliesIcon from '@material-ui/icons/Reply';
 import SettingsIcon from '@material-ui/icons/Settings';
+import StarIcon from '@material-ui/icons/Star';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -370,6 +371,18 @@ class DashboardMenu extends Component {
             <List>
               <Link
                 color="textPrimary"
+                href={`/dashboard/curation?open=${this.state.open}`}
+                as="/dashboard/curation"
+              >
+                <ListItem selected={this.props.active === 'curation'} button>
+                  <ListItemIcon>
+                    <StarIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Curation" />
+                </ListItem>
+              </Link>
+              <Link
+                color="textPrimary"
                 href={`/dashboard/onboarding?open=${this.state.open}`}
                 as="/dashboard/onboarding"
               >
@@ -380,9 +393,6 @@ class DashboardMenu extends Component {
                   <ListItemText primary="Onboarding" />
                 </ListItem>
               </Link>
-            </List>
-            <Divider />
-            <List>
               <Link
                 color="textPrimary"
                 href={`/dashboard/newsletter?open=${this.state.open}`}
