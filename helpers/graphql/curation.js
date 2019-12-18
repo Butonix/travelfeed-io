@@ -18,3 +18,30 @@ export const REPORT_POST = gql`
     }
   }
 `;
+
+export const ADD_CURATION_AUTHOR_NOTES = gql`
+  mutation addCurationAuthorNotes(
+    $author: String!
+    $notes: String!
+    $attentionLevel: Int!
+  ) {
+    addCurationAuthorNotes(
+      author: $author
+      notes: $notes
+      attentionLevel: $attentionLevel
+    ) {
+      success
+      message
+    }
+  }
+`;
+
+export const GET_CURATION_AUTHOR_NOTES = gql`
+  query getCurationAuthorNotes($authors: [String]!) {
+    getCurationAuthorNotes(authors: $authors) {
+      author
+      notes
+      attentionLevel
+    }
+  }
+`;
