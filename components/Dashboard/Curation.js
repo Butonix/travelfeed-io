@@ -15,6 +15,7 @@ import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import PostContent from '../Post/PostContent';
 import EditAuthorNotesDialog from './Curation/EditAuthorNotesDialog';
+import StickyCurationSlider from './Curation/StickyCurationSlider';
 
 const Curation = props => {
   const [posts, setPosts] = useState([]);
@@ -198,6 +199,7 @@ const Curation = props => {
                     </div>
                   </CardContent>
                 </Card>
+                <StickyCurationSlider author={author} permlink={permlink} />
                 <Grid
                   container
                   spacing={0}
