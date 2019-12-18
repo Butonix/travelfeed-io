@@ -1,6 +1,8 @@
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { SET_CURATION_SCORE } from '../../../helpers/graphql/curation';
+import graphQLClient from '../../../helpers/graphQLClient';
 import EmojiSlider from '../../Post/EmojiSlider';
 
 const useStyles = makeStyles(() => ({
@@ -18,16 +20,29 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const StickyCurationSlider = () => {
-  const [weight, setWeight] = useState(0);
+const StickyCurationSlider = props => {
+  const { handleNext, handleSetPostWeight, isTf, author, permlink } = props;
+  const [weight, setWeight] = useState(props.weight || 0);
   const [loading, setLoading] = useState(undefined);
 
   const classes = useStyles();
 
+  useEffect(() => {
+    setWeight(props.weight || 0);
+  }, [props]);
+
   const triggerCurate = () => {
-    console.log('Curate this');
-    // TODO: Implement curation action
-    setLoading(false);
+    let score = weight * 5;
+    if (isTf) score = weight * 10;
+    score = Math.round(score);
+    graphQLClient(SET_CURATION_SCORE, { author, permlink, score }).then(
+      ({ setCurationScore }) => {
+        console.log(setCurationScore);
+      },
+    );
+    handleNext();
+    handleSetPostWeight(weight);
+    setLoading(undefined);
   };
 
   const handleWeightChange = (event, value) => {
@@ -42,6 +57,7 @@ const StickyCurationSlider = () => {
           <div className="row h-100">
             <div className="col-12 my-auto">
               <EmojiSlider
+                hideValueLabel
                 loading={loading}
                 weight={weight}
                 setWeight={handleWeightChange}

@@ -45,3 +45,16 @@ export const GET_CURATION_AUTHOR_NOTES = gql`
     }
   }
 `;
+
+export const SET_CURATION_SCORE = gql`
+  mutation setCurationScore(
+    $author: String!
+    $permlink: String!
+    $score: Int!
+  ) {
+    setCurationScore(author: $author, permlink: $permlink, score: $score) {
+      success
+      message
+    }
+  }
+`;

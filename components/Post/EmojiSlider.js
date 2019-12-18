@@ -72,7 +72,9 @@ class EmojiSlider extends Component {
       <>
         <MuiThemeProvider theme={weight < 0 ? downVoteTheme : upVoteTheme}>
           <StyledSlider
-            ValueLabelComponent={ValueLabelComponent}
+            ValueLabelComponent={
+              this.props.hideValueLabel ? undefined : ValueLabelComponent
+            }
             ThumbComponent={this.EmojiThumbComponent}
             track={false}
             valueLabelFormat={x => {
