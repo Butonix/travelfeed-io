@@ -11,7 +11,7 @@ export const instagramPost = /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(\w+
 
 export const tfAdBottom = /\n\n---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./i;
 
-export const tfAdTop = /<a href="https:\/\/travelfeed\.io\/@.*\/.*"><center><img src=".*" alt=".*"\/><h3>Read ".*" on TravelFeed\.io for the best experience<\/h3><\/center><\/a><hr \/>\n\n/i;
+export const tfAdTop = /<a href="https:\/\/travelfeed\.io\/@.*\/.*"><center>(?:|<img src=".*" alt=".*"\/>)<h3>Read ".*" on TravelFeed\.io for the best experience<\/h3><\/center><\/a><hr \/>\n\n/i;
 
 export const ownUrl = /^(localhost|travelfeed\.io|travelfeedio\.herokuapp.com)$/;
 
