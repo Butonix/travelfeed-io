@@ -76,6 +76,7 @@ const PostEditor = props => {
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
   const [id, setId] = useState(generateDraftId(user));
+  const [isEditId, setIsEditId] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [poweredUp, setPoweredUp] = useState(false);
@@ -169,21 +170,6 @@ const PostEditor = props => {
         setPermlink(post.permlink);
         if (post.img_url) setFeaturedImage(post.img_url);
         const json = JSON.parse(post.json);
-        if (
-          json.easyEditor &&
-          json.app &&
-          json.app.split('/')[0] === 'travelfeed'
-        ) {
-          setCodeEditor(false);
-          setContent(JSON.parse(json.easyEditor));
-        } else {
-          const cleanBody = post.body
-            .replace(markdownComment, '')
-            .replace(swmregex, '')
-            .replace(tfAdTop, '')
-            .replace(tfAdBottom, '');
-          setContent(cleanBody);
-        }
         if (json.tags && json.tags.length > 0) {
           const jstags = [];
           json.tags.forEach(tag => {
@@ -206,6 +192,35 @@ const PostEditor = props => {
             if (json.locationCategory)
               setLocationCategory(json.locationCategory);
           }
+        }
+        if (
+          json.easyEditorId &&
+          json.app &&
+          json.app.split('/')[0] === 'travelfeed'
+        ) {
+          graphQLClient(GET_DRAFT_BY_ID, {
+            id: JSON.parse(json.easyEditorId),
+          }).then(({ draft }) => {
+            if (draft && draft.body) {
+              setCodeEditor(false);
+              setContent(JSON.parse(draft.body));
+              setIsEditId(true);
+            } else {
+              const cleanBody = post.body
+                .replace(markdownComment, '')
+                .replace(swmregex, '')
+                .replace(tfAdTop, '')
+                .replace(tfAdBottom, '');
+              setContent(cleanBody);
+            }
+          });
+        } else {
+          const cleanBody = post.body
+            .replace(markdownComment, '')
+            .replace(swmregex, '')
+            .replace(tfAdTop, '')
+            .replace(tfAdBottom, '');
+          setContent(cleanBody);
         }
       })
       .catch(err => {
@@ -270,7 +285,7 @@ const PostEditor = props => {
       });
       draftBody = codeEditor ? content : JSON.stringify(content);
     }
-    if ((readingtime.words > 0 || title !== '') && !editMode) {
+    if ((readingtime.words > 0 || title !== '') && (isEditId || !editMode)) {
       const variables = {
         id,
         title,
@@ -533,8 +548,8 @@ const PostEditor = props => {
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = meta;
-        if (!codeEditor) metadata.easyEditor = JSON.stringify(content);
-        else metadata.easyEditor = undefined;
+        if (!codeEditor) metadata.easyEditorId = JSON.stringify(id);
+        else metadata.easyEditorId = undefined;
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
