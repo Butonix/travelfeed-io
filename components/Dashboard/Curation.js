@@ -2,8 +2,10 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
+import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Query } from 'react-apollo';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import { GET_CURATION_AUTHOR_NOTES } from '../../helpers/graphql/curation';
@@ -14,10 +16,20 @@ import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import PostContent from '../Post/PostContent';
 import EditAuthorNotesDialog from './Curation/EditAuthorNotesDialog';
 
-const Curation = () => {
+const Curation = props => {
   const [posts, setPosts] = useState([]);
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
+
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
 
   const handleFetchedPosts = fetchedPosts => {
     setPosts(fetchedPosts);
@@ -148,7 +160,20 @@ const Curation = () => {
                         <div className="col">Author score</div>
                         <div className="col">Author posts submitted</div>
                         <div className="col">
-                          Copy full text (plagiarism check)
+                          <CopyToClipboard
+                            text={sanitized}
+                            onCopy={() =>
+                              newNotification({
+                                success: true,
+                                message:
+                                  'Post content copied to your clipboard. Check at a plagiarism checker of your choice.',
+                              })
+                            }
+                          >
+                            <Button color="primary" variant="contained">
+                              Plagiarism check
+                            </Button>
+                          </CopyToClipboard>
                         </div>
                         <div className="col">Reply (from own acc/ from tf)</div>
                         <div className="col">
@@ -215,4 +240,4 @@ const Curation = () => {
   );
 };
 
-export default Curation;
+export default withSnackbar(Curation);
