@@ -300,7 +300,7 @@ const Curation = props => {
                 <div className="col-xl col-lg col-md col-sm-4 col-4">
                   <FormControl component="fieldset">
                     <FormGroup>
-                      <Tooltip title="E.g. Bad use of font formatting, missing structure/subheadings, photos interrupting the reading flow">
+                      <Tooltip title="E.g. bad use of font formatting, missing structure/subheadings, photos interrupting the reading flow">
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -313,7 +313,7 @@ const Curation = props => {
                           label="Formatting"
                         />
                       </Tooltip>
-                      <Tooltip title="Grammer, spelling">
+                      <Tooltip title="Grammar, spelling">
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -333,7 +333,7 @@ const Curation = props => {
                 <div className="col-xl col-lg col-md col-sm-4 col-4">
                   <FormControl component="fieldset">
                     <FormGroup>
-                      <Tooltip title="Paragraphs in non-English">
+                      <Tooltip title="Paragraphs of non-English or bilingual text disturb the reading flow">
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -378,7 +378,7 @@ const Curation = props => {
                           label="Photos"
                         />
                       </Tooltip>
-                      <Tooltip title="Post is over 250 words, but feels too short">
+                      <Tooltip title="It feels like the author was counting words to get to 250, the post feels too short">
                         <FormControlLabel
                           control={
                             <Checkbox
