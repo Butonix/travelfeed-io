@@ -6,6 +6,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Popover from '@material-ui/core/Popover';
 import BackIcon from '@material-ui/icons/ArrowBackIos';
 import NextIcon from '@material-ui/icons/ArrowForwardIos';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import CuratorIcon from '@material-ui/icons/MoreVert';
 import EyeIcon from '@material-ui/icons/RemoveRedEye';
 import { withSnackbar } from 'notistack';
@@ -13,7 +14,7 @@ import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const DotMenu = props => {
-  const { handleBack, handleNext, sanitized } = props;
+  const { handleBack, handleNext, handleFinal, sanitized } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -77,6 +78,15 @@ const DotMenu = props => {
         <BackIcon fontSize="small" />
       </ListItemIcon>
       <ListItemText primary="Back" />
+    </MenuItem>,
+  );
+
+  menuItems.push(
+    <MenuItem onClick={handleFinal}>
+      <ListItemIcon>
+        <UpIcon fontSize="small" />
+      </ListItemIcon>
+      <ListItemText primary="Final" />
     </MenuItem>,
   );
 

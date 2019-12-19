@@ -16,6 +16,7 @@ import sanitize from 'sanitize-html';
 import {
   ADD_CURATION_AUTHOR_NOTES,
   GET_CURATION_AUTHOR_NOTES,
+  GET_CURATION_SCORES,
 } from '../../helpers/graphql/curation';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import graphQLClient from '../../helpers/graphQLClient';
@@ -25,6 +26,7 @@ import FixedBackgroundImage from '../General/FixedBackgroundImage';
 import PostContent from '../Post/PostContent';
 import DotOptions from './Curation/DotOptions';
 import EditAuthorNotesDialog from './Curation/EditAuthorNotesDialog';
+import FinalCuration from './Curation/FinalCuration';
 import StickyCurationSlider from './Curation/StickyCurationSlider';
 
 const useStyles = makeStyles(() => ({
@@ -42,6 +44,7 @@ const Curation = props => {
   const classes = useStyles();
 
   const [posts, setPosts] = useState([]);
+  const [curationScores, setCurationScores] = useState([]);
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
   const [finished, setFinished] = useState(false);
@@ -55,6 +58,12 @@ const Curation = props => {
     writing: false,
     valueadding: false,
   });
+
+  const handleGetCurationScores = () => {
+    graphQLClient(GET_CURATION_SCORES).then(({ getCurationScores }) => {
+      setCurationScores(getCurationScores);
+    });
+  };
 
   const getCheckboxes = (author, notes) => {
     notes.forEach((note, i) => {
@@ -111,7 +120,7 @@ const Curation = props => {
     graphQLClient(GET_POSTS, {
       orderby: 'created_at',
       min_curation_score: 0,
-      limit: 20, // TODO: Set production limit to ~60
+      limit: 80,
       exclude_authors: ['travelfeed', 'steemitworldmap'],
     }).then(res => {
       handleFetchedPosts(res.posts);
@@ -136,6 +145,7 @@ const Curation = props => {
     if (posts.length > newPostPosition && newPostPosition >= 0)
       setPostPosition(newPostPosition);
     else {
+      handleGetCurationScores();
       setFinished(true);
       return;
     }
@@ -158,6 +168,11 @@ const Curation = props => {
 
   const handleNext = () => {
     handleSwitchPost(postPosition + 1);
+  };
+
+  const handleFinal = () => {
+    handleGetCurationScores();
+    setFinished(true);
   };
 
   const handleSetPostWeight = (author, permlink, weight) => {
@@ -185,7 +200,19 @@ const Curation = props => {
   };
 
   if (finished)
-    return <>Finished with curation! These are the winners you picked:</>;
+    return (
+      <>
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="h6">
+              You did it! These are all the posts you rated sorted by how much
+              you liked them. Please make your final picks:
+            </Typography>
+            <FinalCuration curationScores={curationScores} />
+          </CardContent>
+        </Card>
+      </>
+    );
 
   if (posts.length < postPosition) return <>No more posts </>;
   if (posts && posts.length > 0) {
@@ -404,6 +431,7 @@ const Curation = props => {
                 <DotOptions
                   handleBack={handleBack}
                   handleNext={handleNext}
+                  handleFinal={handleFinal}
                   sanitized={sanitized}
                 />
               </div>
@@ -413,6 +441,7 @@ const Curation = props => {
         <StickyCurationSlider
           author={author}
           permlink={permlink}
+          title={title}
           handleNext={handleNext}
           handleSetPostWeight={postWeight =>
             handleSetPostWeight(author, permlink, postWeight)

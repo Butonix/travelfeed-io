@@ -13,6 +13,7 @@ import { customJson } from '../../../helpers/actions';
 class CustomJson extends React.Component {
   state = {
     open: false,
+    curated: false,
   };
 
   handleClickOpen = () => {
@@ -32,6 +33,7 @@ class CustomJson extends React.Component {
     };
     customJson(payload, 'travelfeed').then(result => {
       this.newNotification(result);
+      this.setState({ curated: true });
     });
   };
 
@@ -47,8 +49,21 @@ class CustomJson extends React.Component {
 
   render() {
     return (
-      <div>
-        <MenuItem onClick={this.handleClickOpen}>{this.props.action}</MenuItem>
+      <>
+        {(this.props.isLink && (
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+          <span
+            onClick={this.state.curated ? undefined : this.handleClickOpen}
+            className="cpointer textPrimary"
+          >
+            {this.props.action}
+            {this.state.curated ? '✅' : ''}
+          </span>
+        )) || (
+          <MenuItem onClick={this.handleClickOpen}>
+            {this.props.action}
+          </MenuItem>
+        )}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -75,7 +90,7 @@ class CustomJson extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </>
     );
   }
 }

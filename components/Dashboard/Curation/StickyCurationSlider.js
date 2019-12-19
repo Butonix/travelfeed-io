@@ -26,10 +26,11 @@ const StickyCurationSlider = props => {
   const {
     handleNext,
     handleSetPostWeight,
-    isTf,
+    // isTf,
     author,
     permlink,
     state,
+    title,
   } = props;
   const {
     formatting,
@@ -63,13 +64,15 @@ const StickyCurationSlider = props => {
 
   const triggerCurate = negativeScore => {
     if (!negativeScore && weight < 0) return;
-    let score = weight * 5;
-    if (isTf) score = weight * 10;
+    let score = weight * 10;
+    // let score = weight * 5;
+    // if (isTf) score = weight * 10;
     if (negativeScore) score = -100;
     score = Math.round(score);
     graphQLClient(SET_CURATION_SCORE, {
       author,
       permlink,
+      title,
       score,
       formatting,
       language,
@@ -88,13 +91,19 @@ const StickyCurationSlider = props => {
   };
 
   const handleSliderDrop = () => {
+    if (weight > -1 && weight < 0) {
+      setWeight(0);
+      setLoading(undefined);
+    }
     triggerCurate(false);
   };
 
   const handleWeightChange = (event, value) => {
     setWeight(value);
-    if (weight < 0) setBlacklistOpen(true);
-    setLoading(true);
+    if (weight < -1) setBlacklistOpen(true);
+    if (weight < -1 || weight > 0) {
+      setLoading(true);
+    }
   };
 
   const handleBlacklistConfirm = () => {

@@ -70,10 +70,22 @@ export const GET_CURATION_AUTHOR_NOTES = gql`
   }
 `;
 
+export const GET_CURATION_SCORES = gql`
+  query getCurationScores {
+    getCurationScores {
+      author
+      permlink
+      title
+      score
+    }
+  }
+`;
+
 export const SET_CURATION_SCORE = gql`
   mutation setCurationScore(
     $author: String!
     $permlink: String!
+    $title: String!
     $score: Int!
     $formatting: Boolean
     $language: Boolean
@@ -87,6 +99,7 @@ export const SET_CURATION_SCORE = gql`
     setCurationScore(
       author: $author
       permlink: $permlink
+      title: $title
       score: $score
       formatting: $formatting
       language: $language
