@@ -7,7 +7,7 @@ export const invalidPermlink = /^-|[^a-zA-Z0-9-]/;
 // Valid steem usernames
 export const allMentions = /\s@([a-z0-9-]{3,16})/;
 
-export const instagramPost = /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(\w+)\/?/gi;
+export const instagramPost = /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(.*)\//gi;
 
 export const tfAdBottom = /\n\n---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./i;
 

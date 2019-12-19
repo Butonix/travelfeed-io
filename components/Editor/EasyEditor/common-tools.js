@@ -89,7 +89,7 @@ export default {
         instagram: {
           // Regex for instagram: https://stackoverflow.com/questions/40054016/regex-to-get-instagram-picture-php
           // Instagram iFrame edit for editor preview: https://stackoverflow.com/questions/24739663/embebing-instagram-webpage-inside-an-iframe
-          regex: /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(\w+)\/?/,
+          regex: /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(.*)\//,
           embedUrl: 'http://instagram.com/p/<%= remote_id %>/embed',
           html:
             "<iframe height='400' frameborder='0' style='width: 50%; margin: 0 auto; display: block;'></iframe>",
