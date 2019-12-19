@@ -22,13 +22,29 @@ export const REPORT_POST = gql`
 export const ADD_CURATION_AUTHOR_NOTES = gql`
   mutation addCurationAuthorNotes(
     $author: String!
-    $notes: String!
-    $attentionLevel: Int!
+    $notes: String
+    $attentionLevel: Int
+    $formatting: Boolean
+    $language: Boolean
+    $bilingual: Boolean
+    $footer: Boolean
+    $photos: Boolean
+    $short: Boolean
+    $writing: Boolean
+    $valueadding: Boolean
   ) {
     addCurationAuthorNotes(
       author: $author
       notes: $notes
       attentionLevel: $attentionLevel
+      formatting: $formatting
+      language: $language
+      bilingual: $bilingual
+      footer: $footer
+      photos: $photos
+      short: $short
+      writing: $writing
+      valueadding: $valueadding
     ) {
       success
       message
@@ -42,6 +58,14 @@ export const GET_CURATION_AUTHOR_NOTES = gql`
       author
       notes
       attentionLevel
+      formatting
+      language
+      bilingual
+      footer
+      photos
+      short
+      writing
+      valueadding
     }
   }
 `;
@@ -51,8 +75,28 @@ export const SET_CURATION_SCORE = gql`
     $author: String!
     $permlink: String!
     $score: Int!
+    $formatting: Boolean
+    $language: Boolean
+    $bilingual: Boolean
+    $footer: Boolean
+    $photos: Boolean
+    $short: Boolean
+    $writing: Boolean
+    $valueadding: Boolean
   ) {
-    setCurationScore(author: $author, permlink: $permlink, score: $score) {
+    setCurationScore(
+      author: $author
+      permlink: $permlink
+      score: $score
+      formatting: $formatting
+      language: $language
+      bilingual: $bilingual
+      footer: $footer
+      photos: $photos
+      short: $short
+      writing: $writing
+      valueadding: $valueadding
+    ) {
       success
       message
     }

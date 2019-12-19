@@ -1,7 +1,11 @@
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +14,10 @@ import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
-import { GET_CURATION_AUTHOR_NOTES } from '../../helpers/graphql/curation';
+import {
+  ADD_CURATION_AUTHOR_NOTES,
+  GET_CURATION_AUTHOR_NOTES,
+} from '../../helpers/graphql/curation';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import graphQLClient from '../../helpers/graphQLClient';
 import parseBody from '../../helpers/parseBody';
@@ -38,6 +45,33 @@ const Curation = props => {
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
   const [finished, setFinished] = useState(false);
+  const [state, setState] = React.useState({
+    formatting: false,
+    language: false,
+    bilingual: false,
+    footer: false,
+    photos: false,
+    short: false,
+    writing: false,
+    valueadding: false,
+  });
+
+  const getCheckboxes = (author, notes) => {
+    notes.forEach((note, i) => {
+      if (note.author === author) {
+        setState({
+          formatting: notes[i].formatting === true,
+          language: notes[i].language === true,
+          bilingual: notes[i].bilingual === true,
+          footer: notes[i].footer === true,
+          photos: notes[i].photos === true,
+          short: notes[i].short === true,
+          writing: notes[i].writing === true,
+          valueadding: notes[i].valueadding === true,
+        });
+      }
+    });
+  };
 
   const handleFetchedPosts = fetchedPosts => {
     setPosts(fetchedPosts);
@@ -67,6 +101,7 @@ const Curation = props => {
       ({ getCurationAuthorNotes }) => {
         if (getCurationAuthorNotes && getCurationAuthorNotes.length > 0) {
           setCurationAuthorNotes(getCurationAuthorNotes);
+          getCheckboxes(newPosts[0].author, getCurationAuthorNotes);
         }
       },
     );
@@ -97,15 +132,32 @@ const Curation = props => {
     }
   };
 
-  const handleNext = () => {
-    const newPostPosition = postPosition + 1;
-    if (posts.length > newPostPosition) setPostPosition(newPostPosition);
-    else setFinished(true);
+  const handleSwitchPost = newPostPosition => {
+    if (posts.length > newPostPosition && newPostPosition >= 0)
+      setPostPosition(newPostPosition);
+    else {
+      setFinished(true);
+      return;
+    }
+    setState({
+      formatting: false,
+      language: false,
+      bilingual: false,
+      footer: false,
+      photos: false,
+      short: false,
+      writing: false,
+      valueadding: false,
+    });
+    getCheckboxes(posts[newPostPosition].author, curationAuthorNotes);
   };
 
   const handleBack = () => {
-    const newPostPosition = postPosition - 1;
-    if (newPostPosition >= 0) setPostPosition(newPostPosition);
+    handleSwitchPost(postPosition - 1);
+  };
+
+  const handleNext = () => {
+    handleSwitchPost(postPosition + 1);
   };
 
   const handleSetPostWeight = (author, permlink, weight) => {
@@ -116,6 +168,20 @@ const Curation = props => {
       }
     });
     setPosts(newPosts);
+  };
+
+  const handleCheckboxCheck = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+    const variables = {
+      author: posts[postPosition].author,
+      [name]: event.target.checked,
+    };
+    graphQLClient(ADD_CURATION_AUTHOR_NOTES, variables).then(
+      ({ addCurationAuthorNotes }) => {
+        if (!addCurationAuthorNotes.success)
+          newNotification(addCurationAuthorNotes);
+      },
+    );
   };
 
   if (finished)
@@ -204,7 +270,92 @@ const Curation = props => {
                     initialNotes={notes}
                   />
                 </div>
-                <div className="col">Checkboxes</div>
+                <>
+                  <div className="col">
+                    <FormControl component="fieldset">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.formatting}
+                              onChange={handleCheckboxCheck('formatting')}
+                            />
+                          }
+                          label="Formatting"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.language}
+                              onChange={handleCheckboxCheck('language')}
+                            />
+                          }
+                          label="Language"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.bilingual}
+                              onChange={handleCheckboxCheck('bilingual')}
+                            />
+                          }
+                          label="Bilingual"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.footer}
+                              onChange={handleCheckboxCheck('footer')}
+                            />
+                          }
+                          label="Footer"
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  </div>
+                  <div className="col">
+                    <FormControl component="fieldset">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.photos}
+                              onChange={handleCheckboxCheck('photos')}
+                            />
+                          }
+                          label="Photos"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.short}
+                              onChange={handleCheckboxCheck('short')}
+                            />
+                          }
+                          label="Short"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.writing}
+                              onChange={handleCheckboxCheck('writing')}
+                            />
+                          }
+                          label="Writing"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={state.valueadding}
+                              onChange={handleCheckboxCheck('valueadding')}
+                            />
+                          }
+                          label="Value-adding"
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  </div>
+                </>
                 <div className="col">
                   <CopyToClipboard
                     text={sanitized}
@@ -253,6 +404,7 @@ const Curation = props => {
           }
           weight={weight}
           isTf={isTf}
+          state={state}
         />
         <Grid container spacing={0} alignItems="center" justify="center">
           <Grid item lg={8} md={10} sm={11} xs={12} className="pb-2">
