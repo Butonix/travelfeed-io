@@ -1,3 +1,4 @@
+import CodeTool from '@editorjs/code';
 import Delimiter from '@editorjs/delimiter';
 import Header from '@editorjs/header';
 import Image from '@editorjs/image';
@@ -21,6 +22,12 @@ export default {
     class: LinkTool,
     config: {
       endpoint: `${API_URL}/fetchUrl`, // Your backend endpoint for url data fetching
+    },
+  },
+  code: {
+    class: CodeTool,
+    config: {
+      placeholder: 'Enter HTML or Markdown here',
     },
   },
   image: {
@@ -78,6 +85,14 @@ export default {
           embedUrl: 'https://emb.d.tube/#!/<%= remote_id %>',
           html:
             "<iframe height='300' scrolling='no' frameborder='0' allowtransparency='true' allowfullscreen style='width: 100%;'></iframe>",
+        },
+        instagram: {
+          // Regex for instagram: https://stackoverflow.com/questions/40054016/regex-to-get-instagram-picture-php
+          // Instagram iFrame edit for editor preview: https://stackoverflow.com/questions/24739663/embebing-instagram-webpage-inside-an-iframe
+          regex: /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(.*)\//,
+          embedUrl: 'http://instagram.com/p/<%= remote_id %>/embed',
+          html:
+            "<iframe height='400' frameborder='0' style='width: 50%; margin: 0 auto; display: block;'></iframe>",
         },
       },
     },

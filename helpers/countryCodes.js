@@ -359,6 +359,7 @@ const countries = [
   { alpha2: 'vi', name: 'US Virgin Islands', slug: 'us-virgin-islands' },
   { alpha2: 'wf', name: 'Wallis and Futuna', slug: 'wallis-and-futuna' },
   { alpha2: 'eh', name: 'Western Sahara', slug: 'western-sahara' },
+  { alpha2: 'xk', name: 'Kosovo', slug: 'kosovo' },
   { alpha2: 'ye', name: 'Yemen', slug: 'yemen' },
   { alpha2: 'zm', name: 'Zambia', slug: 'zambia' },
   { alpha2: 'zw', name: 'Zimbabwe', slug: 'zimbabwe' },

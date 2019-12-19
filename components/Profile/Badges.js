@@ -80,7 +80,17 @@ const Badges = props => {
 
   const countries = [];
   countryCodes.forEach(cc => {
-    countries.push(emojiFlags.countryCode(cc.toUpperCase()));
+    // Handle missing countries manually
+    if (cc === 'xk')
+      countries.push({
+        code: 'XK',
+        emoji: '🇽🇰',
+        unicode: 'U+1F1FD U+1F1F0',
+        name: 'Kosovo',
+        title: 'flag for Kosovo',
+        dialCode: '+383',
+      });
+    else countries.push(emojiFlags.countryCode(cc.toUpperCase()));
   });
   let regionsVisited = 0;
   regions.forEach(r => {

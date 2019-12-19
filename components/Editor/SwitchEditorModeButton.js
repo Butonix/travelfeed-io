@@ -33,7 +33,7 @@ class SwitchEditorModeButton extends Component {
       <Fragment>
         <Button
           onClick={
-            (this.props.codeEditor && this.handleClickOpen) ||
+            (!this.props.codeEditor && this.handleClickOpen) ||
             this.props.switchMode
           }
           color="inherit"
@@ -51,14 +51,16 @@ class SwitchEditorModeButton extends Component {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            Switch to EasyEditor?
+            Switch to HTML+Markdown Editor?
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              We recommend using the EasyEditor for new posts and markdown
-              posts. If you are using custom HTML instead of markdown, switching
-              to the EasyEditor can break your post. Are you sure that you want
-              to switch?
+              We recommend using the EasyEditor. If you would like to add a
+              small HTML snippet, you can do so in EasyEditor by adding a new
+              paragraph, clicking + and adding a Code block. <br />
+              <br /> If you switch to the HTML+Markdown editor, your post
+              contents will be converted to a Code block if you decide to switch
+              back to EasyEditor.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
