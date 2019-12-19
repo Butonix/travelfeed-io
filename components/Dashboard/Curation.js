@@ -241,11 +241,12 @@ const Curation = props => {
     const htmlBody = parseBody(body, {});
     const sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
-    const bodyText = parseHtmlToReact(htmlBody, {
+    const reactParsed = parseHtmlToReact(htmlBody, {
       cardWidth: 800,
       hideimgcaptions: !isTf,
       lazy: false,
     });
+    const { bodyText } = reactParsed;
     const bodycontent = (
       // eslint-disable-next-line react/no-danger
       <div className="textPrimary postcontent postCardContent">
