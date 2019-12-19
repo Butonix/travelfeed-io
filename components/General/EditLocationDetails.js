@@ -66,6 +66,15 @@ const EditLocationDetails = props => {
     setOpen(false);
   };
 
+  const isTopicsInvalid = () => {
+    try {
+      JSON.parse(topics);
+      return false;
+    } catch {
+      return true;
+    }
+  };
+
   const isCurator = roles && roles.indexOf('curator') !== -1;
 
   if (!isCurator) return <></>;
@@ -190,6 +199,7 @@ const EditLocationDetails = props => {
                       color="primary"
                       autoFocus
                       variant="contained"
+                      disabled={isTopicsInvalid()}
                     >
                       Save Changes
                     </Button>
@@ -203,6 +213,7 @@ const EditLocationDetails = props => {
 
                   <DialogActions>
                     <Button
+                      // eslint-disable-next-line no-restricted-globals
                       onClick={() => location.reload()}
                       color="primary"
                       variant="contained"
