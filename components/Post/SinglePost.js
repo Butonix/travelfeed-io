@@ -197,10 +197,11 @@ class SinglePost extends Component {
             let head = <Fragment />;
             // Render post
             const htmlBody = parseBody(body, {});
-            const bodyText = parseHtmlToReact(htmlBody, {
+            const reactParsed = parseHtmlToReact(htmlBody, {
               cardWidth: this.state.cardWidth,
               hideimgcaptions: !isTf,
             });
+            const { bodyText } = reactParsed;
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div className="textPrimary postcontent postCardContent">

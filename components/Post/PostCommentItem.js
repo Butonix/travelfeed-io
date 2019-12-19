@@ -14,6 +14,7 @@ import Link from '../../lib/Link';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
 import DotMenu from './DotMenu';
+// eslint-disable-next-line import/no-cycle
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
@@ -82,7 +83,8 @@ class PostCommentItem extends Component {
     }
 
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
-    const bodyText = parseHtmlToReact(htmlBody, {});
+    const reactParsed = parseHtmlToReact(htmlBody, {});
+    const { bodyText } = reactParsed;
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies === true) {
       children = (

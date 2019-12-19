@@ -1,5 +1,6 @@
 import sanitize from 'sanitize-html';
 import TurndownService from 'turndown';
+import sanitizeConfig from './PostParser/SanitizeConfig';
 
 const turndownService = new TurndownService({ emDelimiter: '*' });
 
@@ -9,13 +10,18 @@ const json2md = data => {
   data.blocks.forEach(b => {
     if (b.type === 'paragraph') {
       html += `${turndownService.turndown(b.data.text)}\n\n`;
+    } else if (b.type === 'code') {
+      html += `${sanitize(
+        b.data.code,
+        sanitizeConfig({
+          secureLinks: false,
+          allLinksBlank: false,
+        }),
+      )}\n\n`;
     } else if (b.type === 'header') {
-      Array(b.data.level)
-        .fill()
-        .forEach(() => {
-          html += '#';
-        });
-      html += ` ${b.data.text}\n\n`;
+      html += `<h${b.data.level}>${b.data.text.replace(/\n/, ' ')}</h${
+        b.data.level
+      }>\n\n`;
     } else if (b.type === 'list') {
       if (b.data.style === 'ordered') {
         b.data.items.forEach((i, index) => {
@@ -28,16 +34,13 @@ const json2md = data => {
       }
       html += '\n\n';
     } else if (b.type === 'image') {
-      if (b.data.caption) {
-        html += `![${sanitize(b.data.caption, { allowedTags: [] })}]`;
-      } else html += '![]';
-      html += `(${b.data.file.url})\n\n`;
+      html += `<img alt="${sanitize(b.data.caption, {
+        allowedTags: [],
+      })}" src="${b.data.file.url}" />\n\n`;
     } else if (b.type === 'quote') {
-      html += `> ${b.data.text}\n`;
-      if (b.data.caption) html += `> **${b.data.caption}**\n`;
-      html += '\n';
+      html += `> ${b.data.text}\n\n`;
     } else if (b.type === 'delimiter') {
-      html += `---\n\n`;
+      html += `<hr/>\n\n`;
     } else if (b.type === 'embed') {
       // Source is automatically rendered when parsing
       html += `${b.data.source}\n\n`;
@@ -60,7 +63,7 @@ const json2md = data => {
         }
         html += '\n';
       });
-      html += '\n';
+      html += '\n\n';
     } else if (b.type === 'linkTool' && b.data.meta) {
       html += `\n\n<div json='${JSON.stringify(b)}'><a href='${
         b.data.link

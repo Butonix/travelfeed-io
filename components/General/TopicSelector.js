@@ -15,6 +15,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import React, { useState } from 'react';
 
+// eslint-disable-next-line no-sparse-arrays
 const allTopics = [
   {
     label: 'All Topics',
@@ -163,8 +164,15 @@ const allTopics = [
 const TopicSelector = props => {
   const [value, setValue] = useState(0);
 
-  const topics = JSON.parse(props.topics);
-  const selectedTopics = [allTopics[0]];
+  let topics = [];
+  try {
+    topics = JSON.parse(props.topics);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+  }
+  let selectedTopics = [];
+  if (topics.length > 0) selectedTopics = [allTopics[0]];
 
   allTopics.forEach(topic => {
     if (topics.indexOf(topic.tag) !== -1) selectedTopics.push(topic);

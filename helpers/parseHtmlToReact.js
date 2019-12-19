@@ -1,12 +1,14 @@
 /* eslint-disable consistent-return */
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
+import InstagramEmbed from 'react-instagram-embed';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
-import { exitUrl, mentionUrl, postUrl } from './regex';
+import { exitUrl, instagramPost, mentionUrl, postUrl } from './regex';
 
 const parseHtmlToReact = (htmlBody, options) => {
+  const embeds = {};
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
 
   const parseOptions = {
@@ -15,6 +17,7 @@ const parseHtmlToReact = (htmlBody, options) => {
 
       // Open links in new tab
       if (parseLinksToBlank && attribs.href) {
+        // eslint-disable-next-line no-param-reassign
         attribs.target = '_blank';
         return;
       }
@@ -183,29 +186,85 @@ const parseHtmlToReact = (htmlBody, options) => {
             </>
           );
       }
-      if (
-        options.amp &&
-        attribs.src &&
-        attribs.frameborder !== undefined &&
-        attribs.allowfullscreen !== undefined
-      ) {
-        const match = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
-          attribs.src,
-        );
-        if (!match) return;
-        return (
-          <amp-youtube
-            data-videoid={match[1]}
-            layout="responsive"
-            width={attribs.width}
-            height={attribs.height}
-          />
-        );
+      if (attribs.src && attribs.frameborder !== undefined) {
+        if (!options.amp) {
+          const igmatch = /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(.*)\//i.exec(
+            attribs.src,
+          );
+          if (igmatch) {
+            return (
+              <div className="container pt-2">
+                <div className="row justify-content-center">
+                  <div className="col-xl-6 col-lg-6 col-md-8 col-sm-10 col-12">
+                    <InstagramEmbed
+                      url={`https://www.instagram.com/p/${igmatch[1]}`}
+                      maxWidth={600}
+                      hideCaption
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          }
+        } else {
+          const ytmatch = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
+            attribs.src,
+          );
+          if (ytmatch) {
+            embeds.youtube = true;
+            return (
+              <amp-youtube
+                data-videoid={ytmatch[1]}
+                layout="responsive"
+                width={attribs.width}
+                height={attribs.height}
+              />
+            );
+          }
+          const vmmatch = /https:\/\/player\.vimeo\.com\/video\/([0-9]*)/.exec(
+            attribs.src,
+          );
+          if (vmmatch) {
+            embeds.vimeo = true;
+            return (
+              <amp-vimeo
+                data-videoid={vmmatch[1]}
+                layout="responsive"
+                width={attribs.width || '960'}
+                height={attribs.height || '540'}
+              />
+            );
+          }
+          const igmatch = instagramPost.exec(attribs.src);
+          if (igmatch) {
+            embeds.instagram = true;
+            return (
+              <amp-instagram
+                data-shortcode={igmatch[1]}
+                width="400"
+                height="400"
+                layout="responsive"
+              />
+            );
+          }
+          embeds.iframe = true;
+          return (
+            <amp-iframe
+              allowfullscreen={attribs.allowfullscreen}
+              width={attribs.width || '800'}
+              height={attribs.height || '400'}
+              sandbox="allow-scripts allow-same-origin"
+              layout="responsive"
+              frameborder="0"
+              src={attribs.src}
+            />
+          );
+        }
       }
     },
   };
 
-  return parse(htmlBody, parseOptions);
+  return { bodyText: parse(htmlBody, parseOptions), embeds };
 };
 
 export default parseHtmlToReact;

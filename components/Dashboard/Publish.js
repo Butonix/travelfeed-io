@@ -34,6 +34,8 @@ import {
   invalidPermlink,
   markdownComment,
   swmregex,
+  tfAdBottom,
+  tfAdTop,
 } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
@@ -74,6 +76,7 @@ const PostEditor = props => {
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
   const [id, setId] = useState(generateDraftId(user));
+  const [isEditId, setIsEditId] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [poweredUp, setPoweredUp] = useState(false);
@@ -163,10 +166,6 @@ const PostEditor = props => {
       .then(({ post }) => {
         setTitle(post.title);
         setOriginalBody(post.body);
-        const cleanBody = post.body
-          .replace(markdownComment, '')
-          .replace(swmregex, '');
-        setContent(cleanBody);
         setPrimaryTag(post.category);
         setPermlink(post.permlink);
         if (post.img_url) setFeaturedImage(post.img_url);
@@ -193,6 +192,35 @@ const PostEditor = props => {
             if (json.locationCategory)
               setLocationCategory(json.locationCategory);
           }
+        }
+        if (
+          json.easyEditorId &&
+          json.app &&
+          json.app.split('/')[0] === 'travelfeed'
+        ) {
+          graphQLClient(GET_DRAFT_BY_ID, {
+            id: JSON.parse(json.easyEditorId),
+          }).then(({ draft }) => {
+            if (draft && draft.body) {
+              setCodeEditor(false);
+              setContent(JSON.parse(draft.body));
+              setIsEditId(true);
+            } else {
+              const cleanBody = post.body
+                .replace(markdownComment, '')
+                .replace(swmregex, '')
+                .replace(tfAdTop, '')
+                .replace(tfAdBottom, '');
+              setContent(cleanBody);
+            }
+          });
+        } else {
+          const cleanBody = post.body
+            .replace(markdownComment, '')
+            .replace(swmregex, '')
+            .replace(tfAdTop, '')
+            .replace(tfAdBottom, '');
+          setContent(cleanBody);
         }
       })
       .catch(err => {
@@ -257,7 +285,7 @@ const PostEditor = props => {
       });
       draftBody = codeEditor ? content : JSON.stringify(content);
     }
-    if ((readingtime.words > 0 || title !== '') && !editMode) {
+    if ((readingtime.words > 0 || title !== '') && (isEditId || !editMode)) {
       const variables = {
         id,
         title,
@@ -520,15 +548,20 @@ const PostEditor = props => {
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = meta;
+        if (!codeEditor) metadata.easyEditorId = JSON.stringify(id);
+        else metadata.easyEditorId = undefined;
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
         if (imageList.length > 0) metadata.image = imageList;
         if (linkList.length > 0) metadata.links = linkList;
         if (mentionList.length > 0) metadata.users = mentionList;
-        if (!editMode) {
-          body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
-        }
+        body = `<a href="https://travelfeed.io/@${username}/${perm}"><center>${
+          imageList.length > 0
+            ? `<img src="${imageList[0]}" alt="${title}"/>`
+            : ''
+        }<h3>Read "${title}" on TravelFeed.io for the best experience</h3></center></a><hr />\n\n${body}`;
+        body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
         if (location) {
           metadata.location = {
             latitude: location.latitude,
@@ -564,7 +597,7 @@ const PostEditor = props => {
         const jsonMetadata = JSON.stringify(metadata);
         const author = user;
         if (editMode) {
-          const patches = dmp.patch_make(originalBody, content);
+          const patches = dmp.patch_make(originalBody, body);
           if (patches.length > 0) body = dmp.patch_toText(patches);
         }
         setPublishThis({

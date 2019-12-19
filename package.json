@@ -1,6 +1,6 @@
 {
   "name": "travelfeed-io",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "repository": "https://github.com/travelfeed-io/travelfeed-io",
   "description": "The TravelFeed dApp. Powered by Node, Express, React, Next and the Steem Blockchain.",
   "main": "server.js",
@@ -22,6 +22,7 @@
     "@babel/polyfill": "^7.7.0",
     "@babel/preset-env": "^7.7.5",
     "@date-io/date-fns": "^1.3.13",
+    "@editorjs/code": "^2.4.1",
     "@editorjs/delimiter": "^1.1.0",
     "@editorjs/editorjs": "^2.16.0",
     "@editorjs/header": "^2.3.2",
@@ -90,6 +91,7 @@
     "react-dropzone": "^10.2.1",
     "react-google-recaptcha": "^2.0.1",
     "react-infinite-scroller": "^1.2.4",
+    "react-instagram-embed": "^1.5.0",
     "react-loading-skeleton": "^1.3.0",
     "react-map-gl": "^5.1.3",
     "react-map-gl-geocoder": "^2.0.11",
@@ -124,8 +126,8 @@
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "7.17.0",
     "eslint-plugin-react-hooks": "2.3.0",
-    "husky": "^3.1.0",
-    "lint-staged": "^9.5.0",
+    "husky": "3.1.0",
+    "lint-staged": "9.5.0",
     "prettier": "1.19.1"
   },
   "husky": {

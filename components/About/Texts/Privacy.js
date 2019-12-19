@@ -672,6 +672,24 @@ const Privacy = () => {
         </li>
         <li>
           <a
+            href="https://policies.google.com/privacy"
+            rel="noopener noreferrer nofollow"
+            target="_blank"
+          >
+            Google Maps
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://help.instagram.com/402411646841720"
+            rel="noopener noreferrer nofollow"
+            target="_blank"
+          >
+            Instagram
+          </a>
+        </li>
+        <li>
+          <a
             href="https://soundcloud.com/pages/privacy"
             rel="noopener noreferrer nofollow"
             target="_blank"

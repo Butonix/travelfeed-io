@@ -12,10 +12,11 @@ const EditorPreview = props => {
   let bodyText = <br />;
   if (props.content && props.content.length > 1) {
     const htmlBody = parseBody(props.content, { lazy: false });
-    bodyText = parseHtmlToReact(htmlBody, {
+    const reactParsed = parseHtmlToReact(htmlBody, {
       parseLinksToBlank: true,
       lazy: false,
     });
+    bodyText = reactParsed.bodyText;
   }
   return (
     <div>

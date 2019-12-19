@@ -13,11 +13,13 @@ import { imageProxy } from './getImage';
 import sanitizeConfig from './PostParser/SanitizeConfig';
 import {
   dtubeImageRegex,
-  dtubeLinkRegex,
   htmlComment,
   imgFullSize,
+  instagramPost,
   markdownComment,
   swmregex,
+  tfAdBottom,
+  tfAdTop,
   tfJSON,
 } from './regex';
 
@@ -49,10 +51,8 @@ const parseBody = (body, options) => {
     /<hr \/><center>View this post <a href="https:\/\/travelfeed\.io\/@.*">on the TravelFeed dApp<\/a> for the best experience\.<\/center>/g,
     '',
   );
-  parsedBody = parsedBody.replace(
-    /---\n\nView this post \[on TravelFeed]\(https:\/\/travelfeed\.io\/@.*\/.*\) for the best experience\./gi,
-    '',
-  );
+  parsedBody = parsedBody.replace(tfAdBottom, '');
+  parsedBody = parsedBody.replace(tfAdTop, '');
   // Remove dclick ads
   parsedBody = parsedBody.replace(/\[!\[dclick-imagead]\(h.*\)]\(.*\)/g, '');
   parsedBody = parsedBody.replace(
@@ -77,6 +77,11 @@ const parseBody = (body, options) => {
     /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong.*d3scr/gi,
     '',
   );
+  // Turn Instagram URLs into embeds
+  parsedBody = parsedBody.replace(
+    instagramPost,
+    `<iframe src="https://www.instagram.com/p/$1/embed" />`,
+  );
 
   // Remove tfjson Steem placeholders
   let tfjsonMatch = tfJSON.exec(parsedBody);
@@ -91,33 +96,7 @@ const parseBody = (body, options) => {
   }
 
   // Remove preview images in dtube posts with dtube embeds
-  const dtubeMatch = dtubeImageRegex.exec(parsedBody);
-  if (dtubeMatch && dtubeMatch[1] && dtubeMatch[2])
-    parsedBody = parsedBody.replace(
-      dtubeImageRegex,
-      `<iframe
-      src="https://emb.d.tube/#!/${dtubeMatch[1]}/${dtubeMatch[2]}"
-        height="300"
-        scrolling="no"
-        frameborder="0"
-        allowtransparency="true"
-        allowfullscreen
-        style="width: 100%;"
-      />`,
-    );
-  // Replace dtube links with dtube embeds
-  parsedBody = parsedBody.replace(
-    dtubeLinkRegex,
-    `\n<iframe
-  src="https://emb.d.tube/#!/$1"
-    height="300"
-    scrolling="no"
-    frameborder="0"
-    allowtransparency="true"
-    allowfullscreen
-    style="width: 100%;"
-  />\n`,
-  );
+  parsedBody = parsedBody.replace(dtubeImageRegex, '');
   // remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, '');
   // Render markdown to HTML
