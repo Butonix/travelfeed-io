@@ -1,4 +1,3 @@
-// Todo: Tooltip with individual voters over total miles
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';

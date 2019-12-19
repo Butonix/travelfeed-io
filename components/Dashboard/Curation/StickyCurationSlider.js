@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { SET_CURATION_SCORE } from '../../../helpers/graphql/curation';
 import graphQLClient from '../../../helpers/graphQLClient';
 import EmojiSlider from '../../Post/EmojiSlider';
+import BlacklistMenu from './BlacklistMenu';
 
 const useStyles = makeStyles(() => ({
   fixed: {
@@ -42,6 +43,7 @@ const StickyCurationSlider = props => {
   } = state;
   const [weight, setWeight] = useState(props.weight || 0);
   const [loading, setLoading] = useState(undefined);
+  const [blacklistOpen, setBlacklistOpen] = useState(false);
 
   const classes = useStyles();
 
@@ -59,9 +61,11 @@ const StickyCurationSlider = props => {
     setWeight(props.weight || 0);
   }, [props]);
 
-  const triggerCurate = () => {
+  const triggerCurate = negativeScore => {
+    if (!negativeScore && weight < 0) return;
     let score = weight * 5;
     if (isTf) score = weight * 10;
+    if (negativeScore) score = -100;
     score = Math.round(score);
     graphQLClient(SET_CURATION_SCORE, {
       author,
@@ -83,9 +87,26 @@ const StickyCurationSlider = props => {
     setLoading(undefined);
   };
 
+  const handleSliderDrop = () => {
+    triggerCurate(false);
+  };
+
   const handleWeightChange = (event, value) => {
     setWeight(value);
+    if (weight < 0) setBlacklistOpen(true);
     setLoading(true);
+  };
+
+  const handleBlacklistConfirm = () => {
+    setWeight(0);
+    setBlacklistOpen(false);
+    triggerCurate(true);
+  };
+
+  const handleBlacklistCancel = () => {
+    setWeight(0);
+    setBlacklistOpen(false);
+    setLoading(undefined);
   };
 
   return (
@@ -99,12 +120,19 @@ const StickyCurationSlider = props => {
                 loading={loading}
                 weight={weight}
                 setWeight={handleWeightChange}
-                onChangeCommitted={triggerCurate}
+                onChangeCommitted={handleSliderDrop}
               />
             </div>
           </div>
         </Card>
       </div>
+      <BlacklistMenu
+        open={blacklistOpen}
+        onConfirm={handleBlacklistConfirm}
+        onCancel={handleBlacklistCancel}
+        author={author}
+        permlink={permlink}
+      />
     </>
   );
 };
