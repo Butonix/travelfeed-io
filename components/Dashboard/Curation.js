@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -8,10 +7,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import {
@@ -24,6 +23,7 @@ import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import FixedBackgroundImage from '../General/FixedBackgroundImage';
 import PostContent from '../Post/PostContent';
+import DotOptions from './Curation/DotOptions';
 import EditAuthorNotesDialog from './Curation/EditAuthorNotesDialog';
 import StickyCurationSlider from './Curation/StickyCurationSlider';
 
@@ -78,6 +78,7 @@ const Curation = props => {
     const newPosts = fetchedPosts;
     const authors = [];
     fetchedPosts.forEach((post, i) => {
+      if (authors.indexOf(post.author) === -1) authors.push(post.author);
       const vl = post.votes.split('\n');
       vl.forEach(el => {
         const element = el.split(',');
@@ -86,7 +87,6 @@ const Curation = props => {
           newPosts.splice(i, 1);
         }
       });
-      authors.push(post.author);
       fetch(`https://blacklist.usesteem.com/user/${post.author}`)
         .then(response => {
           return response.json();
@@ -111,7 +111,7 @@ const Curation = props => {
     graphQLClient(GET_POSTS, {
       orderby: 'created_at',
       min_curation_score: 0,
-      limit: 10, // TODO: Set production limit to ~60
+      limit: 20, // TODO: Set production limit to ~60
       exclude_authors: ['travelfeed', 'steemitworldmap'],
     }).then(res => {
       handleFetchedPosts(res.posts);
@@ -247,153 +247,168 @@ const Curation = props => {
     return (
       <>
         <Card className={classes.topBar}>
-          <CardContent>
-            <div className="container">
-              <div className="row">
-                <div
-                  className={`col ${
-                    blacklisted && blacklisted.length > 0
-                      ? 'bg-danger'
-                      : attentionColor
-                  }`}
-                >
-                  Author notes:
-                  <p>{notes}</p>
-                  <p>
-                    {blacklisted && blacklisted.length > 0
-                      ? `Blacklisted by ${blacklisted}`
-                      : ''}{' '}
-                  </p>
-                  <EditAuthorNotesDialog
-                    author={author}
-                    initialAttentionLevel={attentionLevel}
-                    initialNotes={notes}
-                  />
-                </div>
-                <>
-                  <div className="col">
-                    <FormControl component="fieldset">
-                      <FormGroup>
+          <div className="container">
+            <div className="row">
+              <div
+                className={`col ${
+                  blacklisted && blacklisted.length > 0
+                    ? 'bg-danger'
+                    : attentionColor
+                }`}
+              >
+                Author notes:
+                <p>{notes}</p>
+                <p>
+                  {blacklisted && blacklisted.length > 0
+                    ? `Blacklisted by ${blacklisted}`
+                    : ''}{' '}
+                </p>
+                <EditAuthorNotesDialog
+                  author={author}
+                  initialAttentionLevel={attentionLevel}
+                  initialNotes={notes}
+                />
+              </div>
+              <>
+                <div className="col-xl col-lg col-md col-sm-4 col-4">
+                  <FormControl component="fieldset">
+                    <FormGroup>
+                      <Tooltip title="E.g. Bad use of font formatting, missing structure/subheadings, photos interrupting the reading flow">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.formatting}
                               onChange={handleCheckboxCheck('formatting')}
                             />
                           }
                           label="Formatting"
                         />
+                      </Tooltip>
+                      <Tooltip title="Grammer, spelling">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.language}
                               onChange={handleCheckboxCheck('language')}
                             />
                           }
                           label="Language"
                         />
+                      </Tooltip>
+                    </FormGroup>
+                  </FormControl>
+                </div>
+
+                <div className="col-xl col-lg col-md col-sm-4 col-4">
+                  <FormControl component="fieldset">
+                    <FormGroup>
+                      <Tooltip title="Paragraphs in non-English">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.bilingual}
                               onChange={handleCheckboxCheck('bilingual')}
                             />
                           }
                           label="Bilingual"
                         />
+                      </Tooltip>
+                      <Tooltip title="Overly long or ugly footer">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.footer}
                               onChange={handleCheckboxCheck('footer')}
                             />
                           }
                           label="Footer"
                         />
-                      </FormGroup>
-                    </FormControl>
-                  </div>
-                  <div className="col">
-                    <FormControl component="fieldset">
-                      <FormGroup>
+                      </Tooltip>
+                    </FormGroup>
+                  </FormControl>
+                </div>
+                <div className="col-xl col-lg col-md col-sm-4 col-4">
+                  <FormControl component="fieldset">
+                    <FormGroup>
+                      <Tooltip title="Bad photo quality or too little photos">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.photos}
                               onChange={handleCheckboxCheck('photos')}
                             />
                           }
                           label="Photos"
                         />
+                      </Tooltip>
+                      <Tooltip title="Post is over 250 words, but feels too short">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.short}
                               onChange={handleCheckboxCheck('short')}
                             />
                           }
-                          label="Short"
+                          label="Length"
                         />
+                      </Tooltip>
+                    </FormGroup>
+                  </FormControl>
+                </div>
+                <div className="col-xl col-lg col-md col-sm-4 col-4">
+                  <FormControl component="fieldset">
+                    <FormGroup>
+                      <Tooltip title="Blog is boring to read, e.g. mostly describing photos instead of telling a coherent story">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.writing}
                               onChange={handleCheckboxCheck('writing')}
                             />
                           }
                           label="Writing"
                         />
+                      </Tooltip>
+                      <Tooltip title="Goood blogs should not just be selfies like a Facebook post, but add value by being informative or telling an exciting story">
                         <FormControlLabel
                           control={
                             <Checkbox
+                              icon="☺"
+                              checkedIcon="🙁"
                               checked={state.valueadding}
                               onChange={handleCheckboxCheck('valueadding')}
                             />
                           }
                           label="Value-adding"
                         />
-                      </FormGroup>
-                    </FormControl>
-                  </div>
-                </>
-                <div className="col">
-                  <CopyToClipboard
-                    text={sanitized}
-                    onCopy={() =>
-                      newNotification({
-                        success: true,
-                        message:
-                          'Post content copied to your clipboard. Check at a plagiarism checker of your choice.',
-                      })
-                    }
-                  >
-                    <Button color="primary" variant="contained">
-                      Plagiarism check
-                    </Button>
-                  </CopyToClipboard>
+                      </Tooltip>
+                    </FormGroup>
+                  </FormControl>
                 </div>
-                <div className="col">Reply (from own acc/ from tf)</div>
-                <div className="col">
-                  <Button
-                    onClick={handleBack}
-                    color="primary"
-                    variant="contained"
-                  >
-                    Back{' '}
-                  </Button>
-                </div>
-                <div className="col">
-                  <Button
-                    onClick={handleNext}
-                    color="primary"
-                    variant="contained"
-                  >
-                    Next
-                  </Button>
-                </div>
+              </>
+              <div className="col-xl col-lg col-md col-sm-4 col-4">
+                <DotOptions
+                  handleBack={handleBack}
+                  handleNext={handleNext}
+                  sanitized={sanitized}
+                />
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
         <StickyCurationSlider
           author={author}
@@ -406,7 +421,13 @@ const Curation = props => {
           isTf={isTf}
           state={state}
         />
-        <Grid container spacing={0} alignItems="center" justify="center">
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justify="center"
+          className="mt-5"
+        >
           <Grid item lg={8} md={10} sm={11} xs={12} className="pb-2">
             <Card className="mt-5 mb-5">
               <PostContent
