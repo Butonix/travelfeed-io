@@ -19,7 +19,9 @@ const json2md = data => {
         }),
       )}\n\n`;
     } else if (b.type === 'header') {
-      html += `<h${b.data.level}>${b.data.text}</h${b.data.level}>\n\n`;
+      html += `<h${b.data.level}>${b.data.text.replace(/\n/, ' ')}</h${
+        b.data.level
+      }>\n\n`;
     } else if (b.type === 'list') {
       if (b.data.style === 'ordered') {
         b.data.items.forEach((i, index) => {
