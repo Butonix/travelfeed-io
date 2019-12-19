@@ -6,7 +6,7 @@ import DashboardPage from '../../components/Dashboard/DashboardPage';
 const CurationPage = props => {
   const { open } = props;
 
-  return <DashboardPage open={open} label="Curation" content={<Curation />} />;
+  return <DashboardPage open={open} label="curation" content={<Curation />} />;
 };
 
 CurationPage.getInitialProps = props => {

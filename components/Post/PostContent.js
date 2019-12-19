@@ -47,6 +47,7 @@ const PostContent = props => {
         }
         subheader={
           <SubHeader
+            showWordCount={props.showWordCount}
             created_at={props.created_at ? String(props.created_at) : undefined}
             readtime={props.readtime}
             location={{

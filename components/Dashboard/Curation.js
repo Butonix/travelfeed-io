@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
@@ -19,7 +20,20 @@ import PostContent from '../Post/PostContent';
 import EditAuthorNotesDialog from './Curation/EditAuthorNotesDialog';
 import StickyCurationSlider from './Curation/StickyCurationSlider';
 
+const useStyles = makeStyles(() => ({
+  topBar: {
+    borderRadius: 0,
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    width: '100%',
+    zIndex: '900',
+  },
+}));
+
 const Curation = props => {
+  const classes = useStyles();
+
   const [posts, setPosts] = useState([]);
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
@@ -63,6 +77,7 @@ const Curation = props => {
       orderby: 'created_at',
       min_curation_score: 0,
       limit: 10, // TODO: Set production limit to ~60
+      exclude_authors: ['travelfeed', 'steemitworldmap'],
     }).then(res => {
       handleFetchedPosts(res.posts);
     });
@@ -140,7 +155,12 @@ const Curation = props => {
     });
     const bodycontent = (
       // eslint-disable-next-line react/no-danger
-      <div className="textPrimary postcontent postCardContent">{bodyText}</div>
+      <div className="textPrimary postcontent postCardContent">
+        <Typography gutterBottom variant="h2">
+          {title}
+        </Typography>
+        {bodyText}
+      </div>
     );
     let notes;
     let attentionColor;
@@ -160,7 +180,7 @@ const Curation = props => {
     }
     return (
       <>
-        <Card>
+        <Card className={classes.topBar}>
           <CardContent>
             <div className="container">
               <div className="row">
@@ -184,8 +204,7 @@ const Curation = props => {
                     initialNotes={notes}
                   />
                 </div>
-                <div className="col">Author score</div>
-                <div className="col">Author posts submitted</div>
+                <div className="col">Checkboxes</div>
                 <div className="col">
                   <CopyToClipboard
                     text={sanitized}
@@ -237,8 +256,9 @@ const Curation = props => {
         />
         <Grid container spacing={0} alignItems="center" justify="center">
           <Grid item lg={8} md={10} sm={11} xs={12} className="pb-2">
-            <Card className="mb-5">
+            <Card className="mt-5 mb-5">
               <PostContent
+                showWordCount
                 author={author}
                 id={post_id}
                 body={body}
