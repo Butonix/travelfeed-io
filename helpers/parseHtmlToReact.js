@@ -193,9 +193,9 @@ const parseHtmlToReact = (htmlBody, options) => {
           );
           if (igmatch) {
             return (
-              <div className="container pt-2">
+              <div className="container-fluid pt-2">
                 <div className="row justify-content-center">
-                  <div className="col-xl-6 col-lg-6 col-md-8 col-sm-10 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-8 col-sm-10 col-12 p-0">
                     <InstagramEmbed
                       url={`https://www.instagram.com/p/${igmatch[1]}`}
                       maxWidth={600}
