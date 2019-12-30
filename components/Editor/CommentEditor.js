@@ -40,7 +40,8 @@ const CommentEditor = props => {
     const parentPermlink = props.parent_permlink;
     const commenttime = getSlug(new Date().toJSON()).replace(/-/g, '');
     const permlink =
-      (props.editMode && props.permlink) || `re-${parentAuthor}-${commenttime}`;
+      (props.editMode && props.permlink) ||
+      getSlug(`re-${parentAuthor}-${commenttime}`);
     const body = json2md(content);
     const jsonMetadata = {};
     jsonMetadata.tags = ['travelfeed'];
