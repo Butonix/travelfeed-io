@@ -44,6 +44,7 @@ const Curation = props => {
   const classes = useStyles();
 
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [curationScores, setCurationScores] = useState([]);
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
@@ -142,9 +143,13 @@ const Curation = props => {
   };
 
   const handleSwitchPost = newPostPosition => {
-    if (posts.length > newPostPosition && newPostPosition >= 0)
-      setPostPosition(newPostPosition);
-    else {
+    if (posts.length > newPostPosition && newPostPosition >= 0) {
+      setLoading(true);
+      setTimeout(() => {
+        setPostPosition(newPostPosition);
+        setLoading(false);
+      }, 1);
+    } else {
       handleGetCurationScores();
       setFinished(true);
       return;
@@ -460,28 +465,30 @@ const Curation = props => {
         >
           <Grid item lg={8} md={10} sm={11} xs={12} className="pb-2">
             <Card className="mt-5 mb-5">
-              <PostContent
-                showWordCount
-                author={author}
-                id={post_id}
-                body={body}
-                json={json}
-                latitude={latitude}
-                longitude={longitude}
-                category={category}
-                isTf={isTf}
-                permlink={permlink}
-                display_name={display_name}
-                created_at={created_at}
-                readtime={readtime}
-                content={bodycontent}
-                country_code={country_code}
-                subdivision={subdivision}
-                tags={tags}
-                curationScore={curation_score}
-                title={title}
-                img_url={img_url}
-              />
+              {!loading && (
+                <PostContent
+                  showWordCount
+                  author={author}
+                  id={post_id}
+                  body={body}
+                  json={json}
+                  latitude={latitude}
+                  longitude={longitude}
+                  category={category}
+                  isTf={isTf}
+                  permlink={permlink}
+                  display_name={display_name}
+                  created_at={created_at}
+                  readtime={readtime}
+                  content={bodycontent}
+                  country_code={country_code}
+                  subdivision={subdivision}
+                  tags={tags}
+                  curationScore={curation_score}
+                  title={title}
+                  img_url={img_url}
+                />
+              )}
             </Card>
           </Grid>
         </Grid>
