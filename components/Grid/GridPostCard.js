@@ -5,7 +5,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import LazyLoad from 'vanilla-lazyload';
+import ProgressiveImage from 'react-progressive-image';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
 import DotMenu from '../Post/DotMenu';
@@ -37,18 +37,6 @@ class GridPostCard extends Component {
       const cardWidth = Math.ceil(this.myInput.current.offsetWidth / 100) * 100;
       this.setState({ cardWidth });
     }
-    if (!document.lazyLoadInstance) {
-      document.lazyLoadInstance = new LazyLoad({
-        elements_selector: '.lazy',
-        threshold: 1200,
-      });
-    }
-    document.lazyLoadInstance.update();
-  }
-
-  // Update lazyLoad after rerendering of every image
-  componentDidUpdate() {
-    document.lazyLoadInstance.update();
   }
 
   hide = () => {
@@ -160,38 +148,36 @@ class GridPostCard extends Component {
           <CardActionArea>
             {this.props.post.img_url !== undefined &&
               this.props.post.img_url !== '' && (
-                <picture ref={this.myInput} className="lazyImage">
-                  <source
-                    className="lazyImage"
-                    height={this.props.cardHeight}
-                    type="image/webp"
-                    data-srcset={`${cardImage}`}
-                    data-sizes="100w"
-                  />
-                  <img
-                    height={this.props.cardHeight}
-                    width="100%"
-                    alt={this.props.post.title}
-                    className="lazy img-fluid"
-                    style={{
-                      maxHeight: this.props.cardHeight,
-                      minHeight: this.props.cardHeight / 1.7,
-                    }}
-                    src={`${imageProxy(
-                      this.props.post.img_url,
-                      this.state.cardWidth * 0.1,
-                      undefined,
-                      'fit',
-                    )}`}
-                    data-src={`${imageProxy(
-                      this.props.post.img_url,
-                      this.state.cardWidth,
-                      undefined,
-                      'fit',
-                    )}`}
-                    data-sizes="100w"
-                  />
-                </picture>
+                <ProgressiveImage
+                  src={cardImage}
+                  placeholder={`${imageProxy(
+                    this.props.post.img_url,
+                    this.state.cardWidth * 0.1,
+                    undefined,
+                    'fit',
+                  )}`}
+                >
+                  {src => (
+                    <picture ref={this.myInput} className="lazyImage">
+                      <source
+                        height={this.props.cardHeight}
+                        type="image/webp"
+                        srcSet={`${cardImage}`}
+                      />
+                      <img
+                        height={this.props.cardHeight}
+                        width="100%"
+                        alt={this.props.post.title}
+                        className="lazy img-fluid"
+                        style={{
+                          maxHeight: this.props.cardHeight,
+                          minHeight: this.props.cardHeight / 1.7,
+                        }}
+                        src={src}
+                      />
+                    </picture>
+                  )}
+                </ProgressiveImage>
               )}
             <CardContent>
               <Excerpt
@@ -219,14 +205,12 @@ class GridPostCard extends Component {
 }
 
 GridPostCard.defaultProps = {
-  showBookmark: false,
   isBookmark: false,
 };
 
 GridPostCard.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   cardHeight: PropTypes.number.isRequired,
-  showBookmark: PropTypes.bool,
   isBookmark: PropTypes.bool,
 };
 

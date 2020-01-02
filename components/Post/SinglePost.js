@@ -10,7 +10,6 @@ import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
-import LazyLoad from 'vanilla-lazyload';
 import canonicalLinker from '../../helpers/canonicalLinker';
 import cleanTags from '../../helpers/cleanTags';
 import { imageProxy } from '../../helpers/getImage';
@@ -65,24 +64,11 @@ class SinglePost extends Component {
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
       this.setState({ cardWidth });
     }
-    if (!document.lazyLoadInstance) {
-      document.lazyLoadInstance = new LazyLoad({
-        elements_selector: '.lazy',
-        threshold: 1200,
-      });
-    }
-    // Update lazyLoad after first rendering of every image
-    document.lazyLoadInstance.update();
     if (this.props.post.scrollToComments) {
       const comments = document.getElementById('comments');
       const topPos = comments.offsetTop;
       document.getElementById('__next').scrollTop = topPos;
     }
-  }
-
-  // Update lazyLoad after rerendering of every image
-  componentDidUpdate() {
-    document.lazyLoadInstance.update();
   }
 
   handleClick = op => {

@@ -249,7 +249,6 @@ const Curation = props => {
     const reactParsed = parseHtmlToReact(htmlBody, {
       cardWidth: 800,
       hideimgcaptions: !isTf,
-      lazy: false,
     });
     const { bodyText } = reactParsed;
     const bodycontent = (
