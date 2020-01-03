@@ -229,7 +229,7 @@ class SinglePost extends Component {
                         </p>
                       );
                     }
-                    if (isBacklisted && data.preferences.useTfBlacklist) {
+                    if (isBacklisted) {
                       return (
                         <div className="textPrimary postcontent postCardContent">
                           This post has been removed from TravelFeed.

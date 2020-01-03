@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 export const CHANGE_SETTINGS = gql`
   mutation updatePreferences(
     $showNSFW: Boolean
-    $useTfBlacklist: Boolean
     $trackFollows: Boolean
     $trackMentions: Boolean
     $trackReplies: Boolean
@@ -16,7 +15,6 @@ export const CHANGE_SETTINGS = gql`
   ) {
     updatePreferences(
       showNSFW: $showNSFW
-      useTfBlacklist: $useTfBlacklist
       trackFollows: $trackFollows
       trackMentions: $trackMentions
       trackReplies: $trackReplies
@@ -54,7 +52,6 @@ export const GET_SETTINGS = gql`
     preferences {
       showNSFW
       useDarkMode
-      useTfBlacklist
       trackFollows
       trackMentions
       trackReplies
