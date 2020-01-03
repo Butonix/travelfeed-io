@@ -479,6 +479,13 @@ class SinglePost extends Component {
                           </div>
                         </Grid>
                       )}
+                    </Grid>
+                    <Grid
+                      container
+                      spacing={0}
+                      alignItems="center"
+                      justify="center"
+                    >
                       <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
                         <div className="anchor" id="comments" name="comments" />
                         <div className="container">
