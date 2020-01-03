@@ -1,4 +1,4 @@
-import Avatar from '@material-ui/core/Avatar';
+import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import Img from 'react-image';
 import Link from '../../lib/Link';
@@ -17,7 +17,7 @@ const ProfileAvatar = props => {
         alt={author}
         width={40}
         height={40}
-        loader={<Avatar />}
+        loader={<Skeleton variant="circle" width={40} height={40} />}
       />
     );
 
@@ -37,7 +37,7 @@ const ProfileAvatar = props => {
         alt={author}
         width={40}
         height={40}
-        loader={<Avatar />}
+        loader={<Skeleton variant="circle" width={40} height={40} />}
       />
     </Link>
   );
