@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
-import Img from 'react-image';
 import InstagramEmbed from 'react-instagram-embed';
 import LazyLoad from 'react-lazyload';
 import ProgressiveImage from 'react-progressive-image';
@@ -36,23 +35,25 @@ const parseHtmlToReact = (htmlBody, options) => {
       ) {
         const doNotConvert =
           attribs.src.substr(attribs.src.length - 4) === '.gif';
-        const imgHeight =
-          attribs.height && attribs.height < 500 ? attribs.height : 500;
+        const imgHeight = attribs.height || '100%';
+        const imgWidth = attribs.width || undefined;
         const webpSrc = doNotConvert
           ? attribs.src
-          : imageProxy(attribs.src, undefined, 700, 'fit', 'webp');
+          : imageProxy(attribs.src, undefined, 600, 'fit', 'webp');
         const regSrc = doNotConvert
           ? attribs.src
-          : imageProxy(attribs.src, undefined, 700);
+          : imageProxy(attribs.src, undefined, 600);
         if (options.lazy === false) {
           return (
             <figure>
               <img
                 alt={attribs.alt}
                 src={isWebp ? webpSrc : regSrc}
+                height={imgHeight}
+                width={imgWidth}
                 className="img-fluid mx-auto d-block"
                 style={{
-                  maxHeight: `${imgHeight}px`,
+                  maxHeight: '500px',
                 }}
               />
               {attribs.alt !== undefined &&
@@ -67,13 +68,83 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (options.amp) {
           return (
             <figure className="ampstart-image-with-caption m0 relative mb4">
-              <div className="fixed-height-container">
+              {(attribs.height && attribs.width && (
                 <amp-img
+                  layout="responsive"
                   src={isWebp ? webpSrc : regSrc}
-                  class="contain"
-                  layout="fill"
+                  width={attribs.width}
+                  height={attribs.height}
                 />
-              </div>
+              )) || (
+                <div className="fixed-height-container">
+                  <amp-img
+                    src={isWebp ? webpSrc : regSrc}
+                    class="contain"
+                    layout="fill"
+                  />
+                </div>
+              )}
+              {attribs.alt !== undefined &&
+                // ignore alt texts with image name
+                !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
+                !options.hideimgcaptions && (
+                  <figcaption>{attribs.alt}</figcaption>
+                )}
+            </figure>
+          );
+        }
+        if (attribs.height && attribs.width && attribs.height > 200) {
+          const lazyStyle = {
+            maxHeight: `${
+              attribs.height && attribs.height < 500 ? attribs.height : '500'
+            }px`,
+            maxWidth: `${imgWidth}px`,
+            width: imgHeight > imgWidth ? 'auto' : '100%',
+            height:
+              imgHeight > imgWidth
+                ? `${
+                    attribs.height && attribs.height < 500
+                      ? attribs.height
+                      : '500'
+                  }px`
+                : 'auto',
+          };
+          return (
+            <figure>
+              <LazyLoad
+                offset={700}
+                once
+                placeholder={
+                  <picture className="lazyImage">
+                    <img
+                      alt={attribs.alt}
+                      src={imageProxy(attribs.src, undefined, 50, 'fit')}
+                      className="img-fluid mx-auto d-block"
+                      style={lazyStyle}
+                      height={imgHeight}
+                      width={imgWidth}
+                    />
+                  </picture>
+                }
+              >
+                <ProgressiveImage
+                  src={isWebp ? webpSrc : regSrc}
+                  placeholder={imageProxy(attribs.src, undefined, 50, 'fit')}
+                >
+                  {src => (
+                    <picture className="lazyImage">
+                      <img
+                        alt={attribs.alt}
+                        src={src}
+                        className="img-fluid mx-auto d-block"
+                        height={imgHeight}
+                        width={imgWidth}
+                        style={lazyStyle}
+                      />
+                    </picture>
+                  )}
+                </ProgressiveImage>
+              </LazyLoad>
               {attribs.alt !== undefined &&
                 // ignore alt texts with image name
                 !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
@@ -85,46 +156,15 @@ const parseHtmlToReact = (htmlBody, options) => {
         }
         return (
           <figure>
-            <LazyLoad
-              offset={1000}
-              once
-              placeholder={
-                <picture className="lazyImage">
-                  <img
-                    alt={attribs.alt}
-                    src={imageProxy(attribs.src, undefined, 50, 'fit')}
-                    className="img-fluid mx-auto d-block"
-                    style={{
-                      height: `${imgHeight}px`,
-                    }}
-                  />
-                </picture>
-              }
-            >
-              <ProgressiveImage
-                src={isWebp ? webpSrc : regSrc}
-                placeholder={imageProxy(attribs.src, undefined, 50, 'fit')}
-              >
-                {(src, loading) => (
-                  <picture className="lazyImage">
-                    <Img
-                      alt={attribs.alt}
-                      src={src}
-                      className="img-fluid mx-auto d-block"
-                      style={
-                        loading
-                          ? {
-                              height: `${imgHeight}px`,
-                            }
-                          : {
-                              maxHeight: `${imgHeight}px`,
-                            }
-                      }
-                    />
-                  </picture>
-                )}
-              </ProgressiveImage>
-            </LazyLoad>
+            <picture>
+              <source type="image/webp" srcSet={webpSrc} />
+              <img
+                alt={attribs.alt}
+                src={regSrc}
+                className="img-fluid mx-auto d-block"
+                style={{ maxHeight: '500px' }}
+              />
+            </picture>
             {attribs.alt !== undefined &&
               // ignore alt texts with image name
               !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
