@@ -12,7 +12,6 @@ import CuratorIcon from '@material-ui/icons/MoreVert';
 import React, { useEffect, useState } from 'react';
 import { getRoles, getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
-import AuthorBlacklist from '../CuratorMenu/Actions/AuthorBlacklist';
 import CustomJson from '../CuratorMenu/Actions/CustomJson';
 import JsonAndMutate from '../CuratorMenu/Actions/JsonAndMutate';
 import PostBlacklist from '../CuratorMenu/Actions/PostBlacklist';
@@ -166,16 +165,11 @@ const DotMenu = props => {
 
   if (isCurator) {
     menuItems.push(
-      <AuthorBlacklist
-        setListenClickAway={setListenClickAway}
-        author={author}
-      />,
-    );
-    menuItems.push(
       <PostBlacklist
         setListenClickAway={setListenClickAway}
         author={author}
         permlink={permlink}
+        isCommentMode={props.isCommentMode}
       />,
     );
   } else {

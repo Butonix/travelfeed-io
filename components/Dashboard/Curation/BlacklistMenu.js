@@ -10,7 +10,7 @@ import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BLACKLIST_AUTHOR,
   BLACKLIST_POST,
@@ -19,7 +19,10 @@ import graphQLClient from '../../../helpers/graphQLClient';
 
 const BlacklistMenu = props => {
   const { open, onConfirm, onCancel, author, permlink } = props;
-  const [state, setState] = useState(false);
+  const [state, setState] = useState({
+    isShadowBlacklist: true,
+    isOnlyCommentBlacklisted: false,
+  });
   const [customReason, setCustomReason] = useState('');
   const [reason, setReason] = useState('');
 
@@ -38,6 +41,7 @@ const BlacklistMenu = props => {
       author,
       permlink,
       reason: reason || customReason,
+      isShadow: state.isShadowBlacklist,
     }).then(({ blacklistPost }) => {
       newNotification(blacklistPost);
       onConfirm();
@@ -49,6 +53,7 @@ const BlacklistMenu = props => {
       author,
       permlink,
       reason: reason || customReason,
+      isOnlyCommentBlacklisted: state.isOnlyCommentBlacklisted,
     }).then(({ blacklistAuthor }) => {
       newNotification(blacklistAuthor);
       onConfirm();
@@ -64,8 +69,17 @@ const BlacklistMenu = props => {
   };
 
   const handleDropdownChange = event => {
+    if (event.target.value === 'copyright' || event.target.value === 'spam')
+      setState({ isShadowBlacklist: false });
     setReason(event.target.value);
   };
+
+  useEffect(() => {
+    if (props.isCommentMode) {
+      setState({ isShadowBlacklist: false });
+      setState({ isOnlyCommentBlacklisted: true });
+    }
+  }, []);
 
   return (
     <>
@@ -86,12 +100,13 @@ const BlacklistMenu = props => {
                 <MenuItem value="short">Below 250 words</MenuItem>
                 <MenuItem value="language">Not in English</MenuItem>
                 <MenuItem value="copyright">Violating Copyright</MenuItem>
+                <MenuItem value="spam">Spam</MenuItem>
               </Select>
             </>
           )}
           {!reason && (
             <>
-              <DialogContentText>Or enter a custom reasoon</DialogContentText>
+              <DialogContentText>Or enter a custom reason</DialogContentText>
               <TextField
                 autoFocus
                 margin="dense"
@@ -103,17 +118,19 @@ const BlacklistMenu = props => {
             </>
           )}
           <DialogContentText>Options</DialogContentText>
-          <FormControlLabel
-            labelPlacement="end"
-            control={
-              <Switch
-                checked={state.isShadowBlacklist}
-                onChange={handleCheckboxChange('isShadowBlacklist')}
-                color="primary"
-              />
-            }
-            label="Shadow blacklist"
-          />
+          {!props.isCommentMode && (
+            <FormControlLabel
+              labelPlacement="end"
+              control={
+                <Switch
+                  checked={state.isShadowBlacklist}
+                  onChange={handleCheckboxChange('isShadowBlacklist')}
+                  color="primary"
+                />
+              }
+              label="Shadow blacklist (only applies when blacklisting post)"
+            />
+          )}
           <FormControlLabel
             labelPlacement="end"
             control={

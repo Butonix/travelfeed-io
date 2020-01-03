@@ -174,6 +174,7 @@ class PostCommentItem extends Component {
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
                   title={`Re: ${this.props.post.root_title || ''}`}
+                  isCommentMode
                 />
               </Fragment>
             }
