@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable consistent-return */
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
@@ -53,7 +54,7 @@ const parseHtmlToReact = (htmlBody, options) => {
                 width={imgWidth}
                 className="img-fluid mx-auto d-block"
                 style={{
-                  maxHeight: '500px',
+                  maxHeight: '550px',
                 }}
               />
               {attribs.alt !== undefined &&
@@ -96,16 +97,16 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (attribs.height && attribs.width && attribs.height > 200) {
           const lazyStyle = {
             maxHeight: `${
-              attribs.height && attribs.height < 500 ? attribs.height : '500'
+              attribs.height && attribs.height < 550 ? attribs.height : '550'
             }px`,
             maxWidth: `${imgWidth}px`,
             width: imgHeight > imgWidth ? 'auto' : '100%',
             height:
               imgHeight > imgWidth
                 ? `${
-                    attribs.height && attribs.height < 500
+                    attribs.height && attribs.height < 550
                       ? attribs.height
-                      : '500'
+                      : '550'
                   }px`
                 : 'auto',
           };
@@ -162,7 +163,7 @@ const parseHtmlToReact = (htmlBody, options) => {
                 alt={attribs.alt}
                 src={regSrc}
                 className="img-fluid mx-auto d-block"
-                style={{ maxHeight: '500px' }}
+                style={{ maxHeight: '550px' }}
               />
             </picture>
             {attribs.alt !== undefined &&
@@ -262,60 +263,64 @@ const parseHtmlToReact = (htmlBody, options) => {
               </div>
             );
           }
-        } else {
-          const ytmatch = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
-            attribs.src,
-          );
-          if (ytmatch) {
-            embeds.youtube = true;
-            return (
-              <amp-youtube
-                data-videoid={ytmatch[1]}
-                layout="responsive"
-                width={attribs.width}
-                height={attribs.height}
-              />
-            );
-          }
-          const vmmatch = /https:\/\/player\.vimeo\.com\/video\/([0-9]*)/.exec(
-            attribs.src,
-          );
-          if (vmmatch) {
-            embeds.vimeo = true;
-            return (
-              <amp-vimeo
-                data-videoid={vmmatch[1]}
-                layout="responsive"
-                width={attribs.width || '960'}
-                height={attribs.height || '540'}
-              />
-            );
-          }
-          const igmatch = instagramPost.exec(attribs.src);
-          if (igmatch) {
-            embeds.instagram = true;
-            return (
-              <amp-instagram
-                data-shortcode={igmatch[1]}
-                width="400"
-                height="400"
-                layout="responsive"
-              />
-            );
-          }
-          embeds.iframe = true;
           return (
-            <amp-iframe
-              allowfullscreen={attribs.allowfullscreen}
-              width={attribs.width || '800'}
-              height={attribs.height || '400'}
-              sandbox="allow-scripts allow-same-origin"
+            <LazyLoad offset={700} height={attribs.height}>
+              <iframe {...attribs} />
+            </LazyLoad>
+          );
+        }
+        const ytmatch = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
+          attribs.src,
+        );
+        if (ytmatch) {
+          embeds.youtube = true;
+          return (
+            <amp-youtube
+              data-videoid={ytmatch[1]}
               layout="responsive"
-              frameborder="0"
-              src={attribs.src}
+              width={attribs.width}
+              height={attribs.height}
             />
           );
         }
+        const vmmatch = /https:\/\/player\.vimeo\.com\/video\/([0-9]*)/.exec(
+          attribs.src,
+        );
+        if (vmmatch) {
+          embeds.vimeo = true;
+          return (
+            <amp-vimeo
+              data-videoid={vmmatch[1]}
+              layout="responsive"
+              width={attribs.width || '960'}
+              height={attribs.height || '540'}
+            />
+          );
+        }
+        const igmatch = instagramPost.exec(attribs.src);
+        if (igmatch) {
+          embeds.instagram = true;
+          return (
+            <amp-instagram
+              data-shortcode={igmatch[1]}
+              width="400"
+              height="400"
+              layout="responsive"
+            />
+          );
+        }
+        embeds.iframe = true;
+        return (
+          <amp-iframe
+            allowfullscreen={attribs.allowfullscreen}
+            width={attribs.width || '800'}
+            height={attribs.height || '400'}
+            sandbox="allow-scripts allow-same-origin"
+            layout="responsive"
+            frameborder="0"
+            src={attribs.src}
+          />
+        );
       }
     },
   };
