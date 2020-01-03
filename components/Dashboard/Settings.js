@@ -18,8 +18,6 @@ import HeaderCard from '../General/HeaderCard';
 import UserContext from '../General/UserContext';
 import LinkEasyLogin from './Settings/LinkEasyLogin';
 
-const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 const Settings = props => {
   const { theme, setDarkMode, setLightMode } = useContext(UserContext);
 
@@ -27,7 +25,6 @@ const Settings = props => {
   const [loaded, setLoaded] = useState(false);
   const [saved, setSaved] = useState(true);
   const [showNSFW, setShowNSFW] = useState(false);
-  const [useTfBlacklist, setUseTfBlacklist] = useState(true);
   const [notificationPermission, setNotificationPermission] = useState(false);
   const [trackFollows, setTrackFollows] = useState(false);
   const [trackMentions, setTrackMentions] = useState(false);
@@ -81,8 +78,6 @@ const Settings = props => {
       else setDarkMode();
     } else if (name === 'showNSFW') {
       setShowNSFW(event.target.checked);
-    } else if (name === 'useTfBlacklist') {
-      setUseTfBlacklist(event.target.checked);
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
     } else if (name === 'trackFollows') {
@@ -153,7 +148,6 @@ const Settings = props => {
                   if (loaded === false && data && data.preferences) {
                     setLoaded(true);
                     setShowNSFW(data.preferences.showNSFW);
-                    setUseTfBlacklist(data.preferences.useTfBlacklist);
                     setTrackFollows(data.preferences.trackFollows);
                     setTrackMentions(data.preferences.trackMentions);
                     setTrackReplies(data.preferences.trackReplies);
@@ -170,7 +164,6 @@ const Settings = props => {
                       mutation={CHANGE_SETTINGS}
                       variables={{
                         showNSFW,
-                        useTfBlacklist,
                         trackFollows,
                         trackMentions,
                         trackReplies,
@@ -180,7 +173,8 @@ const Settings = props => {
                         claimRewards,
                       }}
                     >
-                      {(changeSettings, data) => {
+                      {// eslint-disable-next-line no-shadow
+                      (changeSettings, data) => {
                         if (data && data.loading && saved) {
                           setSaved(false);
                         }
@@ -216,23 +210,6 @@ const Settings = props => {
                                   }
                                   label="Show NSFW posts"
                                 />
-
-                                <FormControlLabel
-                                  labelPlacement="end"
-                                  control={
-                                    <Switch
-                                      checked={useTfBlacklist}
-                                      onChange={handleCheckboxChange(
-                                        'useTfBlacklist',
-                                      )}
-                                      onInput={changeSettings}
-                                      value="useTfBlacklist"
-                                      color="primary"
-                                    />
-                                  }
-                                  label="Use TravelFeed blacklist"
-                                />
-
                                 <FormControlLabel
                                   labelPlacement="end"
                                   control={

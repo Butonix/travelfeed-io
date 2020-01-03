@@ -40,9 +40,7 @@ export default {
             return new Promise(resolve => {
               resolve({
                 success: 1,
-                file: {
-                  url: res,
-                },
+                file: res,
               });
             });
           });

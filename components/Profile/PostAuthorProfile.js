@@ -1,6 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
+import Img from 'react-image';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import { getAccount } from '../../helpers/steem';
 import Link from '../../lib/Link';
@@ -32,9 +33,12 @@ const PostAuthorProfile = props => {
                   as={`/@${props.author}`}
                   href={`/blog?author=${props.author}`}
                 >
-                  <img
+                  <Img
                     style={{ cursor: 'pointer' }}
-                    src={`https://steemitimages.com/u/${props.author}/avatar/medium`}
+                    src={[
+                      `https://steemitimages.com/u/${props.author}/avatar/medium`,
+                      'https://steemitimages.com/p/7ohP4GDMGPrVF5MeU8t5EQqCvJfGAJHyAFuxrYFhqA4BPKCkPjVBef1jSt7fHRrXVXRuRKBksi1FSJnZL8Co9zi6CpbK1bmV2sFR?width=80&height=80',
+                    ]}
                     alt={props.author}
                     width="80"
                     height="80"

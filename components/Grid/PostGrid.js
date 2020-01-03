@@ -34,18 +34,40 @@ class PostGrid extends Component {
   }
 
   render() {
+    const loader = (
+      <>
+        {((this.props.poststyle === 'comment' ||
+          this.props.poststyle === 'list') && (
+          <Grid container spacing={0} alignItems="center" justify="center">
+            <Grid item lg={12} md={12} sm={12} xs={12} key="loader">
+              <div className="p-5 text-center">
+                <CircularProgress />
+              </div>
+            </Grid>
+          </Grid>
+        )) || (
+          <Grid container spacing={0} alignItems="center" justify="center">
+            <Grid
+              item
+              lg={this.props.grid.lg}
+              md={this.props.grid.md}
+              sm={this.props.grid.sm}
+              xs={this.props.grid.xs}
+              key="loader"
+              className="pb-2"
+            >
+              <GridPostCard cardHeight={this.props.cardHeight} />
+            </Grid>
+          </Grid>
+        )}
+      </>
+    );
     return (
       <Fragment>
         <Query query={GET_POSTS} variables={this.props.query}>
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
-              return (
-                <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
-                  <div className="p-5 text-center">
-                    <CircularProgress />
-                  </div>
-                </Grid>
-              );
+              return loader;
             }
             if (error) {
               return (
@@ -101,14 +123,8 @@ class PostGrid extends Component {
                   }
                 }}
                 hasMore={this.state.hasMore}
-                threshold={800}
-                loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12} key="loader">
-                    <div className="p-5 text-center">
-                      <CircularProgress />
-                    </div>
-                  </Grid>
-                }
+                threshold={1200}
+                loader={loader}
               >
                 <Grid
                   container

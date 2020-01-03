@@ -104,6 +104,7 @@ export default ({
   sanitizeErrors = [],
   secureLinks = false,
   allLinksBlank = false,
+  removeImageDimensions = false,
 }) => ({
   allowedTags,
   // figure, figcaption,
@@ -126,7 +127,7 @@ export default ({
 
     // style is subject to attack, filtering more below
     td: ['style'],
-    img: ['src', 'alt'],
+    img: ['src', 'alt', 'width', 'height'],
     a: ['href', 'rel', 'target'],
   },
   allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat([
@@ -161,21 +162,20 @@ export default ({
     img: (tagName, attribs) => {
       if (noImage) return { tagName: 'div', text: noImageText };
       // See https://github.com/punkave/sanitize-html/issues/117
-      const { alt } = attribs;
-      const { src } = attribs;
+      const { src, alt, width, height } = attribs;
       if (!/^(https?:)?\/\//i.test(src)) {
         sanitizeErrors.push('An image in this post did not save properly.');
         return {
-          tagName: 'img',
-          attribs: {
-            src:
-              'https://img.travelfeed.io/jpphotography%2F20190928T203805590Z-brokenimg.png',
-          },
+          tagName: 'div',
         };
       }
 
       const atts = { src };
       if (alt && alt !== '') atts.alt = alt;
+      if (!removeImageDimensions) {
+        if (width && width !== '') atts.width = width;
+        if (height && height !== '') atts.height = height;
+      }
       return { tagName, attribs: atts };
     },
     div: (tagName, attribs) => {

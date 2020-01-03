@@ -2,6 +2,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Img from 'react-image';
 import { imageProxy } from '../../helpers/getImage';
 
 const styles = theme => ({
@@ -20,8 +21,11 @@ const AuthorProfileImage = props => {
       }/avatar/large`;
 
   return (
-    <img
-      src={img}
+    <Img
+      src={[
+        img,
+        `https://steemitimages.com/p/7ohP4GDMGPrVF5MeU8t5EQqCvJfGAJHyAFuxrYFhqA4BPKCkPjVBef1jSt7fHRrXVXRuRKBksi1FSJnZL8Co9zi6CpbK1bmV2sFR?width=512&height=512`,
+      ]}
       alt="avatar"
       width="200"
       height="200"

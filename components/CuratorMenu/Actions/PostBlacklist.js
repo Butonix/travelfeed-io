@@ -7,7 +7,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
 import BlockIcon from '@material-ui/icons/Block';
 import CheckIcon from '@material-ui/icons/Check';
 import { withSnackbar } from 'notistack';
@@ -15,10 +14,10 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import {
-  BLACKLIST_POST,
   IS_BLACKLISTED_POST,
   UNBLACKLIST_POST,
 } from '../../../helpers/graphql/blacklist';
+import BlacklistMenu from '../../Dashboard/Curation/BlacklistMenu';
 
 class PostBlacklist extends React.Component {
   state = {
@@ -78,7 +77,8 @@ class PostBlacklist extends React.Component {
                     permlink,
                   }}
                 >
-                  {(unblacklistPost, data) => {
+                  {// eslint-disable-next-line no-shadow
+                  (unblacklistPost, data) => {
                     if (
                       data &&
                       data.data &&
@@ -147,77 +147,22 @@ class PostBlacklist extends React.Component {
               data.isBlacklistedPost.isBlacklisted === false
             ) {
               return (
-                <Mutation
-                  mutation={BLACKLIST_POST}
-                  variables={{
-                    author,
-                    permlink,
-                    reason: this.state.reason,
-                  }}
-                >
-                  {(blacklistPost, data) => {
-                    if (
-                      data &&
-                      data.data &&
-                      data.data.blacklistPost &&
-                      open === true
-                    ) {
-                      this.newNotification({
-                        success: data.data.blacklistPost.success,
-                        message: data.data.blacklistPost.message,
-                      });
-                      this.setState({ open: false });
-                    }
-                    return (
-                      <Fragment>
-                        <MenuItem onClick={this.handleClickOpen}>
-                          <ListItemIcon>
-                            <BlockIcon fontSize="small" />
-                          </ListItemIcon>
-                          <ListItemText primary="Blacklist post" />
-                        </MenuItem>
-                        <Dialog
-                          open={open}
-                          onClose={this.handleClose}
-                          aria-labelledby="alert-dialog-title"
-                          aria-describedby="alert-dialog-description"
-                        >
-                          <DialogTitle id="alert-dialog-title">
-                            Blacklist post?
-                          </DialogTitle>
-                          <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                              Are you sure that you want to blacklist this post?
-                              It will no longer be visible on TravelFeed. Please
-                              enter a reason for blacklisting this post.
-                            </DialogContentText>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              value={this.state.reason}
-                              onChange={this.handleTextFieldChange}
-                              label="Reason"
-                              fullWidth
-                            />
-                          </DialogContent>
-                          <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
-                              Cancel
-                            </Button>
-                            <Button
-                              onClick={blacklistPost}
-                              color="primary"
-                              variant="contained"
-                              autoFocus
-                            >
-                              Blacklist post
-                            </Button>
-                          </DialogActions>
-                        </Dialog>
-                      </Fragment>
-                    );
-                  }}
-                </Mutation>
+                <>
+                  <MenuItem onClick={this.handleClickOpen}>
+                    <ListItemIcon>
+                      <BlockIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Blacklist" />
+                  </MenuItem>
+                  <BlacklistMenu
+                    open={open}
+                    onConfirm={() => this.setState({ open: false })}
+                    onCancel={() => this.setState({ open: false })}
+                    author={author}
+                    permlink={permlink}
+                    isCommentMode={this.props.isCommentMode}
+                  />
+                </>
               );
             }
             return (

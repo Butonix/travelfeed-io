@@ -39,8 +39,14 @@ export const BLACKLIST_POST = gql`
     $author: String!
     $permlink: String!
     $reason: String
+    $isShadow: Boolean
   ) {
-    blacklistPost(author: $author, permlink: $permlink, reason: $reason) {
+    blacklistPost(
+      author: $author
+      permlink: $permlink
+      reason: $reason
+      isShadow: $isShadow
+    ) {
       success
       message
     }

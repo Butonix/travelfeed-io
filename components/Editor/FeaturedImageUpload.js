@@ -51,7 +51,7 @@ const FeaturedImageUpload = props => {
       files.map(file => {
         return uploadFile(file, { allowFullSize: props.allowFullSize }).then(
           res => {
-            setFeaturedImage(res);
+            setFeaturedImage(res.url);
           },
         );
       });

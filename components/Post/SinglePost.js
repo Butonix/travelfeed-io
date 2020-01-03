@@ -8,9 +8,9 @@ import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
+import Carousel, { Modal, ModalGateway } from 'react-images';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
-import LazyLoad from 'vanilla-lazyload';
 import canonicalLinker from '../../helpers/canonicalLinker';
 import cleanTags from '../../helpers/cleanTags';
 import { imageProxy } from '../../helpers/getImage';
@@ -24,6 +24,7 @@ import Head from '../Header/Head';
 import Header from '../Header/Header';
 import PostMap from '../Maps/PostMap';
 import PostAuthorProfile from '../Profile/PostAuthorProfile';
+import LightboxCaption from './LightboxCaption';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
 import PostContent from './PostContent';
@@ -57,6 +58,8 @@ class SinglePost extends Component {
     orderdir: 'DESC',
     userComment: undefined,
     cardWidth: 800,
+    lightboxIsOpen: false,
+    lightboxIndex: 0,
   };
 
   componentDidMount() {
@@ -65,14 +68,6 @@ class SinglePost extends Component {
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
       this.setState({ cardWidth });
     }
-    if (!document.lazyLoadInstance) {
-      document.lazyLoadInstance = new LazyLoad({
-        elements_selector: '.lazy',
-        threshold: 1200,
-      });
-    }
-    // Update lazyLoad after first rendering of every image
-    document.lazyLoadInstance.update();
     if (this.props.post.scrollToComments) {
       const comments = document.getElementById('comments');
       const topPos = comments.offsetTop;
@@ -80,10 +75,16 @@ class SinglePost extends Component {
     }
   }
 
-  // Update lazyLoad after rerendering of every image
-  componentDidUpdate() {
-    document.lazyLoadInstance.update();
-  }
+  toggleModal = () => {
+    this.setState(state => ({ lightboxIsOpen: !state.lightboxIsOpen }));
+  };
+
+  toggleLightbox = lightboxIndex => {
+    this.setState(state => ({
+      lightboxIsOpen: !state.lightboxIsOpen,
+      lightboxIndex,
+    }));
+  };
 
   handleClick = op => {
     this.setState(op);
@@ -94,6 +95,8 @@ class SinglePost extends Component {
   };
 
   render() {
+    const { lightboxIsOpen } = this.state;
+
     const { classes } = this.props;
 
     let children = 0;
@@ -200,8 +203,9 @@ class SinglePost extends Component {
             const reactParsed = parseHtmlToReact(htmlBody, {
               cardWidth: this.state.cardWidth,
               hideimgcaptions: !isTf,
+              toggleLightbox: this.toggleLightbox,
             });
-            const { bodyText } = reactParsed;
+            const { bodyText, images } = reactParsed;
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div className="textPrimary postcontent postCardContent">
@@ -225,7 +229,7 @@ class SinglePost extends Component {
                         </p>
                       );
                     }
-                    if (isBacklisted && data.preferences.useTfBlacklist) {
+                    if (isBacklisted) {
                       return (
                         <div className="textPrimary postcontent postCardContent">
                           This post has been removed from TravelFeed.
@@ -443,7 +447,7 @@ class SinglePost extends Component {
                       alignItems="center"
                       justify="center"
                     >
-                      <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
+                      <Grid item lg={6} md={7} sm={10} xs={12} className="pb-4">
                         {depth === 0 && <PostTitle title={title} />}
                         {card}
                       </Grid>
@@ -543,6 +547,19 @@ class SinglePost extends Component {
                     </Grid>
                   </div>
                 </div>
+                {images && (
+                  <ModalGateway>
+                    {lightboxIsOpen ? (
+                      <Modal onClose={this.toggleModal} closeOnBackdropClick>
+                        <Carousel
+                          views={images}
+                          currentIndex={this.state.lightboxIndex}
+                          components={{ LightboxCaption }}
+                        />
+                      </Modal>
+                    ) : null}
+                  </ModalGateway>
+                )}
               </Fragment>
             );
           }}
