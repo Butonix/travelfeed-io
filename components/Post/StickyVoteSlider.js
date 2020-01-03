@@ -76,7 +76,7 @@ class StickyVoteSlider extends Component {
           }}
         >
           <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item lg={7} md={9} sm={11} xs={12}>
+            <Grid item lg={6} md={7} sm={10} xs={12}>
               <Card
                 className={
                   this.state.votePos === 'relative'

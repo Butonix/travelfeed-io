@@ -429,7 +429,7 @@ class SinglePost extends Component {
                       alignItems="center"
                       justify="center"
                     >
-                      <Grid item lg={7} md={9} sm={11} xs={12} className="pb-4">
+                      <Grid item lg={6} md={7} sm={10} xs={12} className="pb-4">
                         {depth === 0 && <PostTitle title={title} />}
                         {card}
                       </Grid>

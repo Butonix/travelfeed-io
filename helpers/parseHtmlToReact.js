@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable consistent-return */
+import Skeleton from '@material-ui/lab/Skeleton';
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
@@ -235,7 +236,7 @@ const parseHtmlToReact = (htmlBody, options) => {
             return (
               <div className="container-fluid pt-2">
                 <div className="row justify-content-center">
-                  <div className="col-xl-6 col-lg-6 col-md-8 col-sm-10 col-12 p-0">
+                  <div className="col-xl-8 col-lg-8 col-md-8 col-sm-10 col-12 p-0">
                     <InstagramEmbed
                       url={`https://www.instagram.com/p/${igmatch[1]}`}
                       maxWidth={600}
@@ -247,7 +248,13 @@ const parseHtmlToReact = (htmlBody, options) => {
             );
           }
           return (
-            <LazyLoad offset={700} height={attribs.height}>
+            <LazyLoad
+              once
+              offset={700}
+              placeholder={
+                <Skeleton variant="rect" width="100%" height={attribs.height} />
+              }
+            >
               <iframe {...attribs} />
             </LazyLoad>
           );
