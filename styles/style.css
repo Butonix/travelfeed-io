@@ -80,15 +80,6 @@ figcaption {
   visibility: hidden;
 }
 
-/* Image lazy loading fade effect */
-.lazy {
-  transition: opacity 0.3s;
-  opacity: 0.8;
-}
-.lazy.loaded {
-  opacity: 1;
-}
-
 .lazyImage img {
   object-fit: cover;
 }

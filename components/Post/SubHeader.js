@@ -12,7 +12,7 @@ import IsCurated from './IsCurated';
 dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
 const SubHeader = props => {
-  const { created_at, readtime, location, tags } = props;
+  const { created_at, readtime, location, tags, showWordCount } = props;
   const taglist = cleanTags(tags, {});
   const tag = taglist && taglist[0] ? taglist[0] : undefined;
   let createdAt;
@@ -47,8 +47,13 @@ const SubHeader = props => {
       {readtime && (
         <Fragment>
           <span> · </span>
-          <Tooltip title={`${readtime.words} words`} placement="bottom">
-            <span>{readtime.text}</span>
+          <Tooltip
+            title={showWordCount ? readtime.text : `${readtime.words} words`}
+            placement="bottom"
+          >
+            <span>
+              {showWordCount ? `${readtime.words} words` : readtime.text}
+            </span>
           </Tooltip>
         </Fragment>
       )}

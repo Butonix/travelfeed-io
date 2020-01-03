@@ -36,7 +36,9 @@ const json2md = data => {
     } else if (b.type === 'image') {
       html += `<img alt="${sanitize(b.data.caption, {
         allowedTags: [],
-      })}" src="${b.data.file.url}" />\n\n`;
+      })}" src="${b.data.file.url}" ${
+        b.data.file.width ? `width="${b.data.file.width}"` : ''
+      } ${b.data.file.height ? `height="${b.data.file.height}"` : ''} />\n\n`;
     } else if (b.type === 'quote') {
       html += `> ${b.data.text}\n\n`;
     } else if (b.type === 'delimiter') {

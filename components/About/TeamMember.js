@@ -1,6 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Img from 'react-image';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
 
@@ -22,7 +23,7 @@ const TeamMember = props => {
           className="mx-auto d-block pb-3"
           style={{ maxHeight: '250px', maxWidth: '250px' }}
         >
-          <img
+          <Img
             className="rounded-circle w-100 h-100"
             alt={props.name}
             src={

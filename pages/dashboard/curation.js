@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import Curation from '../../components/Dashboard/Curation';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
-import Newsletter from '../../components/Dashboard/Newsletter';
 import { getRoles } from '../../helpers/token';
 
-const NewsletterPage = props => {
+const CurationPage = props => {
   const { open } = props;
   const [roles, setRoles] = useState(undefined);
 
@@ -17,19 +17,19 @@ const NewsletterPage = props => {
   return (
     <DashboardPage
       open={open}
-      label="newsletter"
-      content={isCurator ? <Newsletter /> : <></>}
+      label="curation"
+      content={isCurator ? <Curation /> : <></>}
     />
   );
 };
 
-NewsletterPage.getInitialProps = props => {
+CurationPage.getInitialProps = props => {
   const { open } = props.query;
   return { open };
 };
 
-NewsletterPage.propTypes = {
+CurationPage.propTypes = {
   open: PropTypes.string,
 };
 
-export default NewsletterPage;
+export default CurationPage;

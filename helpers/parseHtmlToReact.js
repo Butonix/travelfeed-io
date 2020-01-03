@@ -1,13 +1,19 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable consistent-return */
 import parse, { domToReact } from 'html-react-parser';
 import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
+import LazyLoad from 'react-lazyload';
+import ProgressiveImage from 'react-progressive-image';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
 import { exitUrl, instagramPost, mentionUrl, postUrl } from './regex';
+import supportsWebp from './webp';
 
 const parseHtmlToReact = (htmlBody, options) => {
+  const isWebp = supportsWebp();
+
   const embeds = {};
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
 
@@ -30,18 +36,33 @@ const parseHtmlToReact = (htmlBody, options) => {
       ) {
         const doNotConvert =
           attribs.src.substr(attribs.src.length - 4) === '.gif';
-        if (options.lazy === false) {
+        const imgHeight = attribs.height || '100%';
+        const imgWidth = attribs.width || undefined;
+        const webpSrc = doNotConvert
+          ? attribs.src
+          : imageProxy(attribs.src, undefined, 600, 'fit', 'webp');
+        const regSrc = doNotConvert
+          ? attribs.src
+          : imageProxy(attribs.src, undefined, 600);
+        if (options.amp) {
           return (
-            <figure>
-              <img
-                className="loaded"
-                alt={attribs.alt}
-                src={
-                  doNotConvert
-                    ? attribs.src
-                    : imageProxy(attribs.src, 1800, undefined, 'fit')
-                }
-              />
+            <figure className="ampstart-image-with-caption m0 relative mb4">
+              {(attribs.height && attribs.width && (
+                <amp-img
+                  layout="responsive"
+                  src={isWebp ? webpSrc : regSrc}
+                  width={attribs.width}
+                  height={attribs.height}
+                />
+              )) || (
+                <div className="fixed-height-container">
+                  <amp-img
+                    src={isWebp ? webpSrc : regSrc}
+                    class="contain"
+                    layout="fill"
+                  />
+                </div>
+              )}
               {attribs.alt !== undefined &&
                 // ignore alt texts with image name
                 !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
@@ -51,20 +72,63 @@ const parseHtmlToReact = (htmlBody, options) => {
             </figure>
           );
         }
-        if (options.amp) {
+        if (
+          options.lazy !== false &&
+          attribs.height &&
+          attribs.width &&
+          attribs.height > 200
+        ) {
+          const lazyStyle = {
+            maxHeight: `${
+              attribs.height && attribs.height < 550 ? attribs.height : '550'
+            }px`,
+            maxWidth: `${imgWidth}px`,
+            width: imgHeight > imgWidth ? 'auto' : '100%',
+            height:
+              imgHeight > imgWidth
+                ? `${
+                    attribs.height && attribs.height < 550
+                      ? attribs.height
+                      : '550'
+                  }px`
+                : 'auto',
+          };
           return (
-            <figure className="ampstart-image-with-caption m0 relative mb4">
-              <div className="fixed-height-container">
-                <amp-img
-                  src={
-                    doNotConvert
-                      ? attribs.src
-                      : imageProxy(attribs.src, undefined, 500, 'fit')
-                  }
-                  class="contain"
-                  layout="fill"
-                />
-              </div>
+            <figure>
+              <LazyLoad
+                offset={700}
+                once
+                placeholder={
+                  <picture className="lazyImage">
+                    <img
+                      alt={attribs.alt}
+                      src={imageProxy(attribs.src, undefined, 50, 'fit')}
+                      className="img-fluid mx-auto d-block"
+                      style={lazyStyle}
+                      height={imgHeight}
+                      width={imgWidth}
+                    />
+                  </picture>
+                }
+              >
+                <ProgressiveImage
+                  src={isWebp ? webpSrc : regSrc}
+                  placeholder={imageProxy(attribs.src, undefined, 50, 'fit')}
+                >
+                  {src => (
+                    <picture className="lazyImage">
+                      <img
+                        alt={attribs.alt}
+                        src={src}
+                        className="img-fluid mx-auto d-block"
+                        height={imgHeight}
+                        width={imgWidth}
+                        style={lazyStyle}
+                      />
+                    </picture>
+                  )}
+                </ProgressiveImage>
+              </LazyLoad>
               {attribs.alt !== undefined &&
                 // ignore alt texts with image name
                 !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
@@ -77,36 +141,12 @@ const parseHtmlToReact = (htmlBody, options) => {
         return (
           <figure>
             <picture>
-              <source
-                type="image/webp"
-                data-srcset={
-                  doNotConvert
-                    ? attribs.src
-                    : imageProxy(
-                        attribs.src,
-                        options.cardWidth,
-                        undefined,
-                        'fit',
-                        'webp',
-                      )
-                }
-                data-sizes="100w"
-              />
+              <source type="image/webp" srcSet={webpSrc} />
               <img
                 alt={attribs.alt}
-                className="lazy"
-                src={imageProxy(attribs.src, undefined, 50, 'fit')}
-                data-src={
-                  doNotConvert
-                    ? attribs.src
-                    : imageProxy(
-                        attribs.src,
-                        options.cardWidth,
-                        undefined,
-                        'fit',
-                      )
-                }
-                data-sizes="100w"
+                src={regSrc}
+                className="img-fluid mx-auto d-block"
+                style={{ maxHeight: '550px' }}
               />
             </picture>
             {attribs.alt !== undefined &&
@@ -206,60 +246,64 @@ const parseHtmlToReact = (htmlBody, options) => {
               </div>
             );
           }
-        } else {
-          const ytmatch = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
-            attribs.src,
-          );
-          if (ytmatch) {
-            embeds.youtube = true;
-            return (
-              <amp-youtube
-                data-videoid={ytmatch[1]}
-                layout="responsive"
-                width={attribs.width}
-                height={attribs.height}
-              />
-            );
-          }
-          const vmmatch = /https:\/\/player\.vimeo\.com\/video\/([0-9]*)/.exec(
-            attribs.src,
-          );
-          if (vmmatch) {
-            embeds.vimeo = true;
-            return (
-              <amp-vimeo
-                data-videoid={vmmatch[1]}
-                layout="responsive"
-                width={attribs.width || '960'}
-                height={attribs.height || '540'}
-              />
-            );
-          }
-          const igmatch = instagramPost.exec(attribs.src);
-          if (igmatch) {
-            embeds.instagram = true;
-            return (
-              <amp-instagram
-                data-shortcode={igmatch[1]}
-                width="400"
-                height="400"
-                layout="responsive"
-              />
-            );
-          }
-          embeds.iframe = true;
           return (
-            <amp-iframe
-              allowfullscreen={attribs.allowfullscreen}
-              width={attribs.width || '800'}
-              height={attribs.height || '400'}
-              sandbox="allow-scripts allow-same-origin"
+            <LazyLoad offset={700} height={attribs.height}>
+              <iframe {...attribs} />
+            </LazyLoad>
+          );
+        }
+        const ytmatch = /https:\/\/www\.youtube\.com\/embed\/(.*)/.exec(
+          attribs.src,
+        );
+        if (ytmatch) {
+          embeds.youtube = true;
+          return (
+            <amp-youtube
+              data-videoid={ytmatch[1]}
               layout="responsive"
-              frameborder="0"
-              src={attribs.src}
+              width={attribs.width}
+              height={attribs.height}
             />
           );
         }
+        const vmmatch = /https:\/\/player\.vimeo\.com\/video\/([0-9]*)/.exec(
+          attribs.src,
+        );
+        if (vmmatch) {
+          embeds.vimeo = true;
+          return (
+            <amp-vimeo
+              data-videoid={vmmatch[1]}
+              layout="responsive"
+              width={attribs.width || '960'}
+              height={attribs.height || '540'}
+            />
+          );
+        }
+        const igmatch = instagramPost.exec(attribs.src);
+        if (igmatch) {
+          embeds.instagram = true;
+          return (
+            <amp-instagram
+              data-shortcode={igmatch[1]}
+              width="400"
+              height="400"
+              layout="responsive"
+            />
+          );
+        }
+        embeds.iframe = true;
+        return (
+          <amp-iframe
+            allowfullscreen={attribs.allowfullscreen}
+            width={attribs.width || '800'}
+            height={attribs.height || '400'}
+            sandbox="allow-scripts allow-same-origin"
+            layout="responsive"
+            frameborder="0"
+            src={attribs.src}
+          />
+        );
       }
     },
   };

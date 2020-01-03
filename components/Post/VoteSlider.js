@@ -1,9 +1,7 @@
-// Todo: Tooltip with individual voters over total miles
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { red, teal } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,13 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Slider from '@material-ui/core/Slider';
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  withStyles,
-} from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import CloseIcon from '@material-ui/icons/Close';
@@ -35,6 +27,7 @@ import { getRoles, getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import LoginButton from '../Header/LoginButton';
 import BookmarkIcon from './BookmarkIcon';
+import EmojiSlider from './EmojiSlider';
 import VoteButton from './VoteButton';
 
 const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
@@ -46,54 +39,6 @@ const downVoteTheme = createMuiTheme({
     primary: red,
   },
 });
-
-const upVoteTheme = createMuiTheme({
-  palette: {
-    primary: teal,
-  },
-});
-
-const EmojiSlider = withStyles({
-  thumb: {
-    height: 29,
-    width: 29,
-    backgroundColor: '#fff',
-    border: '1px solid currentColor',
-    marginTop: -12,
-    marginLeft: -12,
-  },
-})(Slider);
-
-const ValueLabelComponent = props => {
-  const { children, open, value } = props;
-
-  const popperRef = React.useRef(null);
-  React.useEffect(() => {
-    if (popperRef.current) {
-      popperRef.current.update();
-    }
-  });
-
-  return (
-    <Tooltip
-      PopperProps={{
-        popperRef,
-      }}
-      open={open}
-      enterTouchDelay={0}
-      placement="top"
-      title={value}
-    >
-      {children}
-    </Tooltip>
-  );
-};
-
-ValueLabelComponent.propTypes = {
-  children: PropTypes.element.isRequired,
-  open: PropTypes.bool.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
 class VoteSlider extends Component {
   constructor(...args) {
@@ -139,20 +84,6 @@ class VoteSlider extends Component {
       });
     }
   }
-
-  EmojiThumbComponent = props => {
-    return (
-      <span {...props}>
-        {(this.state.loading !== undefined && (
-          <CircularProgress
-            value={this.state.loading}
-            size={19}
-            thickness={4}
-          />
-        )) || <VoteButton weight={this.state.weight} size="35" />}
-      </span>
-    );
-  };
 
   pastVote = res => {
     if (!res.success) this.newNotification(res);
@@ -401,28 +332,12 @@ class VoteSlider extends Component {
             <div className="container w-100" style={{ height: '38px' }}>
               <div className="row h-100">
                 <div className="my-auto col-12 text-center">
-                  <MuiThemeProvider
-                    theme={this.state.weight < 0 ? downVoteTheme : upVoteTheme}
-                  >
-                    <EmojiSlider
-                      ValueLabelComponent={ValueLabelComponent}
-                      ThumbComponent={this.EmojiThumbComponent}
-                      track={false}
-                      valueLabelFormat={x => {
-                        let number = x;
-                        if (number > -0.5 && number < 0) number = -1;
-                        else if (number >= 0 && number < 0.5) number = 1;
-                        number = Math.round(number);
-                        return x >= 0 ? `+${number}` : number;
-                      }}
-                      value={this.state.weight}
-                      min={-10}
-                      max={10}
-                      step={0.001}
-                      onChange={this.setWeight}
-                      onChangeCommitted={this.triggerVote}
-                    />
-                  </MuiThemeProvider>
+                  <EmojiSlider
+                    loading={this.state.loading}
+                    weight={this.state.weight}
+                    setWeight={this.setWeight}
+                    onChangeCommitted={this.triggerVote}
+                  />
                 </div>
               </div>
             </div>
@@ -511,12 +426,10 @@ VoteSlider.propTypes = {
   permlink: PropTypes.string.isRequired,
   votes: PropTypes.string.isRequired,
   total_votes: PropTypes.number.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   mode: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   handleClick: PropTypes.func,
   isEdit: PropTypes.bool,
-  depth: PropTypes.number.isRequired,
 };
 
 export default withSnackbar(VoteSlider);

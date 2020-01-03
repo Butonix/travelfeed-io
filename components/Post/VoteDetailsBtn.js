@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from 'react';
+import Img from 'react-image';
 import Link from '../../lib/Link';
 import VoteButton from './VoteButton';
 
@@ -71,6 +72,7 @@ const VoteDetailsBtn = props => {
                   <br />
                 </>
               );
+            return <></>;
           })}
           placement="top"
           arrow
@@ -139,12 +141,24 @@ const VoteDetailsBtn = props => {
                               placement="top"
                               arrow
                             >
-                              <img
+                              <Img
                                 width="30"
                                 height="30"
                                 className="rounded-circle"
-                                alt=""
-                                src={`https://steemitimages.com/u/${vote.voter}/avatar/small`}
+                                alt={vote.voter}
+                                src={[
+                                  `https://steemitimages.com/u/${vote.voter}/avatar/small`,
+                                  `https://steemitimages.com/p/7ohP4GDMGPrVF5MeU8t5EQqCvJfGAJHyAFuxrYFhqA4BPKCkPjVBef1jSt7fHRrXVXRuRKBksi1FSJnZL8Co9zi6CpbK1bmV2sFR?width=40&height=40`,
+                                ]}
+                                loader={
+                                  <Img
+                                    alt={vote.voter}
+                                    className="rounded-circle"
+                                    width="30"
+                                    height="30"
+                                    src="https://steemitimages.com/p/7ohP4GDMGPrVF5MeU8t5EQqCvJfGAJHyAFuxrYFhqA4BPKCkPjVBef1jSt7fHRrXVXRuRKBksi1FSJnZL8Co9zi6CpbK1bmV2sFR?width=40&height=40"
+                                  />
+                                }
                               />
                             </Tooltip>
                           </Link>
