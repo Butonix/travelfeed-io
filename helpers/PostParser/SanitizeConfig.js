@@ -104,6 +104,7 @@ export default ({
   sanitizeErrors = [],
   secureLinks = false,
   allLinksBlank = false,
+  removeImageDimensions = false,
 }) => ({
   allowedTags,
   // figure, figcaption,
@@ -165,17 +166,16 @@ export default ({
       if (!/^(https?:)?\/\//i.test(src)) {
         sanitizeErrors.push('An image in this post did not save properly.');
         return {
-          tagName: 'img',
-          attribs: {
-            src: '/brokenimg.png',
-          },
+          tagName: 'div',
         };
       }
 
       const atts = { src };
       if (alt && alt !== '') atts.alt = alt;
-      if (width && width !== '') atts.width = width;
-      if (height && height !== '') atts.height = height;
+      if (!removeImageDimensions) {
+        if (width && width !== '') atts.width = width;
+        if (height && height !== '') atts.height = height;
+      }
       return { tagName, attribs: atts };
     },
     div: (tagName, attribs) => {

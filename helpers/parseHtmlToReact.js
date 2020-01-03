@@ -44,28 +44,6 @@ const parseHtmlToReact = (htmlBody, options) => {
         const regSrc = doNotConvert
           ? attribs.src
           : imageProxy(attribs.src, undefined, 600);
-        if (options.lazy === false) {
-          return (
-            <figure>
-              <img
-                alt={attribs.alt}
-                src={isWebp ? webpSrc : regSrc}
-                height={imgHeight}
-                width={imgWidth}
-                className="img-fluid mx-auto d-block"
-                style={{
-                  maxHeight: '550px',
-                }}
-              />
-              {attribs.alt !== undefined &&
-                // ignore alt texts with image name
-                !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
-                !options.hideimgcaptions && (
-                  <figcaption>{attribs.alt}</figcaption>
-                )}
-            </figure>
-          );
-        }
         if (options.amp) {
           return (
             <figure className="ampstart-image-with-caption m0 relative mb4">
@@ -94,7 +72,12 @@ const parseHtmlToReact = (htmlBody, options) => {
             </figure>
           );
         }
-        if (attribs.height && attribs.width && attribs.height > 200) {
+        if (
+          options.lazy !== false &&
+          attribs.height &&
+          attribs.width &&
+          attribs.height > 200
+        ) {
           const lazyStyle = {
             maxHeight: `${
               attribs.height && attribs.height < 550 ? attribs.height : '550'

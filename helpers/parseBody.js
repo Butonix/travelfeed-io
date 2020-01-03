@@ -112,6 +112,7 @@ const parseBody = (body, options) => {
     sanitizeConfig({
       secureLinks: options.secureLinks !== false,
       allLinksBlank: options.allLinksBlank === true,
+      removeImageDimensions: options.removeImageDimensions === true,
     }),
   );
 
