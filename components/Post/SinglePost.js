@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
+import Carousel, { Modal, ModalGateway } from 'react-images';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import canonicalLinker from '../../helpers/canonicalLinker';
@@ -23,6 +24,7 @@ import Head from '../Header/Head';
 import Header from '../Header/Header';
 import PostMap from '../Maps/PostMap';
 import PostAuthorProfile from '../Profile/PostAuthorProfile';
+import LightboxCaption from './LightboxCaption';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
 import PostContent from './PostContent';
@@ -56,6 +58,8 @@ class SinglePost extends Component {
     orderdir: 'DESC',
     userComment: undefined,
     cardWidth: 800,
+    lightboxIsOpen: false,
+    lightboxIndex: 0,
   };
 
   componentDidMount() {
@@ -71,6 +75,17 @@ class SinglePost extends Component {
     }
   }
 
+  toggleModal = () => {
+    this.setState(state => ({ lightboxIsOpen: !state.lightboxIsOpen }));
+  };
+
+  toggleLightbox = lightboxIndex => {
+    this.setState(state => ({
+      lightboxIsOpen: !state.lightboxIsOpen,
+      lightboxIndex,
+    }));
+  };
+
   handleClick = op => {
     this.setState(op);
   };
@@ -80,6 +95,8 @@ class SinglePost extends Component {
   };
 
   render() {
+    const { lightboxIsOpen } = this.state;
+
     const { classes } = this.props;
 
     let children = 0;
@@ -186,8 +203,9 @@ class SinglePost extends Component {
             const reactParsed = parseHtmlToReact(htmlBody, {
               cardWidth: this.state.cardWidth,
               hideimgcaptions: !isTf,
+              toggleLightbox: this.toggleLightbox,
             });
-            const { bodyText } = reactParsed;
+            const { bodyText, images } = reactParsed;
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
               <div className="textPrimary postcontent postCardContent">
@@ -529,6 +547,19 @@ class SinglePost extends Component {
                     </Grid>
                   </div>
                 </div>
+                {images && (
+                  <ModalGateway>
+                    {lightboxIsOpen ? (
+                      <Modal onClose={this.toggleModal} closeOnBackdropClick>
+                        <Carousel
+                          views={images}
+                          currentIndex={this.state.lightboxIndex}
+                          components={{ LightboxCaption }}
+                        />
+                      </Modal>
+                    ) : null}
+                  </ModalGateway>
+                )}
               </Fragment>
             );
           }}

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable consistent-return */
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -16,6 +17,7 @@ const parseHtmlToReact = (htmlBody, options) => {
   const isWebp = supportsWebp();
 
   const embeds = {};
+  const images = [];
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
 
   const parseOptions = {
@@ -41,10 +43,23 @@ const parseHtmlToReact = (htmlBody, options) => {
         const imgWidth = attribs.width || undefined;
         const webpSrc = doNotConvert
           ? attribs.src
-          : imageProxy(attribs.src, undefined, 600, 'fit', 'webp');
+          : imageProxy(attribs.src, undefined, 700, 'fit', 'webp');
         const regSrc = doNotConvert
           ? attribs.src
-          : imageProxy(attribs.src, undefined, 600);
+          : imageProxy(attribs.src, undefined, 700);
+        const lightboxImg = { src: isWebp ? webpSrc : regSrc };
+        if (!options.hideimgcaptions && attribs.alt)
+          lightboxImg.caption = attribs.alt;
+        const useLightbox =
+          options.toggleLightbox && (!attribs.height || attribs.height > 400);
+        let handleLightboxToggle;
+        let lightboxClass;
+        if (useLightbox) {
+          images.push(lightboxImg);
+          const lightboxPos = images.length - 1;
+          handleLightboxToggle = () => options.toggleLightbox(lightboxPos);
+          lightboxClass = 'cpointer';
+        }
         if (options.amp) {
           return (
             <figure className="ampstart-image-with-caption m0 relative mb4">
@@ -95,41 +110,74 @@ const parseHtmlToReact = (htmlBody, options) => {
                 : 'auto',
           };
           return (
-            <figure>
-              <LazyLoad
-                offset={700}
-                once
-                placeholder={
-                  <picture className="lazyImage">
-                    <img
-                      alt={attribs.alt}
-                      src={imageProxy(attribs.src, undefined, 50, 'fit')}
-                      className="img-fluid mx-auto d-block"
-                      style={lazyStyle}
-                      height={imgHeight}
-                      width={imgWidth}
-                    />
-                  </picture>
-                }
-              >
-                <ProgressiveImage
-                  src={isWebp ? webpSrc : regSrc}
-                  placeholder={imageProxy(attribs.src, undefined, 50, 'fit')}
-                >
-                  {src => (
+            <div
+              onClick={handleLightboxToggle}
+              onKeyPress={handleLightboxToggle}
+              role="button"
+              className={lightboxClass}
+            >
+              <figure>
+                <LazyLoad
+                  offset={700}
+                  once
+                  placeholder={
                     <picture className="lazyImage">
                       <img
                         alt={attribs.alt}
-                        src={src}
+                        src={imageProxy(attribs.src, undefined, 50, 'fit')}
                         className="img-fluid mx-auto d-block"
+                        style={lazyStyle}
                         height={imgHeight}
                         width={imgWidth}
-                        style={lazyStyle}
                       />
                     </picture>
+                  }
+                >
+                  <ProgressiveImage
+                    src={isWebp ? webpSrc : regSrc}
+                    placeholder={imageProxy(attribs.src, undefined, 50, 'fit')}
+                  >
+                    {src => (
+                      <picture className="lazyImage">
+                        <img
+                          alt={attribs.alt}
+                          src={src}
+                          className="img-fluid mx-auto d-block"
+                          height={imgHeight}
+                          width={imgWidth}
+                          style={lazyStyle}
+                        />
+                      </picture>
+                    )}
+                  </ProgressiveImage>
+                </LazyLoad>
+                {attribs.alt !== undefined &&
+                  // ignore alt texts with image name
+                  !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
+                  !options.hideimgcaptions && (
+                    <figcaption>{attribs.alt}</figcaption>
                   )}
-                </ProgressiveImage>
-              </LazyLoad>
+              </figure>
+            </div>
+          );
+        }
+        return (
+          <div
+            onClick={handleLightboxToggle}
+            onKeyPress={handleLightboxToggle}
+            role="button"
+            className={lightboxClass}
+          >
+            <figure>
+              <picture>
+                <source type="image/webp" srcSet={webpSrc} />
+                <img
+                  alt={attribs.alt}
+                  src={regSrc}
+                  className="img-fluid mx-auto d-block"
+                  style={{ maxHeight: '550px' }}
+                />
+              </picture>
               {attribs.alt !== undefined &&
                 // ignore alt texts with image name
                 !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
@@ -137,26 +185,7 @@ const parseHtmlToReact = (htmlBody, options) => {
                   <figcaption>{attribs.alt}</figcaption>
                 )}
             </figure>
-          );
-        }
-        return (
-          <figure>
-            <picture>
-              <source type="image/webp" srcSet={webpSrc} />
-              <img
-                alt={attribs.alt}
-                src={regSrc}
-                className="img-fluid mx-auto d-block"
-                style={{ maxHeight: '550px' }}
-              />
-            </picture>
-            {attribs.alt !== undefined &&
-              // ignore alt texts with image name
-              !attribs.alt.match(/(DSC_|\.gif|\.jpg|\.png)/i) &&
-              !options.hideimgcaptions && (
-                <figcaption>{attribs.alt}</figcaption>
-              )}
-          </figure>
+          </div>
         );
       }
 
@@ -315,7 +344,7 @@ const parseHtmlToReact = (htmlBody, options) => {
     },
   };
 
-  return { bodyText: parse(htmlBody, parseOptions), embeds };
+  return { bodyText: parse(htmlBody, parseOptions), embeds, images };
 };
 
 export default parseHtmlToReact;
