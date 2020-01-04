@@ -85,7 +85,7 @@ export const SET_CURATION_SCORE = gql`
   mutation setCurationScore(
     $author: String!
     $permlink: String!
-    $title: String!
+    $title: String
     $score: Int!
     $formatting: Boolean
     $language: Boolean

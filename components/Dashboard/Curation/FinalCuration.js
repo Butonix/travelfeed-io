@@ -1,59 +1,127 @@
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import CustomJson from '../../CuratorMenu/Actions/CustomJson';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import DownIcon from '@material-ui/icons/KeyboardArrowDown';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { withSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { SET_CURATION_SCORE } from '../../../helpers/graphql/curation';
+import graphQLClient from '../../../helpers/graphQLClient';
 
 const FinalCuration = props => {
-  const { curationScores } = props;
+  const [curationScores, setCurationScores] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setCurationScores(props.curationScores);
+  }, [props]);
+
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+    }
+  };
+
+  const handleMove = (index, newPos) => {
+    const newCurationScores = curationScores;
+    newCurationScores[index].score += newPos;
+    if (
+      (newPos === 1 &&
+        index > 0 &&
+        newCurationScores[index].score > newCurationScores[index - 1].score) ||
+      (newPos === -1 &&
+        index < newCurationScores.length - 1 &&
+        newCurationScores[index].score < newCurationScores[index + 1].score)
+    ) {
+      const item1 = newCurationScores[index];
+      const item2 = newCurationScores[index - newPos];
+      newCurationScores[index - newPos] = item1;
+      newCurationScores[index] = item2;
+    }
+    setCurationScores(newCurationScores);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1);
+    graphQLClient(SET_CURATION_SCORE, {
+      author: newCurationScores[index].author,
+      permlink: newCurationScores[index].permlink,
+      score: newCurationScores[index].score,
+    }).then(({ setCurationScore }) => {
+      if (!setCurationScore.success) newNotification(setCurationScore);
+    });
+  };
 
   return (
     <>
-      <ul>
-        {curationScores &&
-          curationScores.map(cs => {
-            return (
-              <Typography component="li" variant="body1">
-                <em>{cs.score}</em>{' '}
-                <a
-                  href={`/@${cs.author}/${cs.permlink}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {cs.title}
-                </a>{' '}
-                <em>
-                  by{' '}
-                  <a
-                    href={`/@${cs.author}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    @{cs.author}
-                  </a>
-                </em>
-                {' - '}
-                <CustomJson
-                  isLink
-                  author={cs.author}
-                  permlink={cs.permlink}
-                  action="curate"
-                  title={`Are you sure that you want to curate "${cs.title}" by @${cs.author}?`}
-                  desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
-                />
-                {' - '}
-                <CustomJson
-                  isLink
-                  author={cs.author}
-                  permlink={cs.permlink}
-                  action="honour"
-                  title={`Are you sure that you want to honour "${cs.title}" by @${cs.author}?`}
-                  desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
-                />
-              </Typography>
-            );
-          })}
-      </ul>
+      <div
+        style={{ overflowX: 'auto', wordWrap: 'normal', wordBreak: 'normal' }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">Title</TableCell>
+              <TableCell padding="checkbox">Author</TableCell>
+              <TableCell padding="checkbox">Score</TableCell>
+              <TableCell padding="checkbox" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {curationScores &&
+              curationScores.map((cs, i) => {
+                return (
+                  <TableRow hover key={cs.permlink}>
+                    <TableCell padding="checkbox">
+                      <a
+                        href={`/@${cs.author}/${cs.permlink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {cs.title}
+                      </a>
+                    </TableCell>
+                    <TableCell padding="checkbox">
+                      <a
+                        href={`/@${cs.author}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {cs.author}
+                      </a>
+                    </TableCell>
+                    <TableCell padding="checkbox">
+                      {loading ? <></> : cs.score}
+                    </TableCell>
+                    <TableCell padding="checkbox">
+                      <IconButton
+                        disabled={cs.score === 100}
+                        color="primary"
+                        onClick={() => handleMove(i, 1)}
+                      >
+                        <UpIcon />
+                      </IconButton>
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleMove(i, -1)}
+                      >
+                        <DownIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 };
 
-export default FinalCuration;
+export default withSnackbar(FinalCuration);
