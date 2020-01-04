@@ -1,3 +1,5 @@
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,12 +10,16 @@ import DownIcon from '@material-ui/icons/KeyboardArrowDown';
 import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-import { SET_CURATION_SCORE } from '../../../helpers/graphql/curation';
+import {
+  PROCESS_CURATION,
+  SET_CURATION_SCORE,
+} from '../../../helpers/graphql/curation';
 import graphQLClient from '../../../helpers/graphQLClient';
 
 const FinalCuration = props => {
   const [curationScores, setCurationScores] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
     setCurationScores(props.curationScores);
@@ -56,6 +62,14 @@ const FinalCuration = props => {
       score: newCurationScores[index].score,
     }).then(({ setCurationScore }) => {
       if (!setCurationScore.success) newNotification(setCurationScore);
+    });
+  };
+
+  const handleProcessCuration = () => {
+    setProcessing(true);
+    graphQLClient(PROCESS_CURATION).then(({ processCuration }) => {
+      if (!processCuration.success) newNotification(processCuration);
+      setProcessing(false);
     });
   };
 
@@ -119,6 +133,17 @@ const FinalCuration = props => {
               })}
           </TableBody>
         </Table>
+      </div>
+      <div className="pt-2 text-right">
+        <Button
+          disabled={processing}
+          onClick={handleProcessCuration}
+          color="primary"
+          variant="contained"
+        >
+          Process curation
+          {processing && <CircularProgress className="ml-2" size={25} />}
+        </Button>
       </div>
     </>
   );

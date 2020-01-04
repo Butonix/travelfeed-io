@@ -115,3 +115,12 @@ export const SET_CURATION_SCORE = gql`
     }
   }
 `;
+
+export const PROCESS_CURATION = gql`
+  mutation processCuration {
+    processCuration {
+      success
+      message
+    }
+  }
+`;
