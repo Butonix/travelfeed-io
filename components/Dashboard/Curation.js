@@ -211,7 +211,9 @@ const Curation = props => {
           <CardContent>
             <Typography gutterBottom variant="h6">
               You did it! These are all the posts you rated sorted by how much
-              you liked them. Please make your final picks:
+              you liked them. You can change the scores using the up- and
+              down-buttons. When you are happy, scroll down and press{' '}
+              <em>process curation</em>, the backend will take care of the rest!
             </Typography>
             <FinalCuration curationScores={curationScores} />
           </CardContent>
