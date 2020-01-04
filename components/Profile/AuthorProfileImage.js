@@ -1,4 +1,5 @@
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -30,6 +31,14 @@ const AuthorProfileImage = props => {
       width="200"
       height="200"
       className={`rounded-circle p-0 ${classes.imgborder}`}
+      loader={
+        <Skeleton
+          className={`mx-auto p-0 ${classes.imgborder}`}
+          variant="circle"
+          width={200}
+          height={200}
+        />
+      }
     />
   );
 };
