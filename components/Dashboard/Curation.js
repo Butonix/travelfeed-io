@@ -460,6 +460,7 @@ const Curation = props => {
           weight={weight}
           isTf={isTf}
           state={state}
+          location={!country_code}
         />
         <Grid
           container

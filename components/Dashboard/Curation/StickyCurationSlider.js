@@ -31,6 +31,7 @@ const StickyCurationSlider = props => {
     permlink,
     state,
     title,
+    location,
   } = props;
   const {
     formatting,
@@ -82,6 +83,7 @@ const StickyCurationSlider = props => {
       short,
       writing,
       valueadding,
+      location,
     }).then(({ setCurationScore }) => {
       if (!setCurationScore.success) newNotification(setCurationScore);
     });

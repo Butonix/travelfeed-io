@@ -32,6 +32,7 @@ export const ADD_CURATION_AUTHOR_NOTES = gql`
     $short: Boolean
     $writing: Boolean
     $valueadding: Boolean
+    $location: Boolean
   ) {
     addCurationAuthorNotes(
       author: $author
@@ -45,6 +46,7 @@ export const ADD_CURATION_AUTHOR_NOTES = gql`
       short: $short
       writing: $writing
       valueadding: $valueadding
+      location: $location
     ) {
       success
       message
@@ -66,6 +68,7 @@ export const GET_CURATION_AUTHOR_NOTES = gql`
       short
       writing
       valueadding
+      location
     }
   }
 `;
@@ -95,6 +98,7 @@ export const SET_CURATION_SCORE = gql`
     $short: Boolean
     $writing: Boolean
     $valueadding: Boolean
+    $location: Boolean
   ) {
     setCurationScore(
       author: $author
@@ -109,6 +113,7 @@ export const SET_CURATION_SCORE = gql`
       short: $short
       writing: $writing
       valueadding: $valueadding
+      location: $location
     ) {
       success
       message
