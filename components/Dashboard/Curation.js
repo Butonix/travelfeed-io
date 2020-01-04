@@ -290,8 +290,12 @@ const Curation = props => {
                     : attentionColor
                 }`}
               >
-                Author notes:
-                <p>{notes}</p>
+                {notes ? <></> : <p>Author notes:</p>}
+                <p>
+                  {notes && notes.length > 130
+                    ? `${notes.substring(0, 130)}[...]`
+                    : notes}
+                </p>
                 <p>
                   {blacklisted && blacklisted.length > 0
                     ? `Blacklisted by ${blacklisted}`
