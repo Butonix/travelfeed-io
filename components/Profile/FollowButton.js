@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 // no ssr since current user is essential to determine follow status
 
 import Button from '@material-ui/core/Button';
@@ -8,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import FollowIcon from '@material-ui/icons/PersonAdd';
 import UnfollowIcon from '@material-ui/icons/PersonAddDisabled';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -86,7 +88,13 @@ const FollowButton = props => {
   };
 
   if (isMounted === false) {
-    return <Fragment />;
+    return (
+      <>
+        {props.btnstyle === 'default' && (
+          <Skeleton className="mx-auto" variant="rect" width={70} height={28} />
+        )}
+      </>
+    );
   }
   let btnclass = 'm-1';
   if (props.btnstyle === 'whiteborder') {

@@ -157,6 +157,7 @@ const parseHtmlToReact = (htmlBody, options) => {
                 <LazyLoad
                   offset={700}
                   once
+                  height={imgHeight > 550 ? 550 : imgHeight}
                   placeholder={
                     <picture className="lazyImage">
                       <img
@@ -329,8 +330,13 @@ const parseHtmlToReact = (htmlBody, options) => {
             <LazyLoad
               once
               offset={700}
+              height={attribs.height}
               placeholder={
-                <Skeleton variant="rect" width="100%" height={attribs.height} />
+                <Skeleton
+                  variant="rect"
+                  width="100%"
+                  height={Number(attribs.height)}
+                />
               }
             >
               <iframe {...attribs} />

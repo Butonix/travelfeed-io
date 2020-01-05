@@ -1,8 +1,9 @@
 import Button from '@material-ui/core/Button';
 import MapIcon from '@material-ui/icons/Map';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useTheme } from '@material-ui/styles';
-import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import LazyLoad from 'react-lazyload';
 import { MAPBOX_TOKEN } from '../../config';
 import Link from '../../lib/Link';
 
@@ -18,42 +19,54 @@ const PostMap = props => {
 
   return (
     // Important! Always set the container height explicitly
-    <Fragment>
-      <div style={{ padding: '0 24px 0 24px' }}>
-        <div
-          style={{
-            height: '250px',
-            width: '100%',
-            backgroundImage: `
+    <LazyLoad
+      offset={700}
+      height={250}
+      once
+      placeholder={
+        <div style={{ padding: '0 24px 0 24px' }}>
+          <Skeleton variant="rect" width="100%" height={250} />
+        </div>
+      }
+    >
+      {cardWidth && (
+        <Fragment>
+          <div style={{ padding: '0 24px 0 24px' }}>
+            <div
+              style={{
+                height: '250px',
+                width: '100%',
+                backgroundImage: `
           url("${map_image}")`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            backgroundSize: 'cover',
-            position: 'relative',
-          }}
-        >
-          <div style={{ position: 'absolute', bottom: 20 }} className="w-100">
-            <div className="text-center">
-              <Link
-                href={`/map?zoom=6&latitude=${encodeURIComponent(
-                  latitude,
-                )}&longitude=${encodeURIComponent(longitude)}`}
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center center',
+                backgroundSize: 'cover',
+                position: 'relative',
+              }}
+            >
+              <div
+                style={{ position: 'absolute', bottom: 20 }}
+                className="w-100"
               >
-                <Button variant="contained" color="primary">
-                  <span className="pr-1">Explore the map</span>
-                  <MapIcon />
-                </Button>
-              </Link>
+                <div className="text-center">
+                  <Link
+                    href={`/map?zoom=6&latitude=${encodeURIComponent(
+                      latitude,
+                    )}&longitude=${encodeURIComponent(longitude)}`}
+                  >
+                    <Button variant="contained" color="primary">
+                      <span className="pr-1">Explore the map</span>
+                      <MapIcon />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </Fragment>
+        </Fragment>
+      )}
+    </LazyLoad>
   );
-};
-
-PostMap.propTypes = {
-  location: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number)).isRequired,
 };
 
 export default PostMap;

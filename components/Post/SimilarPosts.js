@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Query } from 'react-apollo';
+import LazyLoad from 'react-lazyload';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import Link from '../../lib/Link';
@@ -56,40 +57,64 @@ const SimilarPosts = props => {
                   </Typography>
                   <div className="container">
                     <div className="row">
-                      {data.posts.map((post, i) => {
-                        const {
-                          author,
-                          permlink,
-                          title,
-                          img_url,
-                          subdivision,
-                          city,
-                        } = post;
-                        return (
+                      <LazyLoad
+                        offset={700}
+                        height={380}
+                        once
+                        placeholder={
                           <>
-                            <div
-                              className={`col-xl-3 col-lg-3 col-md-4 m-0 p-0 ${i >
-                                2 &&
-                                'd-xl-block d-lg-block d-md-none d-sm-none d-none'}`}
-                              key={permlink}
-                            >
-                              <SimilarPostCard
-                                slug={slug}
-                                post={{
-                                  author,
-                                  permlink,
-                                  title,
-                                  img_url,
-                                  subdivision,
-                                  city,
-                                }}
-                                padding={i > 0 ? `pl-2` : ''}
-                                cardHeight="200"
-                              />
-                            </div>
+                            {[0, 1, 2, 3].map(i => (
+                              <div
+                                className={`col-xl-3 col-lg-3 col-md-4 m-0 p-0 ${i >
+                                  2 &&
+                                  'd-xl-block d-lg-block d-md-none d-sm-none d-none'}`}
+                                key={`lazy-${i}`}
+                              >
+                                <SimilarPostCard
+                                  padding={i > 0 ? `pl-2` : ''}
+                                  cardHeight="200"
+                                  post={{ permlink: `lazypost-${i}` }}
+                                />
+                              </div>
+                            ))}
                           </>
-                        );
-                      })}
+                        }
+                      >
+                        {data.posts.map((post, i) => {
+                          const {
+                            author,
+                            permlink,
+                            title,
+                            img_url,
+                            subdivision,
+                            city,
+                          } = post;
+                          return (
+                            <>
+                              <div
+                                className={`col-xl-3 col-lg-3 col-md-4 m-0 p-0 ${i >
+                                  2 &&
+                                  'd-xl-block d-lg-block d-md-none d-sm-none d-none'}`}
+                                key={permlink}
+                              >
+                                <SimilarPostCard
+                                  slug={slug}
+                                  post={{
+                                    author,
+                                    permlink,
+                                    title,
+                                    img_url,
+                                    subdivision,
+                                    city,
+                                  }}
+                                  padding={i > 0 ? `pl-2` : ''}
+                                  cardHeight="200"
+                                />
+                              </div>
+                            </>
+                          );
+                        })}
+                      </LazyLoad>
                     </div>
                   </div>
                 </div>

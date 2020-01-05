@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import { grey, teal } from '@material-ui/core/colors';
@@ -57,11 +58,9 @@ class Header extends Component {
       () => import('../Destinations/DestinationsNav'),
       {
         loading: () => (
-          <Link color="textPrimary" href="/destinations">
-            <Button color="default" className={classes.whitebutton}>
-              Discover <DownIcon />
-            </Button>
-          </Link>
+          <Button color="default" className={classes.whitebutton}>
+            Discover <DownIcon />
+          </Button>
         ),
         ssr: false,
       },
