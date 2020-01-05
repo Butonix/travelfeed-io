@@ -19,6 +19,7 @@ import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
+import supportsWebp from '../../helpers/webp';
 import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
@@ -57,12 +58,13 @@ class SinglePost extends Component {
     orderby: 'total_votes',
     orderdir: 'DESC',
     userComment: undefined,
-    cardWidth: 800,
+    cardWidth: undefined,
     lightboxIsOpen: false,
     lightboxIndex: 0,
+    webpSupport: undefined,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.myInput.current) {
       const cardWidth =
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
@@ -73,6 +75,10 @@ class SinglePost extends Component {
       const topPos = comments.offsetTop;
       document.getElementById('__next').scrollTop = topPos;
     }
+    const webpSupport = await supportsWebp();
+    this.setState({
+      webpSupport,
+    });
   }
 
   toggleModal = () => {
@@ -204,6 +210,7 @@ class SinglePost extends Component {
               cardWidth: this.state.cardWidth,
               hideimgcaptions: !isTf,
               toggleLightbox: this.toggleLightbox,
+              webpSupport: this.state.webpSupport,
             });
             const { bodyText, images } = reactParsed;
             let bodycontent = (

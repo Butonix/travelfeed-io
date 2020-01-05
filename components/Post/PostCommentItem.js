@@ -9,6 +9,7 @@ import React, { Component, Fragment } from 'react';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
+import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
@@ -30,13 +31,18 @@ class PostCommentItem extends Component {
     showEditor: false,
     userComment: undefined,
     body: undefined,
+    webpSupport: undefined,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const user = getUser();
     if (user === this.props.post.author) {
       this.setState({ isEdit: true });
     }
+    const webpSupport = await supportsWebp();
+    this.setState({
+      webpSupport,
+    });
   }
 
   onCommentEdit = userComment => {
@@ -70,7 +76,9 @@ class PostCommentItem extends Component {
     }
 
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
-    const reactParsed = parseHtmlToReact(htmlBody, {});
+    const reactParsed = parseHtmlToReact(htmlBody, {
+      webpSupport: this.state.webpSupport,
+    });
     const { bodyText } = reactParsed;
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies === true) {

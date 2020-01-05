@@ -22,6 +22,7 @@ import { GET_POSTS } from '../../helpers/graphql/posts';
 import graphQLClient from '../../helpers/graphQLClient';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
+import supportsWebp from '../../helpers/webp';
 import FixedBackgroundImage from '../General/FixedBackgroundImage';
 import PostContent from '../Post/PostContent';
 import DotOptions from './Curation/DotOptions';
@@ -49,6 +50,7 @@ const Curation = props => {
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
   const [finished, setFinished] = useState(false);
+  const [webpSupport, setWebpSupport] = useState(undefined);
   const [state, setState] = React.useState({
     formatting: false,
     language: false,
@@ -130,6 +132,12 @@ const Curation = props => {
 
   useEffect(() => {
     fetchPosts();
+    const getWebpSupport = async () => {
+      const isWebp = await supportsWebp();
+      return isWebp;
+    };
+    const webp = getWebpSupport();
+    setWebpSupport(webp);
   }, []);
 
   const newNotification = notification => {
@@ -249,8 +257,8 @@ const Curation = props => {
     const sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
     const reactParsed = parseHtmlToReact(htmlBody, {
-      cardWidth: 800,
       hideimgcaptions: !isTf,
+      webpSupport,
     });
     const { bodyText } = reactParsed;
     const bodycontent = (
