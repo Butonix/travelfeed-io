@@ -628,7 +628,7 @@ const PostEditor = props => {
         undefined,
         true,
       );
-    }, 8000);
+    }, 10000);
   }
 
   if (!saved) {
