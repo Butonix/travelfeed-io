@@ -98,6 +98,7 @@ const BlacklistMenu = props => {
               </DialogContentText>
               <Select value={reason} onChange={handleDropdownChange}>
                 <MenuItem value="short">Below 250 words</MenuItem>
+                <MenuItem value="nottravel">Not travel-related</MenuItem>
                 <MenuItem value="language">Not in English</MenuItem>
                 <MenuItem value="copyright">Violating Copyright</MenuItem>
                 <MenuItem value="spam">Spam</MenuItem>
