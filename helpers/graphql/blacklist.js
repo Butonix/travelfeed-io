@@ -3,11 +3,13 @@ import gql from 'graphql-tag';
 export const BLACKLIST_AUTHOR = gql`
   mutation blacklistAuthor(
     $author: String!
+    $permlink: String
     $reason: String
     $isOnlyCommentBlacklisted: Boolean
   ) {
     blacklistAuthor(
       author: $author
+      permlink: $permlink
       reason: $reason
       isOnlyCommentBlacklisted: $isOnlyCommentBlacklisted
     ) {

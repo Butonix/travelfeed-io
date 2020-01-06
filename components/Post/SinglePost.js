@@ -4,7 +4,6 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
-import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -19,6 +18,7 @@ import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
+import supportsWebp from '../../helpers/webp';
 import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
@@ -27,6 +27,7 @@ import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import LightboxCaption from './LightboxCaption';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
+import PostComments from './PostComments';
 import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
 import PostSocialShares from './PostSocialShares';
@@ -35,10 +36,6 @@ import SimilarPosts from './SimilarPosts';
 import SliderTags from './SliderTags';
 import StickyVoteSlider from './StickyVoteSlider';
 import VoteDetailsBtn from './VoteDetailsBtn';
-
-const PostComments = dynamic(() => import('./PostComments'), {
-  ssr: false,
-});
 
 const styles = () => ({
   card: {
@@ -57,12 +54,13 @@ class SinglePost extends Component {
     orderby: 'total_votes',
     orderdir: 'DESC',
     userComment: undefined,
-    cardWidth: 800,
+    cardWidth: undefined,
     lightboxIsOpen: false,
     lightboxIndex: 0,
+    webpSupport: undefined,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.myInput.current) {
       const cardWidth =
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
@@ -73,6 +71,10 @@ class SinglePost extends Component {
       const topPos = comments.offsetTop;
       document.getElementById('__next').scrollTop = topPos;
     }
+    const webpSupport = await supportsWebp();
+    this.setState({
+      webpSupport,
+    });
   }
 
   toggleModal = () => {
@@ -204,6 +206,7 @@ class SinglePost extends Component {
               cardWidth: this.state.cardWidth,
               hideimgcaptions: !isTf,
               toggleLightbox: this.toggleLightbox,
+              webpSupport: this.state.webpSupport,
             });
             const { bodyText, images } = reactParsed;
             let bodycontent = (
@@ -398,7 +401,10 @@ class SinglePost extends Component {
                                 Written by
                               </Typography>
                               <div className="pb-3">
-                                <PostAuthorProfile author={author} />
+                                <PostAuthorProfile
+                                  author={author}
+                                  display_name={display_name}
+                                />
                               </div>
                             </div>
                           </div>

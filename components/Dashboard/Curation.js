@@ -22,6 +22,7 @@ import { GET_POSTS } from '../../helpers/graphql/posts';
 import graphQLClient from '../../helpers/graphQLClient';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
+import supportsWebp from '../../helpers/webp';
 import FixedBackgroundImage from '../General/FixedBackgroundImage';
 import PostContent from '../Post/PostContent';
 import DotOptions from './Curation/DotOptions';
@@ -49,6 +50,7 @@ const Curation = props => {
   const [postPosition, setPostPosition] = useState(0);
   const [curationAuthorNotes, setCurationAuthorNotes] = useState([]);
   const [finished, setFinished] = useState(false);
+  const [webpSupport, setWebpSupport] = useState(undefined);
   const [state, setState] = React.useState({
     formatting: false,
     language: false,
@@ -130,6 +132,12 @@ const Curation = props => {
 
   useEffect(() => {
     fetchPosts();
+    const getWebpSupport = async () => {
+      const isWebp = await supportsWebp();
+      return isWebp;
+    };
+    const webp = getWebpSupport();
+    setWebpSupport(webp);
   }, []);
 
   const newNotification = notification => {
@@ -211,7 +219,9 @@ const Curation = props => {
           <CardContent>
             <Typography gutterBottom variant="h6">
               You did it! These are all the posts you rated sorted by how much
-              you liked them. Please make your final picks:
+              you liked them. You can change the scores using the up- and
+              down-buttons. When you are happy, scroll down and press{' '}
+              <em>process curation</em>, the backend will take care of the rest!
             </Typography>
             <FinalCuration curationScores={curationScores} />
           </CardContent>
@@ -247,8 +257,8 @@ const Curation = props => {
     const sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
     const reactParsed = parseHtmlToReact(htmlBody, {
-      cardWidth: 800,
       hideimgcaptions: !isTf,
+      webpSupport,
     });
     const { bodyText } = reactParsed;
     const bodycontent = (
@@ -288,8 +298,12 @@ const Curation = props => {
                     : attentionColor
                 }`}
               >
-                Author notes:
-                <p>{notes}</p>
+                {notes ? <></> : <p>Author notes:</p>}
+                <p>
+                  {notes && notes.length > 130
+                    ? `${notes.substring(0, 130)}[...]`
+                    : notes}
+                </p>
                 <p>
                   {blacklisted && blacklisted.length > 0
                     ? `Blacklisted by ${blacklisted}`
@@ -454,6 +468,7 @@ const Curation = props => {
           weight={weight}
           isTf={isTf}
           state={state}
+          location={!country_code}
         />
         <Grid
           container

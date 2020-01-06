@@ -11,10 +11,9 @@ import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
 import { exitUrl, instagramPost, mentionUrl, postUrl } from './regex';
-import supportsWebp from './webp';
 
 const parseHtmlToReact = (htmlBody, options) => {
-  const isWebp = supportsWebp();
+  const isWebp = options.webpSupport;
 
   const embeds = {};
   const images = [];
@@ -41,12 +40,31 @@ const parseHtmlToReact = (htmlBody, options) => {
           attribs.src.substr(attribs.src.length - 4) === '.gif';
         const imgHeight = attribs.height || '100%';
         const imgWidth = attribs.width || undefined;
-        const webpSrc = doNotConvert
+        const fetchHeight =
+          attribs.height && attribs.height > 0 && attribs.height < 700
+            ? attribs.height
+            : 700;
+        let webpSrc = doNotConvert
           ? attribs.src
-          : imageProxy(attribs.src, undefined, 700, 'fit', 'webp');
-        const regSrc = doNotConvert
+          : imageProxy(attribs.src, undefined, fetchHeight, 'fit', 'webp');
+        let regSrc = doNotConvert
           ? attribs.src
-          : imageProxy(attribs.src, undefined, 700);
+          : imageProxy(attribs.src, undefined, fetchHeight, 'fit');
+        if (options.cardWidth && options.cardWidth <= 500) {
+          // on mobile, loading a smaller version is sufficient
+          webpSrc = doNotConvert
+            ? attribs.src
+            : imageProxy(
+                attribs.src,
+                options.cardWidth,
+                undefined,
+                'fit',
+                'webp',
+              );
+          regSrc = doNotConvert
+            ? attribs.src
+            : imageProxy(attribs.src, options.cardWidth, undefined, 'fit');
+        }
         const lightboxImg = { src: isWebp ? webpSrc : regSrc };
         if (!options.hideimgcaptions && attribs.alt)
           lightboxImg.caption = attribs.alt;
@@ -65,18 +83,37 @@ const parseHtmlToReact = (htmlBody, options) => {
             <figure className="ampstart-image-with-caption m0 relative mb4">
               {(attribs.height && attribs.width && (
                 <amp-img
+                  alt={attribs.alt}
                   layout="responsive"
-                  src={isWebp ? webpSrc : regSrc}
+                  src={webpSrc}
                   width={attribs.width}
                   height={attribs.height}
-                />
+                >
+                  <amp-img
+                    alt={attribs.alt}
+                    fallback
+                    layout="responsive"
+                    src={regSrc}
+                    width={attribs.width}
+                    height={attribs.height}
+                  />
+                </amp-img>
               )) || (
                 <div className="fixed-height-container">
                   <amp-img
-                    src={isWebp ? webpSrc : regSrc}
+                    alt={attribs.alt}
+                    src={webpSrc}
                     class="contain"
                     layout="fill"
-                  />
+                  >
+                    <amp-img
+                      alt={attribs.alt}
+                      fallback
+                      src={regSrc}
+                      class="contain"
+                      layout="fill"
+                    />
+                  </amp-img>
                 </div>
               )}
               {attribs.alt !== undefined &&
@@ -120,11 +157,17 @@ const parseHtmlToReact = (htmlBody, options) => {
                 <LazyLoad
                   offset={700}
                   once
+                  height={imgHeight > 550 ? 550 : imgHeight}
                   placeholder={
                     <picture className="lazyImage">
                       <img
                         alt={attribs.alt}
-                        src={imageProxy(attribs.src, undefined, 50, 'fit')}
+                        src={imageProxy(
+                          attribs.src,
+                          undefined,
+                          fetchHeight < 50 ? fetchHeight : 50,
+                          'fit',
+                        )}
                         className="img-fluid mx-auto d-block"
                         style={lazyStyle}
                         height={imgHeight}
@@ -135,7 +178,12 @@ const parseHtmlToReact = (htmlBody, options) => {
                 >
                   <ProgressiveImage
                     src={isWebp ? webpSrc : regSrc}
-                    placeholder={imageProxy(attribs.src, undefined, 50, 'fit')}
+                    placeholder={imageProxy(
+                      attribs.src,
+                      undefined,
+                      fetchHeight < 50 ? fetchHeight : 50,
+                      'fit',
+                    )}
                   >
                     {src => (
                       <picture className="lazyImage">
@@ -176,6 +224,8 @@ const parseHtmlToReact = (htmlBody, options) => {
                   src={regSrc}
                   className="img-fluid mx-auto d-block"
                   style={{ maxHeight: '550px' }}
+                  height={imgHeight}
+                  width={imgWidth}
                 />
               </picture>
               {attribs.alt !== undefined &&
@@ -280,8 +330,13 @@ const parseHtmlToReact = (htmlBody, options) => {
             <LazyLoad
               once
               offset={700}
+              height={attribs.height}
               placeholder={
-                <Skeleton variant="rect" width="100%" height={attribs.height} />
+                <Skeleton
+                  variant="rect"
+                  width="100%"
+                  height={Number(attribs.height)}
+                />
               }
             >
               <iframe {...attribs} />

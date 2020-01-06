@@ -12,8 +12,6 @@ import CuratorIcon from '@material-ui/icons/MoreVert';
 import React, { useEffect, useState } from 'react';
 import { getRoles, getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
-import CustomJson from '../CuratorMenu/Actions/CustomJson';
-import JsonAndMutate from '../CuratorMenu/Actions/JsonAndMutate';
 import PostBlacklist from '../CuratorMenu/Actions/PostBlacklist';
 import FollowButton from '../Profile/FollowButton';
 import BookmarkIcon from './BookmarkIcon';
@@ -117,51 +115,6 @@ const DotMenu = props => {
 
   if (getUser() !== author)
     menuItems.push(<FollowButton author={author} btnstyle="menuItem" />);
-
-  if (props.showCuratorOptions && isCurator) {
-    menuItems.push(
-      <>
-        <CustomJson
-          author={author}
-          permlink={permlink}
-          action="curate"
-          title="Are you sure that you want to curate this post?"
-          desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
-        />
-        <CustomJson
-          author={author}
-          permlink={permlink}
-          action="honour"
-          title="Are you sure that you want to honour this post?"
-          desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
-        />
-        <JsonAndMutate
-          author={author}
-          permlink={permlink}
-          action="short"
-          title="Are you sure that you want to mark this post as too short?"
-          desc="This post will be blacklisted and receive a comment."
-          reason="Post is under the threshold of 250 words."
-        />
-        <JsonAndMutate
-          author={author}
-          permlink={permlink}
-          action="language"
-          title="Are you sure that you want to mark this post as having less than 250 words in English?"
-          desc="This post will be blacklisted and receive a comment."
-          reason="Post is under the threshold of 250 English words."
-        />
-        <JsonAndMutate
-          author={author}
-          permlink={permlink}
-          action="copyright"
-          title="Are you sure that you want to mark this post as violating copyright?"
-          desc="This post will be blacklisted and receive a comment."
-          reason="Post is violating copyright."
-        />
-      </>,
-    );
-  }
 
   if (isCurator) {
     menuItems.push(

@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import Img from 'react-image';
@@ -8,12 +9,10 @@ import Link from '../../lib/Link';
 import FollowButton from './FollowButton';
 
 const PostAuthorProfile = props => {
-  const [displayName, setDisplayName] = useState(props.author);
   const [about, setAbout] = useState('');
 
   useEffect(() => {
     getAccount(props.author).then(profile => {
-      setDisplayName(profile.display_name);
       if (profile.about) setAbout(profile.about);
     });
   }, []);
@@ -43,6 +42,14 @@ const PostAuthorProfile = props => {
                     width="80"
                     height="80"
                     className="rounded-circle"
+                    loader={
+                      <Skeleton
+                        className="mx-auto"
+                        variant="circle"
+                        width={80}
+                        height={80}
+                      />
+                    }
                   />
                 </Link>
               </div>
@@ -54,7 +61,7 @@ const PostAuthorProfile = props => {
                     href={`/blog?author=${props.author}`}
                   >
                     <Typography variant="h6" className="textPrimary cpointer">
-                      {displayName}
+                      {props.display_name}
                     </Typography>
                     <Typography color="textSecondary" variant="subtitle">
                       @{props.author}
@@ -66,7 +73,30 @@ const PostAuthorProfile = props => {
                     </p>
                   )}
                 </div>
-                <p className="p-2">{about}</p>
+                <p className="p-2">
+                  {about || (
+                    <>
+                      <Skeleton
+                        className="mx-auto"
+                        variant="text"
+                        width="80%"
+                        height={20}
+                      />
+                      <Skeleton
+                        className="mx-auto"
+                        variant="text"
+                        width="80%"
+                        height={20}
+                      />
+                      <Skeleton
+                        className="mx-auto"
+                        variant="text"
+                        width="80%"
+                        height={20}
+                      />
+                    </>
+                  )}
+                </p>
               </Fragment>
               <div>
                 <FollowButton author={props.author} btnstyle="default" />

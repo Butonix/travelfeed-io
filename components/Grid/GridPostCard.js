@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import ProgressiveImage from 'react-progressive-image';
 import { imageProxy } from '../../helpers/getImage';
+import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import DotMenu from '../Post/DotMenu';
 import SubHeader from '../Post/SubHeader';
@@ -31,13 +32,15 @@ class GridPostCard extends Component {
     this.myInput = React.createRef();
   }
 
-  state = { show: true, cardWidth: 800 };
+  state = { show: true, cardWidth: undefined, isWebp: undefined };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.myInput.current) {
       const cardWidth = Math.ceil(this.myInput.current.offsetWidth / 100) * 100;
       this.setState({ cardWidth });
     }
+    const isWebp = await supportsWebp();
+    this.setState({ isWebp });
   }
 
   hide = () => {
@@ -62,7 +65,7 @@ class GridPostCard extends Component {
             this.state.cardWidth,
             undefined,
             'fit',
-            'webp',
+            this.state.isWebp ? 'webp' : undefined,
           )
         : undefined;
       let titleUri = '';
