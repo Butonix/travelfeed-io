@@ -5,6 +5,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
+import ProgressiveImage from 'react-progressive-image';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
 import Excerpt from '../Grid/Excerpt';
@@ -19,6 +20,14 @@ const SimilarPostCard = props => {
   const classes = useStyles();
 
   const isSkeleton = !props.post.author;
+
+  const cardImage = isSkeleton
+    ? undefined
+    : imageProxy(props.post.img_url, 300);
+
+  const mediaPlaceholder = (
+    <Skeleton variant="rect" width="100%" height={200} />
+  );
 
   return (
     <>
@@ -42,17 +51,33 @@ const SimilarPostCard = props => {
         >
           <Card key={props.post.permlink} className={classes.card}>
             <CardActionArea>
-              {isSkeleton ? (
-                <Skeleton variant="rect" width="100%" height={200} />
-              ) : (
-                props.post.img_url && (
-                  <CardMedia
-                    className="h-100"
-                    style={{ minHeight: '200px' }}
-                    image={imageProxy(props.post.img_url, 300)}
-                  />
-                )
-              )}
+              {isSkeleton
+                ? mediaPlaceholder
+                : props.post.img_url && (
+                    <ProgressiveImage
+                      src={cardImage}
+                      placeholder={mediaPlaceholder}
+                    >
+                      {(src, loading) => {
+                        if (loading) {
+                          return (
+                            <Skeleton
+                              variant="rect"
+                              width="100%"
+                              height={200}
+                            />
+                          );
+                        }
+                        return (
+                          <CardMedia
+                            className="h-100"
+                            style={{ minHeight: '200px' }}
+                            image={cardImage}
+                          />
+                        );
+                      }}
+                    </ProgressiveImage>
+                  )}
               <CardContent>
                 <div className="container" style={{ height: '150px' }}>
                   <div className="row h-100">
