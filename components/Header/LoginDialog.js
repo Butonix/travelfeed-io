@@ -11,7 +11,6 @@ import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-import Img from 'react-image';
 import api from '../../helpers/steemConnectAPI';
 import ScLogo from '../../images/steemconnect.png';
 // eslint-disable-next-line import/no-cycle
@@ -136,7 +135,7 @@ const LoginDialog = props => {
                         variant="contained"
                         size="large"
                       >
-                        <Img
+                        <img
                           src={ScLogo}
                           alt="Login with Steemconnect"
                           height={30}

@@ -10,7 +10,6 @@ import ResteemIcon from '@material-ui/icons/Autorenew';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import Img from 'react-image';
 import { customJson } from '../../helpers/actions';
 import { CUSTOM_JSON } from '../../helpers/graphql/broadcast';
 import graphQLClient from '../../helpers/graphQLClient';
@@ -75,7 +74,7 @@ const ResteemButton = props => {
       {user && (
         <>
           <IconButton onClick={() => setOpen(true)}>
-            <Img src={SteemLogo} alt="Steem logo" width={22} height={22} />
+            <img src={SteemLogo} alt="Steem logo" width={22} height={22} />
           </IconButton>
           <Dialog
             open={open}
