@@ -263,7 +263,7 @@ class VoteSlider extends Component {
           <Link
             color="textPrimary"
             as={`/@${this.props.author}/${this.props.permlink}#comments`}
-            href={`${this.props.commentLink}&scrollToComments=true`}
+            href={`${this.props.commentLink}`}
           >
             {commentButton}
           </Link>

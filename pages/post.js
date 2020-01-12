@@ -28,7 +28,6 @@ PostPage.getInitialProps = props => {
     country_code,
     subdivision,
     app,
-    scrollToComments,
     curation_score,
   } = props.query;
   return {
@@ -44,7 +43,6 @@ PostPage.getInitialProps = props => {
     country_code,
     subdivision,
     app,
-    scrollToComments,
     curation_score,
   };
 };
@@ -54,8 +52,6 @@ PostPage.defaultProps = {
 };
 
 PostPage.propTypes = {
-  author: PropTypes.string.isRequired,
-  permlink: PropTypes.string.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.arrayOf(PropTypes.string),
 };
