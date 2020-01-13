@@ -66,11 +66,6 @@ class SinglePost extends Component {
         Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
       this.setState({ cardWidth });
     }
-    if (this.props.post.scrollToComments) {
-      const comments = document.getElementById('comments');
-      const topPos = comments.offsetTop;
-      document.getElementById('__next').scrollTop = topPos;
-    }
     const webpSupport = await supportsWebp();
     this.setState({
       webpSupport,

@@ -5,7 +5,6 @@ import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import Img from 'react-image';
 import steemconnect from 'steemconnect';
 import api from '../../helpers/steemConnectAPI';
 import KcLogo from '../../images/keychain.png';
@@ -96,7 +95,7 @@ const KeychainButton = props => {
                 color="primary"
                 variant="contained"
               >
-                <Img src={KcLogo} alt="Login with Steem Keychain" height={30} />
+                <img src={KcLogo} alt="Login with Steem Keychain" height={30} />
               </Button>
             </div>
           </div>

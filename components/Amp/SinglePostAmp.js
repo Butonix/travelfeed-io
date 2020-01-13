@@ -341,7 +341,7 @@ const SinglePostAmp = props => {
                                           )}
                                           width="233"
                                           height="202"
-                                          alt="Bullseye view: Bird Watching 101"
+                                          alt={post.title}
                                           layout="responsive"
                                         />
                                         <figcaption className="h5 mt1 px3">
