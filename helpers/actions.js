@@ -35,6 +35,7 @@ export const post = args => {
               } was published successfully`,
             });
           } else {
+            console.error(res.message);
             resolve({
               success: false,
               message: `${
@@ -66,6 +67,7 @@ export const post = args => {
     } else ops = [commentop];
     api.broadcast(ops, (err, res) => {
       if (err) {
+        console.error(err);
         resolve({
           success: false,
           message: `Could not post${(typeof err === 'string' && `: ${err}`) ||
@@ -90,6 +92,7 @@ export const vote = async (author, permlink, weight) => {
   return new Promise(resolve => {
     api.vote(voter, author, permlink, weight, (err, res) => {
       if (err) {
+        console.error(err);
         resolve({
           success: false,
           message: `Could not vote${(typeof err === 'string' && `: ${err}`) ||
@@ -109,6 +112,7 @@ export const follow = async following => {
   return new Promise(resolve => {
     api.follow(follower, following, (err, res) => {
       if (err) {
+        console.error(err);
         resolve({
           success: false,
           message: `Could not follow user${(typeof err === 'string' &&
@@ -129,6 +133,7 @@ export const unfollow = async unfollowing => {
   return new Promise(resolve => {
     api.unfollow(unfollower, unfollowing, (err, res) => {
       if (err) {
+        console.error(err);
         resolve({
           success: false,
           message: `Could not unfollow user${(typeof err === 'string' &&
@@ -157,6 +162,7 @@ export const customJson = async (payload, id) => {
       json,
       (err, res) => {
         if (err) {
+          console.error(err);
           resolve({
             success: false,
             message: `Could not broadcast custom_json to blockchain${(typeof err ===
@@ -198,6 +204,7 @@ export const accountUpdate = (account, posting_json_metadata) => {
             message: 'Profile was updated successfully',
           });
         } else {
+          console.error(res.message);
           resolve({
             success: false,
             message: `Profile could not be updated: ${res.message}`,
@@ -208,6 +215,7 @@ export const accountUpdate = (account, posting_json_metadata) => {
       api.setAccessToken(getScToken());
       api.broadcast(ops, (err, res) => {
         if (err) {
+          console.error(err);
           resolve({
             success: false,
             message: `Profile could not be updated: ${(typeof err ===
