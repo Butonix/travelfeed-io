@@ -120,7 +120,7 @@ const SinglePostAmp = props => {
                         "@type" : "BlogPosting",
                         "author" : {
                           "@type" : "Person",
-                          "name" : "${display_name}"
+                          "name" : "${display_name.replace(/"/g, '\\"')}"
                         },
                         "datePublished" : "${dayjs(created_at).format(
                           'YYYY-MM-DDTHH:MM',
@@ -134,7 +134,9 @@ const SinglePostAmp = props => {
                           ]`
                             : `"https://steemitimages.com/u/${author}/avatar/large"`
                         },
-                        "headline" : "${title.substring(0, 110)}",
+                        "headline" : "${title
+                          .substring(0, 110)
+                          .replace(/"/g, '\\"')}",
                         "publisher" : {
                             "@type": "Organization",
                             "logo" : {
@@ -148,7 +150,7 @@ const SinglePostAmp = props => {
                         "dateModified" : "${dayjs(updated_at).format(
                           'YYYY-MM-DDTHH:MM',
                         )}",
-                        "description" : "${excerpt.replace(/"/g, `'`)}",
+                        "description" : "${excerpt.replace(/"/g, '\\"')}",
                         "mainEntityOfPage" : "${canonicalUrl}"
                       }
                       `,
