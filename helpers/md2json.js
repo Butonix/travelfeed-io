@@ -1,7 +1,7 @@
 import parseBody from './parseBody';
 import { tfJSON } from './regex';
 
-const md2json = d => {
+const md2json = (d, useTextBlocks) => {
   try {
     const json = { time: 1564842925324, blocks: [], version: '2.15.0' };
     if (!d) return { success: true, json };
@@ -190,6 +190,13 @@ const md2json = d => {
         }
       }
       // TODO: table
+      // For comments: Parse to paragraph
+      else if (useTextBlocks && p !== '') {
+        block = {
+          data: { text: parseBody(p, { secureLinks: false }) },
+          type: 'paragraph',
+        };
+      }
       // else: HTML code block
       else if (p !== '') {
         block = {
