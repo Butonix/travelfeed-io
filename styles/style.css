@@ -1,8 +1,8 @@
 /* Fix anchor position https://stackoverflow.com/a/11842865 */
-h1,
-h2,
-h3,
-h4 {
+.postcontent h1,
+.postcontent h2,
+.postcontent h3,
+.postcontent h4 {
   padding-top: 65px;
   margin-top: -65px;
 }
