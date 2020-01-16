@@ -10,6 +10,7 @@ import { API_URL } from '../../../config';
 import uploadFile from '../../../helpers/imageUpload';
 import Embed from './tools/embed/index';
 import Quote from './tools/quote/index';
+import tableOfContents from './tools/tableOfContents/index';
 
 // TODO: Write maps embed plugin
 // TODO: Write gallery plugin
@@ -17,6 +18,7 @@ import Quote from './tools/quote/index';
 export default {
   header: Header,
   delimiter: Delimiter,
+  tableOfContents,
   list: List,
   linkTool: {
     class: LinkTool,
