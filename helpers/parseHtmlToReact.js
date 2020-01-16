@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable consistent-return */
@@ -7,7 +8,9 @@ import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import LazyLoad from 'react-lazyload';
 import ProgressiveImage from 'react-progressive-image';
+import getSlug from 'speakingurl';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
+import TableOfContents from '../components/Post/DynamicPostComponents/TableOfContents';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
 import { exitUrl, instagramPost, mentionUrl, postUrl } from './regex';
@@ -20,18 +23,28 @@ const parseHtmlToReact = (htmlBody, options) => {
   const parseLinksToBlank = options && options.parseLinksToBlank === true;
 
   const parseOptions = {
-    replace: ({ attribs, children }) => {
+    replace: ({ name, attribs, children }) => {
       if (!attribs) return;
 
-      // Open links in new tab
+      if (
+        (name === 'h1' || name === 'h2' || name === 'h3' || name === 'h4') &&
+        children &&
+        children.length > 0 &&
+        children[0].data &&
+        typeof children[0].data === 'string'
+      ) {
+        attribs.id = getSlug(children[0].data);
+      }
+
       if (parseLinksToBlank && attribs.href) {
-        // eslint-disable-next-line no-param-reassign
+        // Open links in new tab
         attribs.target = '_blank';
         return;
       }
 
       // Proxify image urls and add lazyload and conditional webp
       if (
+        name === 'img' &&
         attribs.src &&
         attribs.frameborder === undefined &&
         attribs.allowfullscreen === undefined
@@ -223,7 +236,12 @@ const parseHtmlToReact = (htmlBody, options) => {
       }
 
       // Replace exit urls with Link component
-      if (attribs.href && attribs.href[0] === '/' && children.length > 0) {
+      if (
+        name === 'a' &&
+        attribs.href &&
+        attribs.href[0] === '/' &&
+        children.length > 0
+      ) {
         const exitLink = attribs.href.match(exitUrl);
         if (exitLink) {
           return (
@@ -235,7 +253,12 @@ const parseHtmlToReact = (htmlBody, options) => {
       }
 
       // Replace Steem post links with Link component
-      if (attribs.href && attribs.href[0] === 'h' && children.length > 0) {
+      if (
+        name === 'a' &&
+        attribs.href &&
+        attribs.href[0] === 'h' &&
+        children.length > 0
+      ) {
         const blogLink = attribs.href.match(postUrl);
         if (blogLink) {
           return (
@@ -249,7 +272,7 @@ const parseHtmlToReact = (htmlBody, options) => {
         }
       }
       // Replace local mentions with Link component
-      if (attribs.href && children.length > 0) {
+      if (name === 'a' && attribs.href && children.length > 0) {
         const mention = attribs.href.match(mentionUrl);
         if (mention) {
           return (
@@ -259,7 +282,7 @@ const parseHtmlToReact = (htmlBody, options) => {
           );
         }
       }
-      if (attribs.json) {
+      if (name === 'div' && attribs.json) {
         let json = {};
         let title = '';
         let description = '';
@@ -268,15 +291,19 @@ const parseHtmlToReact = (htmlBody, options) => {
         let permlink = '';
         try {
           json = JSON.parse(attribs.json);
-          title = json.data.meta.title;
-          description = json.data.meta.description;
-          image = json.data.meta.image;
-          author = json.data.meta.author;
-          permlink = json.data.meta.permlink;
         } catch {
-          return;
+          return <></>;
         }
-        if (json.type === 'linkTool')
+        if (json.type === 'linkTool') {
+          try {
+            title = json.data.meta.title;
+            description = json.data.meta.description;
+            image = json.data.meta.image;
+            author = json.data.meta.author;
+            permlink = json.data.meta.permlink;
+          } catch {
+            return <></>;
+          }
           return (
             <>
               <LinkTool
@@ -288,8 +315,11 @@ const parseHtmlToReact = (htmlBody, options) => {
               />
             </>
           );
+        }
+        if (json.type === 'tableOfContents')
+          return <TableOfContents htmlBody={htmlBody} />;
       }
-      if (attribs.src && attribs.frameborder !== undefined) {
+      if (name === 'iframe' && attribs.src) {
         if (!options.amp) {
           const igmatch = /(?:http[s]?:\/\/)?(?:www.)?instagram\.com\/p\/(.*)\//i.exec(
             attribs.src,

@@ -11,7 +11,7 @@ const json2md = data => {
     if (b.type === 'tableOfContents') {
       html += `\n\n<div json='${JSON.stringify(
         b,
-      )}'><h2>Table of contents</h2><em>Viewing the table of contents is not supported by your current frontend. View this post on TravelFeed.io for the full experience.</em></div>\n\n`;
+      )}'><h2>Table of contents</h2><em>Displaying the table of contents is not supported by your current frontend. View this post on TravelFeed.io for the full experience.</em></div>\n\n`;
     } else if (b.type === 'paragraph') {
       html += `${turndownService.turndown(b.data.text)}\n\n`;
     } else if (b.type === 'code') {

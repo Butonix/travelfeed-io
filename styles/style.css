@@ -1,3 +1,12 @@
+/* Fix anchor position https://stackoverflow.com/a/11842865 */
+h1,
+h2,
+h3,
+h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
 /* post editor */
 #editorjs-container .codex-editor__redactor {
   padding-bottom: 300px !important;
@@ -230,7 +239,7 @@ sup {
   letter-spacing: -0.02em;
 }
 .postcontent h4 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   line-height: 1.33;
   letter-spacing: 0em;
