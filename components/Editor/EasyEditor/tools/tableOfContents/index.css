@@ -28,7 +28,7 @@
 .ce-toc:after {
   padding-top: 10px;
   text-align: left;
-  content: 'A table of contents with links to all your headings will appear here once you publish the post.';
+  content: 'A table of contents with links to all your major headings (up to the third level) will appear here once you publish the post.';
   font-size: 18px;
   display: inline-block;
 }

@@ -316,8 +316,14 @@ const parseHtmlToReact = (htmlBody, options) => {
             </>
           );
         }
+        let headings = [];
         if (json.type === 'tableOfContents')
-          return <TableOfContents htmlBody={htmlBody} />;
+          try {
+            headings = json.data.headings;
+          } catch {
+            return <></>;
+          }
+        return <TableOfContents headings={headings} />;
       }
       if (name === 'iframe' && attribs.src) {
         if (!options.amp) {
