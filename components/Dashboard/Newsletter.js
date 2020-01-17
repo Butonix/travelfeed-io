@@ -94,9 +94,9 @@ Paste the changelog and link to Github
 
 ## How to Get Involved?
 
-Are you not on TravelFeed yet? We invite you to check out [TravelFeed.io](https://travelfeed.io/) and to join our over 900-strong [community on Discord](https://discord.gg/jWWu73H). We’re also looking for one more curator to join our team.
+Are you not on TravelFeed yet? We invite you to check out [TravelFeed.io](https://travelfeed.io/) and to join over 1000 travelers on our [Discord community](https://discord.gg/jWWu73H). We’re also looking for one more curator to join our team.
 
-As mentioned above, we ❤️ Open Source: We are proud to make TravelFeed fully Open-Source, and support other communities on Steem who want to build on our code, which can be found on Github. We’re still looking for contributors who want to work with us on the future of TravelFeed. We’re in Beta and continuously improving the software, meaning that there are still some bugs. If you notice anything or have feedback for us, please don’t hesitate to contact us on [our Discord](https://discord.gg/jWWu73H), leave a comment or open a bug report on our Github!
+We’re in Beta and continuously improve TravelFeed, meaning that there are still some bugs. If you notice anything or have feedback for us, please don’t hesitate to contact us [on Discord](https://discord.gg/jWWu73H), leave a comment or open a bug report on <a href="https://github.com/travelfeed-io">Github</a>!
 
 ## Consider Delegating To Us
 
