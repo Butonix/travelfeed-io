@@ -26,7 +26,9 @@ const theme = createMuiTheme({
 });
 
 const CommentEditor = props => {
-  const defVal = props.defaultValue ? md2json(props.defaultValue) : undefined;
+  const defVal = props.defaultValue
+    ? md2json(props.defaultValue, true)
+    : undefined;
   const [content, setContent] = useState(defVal ? defVal.json : '');
   const [publishThis, setPublishThis] = useState(undefined);
 

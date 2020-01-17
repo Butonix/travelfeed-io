@@ -2721,6 +2721,13 @@ const SinglePostAmp = props => {
           .ampstart-icon {
             fill: #003f93;
           }
+          .postcontent h1,
+          .postcontent h2,
+          .postcontent h3,
+          .postcontent h4 {
+            padding-top: 55px;
+            margin-top: -55px;
+          }
         `}
       </style>
     </>

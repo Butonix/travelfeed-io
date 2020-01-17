@@ -1,0 +1,33 @@
+.ce-toc {
+  line-height: 1.6em;
+  width: 100%;
+  text-align: center;
+  padding: 40px;
+  border: 1px solid #e5ddcf;
+  background: none;
+  position: relative;
+  display: table;
+  margin: 20px auto 20px;
+  background-color: #c1dbd9;
+  box-sizing: border-box;
+}
+
+.ce-toc:before {
+  display: inline-block;
+  content: 'Table of contents';
+  font-weight: bold;
+  text-align: left;
+  font-size: 45px;
+  color: #03695d;
+  line-height: 100%;
+  text-transform: uppercase;
+  margin: 0 0 25px;
+}
+
+.ce-toc:after {
+  padding-top: 10px;
+  text-align: left;
+  content: 'A table of contents with links to all your major headings (up to the third level) will appear here once you publish the post.';
+  font-size: 18px;
+  display: inline-block;
+}

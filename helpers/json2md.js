@@ -8,7 +8,55 @@ const json2md = data => {
   let html = '';
   if (!data || !data.blocks) return '';
   data.blocks.forEach(b => {
-    if (b.type === 'paragraph') {
+    if (b.type === 'tableOfContents') {
+      let lastHeadingLevel;
+      let lastIsSubheading = false;
+      const newHeadings = [];
+      let hash1 = false;
+      data.blocks.forEach(block => {
+        if (
+          block.type === 'header' &&
+          (block.data.level === 1 ||
+            block.data.level === 2 ||
+            block.data.level === 3 ||
+            (!hash1 && block.data.level === 4)) &&
+          block.data.text
+        ) {
+          const { level } = block.data;
+          const title = block.data.text
+            .replace(/\n/, ' ')
+            .replace(/"/g, '”')
+            .replace(/'/g, '’');
+          if (level === 1) hash1 = true;
+          const newHeading = {
+            title,
+            subheadings: [],
+          };
+          if (
+            lastHeadingLevel &&
+            (level === lastHeadingLevel + 1 ||
+              (lastIsSubheading && level === lastHeadingLevel))
+          ) {
+            if (!lastIsSubheading || level === lastHeadingLevel)
+              newHeadings[newHeadings.length - 1].subheadings.push(newHeading);
+            else {
+              const subheads = newHeadings[newHeadings.length - 1].subheadings;
+              subheads[subheads.length - 1].subheadings.push(newHeading);
+            }
+            lastIsSubheading = true;
+          } else {
+            newHeadings.push(newHeading);
+            lastIsSubheading = false;
+          }
+          lastHeadingLevel = level;
+        }
+      });
+      // eslint-disable-next-line no-param-reassign
+      b.data = { headings: newHeadings };
+      html += `\n\n<div json='${JSON.stringify(
+        b,
+      )}'><h2>Table of contents</h2><p><em>Displaying the table of contents is not supported by your current frontend. View this post on TravelFeed.io for the full experience.</em></p></div>\n\n`;
+    } else if (b.type === 'paragraph') {
       html += `${turndownService.turndown(b.data.text)}\n\n`;
     } else if (b.type === 'code') {
       html += `${sanitize(
