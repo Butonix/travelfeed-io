@@ -40,8 +40,9 @@ export const popularCountries = [
   'bg',
 ];
 
-export const randomCountry =
-  popularCountries[Math.floor(Math.random() * popularCountries.length)];
+export const randomCountry = () => {
+  return popularCountries[Math.floor(Math.random() * popularCountries.length)];
+};
 
 // https://en.wikipedia.org/wiki/List_of_ISO_3166_countryCodes
 const countries = [

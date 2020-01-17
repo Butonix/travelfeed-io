@@ -19,7 +19,7 @@ const DiscoverCountry = () => {
   const [countryPosts, setCountryPosts] = useState([1, 2, 3, 4, 5]);
 
   useEffect(() => {
-    const cc = randomCountry;
+    const cc = randomCountry();
     setCountryCode(cc);
     graphQLClient(GET_POSTS, {
       country_code: cc,
