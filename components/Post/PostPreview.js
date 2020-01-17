@@ -1,25 +1,23 @@
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import dynamic from 'next/dynamic';
+import Skeleton from '@material-ui/lab/Skeleton';
 import PropTypes from 'prop-types';
 // import Link from '../../lib/Link';
 import React from 'react';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
 
-const Skeleton = dynamic(() => import('react-loading-skeleton'), {
-  ssr: false,
-});
-
 const PostPreview = props => {
   const { isSmall } = props;
   const imgUrl = props.img_url ? imageProxy(props.img_url, 100, 100) : '';
   let titleUri = '';
-  try {
-    titleUri = encodeURIComponent(post.title);
-  } catch {
-    console.log('Could not encode URI');
+  if (props.title) {
+    try {
+      titleUri = encodeURIComponent(props.title);
+    } catch {
+      console.log('Could not encode URI');
+    }
   }
   return (
     <div key={props.author + props.permlink}>
@@ -48,24 +46,38 @@ const PostPreview = props => {
                     height: isSmall ? '35px' : '70px',
                   }}
                 />
-              )) || <Skeleton width="70px" height="70px" />}
+              )) || (
+                <Skeleton
+                  className="col-3 my-auto"
+                  variant="rect"
+                  width={70}
+                  height={70}
+                />
+              )}
               <div className="col-9 my-auto">
                 <Typography variant="subtitle">
-                  {props.title || <Skeleton count={2} />}
+                  {props.title || (
+                    <>
+                      <Skeleton variant="text" width="100%" />
+                      <Skeleton variant="text" width="100%" />
+                      <Skeleton variant="text" width="100%" />
+                    </>
+                  )}
                 </Typography>
-                <br />
-                <em>
-                  <Link
-                    color="textSecondary"
-                    as={`/@${props.author}`}
-                    href={`/blog?author=${props.author}`}
-                  >
-                    {(props.author &&
-                      `${isSmall ? '' : 'by '}@${props.author}`) || (
-                      <Skeleton />
-                    )}
-                  </Link>
-                </em>
+                {props.author && (
+                  <>
+                    <br />
+                    <em>
+                      <Link
+                        color="textSecondary"
+                        as={`/@${props.author}`}
+                        href={`/blog?author=${props.author}`}
+                      >
+                        {`${isSmall ? '' : 'by '}@${props.author}`}
+                      </Link>
+                    </em>
+                  </>
+                )}
               </div>
             </div>
           </div>

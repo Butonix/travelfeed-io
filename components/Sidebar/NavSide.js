@@ -9,7 +9,6 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import DraftIcon from '@material-ui/icons/FileCopy';
 import ProfileIcon from '@material-ui/icons/Person';
 import RepliesIcon from '@material-ui/icons/Reply';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
@@ -19,7 +18,7 @@ const NavSide = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    setUser(getUser());
+    setUser(getUser() || false);
   }, []);
 
   return (
@@ -85,13 +84,9 @@ const NavSide = () => {
           </div>
           <div className="col-3" />
         </div>
-      )) || <JoinNow />}
+      )) ||
+        (user === false && <JoinNow />)}
     </>
   );
 };
-
-NavSide.propTypes = {
-  user: PropTypes.string.isRequired,
-};
-
 export default NavSide;
