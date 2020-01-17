@@ -6,7 +6,7 @@ const CustomFeed = () => {
   const [user, setUser] = useState(undefined);
 
   useEffect(() => {
-    setUser(getUser());
+    setUser(getUser() || false);
   }, []);
 
   return (

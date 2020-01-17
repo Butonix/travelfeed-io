@@ -15,6 +15,7 @@ import LegalNotice from '../Sidebar/LegalNotice';
 import NavSide from '../Sidebar/NavSide';
 import NewsLetterSubscribe from '../Sidebar/NewsLetterSubscribe';
 import SocialLinks from '../Sidebar/SocialLinks';
+import LoggedOutFeed from './LoggedOutFeed';
 
 const Feed = props => {
   const {
@@ -34,12 +35,18 @@ const Feed = props => {
     ssr: false,
   });
 
+  const grid = { lg: 12, md: 12, sm: 12, xs: 12 };
+
   return (
     <>
       <Head
-        title={`${
-          active === 'taking Off' ? 'Hot' : capitalize(active)
-        } Travel Blogs`}
+        title={
+          isFeed
+            ? 'Feed'
+            : `${
+                active === 'taking Off' ? 'Hot' : capitalize(active)
+              } Travel Blogs`
+        }
       />
       <Header active={active} subheader={capitalize(active)} />
       <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
@@ -79,11 +86,12 @@ const Feed = props => {
                   feed,
                   exclude_authors: ['travelfeed', 'steemitworldmap'],
                 }}
-                grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
+                grid={grid}
                 cardHeight={330}
                 poststyle="grid"
               />
             )}
+            {isFeed && feed === false && <LoggedOutFeed grid={grid} />}
           </div>
           <div className="col-xl-3 col-lg-4 col-md-4 d-none d-xl-block d-lg-block d-md-block">
             <StickyBox offsetTop={65} offsetBottom={10}>
