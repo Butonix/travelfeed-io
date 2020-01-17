@@ -352,6 +352,7 @@ const parseHtmlToReact = (htmlBody, options) => {
               height={attribs.height}
               placeholder={
                 <Skeleton
+                  className="fullwidth"
                   variant="rect"
                   width="100%"
                   height={Number(attribs.height)}
