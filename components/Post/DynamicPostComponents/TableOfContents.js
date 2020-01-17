@@ -7,6 +7,8 @@ require('./TableOfContents.css');
 const TableOfContents = props => {
   const { headings } = props;
 
+  if (!headings || headings.length < 1) return <></>;
+
   return (
     <>
       <div className="toc">
