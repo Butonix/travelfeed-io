@@ -197,38 +197,44 @@ class GridPostCard extends Component {
               <CardActionArea>
                 {this.props.post.img_url !== undefined &&
                   this.props.post.img_url !== '' && (
-                    <ProgressiveImage src={cardImage}>
-                      {(src, loading) => {
-                        if (loading)
-                          return (
-                            <Skeleton
-                              variant="rect"
-                              width="100%"
-                              height={this.props.cardHeight}
-                            />
-                          );
-                        return (
-                          <picture ref={this.myInput} className="lazyImage">
-                            <source
-                              height={this.props.cardHeight}
-                              type="image/webp"
-                              srcSet={`${cardImage}`}
-                            />
-                            <img
-                              height={this.props.cardHeight}
-                              width="100%"
-                              alt={this.props.post.title}
-                              className="lazy img-fluid"
-                              style={{
-                                maxHeight: this.props.cardHeight,
-                                minHeight: this.props.cardHeight / 1.7,
-                              }}
-                              src={src}
-                            />
-                          </picture>
-                        );
-                      }}
-                    </ProgressiveImage>
+                    <div ref={this.myInput}>
+                      {(this.state.isWebp !== undefined && (
+                        <ProgressiveImage src={cardImage}>
+                          {(src, loading) => {
+                            if (loading)
+                              return (
+                                <Skeleton
+                                  variant="rect"
+                                  width="100%"
+                                  height={this.props.cardHeight}
+                                />
+                              );
+                            return (
+                              <picture className="lazyImage">
+                                <img
+                                  height={this.props.cardHeight}
+                                  width="100%"
+                                  alt={this.props.post.title}
+                                  className="img-fluid"
+                                  style={{
+                                    maxHeight: this.props.cardHeight,
+                                    minHeight: this.props.cardHeight / 1.7,
+                                    width: '100%',
+                                  }}
+                                  src={cardImage}
+                                />
+                              </picture>
+                            );
+                          }}
+                        </ProgressiveImage>
+                      )) || (
+                        <Skeleton
+                          variant="rect"
+                          width="100%"
+                          height={this.props.cardHeight}
+                        />
+                      )}
+                    </div>
                   )}
                 <CardContent>
                   <Excerpt

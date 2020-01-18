@@ -177,7 +177,7 @@ class PostCommentItem extends Component {
       <div>
         <Card
           style={{ marginLeft: depth, borderRadius: 12 }}
-          id={isSkeleton ? 'skeleton-coment' : this.props.post.permlink}
+          id={isSkeleton ? undefined : this.props.post.permlink}
         >
           <CardHeader
             avatar={

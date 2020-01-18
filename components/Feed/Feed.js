@@ -1,6 +1,6 @@
 // https://codepen.io/ncerminara/pen/eKNROb
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Query } from 'react-apollo';
 import StickyBox from 'react-sticky-box';
 import capitalize from '../../helpers/capitalize';
@@ -11,12 +11,20 @@ import PostGrid from '../Grid/PostGrid';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
 import BlogGridList from '../Sidebar/BlogGridList';
+import DiscoverCountry from '../Sidebar/DiscoverCountry';
 import LegalNotice from '../Sidebar/LegalNotice';
 import NavSide from '../Sidebar/NavSide';
 import NewsLetterSubscribe from '../Sidebar/NewsLetterSubscribe';
 import SocialLinks from '../Sidebar/SocialLinks';
+import LoggedOutFeed from './LoggedOutFeed';
 
 const Feed = props => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser(getUser() || false);
+  }, []);
+
   const {
     active,
     selection,
@@ -26,20 +34,22 @@ const Feed = props => {
     isFeed,
   } = props;
 
-  const DiscoverCountry = dynamic(() => import('../Sidebar/DiscoverCountry'), {
-    ssr: false,
-  });
-
   const NewUsers = dynamic(() => import('../Sidebar/NewUsers'), {
     ssr: false,
   });
 
+  const grid = { lg: 12, md: 12, sm: 12, xs: 12 };
+
   return (
     <>
       <Head
-        title={`${
-          active === 'taking Off' ? 'Hot' : capitalize(active)
-        } Travel Blogs`}
+        title={
+          isFeed
+            ? 'Feed'
+            : `${
+                active === 'taking Off' ? 'Hot' : capitalize(active)
+              } Travel Blogs`
+        }
       />
       <Header active={active} subheader={capitalize(active)} />
       <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
@@ -51,7 +61,7 @@ const Feed = props => {
             <StickyBox offsetTop={65} offsetBottom={10}>
               <div className="d-none d-xl-block">
                 <NavSide />
-                {(getUser() && (
+                {(user && (
                   <Query
                     query={IS_NEWSLETTER_SUBSCRIBED}
                     variables={{ limit: 9 }}
@@ -63,7 +73,8 @@ const Feed = props => {
                       return <></>;
                     }}
                   </Query>
-                )) || <NewsLetterSubscribe />}
+                )) ||
+                  (user === false && <NewsLetterSubscribe />)}
               </div>
             </StickyBox>
           </div>
@@ -79,11 +90,12 @@ const Feed = props => {
                   feed,
                   exclude_authors: ['travelfeed', 'steemitworldmap'],
                 }}
-                grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
+                grid={grid}
                 cardHeight={330}
                 poststyle="grid"
               />
             )}
+            {isFeed && feed === false && <LoggedOutFeed grid={grid} />}
           </div>
           <div className="col-xl-3 col-lg-4 col-md-4 d-none d-xl-block d-lg-block d-md-block">
             <StickyBox offsetTop={65} offsetBottom={10}>
@@ -92,7 +104,7 @@ const Feed = props => {
               <div className="pt-2" />
               <DiscoverCountry />
               <div className="pt-2" />
-              {getUser() && (
+              {user && (
                 <>
                   <NewUsers />
                   <div className="pt-2" />

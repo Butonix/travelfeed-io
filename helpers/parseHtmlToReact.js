@@ -94,15 +94,17 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (options.amp) {
           return (
             <figure className="ampstart-image-with-caption m0 relative mb4">
-              {(attribs.height && attribs.width && (
-                <amp-img
-                  alt={attribs.alt}
-                  layout="responsive"
-                  src={regSrc}
-                  width={attribs.width}
-                  height={attribs.height}
-                />
-              )) || (
+              {(attribs.height &&
+                attribs.width &&
+                attribs.height < attribs.width && (
+                  <amp-img
+                    alt={attribs.alt}
+                    layout="responsive"
+                    src={regSrc}
+                    width={attribs.width}
+                    height={attribs.height}
+                  />
+                )) || (
                 <div className="fixed-height-container">
                   <amp-img
                     alt={attribs.alt}

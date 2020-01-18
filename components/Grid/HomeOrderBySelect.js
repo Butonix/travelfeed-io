@@ -8,16 +8,9 @@ import NewIcon from '@material-ui/icons/Restore';
 import FeaturedIcon from '@material-ui/icons/Star';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { getUser } from '../../helpers/token';
+import React from 'react';
 
 const HomeOrderBySelect = props => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
-
   return (
     <Paper square>
       <Tabs
@@ -39,11 +32,9 @@ const HomeOrderBySelect = props => {
         <Link href="/">
           <Tab icon={<FeaturedIcon />} label="FEATURED" />
         </Link>
-        {user && (
-          <Link href="/feed">
-            <Tab icon={<FeedIcon />} label="FEED" />
-          </Link>
-        )}
+        <Link href="/feed">
+          <Tab icon={<FeedIcon />} label="FEED" />
+        </Link>
       </Tabs>
     </Paper>
   );
