@@ -156,14 +156,6 @@ app
       res.redirect(`/topics/${tag}`);
     });
 
-    server.get('/topics/:tag', (req, res) => {
-      const actualPage = '/tag';
-      const queryParams = {
-        tags: req.params.tag,
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
     server.get('/destinations/:country', (req, res) => {
       const actualPage = '/destinations';
       const queryParams = {

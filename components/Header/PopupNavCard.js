@@ -37,7 +37,7 @@ const PopupNavCard = props => {
     );
 
   if (props.data.tag) {
-    href = `/tag?tags=${props.data.tag}`;
+    href = `/topics/[id]`;
     as = `/topics/${props.data.tag}`;
     key = props.data.tag;
   } else if (props.data.subdivision) {

@@ -88,7 +88,7 @@ const SubHeader = props => {
           <Link
             color="textSecondary"
             as={`/topics/${tag}`}
-            href={`/tag?tags=${tag}`}
+            href="/topics/[tag]"
             key={tag}
           >
             <span>#{tag}</span>
