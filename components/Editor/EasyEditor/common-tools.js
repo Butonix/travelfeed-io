@@ -68,24 +68,6 @@ export default {
         youtube: true,
         vimeo: true,
         twitchVideo: true,
-        dtubeID: {
-          // Dtube from url
-          // regex: https://github.com/steemit/condenser/blob/fd58e1d526925e048e44ea19d6d91e11a157235e/src/app/utils/Links.js
-          // eslint-disable-next-line no-useless-escape
-          regex: /(?:d\.tube\/#!\/(?:v\/)?([a-zA-Z0-9\-\.\/]*))+/,
-          embedUrl: 'https://emb.d.tube/#!/<%= remote_id %>',
-          html:
-            "<iframe height='300' scrolling='no' frameborder='0' allowtransparency='true' allowfullscreen style='width: 100%;'></iframe>",
-        },
-        dtube: {
-          // Dtube embed snippet
-          // regex: https://github.com/steemit/condenser/blob/fd58e1d526925e048e44ea19d6d91e11a157235e/src/app/utils/Links.js
-          // eslint-disable-next-line no-useless-escape
-          regex: /https:\/\/(?:emb\.)?(?:d.tube\/\#\!\/(?:v\/)?)([a-zA-Z0-9\-\.\/]*)/,
-          embedUrl: 'https://emb.d.tube/#!/<%= remote_id %>',
-          html:
-            "<iframe height='300' scrolling='no' frameborder='0' allowtransparency='true' allowfullscreen style='width: 100%;'></iframe>",
-        },
         instagram: {
           // Regex for instagram: https://stackoverflow.com/questions/40054016/regex-to-get-instagram-picture-php
           // Instagram iFrame edit for editor preview: https://stackoverflow.com/questions/24739663/embebing-instagram-webpage-inside-an-iframe
@@ -93,6 +75,14 @@ export default {
           embedUrl: 'https://instagram.com/p/<%= remote_id %>/embed',
           html:
             "<iframe height='400' frameborder='0' style='width: 50%; margin: 0 auto; display: block;'></iframe>",
+        },
+        spotify: {
+          regex: /(?:http[s]?:\/\/)?(?:www.)?open\.spotify\.com\/track\/([a-zA-Z0-9]*)/,
+          embedUrl: 'https://open.spotify.com/embed/track/<%= remote_id %>',
+          html:
+            '<iframe width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>',
+          height: 380,
+          width: 300,
         },
       },
     },
