@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button';
 import { teal } from '@material-ui/core/colors';
 import Skeleton from '@material-ui/lab/Skeleton';
-// import Link from '../../lib/Link';
 import React, { Fragment, useEffect, useState } from 'react';
 import {
   nameFromCC,

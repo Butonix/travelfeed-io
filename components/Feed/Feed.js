@@ -100,9 +100,9 @@ const Feed = props => {
           <div className="col-xl-3 col-lg-4 col-md-4 d-none d-xl-block d-lg-block d-md-block">
             <StickyBox offsetTop={65} offsetBottom={10}>
               <div className="pt-2" />
-              <BlogGridList />
-              <div className="pt-2" />
               <DiscoverCountry />
+              <div className="pt-2" />
+              <BlogGridList />
               <div className="pt-2" />
               {user && (
                 <>
