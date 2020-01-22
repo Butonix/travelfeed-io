@@ -5,7 +5,6 @@ import Cookie from 'js-cookie';
 import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import Router from 'next/router';
-import { parseCookies } from 'nookies';
 import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
@@ -35,24 +34,11 @@ const Piwik = new ReactPiwik({
 });
 
 Router.events.on('routeChangeStart', () => {
-  if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
   ReactPiwik.push(['setDocumentTitle', document.title]);
   ReactPiwik.push(['trackPageView']);
 });
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
-    let cookies = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-      cookies = parseCookies(ctx);
-    }
-
-    return { pageProps, cookies };
-  }
-
   componentDidMount() {
     const theme = Cookie.get('use_dark_mode') !== 'true' ? 'light' : 'dark';
     this.setState({ theme });
@@ -101,16 +87,16 @@ class MyApp extends App {
   };
 
   render() {
-    const { Component, pageProps, apollo, cookies } = this.props;
-    let colorscheme = cookies.use_dark_mode !== 'true' ? 'light' : 'dark';
-    if (this.state && this.state.theme) colorscheme = this.state.theme;
+    const { Component, pageProps, apollo } = this.props;
+    let paletteType = 'light';
+    if (this.state && this.state.theme) paletteType = this.state.theme;
     const theme = getTheme({
-      paletteType: colorscheme,
+      paletteType,
     });
     return (
       <UserContext.Provider
         value={{
-          theme: colorscheme,
+          theme: paletteType,
           setDarkMode: this.setDarkMode,
           setLightMode: this.setLightMode,
           // React Hooks: https://reacttricks.com/sharing-global-data-in-next-with-custom-app-and-usecontext-hook/

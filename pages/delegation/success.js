@@ -63,6 +63,4 @@ const DelegationSuccessPage = () => {
   );
 };
 
-DelegationSuccessPage.getInitialProps = () => {};
-
 export default DelegationSuccessPage;

@@ -395,6 +395,4 @@ const SupportUsPage = () => {
   );
 };
 
-SupportUsPage.getInitialProps = () => {};
-
 export default SupportUsPage;

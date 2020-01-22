@@ -12,6 +12,4 @@ const HotFeed = () => {
   );
 };
 
-HotFeed.getInitialProps = () => {};
-
 export default HotFeed;

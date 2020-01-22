@@ -17,6 +17,4 @@ const Topics = () => {
   );
 };
 
-Topics.getInitialProps = () => {};
-
 export default Topics;

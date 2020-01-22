@@ -25,8 +25,6 @@ const FeaturedFeed = props => {
   );
 };
 
-FeaturedFeed.getInitialProps = () => {};
-
 FeaturedFeed.getInitialProps = props => {
   const { utm_source } = props.query;
   const app = utm_source === 'pwa';

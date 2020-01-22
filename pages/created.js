@@ -12,6 +12,4 @@ const CreatedFeed = () => {
   );
 };
 
-CreatedFeed.getInitialProps = () => {};
-
 export default CreatedFeed;

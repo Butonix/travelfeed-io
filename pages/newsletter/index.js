@@ -33,6 +33,4 @@ const NewsletterSubscribePage = () => {
   );
 };
 
-NewsletterSubscribePage.getInitialProps = () => {};
-
 export default NewsletterSubscribePage;

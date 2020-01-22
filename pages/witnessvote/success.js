@@ -67,6 +67,4 @@ const WitnessvoteSuccessPage = () => {
   );
 };
 
-WitnessvoteSuccessPage.getInitialProps = () => {};
-
 export default WitnessvoteSuccessPage;

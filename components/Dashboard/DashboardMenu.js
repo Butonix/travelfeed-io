@@ -226,11 +226,7 @@ class DashboardMenu extends Component {
         </div>
         <Divider />
         <List>
-          <Link
-            color="textPrimary"
-            href={`/dashboard?open=${this.state.open}`}
-            as="/dashboard"
-          >
+          <Link color="textPrimary" href="/dashboard">
             <ListItem selected={this.props.active === 'dashboard'} button>
               <ListItemIcon className={classNames(classes.listitem)}>
                 <DashboardIcon />
@@ -238,11 +234,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Dashboard" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/publish?open=${this.state.open}`}
-            as="/dashboard/publish"
-          >
+          <Link color="textPrimary" href="/dashboard/publish">
             <ListItem selected={this.props.active === 'publish'} button>
               <ListItemIcon>
                 <PublishIcon />
@@ -250,11 +242,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Publish" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/drafts?open=${this.state.open}`}
-            as="/dashboard/drafts"
-          >
+          <Link color="textPrimary" href="/dashboard/drafts">
             <ListItem selected={this.props.active === 'drafts'} button>
               <ListItemIcon>
                 <DraftIcon />
@@ -262,11 +250,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Drafts" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/posts?open=${this.state.open}`}
-            as="/dashboard/posts"
-          >
+          <Link color="textPrimary" href="/dashboard/posts">
             <ListItem selected={this.props.active === 'posts'} button>
               <ListItemIcon>
                 <PostsIcon />
@@ -274,11 +258,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Posts" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/comments?open=${this.state.open}`}
-            as="/dashboard/comments"
-          >
+          <Link color="textPrimary" href="/dashboard/comments">
             <ListItem selected={this.props.active === 'comments'} button>
               <ListItemIcon>
                 <CommentsIcon />
@@ -286,11 +266,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Comments" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/replies?open=${this.state.open}`}
-            as="/dashboard/replies"
-          >
+          <Link color="textPrimary" href="/dashboard/replies">
             <ListItem selected={this.props.active === 'replies'} button>
               <ListItemIcon>
                 <RepliesIcon />
@@ -298,11 +274,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Replies" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/notifications?open=${this.state.open}`}
-            as="/dashboard/notifications"
-          >
+          <Link color="textPrimary" href="/dashboard/notifications">
             <ListItem selected={this.props.active === 'notifications'} button>
               <ListItemIcon>
                 <NotificationsIcon />
@@ -313,11 +285,7 @@ class DashboardMenu extends Component {
         </List>
         <Divider />
         <List>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/profile?open=${this.state.open}`}
-            as="/dashboard/profile"
-          >
+          <Link color="textPrimary" href="/dashboard/profile">
             <ListItem selected={this.props.active === 'profile'} button>
               <ListItemIcon>
                 <ProfileIcon />
@@ -325,11 +293,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Profile" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/wallet?open=${this.state.open}`}
-            as="/dashboard/wallet"
-          >
+          <Link color="textPrimary" href="/dashboard/wallet">
             <ListItem selected={this.props.active === 'wallet'} button>
               <ListItemIcon>
                 <WalletIcon />
@@ -337,11 +301,7 @@ class DashboardMenu extends Component {
               <ListItemText primary="Wallet" />
             </ListItem>
           </Link>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/settings?open=${this.state.open}`}
-            as="/dashboard/settings"
-          >
+          <Link color="textPrimary" href="/dashboard/settings">
             <ListItem selected={this.props.active === 'settings'} button>
               <ListItemIcon>
                 <SettingsIcon />
@@ -352,11 +312,7 @@ class DashboardMenu extends Component {
         </List>
         <Divider />
         <List>
-          <Link
-            color="textPrimary"
-            href={`/dashboard/contest?open=${this.state.open}`}
-            as="/dashboard/contest"
-          >
+          <Link color="textPrimary" href="/dashboard/contest">
             <ListItem selected={this.props.active === 'contest'} button>
               <ListItemIcon>
                 <UserAddIcon />
@@ -369,11 +325,7 @@ class DashboardMenu extends Component {
           <>
             <Divider />
             <List>
-              <Link
-                color="textPrimary"
-                href={`/dashboard/curation?open=${this.state.open}`}
-                as="/dashboard/curation"
-              >
+              <Link color="textPrimary" href="/dashboard/curation">
                 <ListItem selected={this.props.active === 'curation'} button>
                   <ListItemIcon>
                     <StarIcon />
@@ -381,11 +333,7 @@ class DashboardMenu extends Component {
                   <ListItemText primary="Curation" />
                 </ListItem>
               </Link>
-              <Link
-                color="textPrimary"
-                href={`/dashboard/onboarding?open=${this.state.open}`}
-                as="/dashboard/onboarding"
-              >
+              <Link color="textPrimary" href="/dashboard/onboarding">
                 <ListItem selected={this.props.active === 'onboarding'} button>
                   <ListItemIcon>
                     <UserAddIcon />
@@ -393,11 +341,7 @@ class DashboardMenu extends Component {
                   <ListItemText primary="Onboarding" />
                 </ListItem>
               </Link>
-              <Link
-                color="textPrimary"
-                href={`/dashboard/newsletter?open=${this.state.open}`}
-                as="/dashboard/newsletter"
-              >
+              <Link color="textPrimary" href="/dashboard/newsletter">
                 <ListItem selected={this.props.active === 'newsletter'} button>
                   <ListItemIcon>
                     <MailIcon />
