@@ -396,7 +396,7 @@ const PostEditor = props => {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You need to set a valid permlink
+          {'  '}You need to set a valid permalink
         </span>
       ),
       hide:
@@ -450,7 +450,7 @@ const PostEditor = props => {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You cannot set an existing permlink
+          {'  '}You cannot set an existing permalink
         </span>
       ),
       hide: permlinkValid,
@@ -491,7 +491,7 @@ const PostEditor = props => {
         if (res) {
           newNotification({
             message:
-              'The permlink of your post has been used in a previous post. Please change it.',
+              'The permalink of your post has been used in a previous post. Please change it.',
             success: false,
           });
           resolve(false);
@@ -529,7 +529,7 @@ const PostEditor = props => {
         setPermlinkValid(false);
         newNotification({
           message:
-            'The permlink of your post has been used in a previous post. Please change it.',
+            'The permalink of your post has been used in a previous post. Please change it.',
           success: false,
         });
       } else {
@@ -857,14 +857,14 @@ const PostEditor = props => {
                               !permlinkValid ? (
                                 <span>
                                   <WarnIcon />
-                                  {'  '}Permlink
+                                  {'  '}Permalink
                                 </span>
                               ) : (
-                                'Permlink'
+                                'Permalink'
                               )
                             }
                             description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
-                            helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                            helper="Set a custom permalink here if you are unhappy with the long default permalink or if your permalink is conflicting with an existing post."
                             value={`https://travelfeed.io/@${user}/${permlink ||
                               getSlug(title)}`}
                             selector={
