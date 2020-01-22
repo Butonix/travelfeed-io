@@ -74,8 +74,8 @@
 }
 
 figcaption {
-  margin-left: 24px;
-  margin-right: 24px;
+  margin-left: 20px;
+  margin-right: 20px;
   text-align: center;
   font-style: italic;
   font-size: 0.9em;
@@ -150,8 +150,8 @@ sup {
   color: #1e88e5;
 }
 .postcontent figure {
-  margin-left: -24px;
-  margin-right: -24px;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 .postcontent .lazy {
   width: 100%;
@@ -164,10 +164,10 @@ sup {
   margin-right: auto;
 }
 .fullwidth {
-  width: calc(100% + 48px) !important;
+  width: calc(100% + 40px) !important;
   padding: 20px 0;
-  margin-left: -24px;
-  margin-right: -24px;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 .postcontent table {
   width: 100%;
@@ -177,9 +177,9 @@ sup {
   margin-right: 0px;
 }
 .postcontent iframe {
-  width: calc(100% + 48px);
-  margin-left: -24px;
-  margin-right: -24px;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
   padding: 20px 0;
 }
 
