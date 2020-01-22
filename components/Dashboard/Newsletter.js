@@ -92,22 +92,6 @@ Paste the changelog and link to Github
 
 ---
 
-## How to Get Involved?
-
-Are you not on TravelFeed yet? We invite you to check out [TravelFeed.io](https://travelfeed.io/) and to join over 1000 travelers on our [Discord community](https://discord.gg/jWWu73H). We’re also looking for one more curator to join our team.
-
-We’re in Beta and continuously improve TravelFeed, meaning that there are still some bugs. If you notice anything or have feedback for us, please don’t hesitate to contact us [on Discord](https://discord.gg/jWWu73H), leave a comment or open a bug report on <a href="https://github.com/travelfeed-io">Github</a>!
-
-## Consider Delegating To Us
-
-Your delegation not only supports the growth of this incredible project, but also helps the entire travel community on the Steem blockchain. Once we launch our token, the airdrop to delegators will be based on the amount of SteemPower delegated and your share of the total delegations for each day delegated. This means an advantage for early investors delegating now. Our Steem Power is fully used for curation of the best TravelFeed posts and we provide temporary delegations to accounts created through us, to help with resource credits. Feel free to use the following links according to the amount you would like to delegate to [@travelfeed](https://travelfeed.io/@travelfeed):
-
-<center><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>100 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>250 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>500 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>1000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=2500%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>2500 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>5000 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>10000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=15000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>15000 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=25000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>25000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=50000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>50000 SP</a></center>
-
-And again, we'd like to thank every single delegator who believes and trusts in us. If TravelFeed becomes as successful as we are confident it will be, delegating to us is probably the investment with the highest ROI on Steem right now. 
-
----
-
 ## Winners of This Week's Round-up
 
 And with all this exciting news, we don't want to forget to highlight our three favorite TravelFeed.io posts from this week. The rewards will go to the first three places as follows: 1st place - **14 STEEM**, 2nd place - **7 STEEM** and 3rd place - **3 STEEM**.
@@ -120,6 +104,29 @@ And with all this exciting news, we don't want to forget to highlight our three 
 <div json='{"type":"linkTool","data":{"link":"https://travelfeed.io/@{{author}}/{{permlink}}","meta":{"title":"Place {{counter @index}}: {{title}}","description":"{{excerpt}}","image":"{{image}}","author":"{{author}}","permlink":"{{permlink}}"}}}'><center><strong>Place {{counter @index}}</strong></center><center><strong>{{title}}</strong> written by <a href="https://travelfeed.io/@{{author}}">@{{author}}</a></center><blockquote>{{excerpt}}</blockquote><center><a href="https://travelfeed.io/@{{author}}/{{permlink}}"><img src="{{image}}" /></img></a></center></div>
 
 {{/each}}
+
+
+---
+
+## Join TravelFeed!
+
+Are you not on TravelFeed yet? We invite you to check out [TravelFeed.io](https://travelfeed.io/) and to join over 1000 travelers on our [Discord community](https://discord.gg/jWWu73H). We’re also looking for one more curator to join our team.
+
+We’re in Beta and continuously improve TravelFeed, meaning that there are still some bugs. If you notice anything or have feedback for us, please don’t hesitate to contact us [on Discord](https://discord.gg/jWWu73H), leave a comment or open a bug report on <a href="https://github.com/travelfeed-io">Github</a>!
+
+## Consider Delegating To Us
+
+Once we launch our token, there will be a generous airdrop to delegators. Your delegation does not only supports the growth of this incredible project, but also helps the entire travel community on the Steem blockchain. Our Steem Power is fully used for curation of the best TravelFeed posts. Feel free to use the following links according to the amount you would like to delegate to [@travelfeed](https://travelfeed.io/@travelfeed), or head to our <a href='https://travelfeed.io/about/support-us'>Support Us</a> page to delegate a custom amount with the click of a button.
+
+<center><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>100 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>250 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>500 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>1000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=2500%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>2500 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>5000 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>10000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=15000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>15000 SP</a> | <a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=25000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>25000 SP</a><br/><a href='https://beta.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=50000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fdelegation%2Fsuccess'>50000 SP</a></center>
+
+We'd like to thank every single delegator who believes and trusts in us. If TravelFeed becomes as successful as we are confident it will, delegating to us is probably the investment with the highest ROI on Steem right now. 
+
+## Vote for Our Witness
+
+You can support TravelFeed by voting for our Steem witness @travelfeed. By building our platform on Steem, we are supporting this amazing blockchain. In order to help other projects building on Steem, we are publishing large parts of our code base open source on{' '}<a target="_blank" rel="nofollow noreferrer noopener" href="https://github.com/travelfeed-io">Github</a>.
+
+If you want to vote for our witness but are not sure how to do that, it's easy: Head over to our <a href='https://travelfeed.io/about/support-us'>Support Us</a> page and hit the witness voting button to vote with Steem Keychain, or Steemconnect if you are not a Keychain user. Alternatively, use this <a href='https://beta.steemconnect.com/sign/account-witness-vote?witness=travelfeed&redirect_uri=https%3A%2F%2Ftravelfeed.io%2Fwitnessvote%2Fsuccess'>Steemconnect link</a> or head over to <a href='https://steemitwallet.com/~witnesses'>Steemit Wallet</a> and enter travelfeed in the box.
 `;
     Handlebars.registerHelper('counter', index => {
       return index + 1;
