@@ -74,7 +74,6 @@ const StickyCurationSlider = props => {
     score = Math.round(score);
     const swmmatch = body.match(swmregex);
     const swm = swmmatch ? swmmatch.length > 1 : false;
-    console.log(swm);
     graphQLClient(SET_CURATION_SCORE, {
       author,
       permlink,
@@ -99,19 +98,15 @@ const StickyCurationSlider = props => {
   };
 
   const handleSliderDrop = () => {
-    if (weight > -1 && weight < 0) {
-      setWeight(0);
-      setLoading(undefined);
+    if (weight < 0) setBlacklistOpen(true);
+    if (weight > 0) {
+      setLoading(true);
     }
     triggerCurate(false);
   };
 
   const handleWeightChange = (event, value) => {
     setWeight(value);
-    if (weight < -1) setBlacklistOpen(true);
-    if (weight < -1 || weight > 0) {
-      setLoading(true);
-    }
   };
 
   const handleBlacklistConfirm = () => {
