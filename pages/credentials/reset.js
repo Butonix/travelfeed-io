@@ -10,6 +10,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import SetNewPasswordResetForm from '../../components/Header/SetNewPasswordResetForm';
 import { CHECK_PASSWORD_RESET_TOKEN } from '../../helpers/graphql/onboarding';
+import withApollo from '../../lib/withApollo';
 
 const ResetPasswordPage = props => {
   const { resetToken } = props;
@@ -75,4 +76,4 @@ ResetPasswordPage.propTypes = {
   resetToken: PropTypes.string,
 };
 
-export default ResetPasswordPage;
+export default withApollo(ResetPasswordPage);

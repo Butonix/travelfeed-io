@@ -4,6 +4,7 @@ import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Header from '../components/Header/Header';
 import capitalize from '../helpers/capitalize';
+import withApollo from '../lib/withApollo';
 
 class TagPage extends Component {
   static async getInitialProps(props) {
@@ -56,4 +57,4 @@ TagPage.propTypes = {
   query: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default TagPage;
+export default withApollo(TagPage);

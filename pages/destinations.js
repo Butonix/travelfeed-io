@@ -1,4 +1,3 @@
-// TODO: Create content for /destinations, especially for mobile view
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
@@ -8,6 +7,7 @@ import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import PopupNavItems from '../components/Header/PopupNavItems';
 import { ccFromSlug, nameFromSlug } from '../helpers/countryCodes';
+import withApollo from '../lib/withApollo';
 
 const DestinationsPage = props => {
   const [topic, setTopic] = useState(undefined);
@@ -109,4 +109,4 @@ DestinationsPage.propTypes = {
   query: PropTypes.objectOf(PropTypes.string),
 };
 
-export default DestinationsPage;
+export default withApollo(DestinationsPage);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Newsletter from '../../components/Dashboard/Newsletter';
 import { getRoles } from '../../helpers/token';
+import withApollo from '../../lib/withApollo';
 
 const NewsletterPage = () => {
   const [roles, setRoles] = useState(undefined);
@@ -20,4 +21,4 @@ const NewsletterPage = () => {
   );
 };
 
-export default NewsletterPage;
+export default withApollo(NewsletterPage);

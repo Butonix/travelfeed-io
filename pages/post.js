@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SinglePostAmp from '../components/Amp/SinglePostAmp';
 import SinglePost from '../components/Post/SinglePost';
+import withApollo from '../lib/withApollo';
 
 export const config = { amp: 'hybrid' };
 
@@ -56,4 +57,4 @@ PostPage.propTypes = {
   query: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default PostPage;
+export default withApollo(PostPage);

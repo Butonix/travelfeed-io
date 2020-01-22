@@ -10,6 +10,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import SetEasyLogInPassword from '../../components/Header/SetEasyLogInPassword';
 import { CHECK_ADD_ACCOUNT_PASSWORD } from '../../helpers/graphql/onboarding';
+import withApollo from '../../lib/withApollo';
 
 const LinkEmailPage = props => {
   const { linkToken, isNewsletter } = props;
@@ -76,4 +77,4 @@ LinkEmailPage.propTypes = {
   linkToken: PropTypes.string,
 };
 
-export default LinkEmailPage;
+export default withApollo(LinkEmailPage);

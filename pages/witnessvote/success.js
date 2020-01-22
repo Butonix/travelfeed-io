@@ -7,6 +7,7 @@ import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import NewsLetterSubscribe from '../../components/Sidebar/NewsLetterSubscribe';
+import withApollo from '../../lib/withApollo';
 
 const WitnessvoteSuccessPage = () => {
   return (
@@ -67,4 +68,4 @@ const WitnessvoteSuccessPage = () => {
   );
 };
 
-export default WitnessvoteSuccessPage;
+export default withApollo(WitnessvoteSuccessPage);

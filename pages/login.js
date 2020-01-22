@@ -7,6 +7,7 @@ import Header from '../components/Header/Header';
 import LoginDialog from '../components/Login/LoginDialog';
 import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../helpers/graphql/token';
 import { setAccessToken, setScToken } from '../helpers/token';
+import withApollo from '../lib/withApollo';
 
 const LoginPage = props => {
   const [loaded, setLoaded] = useState(false);
@@ -99,4 +100,4 @@ LoginPage.propTypes = {
   sc: PropTypes.objectOf(PropTypes.string),
 };
 
-export default LoginPage;
+export default withApollo(LoginPage);

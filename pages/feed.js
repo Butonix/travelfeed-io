@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Feed from '../components/Feed/Feed';
 import { getUser } from '../helpers/token';
+import withApollo from '../lib/withApollo';
 
 const CustomFeed = () => {
   const [user, setUser] = useState(undefined);
@@ -23,4 +24,4 @@ const CustomFeed = () => {
   );
 };
 
-export default CustomFeed;
+export default withApollo(CustomFeed);

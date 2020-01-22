@@ -6,6 +6,7 @@ import Header from '../components/Header/Header';
 import Map from '../components/Maps/MapCluster';
 import { MAPBOX_TOKEN } from '../config';
 import { GET_PLACES } from '../helpers/graphql/places';
+import withApollo from '../lib/withApollo';
 
 const MapPage = props => {
   const [bbox, setBbox] = useState(undefined);
@@ -80,4 +81,4 @@ MapPage.getInitialProps = props => {
   return { latitude, longitude, zoom, search };
 };
 
-export default MapPage;
+export default withApollo(MapPage);

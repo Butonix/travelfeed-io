@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Drafts from '../../components/Dashboard/Drafts';
+import withApollo from '../../lib/withApollo';
 
 const DraftsPage = props => {
   return (
@@ -13,4 +14,4 @@ DraftsPage.getInitialProps = props => {
   return { sortby };
 };
 
-export default DraftsPage;
+export default withApollo(DraftsPage);

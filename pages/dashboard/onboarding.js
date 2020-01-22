@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Onboarding from '../../components/Dashboard/Onboarding';
 import { getRoles } from '../../helpers/token';
+import withApollo from '../../lib/withApollo';
 
 const OnboardingPage = () => {
   const [roles, setRoles] = useState(undefined);
@@ -20,4 +21,4 @@ const OnboardingPage = () => {
   );
 };
 
-export default OnboardingPage;
+export default withApollo(OnboardingPage);

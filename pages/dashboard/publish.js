@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
+import withApollo from '../../lib/withApollo';
 
 const PublishPage = props => {
   const { open, permlink, draftId, clone } = props;
@@ -29,4 +30,4 @@ PublishPage.getInitialProps = props => {
   };
 };
 
-export default PublishPage;
+export default withApollo(PublishPage);

@@ -2,6 +2,7 @@ import React from 'react';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import PopupNavItems from '../components/Header/PopupNavItems';
+import withApollo from '../lib/withApollo';
 
 const Topics = () => {
   return (
@@ -17,4 +18,4 @@ const Topics = () => {
   );
 };
 
-export default Topics;
+export default withApollo(Topics);

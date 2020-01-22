@@ -1,5 +1,6 @@
 import React from 'react';
 import Feed from '../components/Feed/Feed';
+import withApollo from '../lib/withApollo';
 
 const CreatedFeed = () => {
   return (
@@ -12,4 +13,4 @@ const CreatedFeed = () => {
   );
 };
 
-export default CreatedFeed;
+export default withApollo(CreatedFeed);

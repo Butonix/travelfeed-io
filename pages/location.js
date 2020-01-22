@@ -4,6 +4,7 @@ import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Header from '../components/Header/Header';
 import { slugFromCC } from '../helpers/countryCodes';
+import withApollo from '../lib/withApollo';
 
 const LocationPage = props => {
   const [topic, setTopic] = useState(undefined);
@@ -88,4 +89,4 @@ LocationPage.propTypes = {
   country_code: PropTypes.string.isRequired,
 };
 
-export default LocationPage;
+export default withApollo(LocationPage);

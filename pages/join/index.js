@@ -11,6 +11,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import OnboardStart from '../../components/Onboarding/OnboardStart';
 import { GET_TF_STATS } from '../../helpers/graphql/stats';
+import withApollo from '../../lib/withApollo';
 
 const JoinPage = props => {
   const [referrer, setReferrer] = useState(undefined);
@@ -164,4 +165,4 @@ JoinPage.propTypes = {
   referrer: PropTypes.string,
 };
 
-export default JoinPage;
+export default withApollo(JoinPage);

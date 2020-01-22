@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import * as Sentry from '@sentry/browser';
@@ -7,7 +8,6 @@ import App from 'next/app';
 import Router from 'next/router';
 import { SnackbarProvider } from 'notistack';
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import CookieConsent from '../components/CookieConsent/CookieConsent';
 import NewUserMessage from '../components/General/NewUserMessage';
@@ -15,7 +15,6 @@ import UserContext from '../components/General/UserContext';
 import { registerServiceWorker } from '../helpers/notifications';
 import { getUser, hasCookieConsent } from '../helpers/token';
 import { getTheme } from '../lib/theme';
-import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
 
@@ -87,7 +86,7 @@ class MyApp extends App {
   };
 
   render() {
-    const { Component, pageProps, apollo } = this.props;
+    const { Component, pageProps } = this.props;
     let paletteType = 'light';
     if (this.state && this.state.theme) paletteType = this.state.theme;
     const theme = getTheme({
@@ -107,11 +106,9 @@ class MyApp extends App {
           {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
           <SnackbarProvider maxSnack={3}>
-            <ApolloProvider client={apollo}>
-              <CookieConsent />
-              <NewUserMessage />
-              <Component pageContext={this.pageContext} {...pageProps} />
-            </ApolloProvider>
+            <CookieConsent />
+            <NewUserMessage />
+            <Component pageContext={this.pageContext} {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>
       </UserContext.Provider>
@@ -119,4 +116,4 @@ class MyApp extends App {
   }
 }
 
-export default withApollo(MyApp);
+export default MyApp;

@@ -10,6 +10,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import OnboardInfo from '../../components/Onboarding/OnboardInfo';
 import { ONBOARD_VERIFY_TOKEN } from '../../helpers/graphql/onboarding';
+import withApollo from '../../lib/withApollo';
 
 const RegisterInfoPage = props => {
   const { infoToken } = props;
@@ -71,4 +72,4 @@ RegisterInfoPage.propTypes = {
   infoToken: PropTypes.string,
 };
 
-export default RegisterInfoPage;
+export default withApollo(RegisterInfoPage);
