@@ -5,7 +5,7 @@
 /**
  * Build styles
  */
-require('./index.css').toString();
+require('./index.module.css').toString();
 
 /**
  * @class Quote

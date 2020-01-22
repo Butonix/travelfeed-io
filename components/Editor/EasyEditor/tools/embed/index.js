@@ -3,7 +3,7 @@
 // https://github.com/editor-js/embed
 
 import { debounce } from 'debounce';
-import './index.css';
+import './index.module.css';
 import SERVICES from './services';
 
 /**

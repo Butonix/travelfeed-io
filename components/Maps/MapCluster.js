@@ -12,7 +12,7 @@ import ReactMapGL, {
 } from 'react-map-gl';
 import WebMercatorViewport from 'viewport-mercator-project';
 import { MAPBOX_TOKEN } from '../../config';
-import '../Editor/react-map-gl-geocoder/react-map-gl-geocoder.css';
+import '../Editor/react-map-gl-geocoder/react-map-gl-geocoder.module.css';
 import Cluster from './Cluster';
 import MapCard from './MapCard';
 import MarkerSmall from './MarkerSmall';
