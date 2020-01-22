@@ -25,6 +25,7 @@ export const ADD_CURATION_AUTHOR_NOTES = gql`
     $notes: String
     $attentionLevel: Int
     $formatting: Boolean
+    $swm: Boolean
     $language: Boolean
     $bilingual: Boolean
     $footer: Boolean
@@ -39,6 +40,7 @@ export const ADD_CURATION_AUTHOR_NOTES = gql`
       notes: $notes
       attentionLevel: $attentionLevel
       formatting: $formatting
+      swm: $swm
       language: $language
       bilingual: $bilingual
       footer: $footer
@@ -91,6 +93,7 @@ export const SET_CURATION_SCORE = gql`
     $title: String
     $score: Int!
     $formatting: Boolean
+    $swm: Boolean
     $language: Boolean
     $bilingual: Boolean
     $footer: Boolean
@@ -106,6 +109,7 @@ export const SET_CURATION_SCORE = gql`
       title: $title
       score: $score
       formatting: $formatting
+      swm: $swm
       language: $language
       bilingual: $bilingual
       footer: $footer

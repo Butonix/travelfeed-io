@@ -60,6 +60,12 @@ const PostContent = props => {
           />
         }
       />
+      {props.isIntro && (
+        <div className="bg-warning">
+          This post uses #introduceyourself. Please verify that it actually is
+          the user&apos;s first post, otherwise blacklist.
+        </div>
+      )}
       {props.content}
     </Fragment>
   );
