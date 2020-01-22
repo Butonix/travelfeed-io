@@ -221,7 +221,10 @@ const parseHtmlToReact = (htmlBody, options) => {
                   alt={attribs.alt}
                   src={regSrc}
                   className="img-fluid mx-auto d-block"
-                  style={{ maxHeight: '550px' }}
+                  style={{
+                    maxHeight: '550px',
+                    width: imgHeight > imgWidth ? 'auto' : '100%',
+                  }}
                   height={imgHeight}
                   width={imgWidth}
                 />
