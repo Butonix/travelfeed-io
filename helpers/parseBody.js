@@ -82,6 +82,11 @@ const parseBody = (body, options) => {
     instagramPost,
     `<iframe src="https://www.instagram.com/p/$1/embed" />`,
   );
+  // Turn Spotify URLs into embeds
+  parsedBody = parsedBody.replace(
+    /(?:http[s]?:\/\/)?(?:www.)?open\.spotify\.com\/track\/([a-zA-Z0-9]*)/gi,
+    `<iframe src="https://open.spotify.com/embed/track/$1" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" />`,
+  );
 
   // Remove tfjson Steem placeholders
   let tfjsonMatch = tfJSON.exec(parsedBody);

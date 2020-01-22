@@ -83,6 +83,9 @@ const iframeWhitelist = [
     },
   },
   {
+    re: /^(https?:)?\/\/open\.spotify\.com\/embed\/track\/[a-zA-Z0-9]*/i,
+  },
+  {
     re: /^(https?:)?\/\/(?:www\.)?(?:(player.)?twitch.tv\/)(.*)?$/i,
     fn: src => src,
   },

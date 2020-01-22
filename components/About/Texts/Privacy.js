@@ -672,6 +672,15 @@ const Privacy = () => {
         </li>
         <li>
           <a
+            href="https://www.spotify.com/int/privacy/"
+            rel="noopener noreferrer nofollow"
+            target="_blank"
+          >
+            Spotify
+          </a>
+        </li>
+        <li>
+          <a
             href="https://policies.google.com/privacy"
             rel="noopener noreferrer nofollow"
             target="_blank"
