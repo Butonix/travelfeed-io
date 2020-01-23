@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { indigo, teal } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import Cookie from 'js-cookie';
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react';
 import ReactPiwik from 'react-piwik';
 import Head from '../../components/Header/Head';
@@ -13,18 +13,22 @@ import OnboardStart from '../../components/Onboarding/OnboardStart';
 import { GET_TF_STATS } from '../../helpers/graphql/stats';
 import withApollo from '../../lib/withApollo';
 
-const JoinPage = props => {
-  const [referrer, setReferrer] = useState(undefined);
+const JoinPage = () => {
+  const router = useRouter();
+
+  const passedRef = router.query.ref;
+
+  const [referrer, setReferrer] = useState(router.query.ref);
 
   useEffect(() => {
     ReactPiwik.push(['trackGoal', 1]);
-    if (props.referrer) {
-      Cookie.set('referrer', props.referrer);
-      setReferrer(props.referrer);
+    if (passedRef) {
+      Cookie.set('referrer', passedRef);
+      setReferrer(passedRef);
     } else {
       setReferrer(Cookie.get('referrer'));
     }
-  }, [props]);
+  }, []);
 
   return (
     <Fragment>
@@ -154,15 +158,6 @@ const JoinPage = props => {
       </Query>
     </Fragment>
   );
-};
-
-JoinPage.getInitialProps = props => {
-  const { ref } = props.query;
-  return { referrer: ref };
-};
-
-JoinPage.propTypes = {
-  referrer: PropTypes.string,
 };
 
 export default withApollo(JoinPage);

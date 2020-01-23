@@ -1,4 +1,5 @@
 import { Query } from '@apollo/react-components';
+import { getDataFromTree } from '@apollo/react-ssr';
 import { teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
@@ -77,4 +78,4 @@ LinkEmailPage.propTypes = {
   linkToken: PropTypes.string,
 };
 
-export default withApollo(LinkEmailPage);
+export default withApollo(LinkEmailPage, { getDataFromTree });

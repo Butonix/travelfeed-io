@@ -1,4 +1,5 @@
 import { Query } from '@apollo/react-components';
+import { getDataFromTree } from '@apollo/react-ssr';
 import { teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
@@ -76,4 +77,4 @@ ResetPasswordPage.propTypes = {
   resetToken: PropTypes.string,
 };
 
-export default withApollo(ResetPasswordPage);
+export default withApollo(ResetPasswordPage, { getDataFromTree });

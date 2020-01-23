@@ -1,3 +1,4 @@
+import { getDataFromTree } from '@apollo/react-ssr';
 import { teal } from '@material-ui/core/colors';
 import FormLabel from '@material-ui/core/FormLabel';
 import Grid from '@material-ui/core/Grid';
@@ -74,4 +75,4 @@ NewsletterConfirmPage.propTypes = {
   subscribeToken: PropTypes.string,
 };
 
-export default withApollo(NewsletterConfirmPage);
+export default withApollo(NewsletterConfirmPage, { getDataFromTree });

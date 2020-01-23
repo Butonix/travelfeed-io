@@ -1,17 +1,15 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Drafts from '../../components/Dashboard/Drafts';
 import withApollo from '../../lib/withApollo';
 
-const DraftsPage = props => {
-  return (
-    <DashboardPage label="drafts" content={<Drafts sortby={props.sortby} />} />
-  );
-};
+const DraftsPage = () => {
+  const router = useRouter();
 
-DraftsPage.getInitialProps = props => {
-  const { sortby } = props.query;
-  return { sortby };
+  const { sortby } = router.query;
+
+  return <DashboardPage label="drafts" content={<Drafts sortby={sortby} />} />;
 };
 
 export default withApollo(DraftsPage);

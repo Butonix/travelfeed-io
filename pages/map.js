@@ -1,5 +1,6 @@
 import { Query } from '@apollo/react-components';
 import { useTheme } from '@material-ui/styles';
+import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
@@ -8,17 +9,24 @@ import { MAPBOX_TOKEN } from '../config';
 import { GET_PLACES } from '../helpers/graphql/places';
 import withApollo from '../lib/withApollo';
 
-const MapPage = props => {
+const MapPage = () => {
+  const router = useRouter();
+
+  const latitude = Number(router.query.latitude);
+  const longitude = Number(router.query.longitude);
+  const zoom = Number(router.query.zoom);
+  const { search } = router.query;
+
   const [bbox, setBbox] = useState(undefined);
   const [center, setCenter] = useState(undefined);
 
   const theme = useTheme();
 
   useEffect(() => {
-    if (props.search) {
+    if (search) {
       fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-          props.search,
+          search,
         )}.json?limit=1&language=en-GB&access_token=${MAPBOX_TOKEN}`,
       )
         .then(res => {
@@ -31,7 +39,7 @@ const MapPage = props => {
           }
         });
     }
-  }, [props]);
+  }, []);
 
   const title = 'Map';
   return (
@@ -48,17 +56,17 @@ const MapPage = props => {
           if (data && data.places) {
             return (
               <>
-                {(props.search && !center && <></>) || (
+                {(search && !center && <></>) || (
                   <Map
                     data={data && data.places}
                     dark={theme.palette.type === 'dark'}
                     latitude={
-                      center && center.length > 0 ? center[1] : props.latitude
+                      center && center.length > 0 ? center[1] : latitude
                     }
                     longitude={
-                      center && center.length > 0 ? center[0] : props.longitude
+                      center && center.length > 0 ? center[0] : longitude
                     }
-                    zoom={props.zoom}
+                    zoom={zoom}
                     bbox={bbox}
                     getHeightFromContainer
                   />
@@ -71,14 +79,6 @@ const MapPage = props => {
       </Query>
     </Fragment>
   );
-};
-
-MapPage.getInitialProps = props => {
-  const latitude = Number(props.query.latitude);
-  const longitude = Number(props.query.longitude);
-  const zoom = Number(props.query.zoom);
-  const { search } = props.query;
-  return { latitude, longitude, zoom, search };
 };
 
 export default withApollo(MapPage);

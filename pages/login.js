@@ -1,6 +1,6 @@
 import { Mutation, Query } from '@apollo/react-components';
 import Cookie from 'js-cookie';
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ErrorPage from '../components/General/ErrorPage';
 import Header from '../components/Header/Header';
@@ -9,7 +9,12 @@ import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../helpers/graphql/token';
 import { setAccessToken, setScToken } from '../helpers/token';
 import withApollo from '../lib/withApollo';
 
-const LoginPage = props => {
+const LoginPage = () => {
+  const router = useRouter();
+
+  const sc_token = router.query.access_token;
+  const { expires_in } = router.query;
+
   const [loaded, setLoaded] = useState(false);
   const [referrer, setReferrer] = useState(undefined);
 
@@ -18,7 +23,6 @@ const LoginPage = props => {
     setReferrer(Cookie.get('referrer'));
   });
 
-  const { sc_token, expires_in } = props.sc;
   return (
     <>
       <Header />
@@ -83,21 +87,6 @@ const LoginPage = props => {
       </>
     </>
   );
-};
-
-LoginPage.getInitialProps = props => {
-  const sc_token = props.query.access_token;
-  const { expires_in } = props.query;
-  return {
-    sc: {
-      sc_token,
-      expires_in,
-    },
-  };
-};
-
-LoginPage.propTypes = {
-  sc: PropTypes.objectOf(PropTypes.string),
 };
 
 export default withApollo(LoginPage);
