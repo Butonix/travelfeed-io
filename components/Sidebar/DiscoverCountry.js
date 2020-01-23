@@ -62,7 +62,7 @@ const DiscoverCountry = () => {
               <Link
                 color="textPrimary"
                 as={`/destinations/${countryslug}`}
-                href={`/destinations?country=${countryslug}`}
+                href="/destinations/[...destination]"
               >
                 <Button variant="contained" color="primary">
                   <span className="text-light">Explore More</span>

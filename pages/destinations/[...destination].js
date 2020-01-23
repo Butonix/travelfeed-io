@@ -1,23 +1,29 @@
+import { getDataFromTree } from '@apollo/react-ssr';
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import React, { Fragment, useState } from 'react';
-import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
-import PostGrid from '../components/Grid/PostGrid';
-import Head from '../components/Header/Head';
-import Header from '../components/Header/Header';
-import PopupNavItems from '../components/Header/PopupNavItems';
-import { ccFromSlug, nameFromSlug } from '../helpers/countryCodes';
-import withApollo from '../lib/withApollo';
+import PhotoDetailHeader from '../../components/General/PhotoDetailHeader';
+import PostGrid from '../../components/Grid/PostGrid';
+import Head from '../../components/Header/Head';
+import Header from '../../components/Header/Header';
+import PopupNavItems from '../../components/Header/PopupNavItems';
+import { ccFromSlug, nameFromSlug } from '../../helpers/countryCodes';
+import withApollo from '../../lib/withApollo';
 
-const DestinationsPage = props => {
+const DestinationsPage = () => {
+  const router = useRouter();
+
+  const { destination } = router.query;
+  const country = destination.length > 0 ? destination[0] : undefined;
+  const subdivision = destination.length > 1 ? destination[1] : undefined;
+  const city = destination.length > 2 ? destination[2] : undefined;
+  const suburb = destination.length > 3 ? destination[3] : undefined;
+
   const [topic, setTopic] = useState(undefined);
 
-  const { country } = props;
   const countryName = nameFromSlug(country);
   const country_code = ccFromSlug(country);
-  const { subdivision } = props;
-  const { city } = props;
-  const { suburb } = props;
+
   if (!country_code)
     return (
       <Fragment>
@@ -83,30 +89,4 @@ const DestinationsPage = props => {
   );
 };
 
-DestinationsPage.getInitialProps = props => {
-  const { country, subdivision, city, suburb } = props.query;
-  return {
-    country,
-    subdivision,
-    city,
-    suburb,
-  };
-};
-
-DestinationsPage.defaultProps = {
-  subdivision: undefined,
-  city: undefined,
-  suburb: undefined,
-  query: undefined,
-};
-
-DestinationsPage.propTypes = {
-  country: PropTypes.string.isRequired,
-  subdivision: PropTypes.string,
-  city: PropTypes.string,
-  suburb: PropTypes.string,
-  // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string),
-};
-
-export default withApollo(DestinationsPage);
+export default withApollo(DestinationsPage, { getDataFromTree });

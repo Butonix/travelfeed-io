@@ -42,15 +42,13 @@ const PopupNavCard = props => {
     key = props.data.tag;
   } else if (props.data.subdivision) {
     const slug = slugFromCC(props.data.country_code);
-    href = `/destinations?country=${slug}${
-      !props.data.subdivision ? '' : `&subdivision=${props.data.subdivision}`
-    }${!props.data.city ? '' : `&city=${props.data.city}`}`;
+    href = '/destinations/[...destination]';
     as = `/destinations/${slug}${
       !props.data.subdivision ? '' : `/${props.data.subdivision}`
     }${!props.data.city ? '' : `/${props.data.city}`}`;
   } else {
     const slug = slugFromCC(props.data.country_code);
-    href = `/destinations?country=${slug}`;
+    href = `/destinations/[...destination]`;
     as = `/destinations/${slug}`;
     key = slug;
   }

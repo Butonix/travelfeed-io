@@ -114,7 +114,7 @@ const PhotoDetailHeader = props => {
                                 <Link
                                   color="textPrimary"
                                   as={`/destinations/${countrySlug}/`}
-                                  href={`/destinations?country=${countrySlug}`}
+                                  href="/destinations/[...destination]"
                                 >
                                   <span className="text-light font-weight-bold">
                                     {countryName}
@@ -126,7 +126,7 @@ const PhotoDetailHeader = props => {
                                   <Link
                                     color="textPrimary"
                                     as={`/destinations/${countrySlug}/${query.subdivision}`}
-                                    href={`/destinations?country=${countrySlug}&subdivision=${query.subdivision}`}
+                                    href="/destinations/[...destination]"
                                   >
                                     <span className="text-light font-weight-bold">
                                       {query.subdivision}
@@ -141,7 +141,7 @@ const PhotoDetailHeader = props => {
                               <Link
                                 color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
-                                href={`/destinations?country=${countrySlug}`}
+                                href="/destinations/[...destination]"
                               >
                                 <span className="text-light font-weight-bold">
                                   {(data && data.locationDetails.subtitle) ||

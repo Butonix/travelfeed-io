@@ -49,7 +49,7 @@ const SimilarPosts = props => {
                   >
                     <Link
                       color="inherit"
-                      href={`/destinations?country=${slug}`}
+                      href="/destinations/[...destination]"
                       as={`/destinations/${slug}`}
                     >
                       More from {nameFromCC(country_code)}
@@ -128,7 +128,7 @@ const SimilarPosts = props => {
                     >
                       <Link
                         color="inherit"
-                        href={`/destinations?country=${slug}`}
+                        href="/destinations/[...destination]"
                         as={`/destinations/${slug}`}
                       >
                         More from {nameFromCC(country_code)}

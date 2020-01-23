@@ -111,15 +111,7 @@ const SimilarPostCard = props => {
                         <>
                           {(props.post.subdivision || props.post.city) && (
                             <Link
-                              href={`/destinations?country=${props.slug}${
-                                !props.post.subdivision
-                                  ? ''
-                                  : `&subdivision=${props.post.subdivision}`
-                              }${
-                                !props.post.city
-                                  ? ''
-                                  : `&city=${props.post.city}`
-                              }`}
+                              href="/destinations/[...destination]"
                               as={`/destinations/${props.slug}${
                                 !props.post.subdivision
                                   ? ''

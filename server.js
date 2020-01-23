@@ -146,47 +146,6 @@ app
       res.redirect(`/topics/${tag}`);
     });
 
-    server.get('/destinations/:country', (req, res) => {
-      const actualPage = '/destinations';
-      const queryParams = {
-        country: req.params.country,
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/destinations/:country/:subdivision', (req, res) => {
-      const actualPage = '/destinations';
-      const queryParams = {
-        country: req.params.country,
-        subdivision: req.params.subdivision,
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/destinations/:country/:subdivision/:city', (req, res) => {
-      const actualPage = '/destinations';
-      const queryParams = {
-        country: req.params.country,
-        subdivision: req.params.subdivision,
-        city: req.params.city,
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get(
-      '/destinations/:country/:subdivision/:city/:suburb',
-      (req, res) => {
-        const actualPage = '/destinations';
-        const queryParams = {
-          country: req.params.country,
-          subdivision: req.params.subdivision,
-          city: req.params.city,
-          suburb: req.params.suburb,
-        };
-        app.render(req, res, actualPage, queryParams);
-      },
-    );
-
     server.get('/blog', (req, res) => {
       res.redirect('/@travelfeed');
     });

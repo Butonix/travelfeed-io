@@ -88,7 +88,7 @@ class HeaderPopupNav extends Component {
                 </Link>
                 <Link
                   color="textPrimary"
-                  href={`/destinations?country=${this.state.random}`}
+                  href="/destinations/[...destination]"
                   as={`/destinations/${this.state.random}`}
                 >
                   <DestinationMenuItem
