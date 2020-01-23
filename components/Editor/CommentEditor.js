@@ -90,7 +90,7 @@ const CommentEditor = props => {
     <div>
       <div className={`p-2${props.editMode ? '' : ' border'}`}>
         <EasyEditor
-          holderId={`${props.editMode ? 're' : 'edit'}_${props.parent_author}_${
+          holder={`${props.editMode ? 're' : 'edit'}_${props.parent_author}_${
             props.parent_permlink
           }`}
           onChange={handleEditorChange}
