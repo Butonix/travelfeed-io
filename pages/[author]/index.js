@@ -11,6 +11,15 @@ import withApollo from '../../lib/withApollo';
 const BlogPage = props => {
   const router = useRouter();
 
+  if (!router.query.author || !router.query.author.match(/@/)) {
+    return (
+      <>
+        <Header />
+        <ErrorPage statusCode={404} />
+      </>
+    );
+  }
+
   const author = router.query.author.replace(/@/, '');
 
   const [profile, setProfile] = useState(props.profile || {});
