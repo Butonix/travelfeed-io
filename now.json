@@ -1,0 +1,25 @@
+{
+  "name": "TravelFeed",
+  "version": 2,
+  "redirects": [
+    { "source": "/blog", "destination": "/@travelfeed" },
+    { "source": "/steemfest", "destination": "/destinations/thailand/Bangkok" },
+    { "source": "/tag", "destination": "/topics" },
+    { "source": "/featured", "destination": "/" },
+    { "source": "/featured/:topic", "destination": "/topics/:topic" },
+    { "source": "/created/:topic", "destination": "/topics/:topic" },
+    { "source": "/trending/:topic", "destination": "/topics/:topic" },
+    { "source": "/hot/:topic", "destination": "/topics/:topic" },
+    { "source": "/favorites/:topic", "destination": "/topics/:topic" },
+    {
+      "source": "/:tag/@:author/:permlink",
+      "destination": "/@:author/:permlink"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/service-worker.js",
+      "destination": "/.next/service-worker.js"
+    }
+  ]
+}
