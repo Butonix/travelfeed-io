@@ -77,4 +77,13 @@ const BlogPage = props => {
   );
 };
 
+BlogPage.getInitialProps = async props => {
+  let profile;
+  const { author } = props.query;
+
+  if (!process.browser) profile = await getAccount(author);
+
+  return { profile };
+};
+
 export default withApollo(BlogPage, { getDataFromTree });
