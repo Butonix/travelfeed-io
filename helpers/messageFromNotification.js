@@ -20,7 +20,7 @@ export const messageFromNotification = notifiication => {
           <Link
             color="inherit"
             as={`/@${author}/${permlink}`}
-            href={`/post?author=${author}&permlink=${permlink}`}
+            href="/[author]/[permlink]"
           >
             {permlink}
           </Link>{' '}
@@ -35,7 +35,7 @@ export const messageFromNotification = notifiication => {
           <Link
             color="inherit"
             as={`/@${author}/${permlink}`}
-            href={`/post?author=${author}&permlink=${permlink}`}
+            href="/[author]/[permlink]"
           >
             {permlink}
           </Link>{' '}
@@ -53,7 +53,7 @@ export const messageFromNotification = notifiication => {
           <Link
             color="inherit"
             as={`/@${author}/${permlink}`}
-            href={`/post?author=${author}&permlink=${permlink}`}
+            href="/[author]/[permlink]"
           >
             {permlink}
           </Link>
@@ -80,7 +80,7 @@ export const messageFromNotification = notifiication => {
           <Link
             color="inherit"
             as={`/@${author}/${permlink}`}
-            href={`/post?author=${author}&permlink=${permlink}`}
+            href="/[author]/[permlink]"
           >
             {permlink}
           </Link>

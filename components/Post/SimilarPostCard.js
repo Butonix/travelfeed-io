@@ -42,9 +42,7 @@ const SimilarPostCard = props => {
           href={
             isSkeleton
               ? undefined
-              : `/post?author=${props.post.author}&permlink=${
-                  props.post.permlink
-                }&title=${encodeURIComponent(
+              : `//[author]/[permlink]?title=${encodeURIComponent(
                   props.post.title,
                 )}&img_url=${encodeURIComponent(props.post.img_url)}&depth=0`
           }

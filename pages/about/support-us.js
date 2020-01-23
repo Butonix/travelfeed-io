@@ -302,7 +302,7 @@ const SupportUsPage = () => {
                   <Link
                     color="textPrimary"
                     as="/@travelfeed/tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
-                    href="/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
+                    href="/[author]/[permlink]"
                   >
                     a simple tutorial
                   </Link>{' '}

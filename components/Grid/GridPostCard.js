@@ -87,9 +87,7 @@ class GridPostCard extends Component {
         console.log('Could not encode URI');
       }
 
-      linkHref = `/post?author=${this.props.post.author}&permlink=${
-        this.props.post.permlink
-      }&title=${titleUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
+      linkHref = `/[author]/[permlink]?title=${titleUri}&display_name=${displayNameUri}&img_url=${encodeURIComponent(
         this.props.post.img_url,
       )}&lazy_img_url=${encodeURIComponent(
         cardImage,

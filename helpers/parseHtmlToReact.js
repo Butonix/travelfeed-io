@@ -269,7 +269,7 @@ const parseHtmlToReact = (htmlBody, options) => {
           return (
             <Link
               as={`/@${blogLink[1]}/${blogLink[2]}`}
-              href={`/post?author=${blogLink[1]}&permlink=${blogLink[2]}`}
+              href="/[author]/[permlink]"
             >
               {domToReact(children, parseOptions)}
             </Link>

@@ -103,16 +103,6 @@ app
       app.serveStatic(req, res, filePath);
     });
 
-    server.get('/@:author/:permlink', (req, res) => {
-      const actualPage = '/post';
-      const queryParams = {
-        author: req.params.author,
-        permlink: req.params.permlink,
-        amp: req.query.amp,
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
     server.get('/:tag/@:author/:permlink', (req, res) => {
       const { author } = req.params;
       const { permlink } = req.params;
@@ -198,11 +188,7 @@ app
     );
 
     server.get('/blog', (req, res) => {
-      const actualPage = '/blog';
-      const queryParams = {
-        author: 'travelfeed',
-      };
-      app.render(req, res, actualPage, queryParams);
+      res.redirect('/@travelfeed');
     });
 
     server.get('*', (req, res) => {

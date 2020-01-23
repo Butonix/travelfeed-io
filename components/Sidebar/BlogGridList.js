@@ -58,7 +58,7 @@ const BlogGridList = () => {
                                 <Link
                                   color="textPrimary"
                                   as={`/@${post.author}/${post.permlink}`}
-                                  href={`/post?author=${post.author}&permlink=${post.permlink}&depth=0&title=${titleUri}&display_name=TravelFeed`}
+                                  href={`/[author]/[permlink]?depth=0&title=${titleUri}&display_name=TravelFeed`}
                                 >
                                   <CardActionArea className="pt-2 pb-2">
                                     <div className="container-fluid">
