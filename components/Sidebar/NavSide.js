@@ -68,11 +68,7 @@ const NavSide = () => {
                   <ListItemText primary="Bookmarks" />
                 </MenuItem>
               </Link>
-              <Link
-                color="textPrimary"
-                as={`@${user}`}
-                href={`/blog?author=${user}`}
-              >
+              <Link color="textPrimary" as={`@${user}`} href="/[author]">
                 <MenuItem>
                   <ListItemIcon>
                     <ProfileIcon />

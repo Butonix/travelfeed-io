@@ -8,11 +8,7 @@ import Link from '../../lib/Link';
 const TeamMember = props => {
   return (
     <div className="text-center">
-      <Link
-        color="textPrimary"
-        as={`/@${props.username}`}
-        href={`/blog?author=${props.username}`}
-      >
+      <Link color="textPrimary" as={`/@${props.username}`} href="/[author]">
         <Typography variant="h5" className="pt-4">
           {props.name}
         </Typography>

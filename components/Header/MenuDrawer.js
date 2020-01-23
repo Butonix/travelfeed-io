@@ -30,6 +30,7 @@ import capitalize from '../../helpers/capitalize';
 import { getUser, logout } from '../../helpers/token';
 import Link from '../../lib/Link';
 import Logout from '../Login/LogoutButton';
+// eslint-disable-next-line import/no-cycle
 import LoginButton from './LoginButton';
 
 const useStyles = makeStyles(theme => ({
@@ -130,11 +131,7 @@ export default function MenuDrawer(props) {
       {(user && (
         <>
           <Paper square className={classes.paper}>
-            <Link
-              color="textPrimary"
-              as={`/@${user}`}
-              href={`/blog?author=${user}`}
-            >
+            <Link color="textPrimary" as={`/@${user}`} href="/[author]">
               <Avatar
                 className={`cpointer ${classes.avatar}`}
                 src={`https://steemitimages.com/u/${user}/avatar/small`}

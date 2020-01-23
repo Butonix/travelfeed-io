@@ -46,11 +46,7 @@ export const messageFromNotification = notifiication => {
     case notificationTypes.REPLY:
       res = (
         <span className="text-light">
-          <Link
-            color="inherit"
-            as={`/@${author}`}
-            href={`/blog?author=${author}`}
-          >
+          <Link color="inherit" as={`/@${author}`} href="/[author]">
             {author}
           </Link>{' '}
           replied to your post{' '}
@@ -67,11 +63,7 @@ export const messageFromNotification = notifiication => {
     case notificationTypes.FOLLOW:
       res = (
         <span className="text-light">
-          <Link
-            color="inherit"
-            as={`/@${author}`}
-            href={`/blog?author=${author}`}
-          >
+          <Link color="inherit" as={`/@${author}`} href="/[author]">
             {author}
           </Link>{' '}
           follows you
@@ -81,11 +73,7 @@ export const messageFromNotification = notifiication => {
     case notificationTypes.MENTION:
       res = (
         <span className="text-light">
-          <Link
-            color="inherit"
-            as={`/@${author}`}
-            href={`/blog?author=${author}`}
-          >
+          <Link color="inherit" as={`/@${author}`} href="/[author]">
             {author}
           </Link>{' '}
           mentioned you in{' '}

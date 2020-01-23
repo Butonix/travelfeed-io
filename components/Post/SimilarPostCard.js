@@ -138,7 +138,7 @@ const SimilarPostCard = props => {
                             <Link
                               color="textSecondary"
                               as={`/@${props.post.author}`}
-                              href={`/blog?author=${props.post.author}`}
+                              href="/[author]"
                             >
                               by @{props.post.author}
                             </Link>

@@ -1,15 +1,19 @@
+import { getDataFromTree } from '@apollo/react-ssr';
+import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react';
-import ErrorPage from '../components/General/ErrorPage';
-import Header from '../components/Header/Header';
-import AuthorProfile from '../components/Profile/AuthorProfile';
-import ProfileTabs from '../components/Profile/ProfileTabs';
-import { getAccount } from '../helpers/steem';
-import withApollo from '../lib/withApollo';
+import ErrorPage from '../../components/General/ErrorPage';
+import Header from '../../components/Header/Header';
+import AuthorProfile from '../../components/Profile/AuthorProfile';
+import ProfileTabs from '../../components/Profile/ProfileTabs';
+import { getAccount } from '../../helpers/steem';
+import withApollo from '../../lib/withApollo';
 
 const BlogPage = props => {
-  const [profile, setProfile] = useState(props.profile || {});
+  const router = useRouter();
 
-  const { author } = props;
+  const author = router.query.author.replace(/@/, '');
+
+  const [profile, setProfile] = useState(props.profile || {});
 
   useEffect(() => {
     if (!props.profile)
@@ -64,13 +68,4 @@ const BlogPage = props => {
   );
 };
 
-BlogPage.getInitialProps = async props => {
-  let profile;
-  const { author } = props.query;
-
-  if (!process.browser) profile = await getAccount(author);
-
-  return { author, profile };
-};
-
-export default withApollo(BlogPage);
+export default withApollo(BlogPage, { getDataFromTree });

@@ -231,7 +231,7 @@ const Profile = () => {
                     <Link
                       color="textPrimary"
                       as={`/@${getUser()}`}
-                      href={`/blog?author=${getUser()}`}
+                      href="/[author]"
                     >
                       <Button fullWidth color="primary" variant="outlined">
                         <ViewIcon />

@@ -205,16 +205,6 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get('/@:author', (req, res) => {
-      const actualPage = '/blog';
-      const queryParams = {
-        author: req.params.author,
-      };
-      // No cache since users are confused if their new posts/
-      // profile updates don't show up instantly
-      app.render(req, res, actualPage, queryParams);
-    });
-
     server.get('*', (req, res) => {
       return handle(req, res);
     });

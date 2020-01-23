@@ -71,7 +71,7 @@ const PostPreview = props => {
                       <Link
                         color="textSecondary"
                         as={`/@${props.author}`}
-                        href={`/blog?author=${props.author}`}
+                        href="/[author]"
                       >
                         {`${isSmall ? '' : 'by '}@${props.author}`}
                       </Link>

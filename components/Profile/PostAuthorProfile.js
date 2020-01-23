@@ -30,7 +30,7 @@ const PostAuthorProfile = props => {
                 <Link
                   color="textPrimary"
                   as={`/@${props.author}`}
-                  href={`/blog?author=${props.author}`}
+                  href="/[author]"
                 >
                   <Img
                     style={{ cursor: 'pointer' }}
@@ -58,7 +58,7 @@ const PostAuthorProfile = props => {
                   <Link
                     color="textPrimary"
                     as={`/@${props.author}`}
-                    href={`/blog?author=${props.author}`}
+                    href="/[author]"
                   >
                     <Typography variant="h6" className="textPrimary cpointer">
                       {props.display_name}

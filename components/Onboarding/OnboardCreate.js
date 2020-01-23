@@ -132,7 +132,7 @@ const OnboardCreate = props => {
             <FormLabel component="legend" className="pt-5">
               Want to know more about your Steem keys? Watch this video by
               TravelFeed user{' '}
-              <Link as="/@coruscate" href="/blog?author=coruscate">
+              <Link as="/@coruscate" href="/[author]">
                 @coruscate
               </Link>
               .

@@ -37,11 +37,11 @@ const Contest = props => {
                 <Typography className="pt-4">
                   <p>
                     In cooperation with{' '}
-                    <Link as="/@blocktrades" href="/blog?author=blocktrades">
+                    <Link as="/@blocktrades" href="/[author]">
                       @blocktrades
                     </Link>{' '}
                     and{' '}
-                    <Link as="/@anomadsoul" href="/blog?author=anomadsoul">
+                    <Link as="/@anomadsoul" href="/[author]">
                       @anomadsoul
                     </Link>{' '}
                     we are giving away a ticket to Steemfest including

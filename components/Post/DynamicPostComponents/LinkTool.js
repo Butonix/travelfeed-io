@@ -63,7 +63,7 @@ const LinkTool = props => {
                     <Link
                       color="textPrimary"
                       as={`/@${author}`}
-                      href={`/blog?author=${author}`}
+                      href="/[author]"
                     >
                       {author}
                     </Link>
