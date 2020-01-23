@@ -1,4 +1,5 @@
 // Todo: Show current mana, ressource credits, upvote worth
+import { Query } from '@apollo/react-components';
 import {
   cyan,
   green,
@@ -15,7 +16,6 @@ import QualityIcon from '@material-ui/icons/CheckCircle';
 import TotalPostsIcon from '@material-ui/icons/Create';
 import TotalFeaturedIcon from '@material-ui/icons/Star';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import calculateQualityScore from '../../helpers/calculateQualityScore';
 import { GET_DASHBOARD_POSTS } from '../../helpers/graphql/posts';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';

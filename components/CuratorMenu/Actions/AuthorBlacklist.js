@@ -1,3 +1,4 @@
+import { Mutation, Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,7 +16,6 @@ import CheckIcon from '@material-ui/icons/Check';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import {
   BLACKLIST_AUTHOR,
   IS_BLACKLISTED_AUTHOR,

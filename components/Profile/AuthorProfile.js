@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
+import { Query } from '@apollo/react-components';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
@@ -92,23 +91,6 @@ const AuthorProfile = props => {
       </Query>
     </Fragment>
   );
-};
-
-AuthorProfile.propTypes = {
-  profile: PropTypes.objectOf({
-    name: PropTypes.string,
-    display_name: PropTypes.string,
-    cover_image: PropTypes.string,
-    about: PropTypes.string,
-    location: PropTypes.string,
-    website: PropTypes.string,
-    twitter: PropTypes.string,
-    facebook: PropTypes.string,
-    instagram: PropTypes.string,
-    youtube: PropTypes.string,
-    couchsurfing: PropTypes.string,
-    pinterest: PropTypes.string,
-  }),
 };
 
 export default AuthorProfile;

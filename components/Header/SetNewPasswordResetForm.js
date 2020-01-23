@@ -1,9 +1,9 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import owasp from 'owasp-password-strength-test';
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import { CONFIRM_PASSWORD_RESET } from '../../helpers/graphql/onboarding';
 import EasyLogin from '../Onboarding/EasyLogin';
 

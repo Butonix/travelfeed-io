@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 // no ssr since current user is essential to determine follow status
 
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,7 +14,6 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import { follow, unfollow } from '../../helpers/actions';
 import { FOLLOW, UNFOLLOW } from '../../helpers/graphql/broadcast';
 import { GET_IS_FOLLOWED } from '../../helpers/graphql/profile';

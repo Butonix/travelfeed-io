@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+import { Mutation, Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
@@ -5,7 +7,6 @@ import Cookie from 'js-cookie';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../../helpers/graphql/token';
 import { setAccessToken } from '../../helpers/token';
 import LoginDialog from '../Login/LoginDialog';
@@ -23,10 +24,6 @@ const EasyLoginButton = props => {
 
   const handleUsernameEmailInput = () => event => {
     setUsernameOrEmail(event.target.value);
-  };
-
-  const handleEasyKeyPress = event => {
-    if (event.key === 'Enter') handleEasyLogin();
   };
 
   const newNotification = notification => {
@@ -48,6 +45,11 @@ const EasyLoginButton = props => {
         message: 'Enter your username and password first',
       });
   };
+
+  const handleEasyKeyPress = event => {
+    if (event.key === 'Enter') handleEasyLogin();
+  };
+
   return (
     <>
       {(mutate && (

@@ -1,10 +1,10 @@
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import MapIcon from '@material-ui/icons/Map';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import { getBudgetScore } from '../../helpers/budgetScore';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
@@ -319,7 +319,7 @@ const PhotoDetailHeader = props => {
 
 PhotoDetailHeader.propTypes = {
   query: PropTypes.objectOf(PropTypes.string).isRequired,
-  countrySlug: PropTypes.string.isRequired,
+  countrySlug: PropTypes.string,
   title: PropTypes.string.isRequired,
 };
 

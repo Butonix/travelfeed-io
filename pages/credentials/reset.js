@@ -1,8 +1,8 @@
+import { Query } from '@apollo/react-components';
 import { teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Query } from 'react-apollo';
 import ErrorPage from '../../components/General/ErrorPage';
 import FixedBackgroundImage from '../../components/General/FixedBackgroundImage';
 import HeaderCard from '../../components/General/HeaderCard';

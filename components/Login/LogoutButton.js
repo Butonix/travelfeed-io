@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -6,7 +7,6 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
 import { REVOKE_TOKEN } from '../../helpers/graphql/token';
 import { getAccessToken } from '../../helpers/token';
 

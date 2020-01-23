@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+import { Mutation, Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -8,7 +10,6 @@ import BookmarkIconFilled from '@material-ui/icons/Bookmark';
 import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import {
   ADD_BOOKMARK,
   DELETE_BOOKMARK,

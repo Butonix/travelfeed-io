@@ -1,8 +1,8 @@
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import { green, indigo, teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
 import HeaderCard from '../General/HeaderCard';
 import RecentEarnings from './Stats/RecentEarningsChart';

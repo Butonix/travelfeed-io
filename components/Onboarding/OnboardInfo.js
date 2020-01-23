@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 import Step from '@material-ui/core/Step';
@@ -8,7 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import WarnIcon from '@material-ui/icons/Warning';
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import { ONBOARD_INFO } from '../../helpers/graphql/onboarding';

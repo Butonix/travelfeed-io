@@ -1,6 +1,6 @@
+import { Query } from '@apollo/react-components';
 import { indigo } from '@material-ui/core/colors';
 import React from 'react';
-import { Query } from 'react-apollo';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import HeaderCard from '../General/HeaderCard';
 import PostPreview from '../Post/PostPreview';

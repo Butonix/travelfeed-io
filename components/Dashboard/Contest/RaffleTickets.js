@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import { teal } from '@material-ui/core/colors';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,7 +7,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import dayjs from 'dayjs';
 import React from 'react';
-import { Query } from 'react-apollo';
 import { CONTEST_GET } from '../../../helpers/graphql/contest';
 import HeaderCard from '../../General/HeaderCard';
 
@@ -46,8 +46,8 @@ const RaffleTickets = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {data.contestGet.map((c, i) => (
-                            <TableRow hover key={i}>
+                          {data.contestGet.map(c => (
+                            <TableRow hover key={c.date}>
                               <TableCell>{c.type}</TableCell>
                               <TableCell>{c.tickets}</TableCell>
                               <TableCell>

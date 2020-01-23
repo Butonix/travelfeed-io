@@ -1,10 +1,10 @@
+import { Query } from '@apollo/react-components';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import { GET_BLOG_POSTS } from '../../helpers/graphql/posts';
 import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';

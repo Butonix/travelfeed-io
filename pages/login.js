@@ -1,7 +1,7 @@
+import { Mutation, Query } from '@apollo/react-components';
 import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import ErrorPage from '../components/General/ErrorPage';
 import Header from '../components/Header/Header';
 import LoginDialog from '../components/Login/LoginDialog';

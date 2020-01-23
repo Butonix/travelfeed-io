@@ -1,4 +1,5 @@
 // Todo: Add delete account to remove all of users data from our database
+import { Mutation, Query } from '@apollo/react-components';
 import { teal } from '@material-ui/core/colors';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,7 +9,6 @@ import Switch from '@material-ui/core/Switch';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import { requestPostingAuthority } from '../../helpers/actions';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
 import hasPostingAuthority from '../../helpers/hasPostingAuthority';

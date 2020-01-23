@@ -1,3 +1,4 @@
+import { Mutation, Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -9,7 +10,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import isEmail from 'validator/lib/isEmail';
 import { requestPostingAuthority } from '../../../helpers/actions';
 import {

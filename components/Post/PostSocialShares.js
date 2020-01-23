@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import {
   faFacebookF,
   faPinterest,
@@ -10,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/AddComment';
 import { withSnackbar } from 'notistack';
 import React, { Fragment } from 'react';
-import { Mutation } from 'react-apollo';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { CONTEST_SOCIAL } from '../../helpers/graphql/contest';
 import ResteemButton from './ResteemButton';

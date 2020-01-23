@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green, red } from '@material-ui/core/colors';
@@ -5,7 +6,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
-import { Query } from 'react-apollo';
 import { customJson } from '../../../helpers/actions';
 import {
   CONTEST_IS_OPTED_IN,

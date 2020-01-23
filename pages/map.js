@@ -1,6 +1,6 @@
+import { Query } from '@apollo/react-components';
 import { useTheme } from '@material-ui/styles';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import Map from '../components/Maps/MapCluster';

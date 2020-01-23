@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import { indigo, teal } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';

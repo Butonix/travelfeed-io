@@ -1,11 +1,11 @@
-// https://medium.com/@alfianlosari/graphql-cursor-infinite-scroll-pagination-with-react-apollo-client-and-github-api-fafbc510b667
+// https://medium.com/@alfianlosari/graphql-cursor-infinite-scroll-pagination-with-@apollo/react-components-client-and-github-api-fafbc510b667
+import { Query } from '@apollo/react-components';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';

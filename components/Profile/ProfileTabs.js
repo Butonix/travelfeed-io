@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -6,7 +7,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Query } from 'react-apollo';
 import { GET_GEOJSON } from '../../helpers/graphql/geojson';
 import { GET_AUTHOR_POST_LOCATIONS } from '../../helpers/graphql/posts';
 import PostGrid from '../Grid/PostGrid';

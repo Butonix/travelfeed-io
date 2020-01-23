@@ -1,8 +1,8 @@
+import { Query } from '@apollo/react-components';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
-import { Query } from 'react-apollo';
 import { GET_NOTIFICATIONS } from '../../helpers/graphql/notifications';
 import { messageFromNotification } from '../../helpers/messageFromNotification';
 import CustomSnackbar from './Notifications/CustomSnackbar';

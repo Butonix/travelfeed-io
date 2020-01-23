@@ -1,7 +1,7 @@
 // https://codepen.io/ncerminara/pen/eKNROb
+import { Query } from '@apollo/react-components';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import StickyBox from 'react-sticky-box';
 import capitalize from '../../helpers/capitalize';
 import { IS_NEWSLETTER_SUBSCRIBED } from '../../helpers/graphql/newsletter';

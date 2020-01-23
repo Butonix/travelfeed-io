@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,7 +11,6 @@ import DiffMatchPatch from 'diff-match-patch';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';

@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -9,7 +10,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Cookie from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import ReCAPTCHA from 'react-google-recaptcha';
 import isEmail from 'validator/lib/isEmail';
 import { RECAPTCHA_SITE_KEY } from '../../config';

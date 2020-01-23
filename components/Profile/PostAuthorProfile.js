@@ -1,7 +1,7 @@
+import { Query } from '@apollo/react-components';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import Img from 'react-image';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import { getAccount } from '../../helpers/steem';
