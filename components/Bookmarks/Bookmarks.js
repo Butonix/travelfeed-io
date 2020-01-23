@@ -126,6 +126,7 @@ class Bookmarks extends Component {
                               created_at: post.created_at,
                               readtime,
                               excerpt: sanitized,
+                              body: post.body,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,
