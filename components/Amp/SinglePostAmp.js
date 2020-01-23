@@ -13,11 +13,11 @@ import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import Head from '../Header/Head';
 
 const SinglePostAmp = props => {
-  const { data, error } = useQuery(GET_POST, {
+  const { data } = useQuery(GET_POST, {
     variables: props.post,
     ssr: true,
   });
-  if (data && data.post) {
+  if (data && data.post && data.post.permlink) {
     const {
       app,
       body,
@@ -2696,8 +2696,7 @@ const SinglePostAmp = props => {
       </>
     );
   }
-  if (error) return 'Not found';
-  return <></>;
+  return 'Not found';
 };
 
 export default SinglePostAmp;
