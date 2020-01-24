@@ -84,7 +84,10 @@ class PostCommentItem extends Component {
         console.log('Could not encode URI');
       }
 
-      const htmlBody = parseBody(this.state.body || this.props.post.body, {});
+      const htmlBody = parseBody(
+        this.state.body || this.props.post.body || '',
+        {},
+      );
       const reactParsed = parseHtmlToReact(htmlBody, {
         webpSupport: this.state.webpSupport,
       });

@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SinglePostAmp from '../../components/Amp/SinglePostAmp';
-import ErrorPage from '../../components/General/ErrorPage';
-import Header from '../../components/Header/Header';
 import SinglePost from '../../components/Post/SinglePost';
 import withApollo from '../../lib/withApollo';
 
@@ -17,15 +15,6 @@ const PostPage = () => {
   const isAmp = useAmp();
 
   const post = router.query;
-
-  if (!post.author || !post.author.match(/@/)) {
-    return (
-      <>
-        <Header />
-        <ErrorPage statusCode={404} />
-      </>
-    );
-  }
 
   post.author = router.query.author.replace(/@/, '');
 
