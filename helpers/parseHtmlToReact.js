@@ -51,11 +51,15 @@ const parseHtmlToReact = (htmlBody, options) => {
       ) {
         const doNotConvert =
           attribs.src.substr(attribs.src.length - 4) === '.gif';
-        const imgHeight = attribs.height || '100%';
-        const imgWidth = attribs.width || undefined;
+        const attribHeight = attribs.height
+          ? Number(attribs.height)
+          : undefined;
+        const attribWidth = attribs.width ? Number(attribs.width) : undefined;
+        const imgHeight = attribHeight || '100%';
+        const imgWidth = attribWidth || undefined;
         const fetchHeight =
-          attribs.height && attribs.height > 0 && attribs.height < 700
-            ? attribs.height
+          attribHeight && attribHeight > 0 && attribHeight < 700
+            ? attribHeight
             : 700;
         let webpSrc = doNotConvert
           ? attribs.src
@@ -82,7 +86,7 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (!options.hideimgcaptions && attribs.alt)
           lightboxImg.caption = attribs.alt;
         const useLightbox =
-          options.toggleLightbox && (!attribs.height || attribs.height > 400);
+          options.toggleLightbox && (!attribHeight || attribHeight > 400);
         let handleLightboxToggle;
         let lightboxClass;
         if (useLightbox) {
@@ -94,17 +98,15 @@ const parseHtmlToReact = (htmlBody, options) => {
         if (options.amp) {
           return (
             <figure className="ampstart-image-with-caption m0 relative mb4">
-              {(attribs.height &&
-                attribs.width &&
-                attribs.height < attribs.width && (
-                  <amp-img
-                    alt={attribs.alt}
-                    layout="responsive"
-                    src={regSrc}
-                    width={attribs.width}
-                    height={attribs.height}
-                  />
-                )) || (
+              {(attribHeight && attribWidth && attribHeight < attribWidth && (
+                <amp-img
+                  alt={attribs.alt}
+                  layout="responsive"
+                  src={regSrc}
+                  width={attribWidth}
+                  height={attribHeight}
+                />
+              )) || (
                 <div className="fixed-height-container">
                   <amp-img
                     alt={attribs.alt}
@@ -125,22 +127,20 @@ const parseHtmlToReact = (htmlBody, options) => {
         }
         if (
           options.lazy !== false &&
-          attribs.height &&
-          attribs.width &&
-          attribs.height > 200
+          attribHeight &&
+          attribWidth &&
+          attribHeight > 200
         ) {
           const lazyStyle = {
             maxHeight: `${
-              attribs.height && attribs.height < 550 ? attribs.height : '550'
+              attribHeight && attribHeight < 550 ? attribHeight : '550'
             }px`,
             maxWidth: `${imgWidth}px`,
             width: imgHeight > imgWidth ? 'auto' : '100%',
             height:
               imgHeight > imgWidth
                 ? `${
-                    attribs.height && attribs.height < 550
-                      ? attribs.height
-                      : '550'
+                    attribHeight && attribHeight < 550 ? attribHeight : '550'
                   }px`
                 : 'auto',
           };
