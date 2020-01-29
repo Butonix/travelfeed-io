@@ -1,7 +1,7 @@
 import { Query } from '@apollo/react-components';
 import { indigo } from '@material-ui/core/colors';
 import React from 'react';
-import { GET_POSTS } from '../../helpers/graphql/posts';
+import { GET_INTRO_POSTS } from '../../helpers/graphql/posts';
 import HeaderCard from '../General/HeaderCard';
 import PostPreview from '../Post/PostPreview';
 
@@ -9,7 +9,7 @@ const NewUsers = () => {
   return (
     <>
       <Query
-        query={GET_POSTS}
+        query={GET_INTRO_POSTS}
         variables={{
           tags: ['introduceyourself'],
           min_curation_score: 1,

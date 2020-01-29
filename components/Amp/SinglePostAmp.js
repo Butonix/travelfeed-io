@@ -6,7 +6,7 @@ import sanitize from 'sanitize-html';
 import canonicalLinker from '../../helpers/canonicalLinker';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
-import { GET_POSTS } from '../../helpers/graphql/posts';
+import { GET_RECOMMENDED_POSTS } from '../../helpers/graphql/posts';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
@@ -50,7 +50,7 @@ const SinglePostAmp = props => {
     const canonicalUrl = canonicalLinker(json, app, category, author, permlink);
     const slug = slugFromCC(country_code);
     const countryName = nameFromCC(country_code);
-    const recommendations = useQuery(GET_POSTS, {
+    const recommendations = useQuery(GET_RECOMMENDED_POSTS, {
       variables: {
         orderby: 'random',
         country_code,

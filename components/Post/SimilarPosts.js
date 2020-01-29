@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
-import { GET_POSTS } from '../../helpers/graphql/posts';
+import { GET_RECOMMENDED_POSTS } from '../../helpers/graphql/posts';
 import Link from '../../lib/Link';
 import PostPreview from './PostPreview';
 import SimilarPostCard from './SimilarPostCard';
@@ -28,7 +28,7 @@ const SimilarPosts = props => {
   return (
     <>
       <Query
-        query={GET_POSTS}
+        query={GET_RECOMMENDED_POSTS}
         variables={{
           orderby: 'random',
           country_code,

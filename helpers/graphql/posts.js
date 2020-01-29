@@ -77,6 +77,55 @@ export const GET_POSTS = gql`
   }
 `;
 
+export const GET_INTRO_POSTS = gql`
+  query posts($tags: [String], $min_curation_score: Int, $limit: Int) {
+    posts(tags: $tags, min_curation_score: $min_curation_score, limit: $limit) {
+      author
+      permlink
+      title
+    }
+  }
+`;
+
+export const GET_DISCOVER_POSTS = gql`
+  query posts($country_code: [String], $min_curation_score: Int, $limit: Int) {
+    posts(
+      country_code: $country_code
+      min_curation_score: $min_curation_score
+      limit: $limit
+    ) {
+      author
+      permlink
+      title
+      img_url
+    }
+  }
+`;
+
+export const GET_RECOMMENDED_POSTS = gql`
+  query posts(
+    $country_code: [String]
+    $orderby: String
+    $min_curation_score: Int
+    $limit: Int
+  ) {
+    posts(
+      country_code: $country_code
+      orderby: $orderby
+      min_curation_score: $min_curation_score
+      limit: $limit
+    ) {
+      author
+      permlink
+      title
+      display_name
+      img_url
+      subdivision
+      city
+    }
+  }
+`;
+
 export const GET_NOTIFICATIONS = gql`
   query posts($author: String, $min_curation_score: Int, $limit: Int) {
     posts(
@@ -98,8 +147,6 @@ export const GET_BLOG_POSTS = gql`
       author
       permlink
       title
-      img_url
-      votes
     }
   }
 `;

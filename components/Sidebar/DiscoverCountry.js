@@ -8,7 +8,7 @@ import {
   randomCountry,
   slugFromCC,
 } from '../../helpers/countryCodes';
-import { GET_POSTS } from '../../helpers/graphql/posts';
+import { GET_DISCOVER_POSTS } from '../../helpers/graphql/posts';
 import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 import PostPreview from '../Post/PostPreview';
@@ -21,7 +21,7 @@ const DiscoverCountry = () => {
     setCountryCode(cc);
   }, []);
 
-  const { data } = useQuery(GET_POSTS, {
+  const { data } = useQuery(GET_DISCOVER_POSTS, {
     variables: {
       country_code,
       limit: 5,
