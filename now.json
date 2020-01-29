@@ -1,6 +1,17 @@
 {
   "name": "TravelFeed",
   "version": 2,
+  "build": {
+    "env": {
+      "MAPBOX_TOKEN": "@mapbox_token",
+      "GMAPS_API_KEY": "@gmaps_api_key",
+      "RECAPTCHA_SITE_KEY": "@recaptcha_site_key",
+      "ROOTURL": "@rooturl",
+      "GRAPHQL_URL": "@graphql_url",
+      "WEB_PUSH_PUB": "@web_push_pub",
+      "STEEM_API": "@steem_api"
+    }
+  },
   "redirects": [
     { "source": "/blog", "destination": "/@travelfeed" },
     { "source": "/steemfest", "destination": "/destinations/thailand/Bangkok" },
@@ -21,5 +32,7 @@
       "source": "/service-worker.js",
       "destination": "/_next/static/service-worker.js"
     }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
