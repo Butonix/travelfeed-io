@@ -6,3 +6,12 @@ bundles
 .sonarcloud.properties
 Dockerfile
 README.md
+.github
+hooks
+.eslintrc.js
+.gitattributes
+.prettierignore
+.prettierrc.js
+renovate.json
+server.js
+ecosystem.config.js

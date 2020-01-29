@@ -42,6 +42,7 @@ module.exports = withImages(
       },
       dontAutoRegisterSw: true,
       workboxOpts: {
+        swDest: 'static/service-worker.js',
         runtimeCaching: [
           {
             urlPattern: /^https?.*/,
