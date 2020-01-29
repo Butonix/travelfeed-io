@@ -52,7 +52,7 @@ const Feed = props => {
         }
       />
       <Header active={active} subheader={capitalize(active)} />
-      <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
+      <div className="d-none d-xl-block d-lg-block d-md-block d-sm-none">
         <HomeOrderBySelect selection={selection} />
       </div>
       <div className="container">
