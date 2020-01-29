@@ -49,9 +49,13 @@ const Stats = () => {
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={TotalPayoutIcon}
-                    title="Total Earnings"
+                    title="Earnings This Month"
                     value={
-                      data && data.userstats ? data.userstats.total_payout : ''
+                      data &&
+                      data.userstats &&
+                      data.userstats.recent_payouts.length > 0
+                        ? data.userstats.recent_payouts[0].earnings
+                        : ''
                     }
                     prefix="$"
                     iconColor={cyan[800]}
