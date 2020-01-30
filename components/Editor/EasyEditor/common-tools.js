@@ -9,6 +9,7 @@ import Table from '@editorjs/table';
 import { API_URL } from '../../../config';
 import uploadFile from '../../../helpers/imageUpload';
 import Embed from './tools/embed/index';
+import imageGallery from './tools/imageGallery/index';
 import Quote from './tools/quote/index';
 import tableOfContents from './tools/tableOfContents/index';
 
@@ -17,6 +18,7 @@ import tableOfContents from './tools/tableOfContents/index';
 
 export default {
   header: Header,
+  imageGallery,
   delimiter: Delimiter,
   tableOfContents,
   list: List,
