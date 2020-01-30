@@ -38,10 +38,7 @@ const JoinPage = () => {
       />
       <Header />
       <Query query={GET_TF_STATS} variables={{ days: 1000 }}>
-        {({ data, loading, error }) => {
-          if (loading || error || data.stats === null) {
-            return <></>;
-          }
+        {({ data }) => {
           return (
             <>
               <div
@@ -72,10 +69,13 @@ const JoinPage = () => {
                       <Typography gutterBottom variant="subtitle1">
                         On TravelFeed, you can discover travel content created
                         by a large community of likeminded travelers! With{' '}
-                        <strong>{data.stats.posts} blog posts</strong>, you will
-                        almost certainly discover insiders' tips about your
-                        travel destination and find other travelers to connect
-                        with.
+                        <strong>
+                          {data && data.stats ? data.stats.posts : 'many'} blog
+                          posts
+                        </strong>
+                        , you will almost certainly discover insiders' tips
+                        about your travel destination and find other travelers
+                        to connect with.
                       </Typography>
                     </div>
                   </div>
@@ -92,8 +92,12 @@ const JoinPage = () => {
                         <strong>The</strong> Travel Community.
                       </Typography>
                       <Typography gutterBottom variant="subtitle1">
-                        With <strong>{data.stats.authors} authors</strong> and
-                        many more readers, TravelFeed is one of the largest
+                        With{' '}
+                        <strong>
+                          {data && data.stats ? data.stats.authors : 'many'}{' '}
+                          authors
+                        </strong>{' '}
+                        and many more readers, TravelFeed is one of the largest
                         international communities of independent travelers.
                         Soon, you will be able to create custom trips and find
                         travel buddies for your next trip.
@@ -127,8 +131,14 @@ const JoinPage = () => {
                         your post in cryptocurrency.
                       </Typography>
                       <Typography gutterBottom variant="subtitle1">
-                        So far, <strong>${data.stats.payout}</strong> have been
-                        paid out to TravelFeed authors.
+                        So far,{' '}
+                        <strong>
+                          $
+                          {data && data.stats
+                            ? data.stats.payout
+                            : 'large amounts of money'}
+                        </strong>{' '}
+                        have been paid out to TravelFeed authors.
                       </Typography>
                     </div>
                   </div>
