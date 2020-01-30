@@ -94,7 +94,7 @@ const NewUserMessage = () => {
                       role="button"
                       tabIndex="0"
                     >
-                      <Typography variant="p">Learn more</Typography>
+                      <Typography variant="button">Learn more</Typography>
                     </div>
                   </Link>
                 </div>
@@ -109,7 +109,7 @@ const NewUserMessage = () => {
                     role="button"
                     tabIndex="-1"
                   >
-                    <Typography variant="p">Join now</Typography>
+                    <Typography variant="button">Join now</Typography>
                   </div>
                 </div>
                 <div

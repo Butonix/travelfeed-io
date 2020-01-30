@@ -51,7 +51,7 @@ class CookieConsent extends Component {
         // plugins block this
         containerid="cookieconsent"
         content={
-          <Typography variant="p" className="text-light">
+          <Typography variant="button" className="text-light">
             We use cookies to improve your experience and to analyze how our
             site is used.
             <br />

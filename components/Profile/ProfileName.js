@@ -12,11 +12,7 @@ const ProfileName = props => {
       </span>
     );
   return (
-    <Link
-      color="textPrimary cpointer hoverline"
-      as={`/@${author}`}
-      href="/[author]"
-    >
+    <Link color="textPrimary" as={`/@${author}`} href="/[author]">
       <strong>{displayName}</strong>
       <Typography color="textSecondary" variant="subtitle" display="inline">
         {' '}
