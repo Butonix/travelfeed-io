@@ -557,9 +557,7 @@ const PostEditor = props => {
         if (linkList.length > 0) metadata.links = linkList;
         if (mentionList.length > 0) metadata.users = mentionList;
         body = `<a href="https://travelfeed.io/@${username}/${perm}"><center>${
-          imageList.length > 0
-            ? `<img src="${imageList[0]}" alt="${title}"/>`
-            : ''
+          featuredImage ? `<img src="${imageList[0]}" alt="${title}"/>` : ''
         }<h3>Read "${title}" on TravelFeed.io for the best experience</h3></center></a><hr />\n\n${body}`;
         body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
         if (location) {
