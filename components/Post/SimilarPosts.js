@@ -32,7 +32,7 @@ const SimilarPosts = props => {
         variables={{
           orderby: 'random',
           country_code,
-          min_curation_score: 5000,
+          min_curation_score: 9000,
           limit: 4,
         }}
       >

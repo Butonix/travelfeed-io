@@ -16,8 +16,6 @@ export const GET_POSTS = gql`
     $is_comment: Boolean
     $min_curation_score: Int
     $min_total_votes: Int
-    $include_nsfw: Boolean
-    $include_hidden: Boolean
     $orderby: String
     $orderdir: String
     $offset: Int
@@ -38,8 +36,6 @@ export const GET_POSTS = gql`
       is_comment: $is_comment
       min_curation_score: $min_curation_score
       min_total_votes: $min_total_votes
-      include_nsfw: $include_nsfw
-      include_hidden: $include_hidden
       orderby: $orderby
       orderdir: $orderdir
       offset: $offset
