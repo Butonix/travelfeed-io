@@ -1,4 +1,5 @@
 import { Query } from '@apollo/react-components';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useTheme } from '@material-ui/styles';
 import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -51,6 +52,7 @@ const MapPage = () => {
         // Not-curated posts are not displayed since they are usually
         // less relevant.
       }
+      <Skeleton variant="rect" className="position-absolute h-100 w-100" />
       <Query query={GET_PLACES}>
         {({ data }) => {
           if (data && data.places) {
@@ -58,7 +60,7 @@ const MapPage = () => {
               <>
                 {(search && !center && <></>) || (
                   <Map
-                    data={data && data.places}
+                    data={data ? data.places : undefined}
                     dark={theme.palette.type === 'dark'}
                     latitude={
                       center && center.length > 0 ? center[1] : latitude
