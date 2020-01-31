@@ -126,21 +126,6 @@ export const GET_RECOMMENDED_POSTS = gql`
   }
 `;
 
-export const GET_NOTIFICATIONS = gql`
-  query posts($author: String, $min_curation_score: Int, $limit: Int) {
-    posts(
-      author: $author
-      min_curation_score: $min_curation_score
-      limit: $limit
-    ) {
-      author
-      permlink
-      title
-      curation_score
-    }
-  }
-`;
-
 export const GET_BLOG_POSTS = gql`
   query posts($author: String, $limit: Int) {
     posts(author: $author, limit: $limit) {

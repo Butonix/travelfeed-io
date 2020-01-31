@@ -1,14 +1,14 @@
 import Typography from '@material-ui/core/Typography';
 import React, { Component, Fragment } from 'react';
-import {
-  CHANGE_SETTINGS,
-  GET_COOKIES_ACCEPTED,
-} from '../../helpers/graphql/settings';
+import { GET_GEOIP } from '../../helpers/graphql/geoIp';
+import { CHANGE_SETTINGS } from '../../helpers/graphql/settings';
 import graphQLClient from '../../helpers/graphQLClient';
 import {
+  getCountryCode,
   getUser,
   hasCookieConsent,
   setCookieConsent,
+  setCountryCode,
 } from '../../helpers/token';
 import Link from '../../lib/Link';
 import CookiePopup from './CookiePopup';
@@ -19,13 +19,16 @@ class CookieConsent extends Component {
   };
 
   componentDidMount() {
-    const cookie = hasCookieConsent() !== 'true';
-    if (cookie && getUser())
-      graphQLClient(GET_COOKIES_ACCEPTED).then(res => {
-        if (res.preferences.hasAcceptedCookies) this.accept();
-        else this.setState({ open: cookie });
+    const hasConsent = hasCookieConsent() === 'true';
+    const hasCountry = getCountryCode() !== undefined;
+    if (!hasConsent || !hasCountry) {
+      graphQLClient(GET_GEOIP).then(({ geoIp }) => {
+        const { hasAcceptedCookies, countryCode, isEu } = geoIp;
+        if (hasAcceptedCookies || !isEu) this.accept();
+        else this.setState({ open: !hasConsent });
+        setCountryCode(countryCode);
       });
-    else this.setState({ open: cookie });
+    } else this.setState({ open: !hasConsent });
   }
 
   accept = () => {
@@ -51,7 +54,7 @@ class CookieConsent extends Component {
         // plugins block this
         containerid="cookieconsent"
         content={
-          <Typography variant="button" className="text-light">
+          <Typography variant="body1" className="text-light">
             We use cookies to improve your experience and to analyze how our
             site is used.
             <br />

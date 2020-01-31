@@ -29,14 +29,6 @@ export const CHANGE_SETTINGS = gql`
   }
 `;
 
-export const GET_COOKIES_ACCEPTED = gql`
-  query preferences {
-    preferences {
-      hasAcceptedCookies
-    }
-  }
-`;
-
 export const USE_ADVANCED_EDITOR_OPTIONS = gql`
   query preferences {
     preferences {

@@ -73,6 +73,14 @@ export const hasSteemFestCookie = () => {
 export const removeSteemfestCookie = () => {
   Cookie.remove('steemfest');
 };
+export const getCountryCode = () => {
+  return Cookie.get('country_code');
+};
+export const setCountryCode = cc => {
+  // Set cookie with one week expiration
+  const expires = new Date(new Date().getTime() + 3600 * 1000 * 24 * 7);
+  Cookie.set('country_code', cc, { expires });
+};
 export const hasCookieConsent = () => {
   return Cookie.get('cookie_consent');
 };
