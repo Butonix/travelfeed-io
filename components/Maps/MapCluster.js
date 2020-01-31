@@ -12,7 +12,7 @@ import ReactMapGL, {
 } from 'react-map-gl';
 import WebMercatorViewport from 'viewport-mercator-project';
 import { MAPBOX_TOKEN } from '../../config';
-import '../Editor/react-map-gl-geocoder/react-map-gl-geocoder.module.css';
+import LocationPickerStyles from '../Editor/react-map-gl-geocoder/LocationPickerStyles';
 import Cluster from './Cluster';
 import MapCard from './MapCard';
 import MarkerSmall from './MarkerSmall';
@@ -230,6 +230,7 @@ class MapCluster extends Component {
             }
           `}</style>
         </ReactMapGL>
+        <LocationPickerStyles />
       </div>
     );
   }
