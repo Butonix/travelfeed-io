@@ -26,6 +26,7 @@ const DiscoverCountry = () => {
       country_code,
       limit: 5,
       min_curation_score: 9000,
+      orderby: 'random',
     },
     ssr: false,
   });

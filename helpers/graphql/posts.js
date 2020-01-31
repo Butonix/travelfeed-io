@@ -88,11 +88,17 @@ export const GET_INTRO_POSTS = gql`
 `;
 
 export const GET_DISCOVER_POSTS = gql`
-  query posts($country_code: [String], $min_curation_score: Int, $limit: Int) {
+  query posts(
+    $country_code: [String]
+    $min_curation_score: Int
+    $limit: Int
+    $orderby: String
+  ) {
     posts(
       country_code: $country_code
       min_curation_score: $min_curation_score
       limit: $limit
+      orderby: $orderby
     ) {
       author
       permlink
