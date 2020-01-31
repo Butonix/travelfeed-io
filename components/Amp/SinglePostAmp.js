@@ -202,7 +202,7 @@ const SinglePostAmp = props => {
               </Link>
             </li>
             <li className="ampstart-faq-item">
-              <Link href="/destination" className="text-decoration-none">
+              <Link href="/destinations" className="text-decoration-none">
                 <a>Destinations</a>
               </Link>
             </li>

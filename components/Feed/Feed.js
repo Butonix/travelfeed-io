@@ -1,5 +1,6 @@
 // https://codepen.io/ncerminara/pen/eKNROb
 import { Query } from '@apollo/react-components';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import StickyBox from 'react-sticky-box';
@@ -19,6 +20,9 @@ import SocialLinks from '../Sidebar/SocialLinks';
 import LoggedOutFeed from './LoggedOutFeed';
 
 const Feed = props => {
+  const renderRightSidebar = useMediaQuery('(min-width: 768px)');
+  const renderLeftSidebar = useMediaQuery('(min-width: 1200px)');
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -58,25 +62,29 @@ const Feed = props => {
       <div className="container">
         <div className="row">
           <div className="col-xl-3 d-xl-block d-none">
-            <StickyBox offsetTop={65} offsetBottom={10}>
-              <div className="d-none d-xl-block">
-                <NavSide />
-                {(user && (
-                  <Query
-                    query={IS_NEWSLETTER_SUBSCRIBED}
-                    variables={{ limit: 9 }}
-                    fetchPolicy="network-only"
-                  >
-                    {({ data }) => {
-                      if (data && data.isNewsletterSubscribed === false)
-                        return <NewsLetterSubscribe />;
-                      return <></>;
-                    }}
-                  </Query>
-                )) ||
-                  (user === false && <NewsLetterSubscribe />)}
-              </div>
-            </StickyBox>
+            {renderLeftSidebar ? (
+              <StickyBox offsetTop={65} offsetBottom={10}>
+                <div className="d-none d-xl-block">
+                  <NavSide />
+                  {(user && (
+                    <Query
+                      query={IS_NEWSLETTER_SUBSCRIBED}
+                      variables={{ limit: 9 }}
+                      fetchPolicy="network-only"
+                    >
+                      {({ data }) => {
+                        if (data && data.isNewsletterSubscribed === false)
+                          return <NewsLetterSubscribe />;
+                        return <></>;
+                      }}
+                    </Query>
+                  )) ||
+                    (user === false && <NewsLetterSubscribe />)}
+                </div>
+              </StickyBox>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 p-0">
             {// disable SSR for feed -> needs client-side cookie
@@ -98,21 +106,25 @@ const Feed = props => {
             {isFeed && feed === false && <LoggedOutFeed grid={grid} />}
           </div>
           <div className="col-xl-3 col-lg-4 col-md-4 d-none d-xl-block d-lg-block d-md-block">
-            <StickyBox offsetTop={65} offsetBottom={10}>
-              <div className="pt-2" />
-              <DiscoverCountry />
-              <div className="pt-2" />
-              <BlogGridList />
-              <div className="pt-2" />
-              {user && (
-                <>
-                  <NewUsers />
-                  <div className="pt-2" />
-                </>
-              )}
-              <SocialLinks />
-              <LegalNotice />
-            </StickyBox>
+            {renderRightSidebar ? (
+              <StickyBox offsetTop={65} offsetBottom={10}>
+                <div className="pt-2" />
+                <DiscoverCountry />
+                <div className="pt-2" />
+                <BlogGridList />
+                <div className="pt-2" />
+                {user && (
+                  <>
+                    <NewUsers />
+                    <div className="pt-2" />
+                  </>
+                )}
+                <SocialLinks />
+                <LegalNotice />
+              </StickyBox>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
