@@ -135,7 +135,8 @@
     "eslint-plugin-react-hooks": "2.3.0",
     "husky": "4.2.1",
     "lint-staged": "10.0.6",
-    "prettier": "1.19.1"
+    "prettier": "1.19.1",
+    "webpack": "^4.41.5"
   },
   "husky": {
     "hooks": {
