@@ -203,14 +203,15 @@ class PostListItem extends Component {
                           <LocationIcon />
                         </span>
                       </Tooltip>
-                    )) || (
+                    )) ||
+                    (!this.props.isDraftMode && (
                       <Tooltip
                         title="Edit the post to add a location"
                         placement="bottom"
                       >
                         <NoLocationIcon />
                       </Tooltip>
-                    )}
+                    ))}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   !this.props.isDraftMode &&
                     ((new Date(this.props.post.created_at) <
