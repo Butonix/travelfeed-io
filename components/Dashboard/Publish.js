@@ -198,8 +198,14 @@ const PostEditor = props => {
           json.app &&
           json.app.split('/')[0] === 'travelfeed'
         ) {
+          let queryid = json.easyEditorId;
+          try {
+            queryid = JSON.parse(json.easyEditorId);
+          } catch {
+            queryid = json.easyEditorId;
+          }
           graphQLClient(GET_DRAFT_BY_ID, {
-            id: JSON.parse(json.easyEditorId),
+            id: queryid,
           }).then(({ draft }) => {
             if (draft && draft.body) {
               setCodeEditor(false);
@@ -355,6 +361,7 @@ const PostEditor = props => {
 
   const pastPublish = res => {
     if (res.success) {
+      if (!codeEditor) setIsEditId(true);
       saveDraft({ publishedDate: new Date() });
       setSuccess(true);
     }
@@ -548,7 +555,7 @@ const PostEditor = props => {
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = meta;
-        if (!codeEditor) metadata.easyEditorId = JSON.stringify(id);
+        if (!codeEditor) metadata.easyEditorId = id;
         else metadata.easyEditorId = undefined;
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
@@ -626,7 +633,7 @@ const PostEditor = props => {
         undefined,
         true,
       );
-    }, 10000);
+    }, 12000);
   }
 
   if (!saved) {
