@@ -84,7 +84,7 @@
     "mui-places-autocomplete": "^2.0.0",
     "next": "^9.2.0",
     "next-images": "^1.2.0",
-    "next-offline": "^4.0.6",
+    "next-offline": "^5.0.0",
     "next-with-apollo": "^5.0.0",
     "nookies": "^2.0.8",
     "notistack": "^0.9.7",
