@@ -3,8 +3,8 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import MapIcon from '@material-ui/icons/Map';
-import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
+import ProgressiveImage from 'react-progressive-image';
 import { getBudgetScore } from '../../helpers/budgetScore';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
@@ -63,6 +63,246 @@ const PhotoDetailHeader = props => {
               : ''
           } and read the top travel blogs about ${detailTitle} on TravelFeed!`;
           if (loading || (data && data.locationDetails)) {
+            let image = '';
+            if (data && data.locationDetails.unsplashUser) {
+              image = webpSupport
+                ? data.locationDetails.image.replace(/&fm=jpg/, '&fm=webp')
+                : data.locationDetails.image;
+            } else if (data && data.locationDetails.image) {
+              image = imageProxy(
+                data.locationDetails.image,
+                screenWidth,
+                500,
+                undefined,
+                webpSupport ? 'webp' : undefined,
+              );
+            }
+
+            const innerCard = (
+              <>
+                <div className="container h-100">
+                  <div
+                    className="row h-100 justify-content-center"
+                    style={{ minHeight: '400px' }}
+                  >
+                    <div className="col-xl-7 col-lg-8 col-md-9 col-sm-10 col-12 my-auto">
+                      <Typography
+                        variant="h6"
+                        align="center"
+                        className="text-light font-weight-bold"
+                        style={{
+                          textShadow: '1px 1px 20px #343A40',
+                        }}
+                        component="h5"
+                      >
+                        {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
+                        (tag && `#${tag}`) ||
+                          (query.city && (
+                            <span>
+                              <Link
+                                color="textPrimary"
+                                as={`/destinations/${countrySlug}/`}
+                                href="/destinations/[...destination]"
+                              >
+                                <span className="text-light font-weight-bold">
+                                  {countryName}
+                                </span>
+                              </Link>
+                              <span className="text-light">
+                                {' '}
+                                &raquo;{' '}
+                                <Link
+                                  color="textPrimary"
+                                  as={`/destinations/${countrySlug}/${query.subdivision}`}
+                                  href="/destinations/[...destination]"
+                                >
+                                  <span className="text-light font-weight-bold">
+                                    {query.subdivision}
+                                  </span>
+                                </Link>
+                              </span>{' '}
+                            </span>
+                          )) ||
+                          (((query.search && !query.country_code) ||
+                            query.subdivision ||
+                            query.city) && (
+                            <Link
+                              color="textPrimary"
+                              as={`/destinations/${countrySlug}/`}
+                              href="/destinations/[...destination]"
+                            >
+                              <span className="text-light font-weight-bold">
+                                {(data && data.locationDetails.subtitle) ||
+                                  countryName}
+                              </span>
+                            </Link>
+                          ))}
+                        {!props.noEdit && (
+                          <EditLocationDetails
+                            country_code={props.query.country_code}
+                            subdivision={props.query.subdivision}
+                            city={props.query.city}
+                            tag={tag}
+                            data={
+                              data && data.locationDetails
+                                ? data.locationDetails
+                                : {}
+                            }
+                          />
+                        )}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="h2"
+                        component="h1"
+                        className="text-light font-weight-bold text-center"
+                        style={{
+                          textShadow: '1px 1px 10px #343A40',
+                        }}
+                      >
+                        {detailTitle}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        className="lead text-light text-center"
+                        variant="h6"
+                        style={{
+                          textShadow: '1px 1px 10px black',
+                        }}
+                      >
+                        <em>
+                          {(data && data.locationDetails.description) || (
+                            <>
+                              <br />
+                              <br />
+                            </>
+                          )}
+                        </em>
+                      </Typography>
+                      <div className="text-center">
+                        {!tag && (
+                          <>
+                            <Link href={`/map?search=${title}`}>
+                              <Button
+                                className="m-2"
+                                variant="contained"
+                                color="primary"
+                              >
+                                <span className="pr-1">Explore the map</span>
+                                <MapIcon />
+                              </Button>
+                            </Link>
+                          </>
+                        )}
+                        {data &&
+                          data.locationDetails.sublocations &&
+                          data &&
+                          data.locationDetails.sublocations.length > 1 && (
+                            <PopularDestinationsPopup
+                              title={detailTitle}
+                              countrySlug={countrySlug}
+                              subdivision={query.subdivision}
+                              destinations={data.locationDetails.sublocations}
+                            />
+                          )}
+                        {data && data.locationDetails.budget_score && (
+                          <Tooltip
+                            title={getBudgetScore(
+                              data.locationDetails.budget_score,
+                              detailTitle,
+                            )}
+                          >
+                            <Typography
+                              component="p"
+                              variant="h4"
+                              className="pt-2 text-light font-weight-bold"
+                            >
+                              {'$'.repeat(data.locationDetails.budget_score)}
+                            </Typography>
+                          </Tooltip>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="text-mutedlight text-right pr-1"
+                  style={{ fontSize: '0.8rem' }}
+                >
+                  {data && data.locationDetails.url && (
+                    <span>
+                      Description by{' '}
+                      <a
+                        className="text-mutedlight text-decoration-underline"
+                        target="_blank"
+                        rel="nofollow noreferrer noopener"
+                        href={data && data.locationDetails.url}
+                      >
+                        Wikipedia
+                      </a>{' '}
+                      under{' '}
+                      <a
+                        className="text-mutedlight text-decoration-underline"
+                        target="_blank"
+                        rel="nofollow noreferrer noopener"
+                        href={data && data.locationDetails.license}
+                      >
+                        CC BY-SA 3.0
+                      </a>
+                      .{' '}
+                    </span>
+                  )}
+                  {data && data.locationDetails.attribution && (
+                    <span>
+                      Photo:{' '}
+                      {(data && data.locationDetails.unsplashUser && (
+                        <a
+                          className="text-mutedlight text-decoration-underline"
+                          target="_blank"
+                          rel="nofollow noreferrer noopener"
+                          href={`https://unsplash.com/@${data &&
+                            data.locationDetails
+                              .unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
+                        >
+                          {data && data.locationDetails.attribution}
+                        </a>
+                      )) || (
+                        <span className="text-mutedlight">
+                          {data && data.locationDetails.attribution}
+                        </span>
+                      )}{' '}
+                      {data && data.locationDetails.unsplashUser && (
+                        <span>
+                          /{' '}
+                          <a
+                            target="_blank"
+                            rel="nofollow noreferrer noopener"
+                            href="https://unsplash.com/?utm_source=TravelFeed&utm_medium=referral"
+                            className="text-mutedlight text-decoration-underline"
+                          >
+                            Unsplash
+                          </a>
+                        </span>
+                      )}
+                    </span>
+                  )}
+                </div>
+              </>
+            );
+            const loadedCard = (
+              <div
+                className="w-100"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.5)),
+      url("${image}")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center center',
+                  backgroundSize: 'cover',
+                }}
+              >
+                {innerCard}
+              </div>
+            );
             return (
               <Fragment>
                 <Head
@@ -70,236 +310,30 @@ const PhotoDetailHeader = props => {
                   shorttitle={`${detailTitle}: Top Travel Blogs`}
                   description={description}
                 />
-                <div
-                  className="w-100"
-                  style={{
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.5)),
-                      url("${(data &&
-                        data.locationDetails.unsplashUser &&
-                        data.locationDetails.image) ||
-                        (data &&
-                          data.locationDetails.image &&
-                          imageProxy(
-                            data.locationDetails.image,
-                            screenWidth,
-                            500,
-                            undefined,
-                            webpSupport ? 'webp' : undefined,
-                          )) ||
-                        ''}")`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center',
-                    backgroundSize: 'cover',
-                  }}
-                >
-                  <div className="container h-100">
-                    <div
-                      className="row h-100 justify-content-center"
-                      style={{ minHeight: '400px' }}
-                    >
-                      <div className="col-xl-7 col-lg-8 col-md-9 col-sm-10 col-12 my-auto">
-                        <Typography
-                          variant="h6"
-                          align="center"
-                          className="text-light font-weight-bold"
-                          style={{
-                            textShadow: '1px 1px 20px #343A40',
-                          }}
-                          component="h5"
-                        >
-                          {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
-                          (tag && `#${tag}`) ||
-                            (query.city && (
-                              <span>
-                                <Link
-                                  color="textPrimary"
-                                  as={`/destinations/${countrySlug}/`}
-                                  href="/destinations/[...destination]"
-                                >
-                                  <span className="text-light font-weight-bold">
-                                    {countryName}
-                                  </span>
-                                </Link>
-                                <span className="text-light">
-                                  {' '}
-                                  &raquo;{' '}
-                                  <Link
-                                    color="textPrimary"
-                                    as={`/destinations/${countrySlug}/${query.subdivision}`}
-                                    href="/destinations/[...destination]"
-                                  >
-                                    <span className="text-light font-weight-bold">
-                                      {query.subdivision}
-                                    </span>
-                                  </Link>
-                                </span>{' '}
-                              </span>
-                            )) ||
-                            (((query.search && !query.country_code) ||
-                              query.subdivision ||
-                              query.city) && (
-                              <Link
-                                color="textPrimary"
-                                as={`/destinations/${countrySlug}/`}
-                                href="/destinations/[...destination]"
-                              >
-                                <span className="text-light font-weight-bold">
-                                  {(data && data.locationDetails.subtitle) ||
-                                    countryName}
-                                </span>
-                              </Link>
-                            ))}
-                          {!props.noEdit && (
-                            <EditLocationDetails
-                              country_code={props.query.country_code}
-                              subdivision={props.query.subdivision}
-                              city={props.query.city}
-                              tag={tag}
-                              data={
-                                data && data.locationDetails
-                                  ? data.locationDetails
-                                  : {}
-                              }
-                            />
-                          )}
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="h2"
-                          component="h1"
-                          className="text-light font-weight-bold text-center"
-                          style={{
-                            textShadow: '1px 1px 10px #343A40',
-                          }}
-                        >
-                          {detailTitle}
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          className="lead text-light text-center"
-                          variant="h6"
-                          style={{
-                            textShadow: '1px 1px 10px black',
-                          }}
-                        >
-                          <em>
-                            {(data && data.locationDetails.description) || (
-                              <>
-                                <br />
-                                <br />
-                              </>
-                            )}
-                          </em>
-                        </Typography>
-                        <div className="text-center">
-                          {!tag && (
-                            <>
-                              <Link href={`/map?search=${title}`}>
-                                <Button
-                                  className="m-2"
-                                  variant="contained"
-                                  color="primary"
-                                >
-                                  <span className="pr-1">Explore the map</span>
-                                  <MapIcon />
-                                </Button>
-                              </Link>
-                            </>
-                          )}
-                          {data &&
-                            data.locationDetails.sublocations &&
-                            data &&
-                            data.locationDetails.sublocations.length > 1 && (
-                              <PopularDestinationsPopup
-                                title={detailTitle}
-                                countrySlug={countrySlug}
-                                subdivision={query.subdivision}
-                                destinations={data.locationDetails.sublocations}
-                              />
-                            )}
-                          {data && data.locationDetails.budget_score && (
-                            <Tooltip
-                              title={getBudgetScore(
-                                data.locationDetails.budget_score,
-                                detailTitle,
-                              )}
+                {data && data.locationDetails && !data.locationDetails.image ? (
+                  loadedCard
+                ) : (
+                  <ProgressiveImage src={image} placeholder="">
+                    {(src, imgloading) => {
+                      if (imgloading) {
+                        return (
+                          <>
+                            <div
+                              className="MuiSkeleton-rect w-100 MuiSkeleton-animate"
+                              style={{
+                                minHeight: '400px',
+                                backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                              }}
                             >
-                              <Typography
-                                component="p"
-                                variant="h4"
-                                className="pt-2 text-light font-weight-bold"
-                              >
-                                {'$'.repeat(data.locationDetails.budget_score)}
-                              </Typography>
-                            </Tooltip>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="text-mutedlight text-right pr-1"
-                    style={{ fontSize: '0.8rem' }}
-                  >
-                    {data && data.locationDetails.url && (
-                      <span>
-                        Description by{' '}
-                        <a
-                          className="text-mutedlight text-decoration-underline"
-                          target="_blank"
-                          rel="nofollow noreferrer noopener"
-                          href={data && data.locationDetails.url}
-                        >
-                          Wikipedia
-                        </a>{' '}
-                        under{' '}
-                        <a
-                          className="text-mutedlight text-decoration-underline"
-                          target="_blank"
-                          rel="nofollow noreferrer noopener"
-                          href={data && data.locationDetails.license}
-                        >
-                          CC BY-SA 3.0
-                        </a>
-                        .{' '}
-                      </span>
-                    )}
-                    {data && data.locationDetails.attribution && (
-                      <span>
-                        Photo:{' '}
-                        {(data && data.locationDetails.unsplashUser && (
-                          <a
-                            className="text-mutedlight text-decoration-underline"
-                            target="_blank"
-                            rel="nofollow noreferrer noopener"
-                            href={`https://unsplash.com/@${data &&
-                              data.locationDetails
-                                .unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
-                          >
-                            {data && data.locationDetails.attribution}
-                          </a>
-                        )) || (
-                          <span className="text-mutedlight">
-                            {data && data.locationDetails.attribution}
-                          </span>
-                        )}{' '}
-                        {data && data.locationDetails.unsplashUser && (
-                          <span>
-                            /{' '}
-                            <a
-                              target="_blank"
-                              rel="nofollow noreferrer noopener"
-                              href="https://unsplash.com/?utm_source=TravelFeed&utm_medium=referral"
-                              className="text-mutedlight text-decoration-underline"
-                            >
-                              Unsplash
-                            </a>
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                              {innerCard}
+                            </div>
+                          </>
+                        );
+                      }
+                      return loadedCard;
+                    }}
+                  </ProgressiveImage>
+                )}
                 {data && data.locationDetails.topics && (
                   <TopicSelector
                     topics={data.locationDetails.topics}
@@ -315,12 +349,6 @@ const PhotoDetailHeader = props => {
       </Query>
     </Fragment>
   );
-};
-
-PhotoDetailHeader.propTypes = {
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
-  countrySlug: PropTypes.string,
-  title: PropTypes.string.isRequired,
 };
 
 export default PhotoDetailHeader;
