@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import { teal } from '@material-ui/core/colors';
 import Skeleton from '@material-ui/lab/Skeleton';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import {
   nameFromCC,
   randomCountry,
@@ -13,14 +13,9 @@ import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 import PostPreview from '../Post/PostPreview';
 
+const country_code = randomCountry();
+
 const DiscoverCountry = () => {
-  const [country_code, setCountryCode] = useState(null);
-
-  useEffect(() => {
-    const cc = randomCountry();
-    setCountryCode(cc);
-  }, []);
-
   const { data } = useQuery(GET_DISCOVER_POSTS, {
     variables: {
       country_code,

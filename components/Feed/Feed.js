@@ -70,7 +70,6 @@ const Feed = props => {
                     <Query
                       query={IS_NEWSLETTER_SUBSCRIBED}
                       variables={{ limit: 9 }}
-                      fetchPolicy="network-only"
                     >
                       {({ data }) => {
                         if (data && data.isNewsletterSubscribed === false)
