@@ -1,3 +1,4 @@
+import { getDataFromTree } from '@apollo/react-ssr';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Feed from '../components/Feed/Feed';
@@ -27,4 +28,4 @@ const FeaturedFeed = () => {
   );
 };
 
-export default withApollo(FeaturedFeed);
+export default withApollo(FeaturedFeed, { getDataFromTree });
