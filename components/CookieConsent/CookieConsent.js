@@ -1,5 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import React, { Component, Fragment } from 'react';
+import ReactPiwik from 'react-piwik';
 import { GET_GEOIP } from '../../helpers/graphql/geoIp';
 import { CHANGE_SETTINGS } from '../../helpers/graphql/settings';
 import graphQLClient from '../../helpers/graphQLClient';
@@ -36,6 +37,7 @@ class CookieConsent extends Component {
     setCookieConsent('true');
     if (this.state.countryCode) setCountryCode(this.state.countryCode);
     this.setState({ open: false });
+    ReactPiwik.push(['rememberConsentGiven']);
     if (getUser()) graphQLClient(CHANGE_SETTINGS, { hasAcceptedCookies: true });
   };
 
