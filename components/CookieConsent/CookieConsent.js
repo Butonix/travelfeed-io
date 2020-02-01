@@ -16,6 +16,7 @@ import CookiePopup from './CookiePopup';
 class CookieConsent extends Component {
   state = {
     open: false,
+    countryCode: undefined,
   };
 
   componentDidMount() {
@@ -24,15 +25,16 @@ class CookieConsent extends Component {
     if (!hasConsent || !hasCountry) {
       graphQLClient(GET_GEOIP).then(({ geoIp }) => {
         const { hasAcceptedCookies, countryCode, isEu } = geoIp;
+        this.setState({ countryCode });
         if (hasAcceptedCookies || !isEu) this.accept();
         else this.setState({ open: !hasConsent });
-        setCountryCode(countryCode);
       });
     } else this.setState({ open: !hasConsent });
   }
 
   accept = () => {
     setCookieConsent('true');
+    if (this.state.countryCode) setCountryCode(this.state.countryCode);
     this.setState({ open: false });
     if (getUser()) graphQLClient(CHANGE_SETTINGS, { hasAcceptedCookies: true });
   };
