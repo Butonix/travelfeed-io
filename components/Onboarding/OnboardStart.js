@@ -23,6 +23,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const CssTextField = withStyles({
+  root: {
+    '& label': {
+      color: 'white',
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+      },
+    },
+  },
+})(TextField);
+
 const OnboardStart = props => {
   const classes = useStyles();
 
@@ -42,34 +67,7 @@ const OnboardStart = props => {
     }
   }, [props]);
 
-  const CssTextField = props.isWhite
-    ? withStyles({
-        root: {
-          '& label': {
-            color: 'white',
-          },
-          '& label.Mui-focused': {
-            color: 'white',
-          },
-          '& .MuiInput-underline:after': {
-            borderBottomColor: 'white',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: 'white',
-            },
-            '&:hover fieldset': {
-              borderColor: 'white',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: 'white',
-            },
-          },
-        },
-      })(TextField)
-    : TextField;
-
-  const handleEmailChange = () => event => {
+  const handleEmailChange = event => {
     setEmail(event.target.value);
     if (event.target.value) setMailValid(isEmail(event.target.value));
   };
@@ -109,29 +107,39 @@ const OnboardStart = props => {
               )}
               <FormGroup>
                 <FormControl required error={!isTosValid}>
-                  <CssTextField
-                    InputProps={
-                      props.isWhite
-                        ? {
-                            classes: {
-                              input: classes.root,
-                            },
-                          }
-                        : undefined
-                    }
-                    id="custom-css-outlined-input"
-                    autoFocus={props.autoFocus}
-                    className={props.isWhite ? classes.margin : undefined}
-                    label="Email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    margin="normal"
-                    variant="outlined"
-                    value={email}
-                    onChange={handleEmailChange()}
-                    error={!isMailValid}
-                  />
+                  {props.isWhite ? (
+                    <CssTextField
+                      InputProps={{
+                        classes: {
+                          input: classes.root,
+                        },
+                      }}
+                      autoFocus={props.autoFocus}
+                      className={classes.margin}
+                      label="Email"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      margin="normal"
+                      variant="outlined"
+                      value={email}
+                      onChange={handleEmailChange}
+                      error={!isMailValid}
+                    />
+                  ) : (
+                    <TextField
+                      autoFocus={props.autoFocus}
+                      label="Email"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      margin="normal"
+                      variant="outlined"
+                      value={email}
+                      onChange={handleEmailChange}
+                      error={!isMailValid}
+                    />
+                  )}
                   {!isMailValid && (
                     <FormHelperText>A valid email is required</FormHelperText>
                   )}
