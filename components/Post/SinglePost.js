@@ -12,6 +12,7 @@ import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import canonicalLinker from '../../helpers/canonicalLinker';
 import cleanTags from '../../helpers/cleanTags';
+import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
@@ -111,6 +112,7 @@ const SinglePost = props => {
   let root_permlink;
   let json;
   let category;
+  let city;
 
   let {
     author,
@@ -159,6 +161,7 @@ const SinglePost = props => {
     created_at = data.post.created_at;
     country_code = data.post.country_code;
     subdivision = data.post.subdivision;
+    city = data.post.city;
     json = data.post.json;
     category = data.post.category;
     curation_score = data.post.curation_score;
@@ -227,6 +230,31 @@ const SinglePost = props => {
     );
   }
 
+  const slug = slugFromCC(country_code);
+  const countryName = nameFromCC(country_code);
+  const breadcrumbs = [];
+  if (country_code) {
+    breadcrumbs.push({
+      position: 1,
+      name: countryName,
+      item: `https://travelfeed.io/destinations/${slug}`,
+    });
+  }
+  if (subdivision) {
+    breadcrumbs.push({
+      position: 2,
+      name: subdivision,
+      item: `https://travelfeed.io/destinations/${slug}/${subdivision}`,
+    });
+  }
+  if (city) {
+    breadcrumbs.push({
+      position: 3,
+      name: city,
+      item: `https://travelfeed.io/destinations/${slug}/${subdivision}/${city}`,
+    });
+  }
+
   return (
     <Fragment>
       <Head
@@ -240,6 +268,7 @@ const SinglePost = props => {
           author: display_name,
           tags,
         }}
+        breadcrumbs={breadcrumbs}
       />
       <Header
         active="post"

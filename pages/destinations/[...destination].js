@@ -1,12 +1,9 @@
 import { getDataFromTree } from '@apollo/react-ssr';
-import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React, { Fragment, useState } from 'react';
 import PhotoDetailHeader from '../../components/General/PhotoDetailHeader';
 import PostGrid from '../../components/Grid/PostGrid';
-import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
-import PopupNavItems from '../../components/Header/PopupNavItems';
 import { ccFromSlug, nameFromSlug } from '../../helpers/countryCodes';
 import withApollo from '../../lib/withApollo';
 
@@ -24,24 +21,6 @@ const DestinationsPage = () => {
   const countryName = nameFromSlug(country);
   const country_code = ccFromSlug(country);
 
-  if (!country_code)
-    return (
-      <Fragment>
-        <Head
-          title="Destinations"
-          description="Discover the best travel destinations on TravelFeed."
-        />
-        <Header subheader="Destinations" active="destinations" />
-        <Typography variant="h4" className="text-center p-3">
-          Popular Countries
-        </Typography>
-        <PopupNavItems countries />
-        <Typography variant="h4" className="text-center p-3">
-          Popular Places
-        </Typography>
-        <PopupNavItems places />
-      </Fragment>
-    );
   const title = `${(suburb && `${suburb}, ${city}`) ||
     (city && `${city}, ${countryName}`) ||
     (subdivision && `${subdivision}, ${countryName}`) ||

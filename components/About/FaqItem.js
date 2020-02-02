@@ -1,8 +1,8 @@
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
@@ -68,7 +68,11 @@ class FaqItem extends Component {
           <Typography variant="strong">{this.props.title}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Typography>{this.props.content}</Typography>
+          <Typography
+            dangerouslySetInnerHTML={{
+              __html: this.props.content,
+            }}
+          />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );

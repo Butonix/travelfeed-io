@@ -2424,6 +2424,8 @@ const SinglePostAmp = props => {
       root_title,
       root_author,
       root_permlink,
+      subdivision,
+      city,
     } = data.post;
     let { title } = data.post;
     if (depth > 0) title = `Re: ${root_title}`;
@@ -2447,6 +2449,28 @@ const SinglePostAmp = props => {
         limit: 3,
       },
     });
+    const breadcrumbs = [];
+    if (country_code) {
+      breadcrumbs.push({
+        position: 1,
+        name: countryName,
+        item: `https://travelfeed.io/destinations/${slug}`,
+      });
+    }
+    if (subdivision) {
+      breadcrumbs.push({
+        position: 2,
+        name: subdivision,
+        item: `https://travelfeed.io/destinations/${slug}/${subdivision}`,
+      });
+    }
+    if (city) {
+      breadcrumbs.push({
+        position: 3,
+        name: city,
+        item: `https://travelfeed.io/destinations/${slug}/${subdivision}/${city}`,
+      });
+    }
     return (
       <>
         <Head
@@ -2460,6 +2484,7 @@ const SinglePostAmp = props => {
             author: display_name,
             tags,
           }}
+          breadcrumbs={breadcrumbs}
           scripts={
             <>
               <script async src="https://cdn.ampproject.org/v0.js" />

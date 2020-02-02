@@ -303,9 +303,40 @@ const PhotoDetailHeader = props => {
                 {innerCard}
               </div>
             );
+            const { country_code, subdivision, city } = props.query;
+            const breadcrumbs = [];
+            if (country_code) {
+              breadcrumbs.push(
+                {
+                  position: 1,
+                  name: 'Destinations',
+                  item: `https://travelfeed.io/destinations`,
+                },
+                {
+                  position: 2,
+                  name: countryName,
+                  item: `https://travelfeed.io/destinations/${props.countrySlug}`,
+                },
+              );
+            }
+            if (subdivision) {
+              breadcrumbs.push({
+                position: 3,
+                name: subdivision,
+                item: `https://travelfeed.io/destinations/${props.countrySlug}/${subdivision}`,
+              });
+            }
+            if (city) {
+              breadcrumbs.push({
+                position: 4,
+                name: city,
+                item: `https://travelfeed.io/destinations/${props.countrySlug}/${subdivision}/${city}`,
+              });
+            }
             return (
               <Fragment>
                 <Head
+                  breadcrumbs={breadcrumbs}
                   noIndex={props.noIndex}
                   shorttitle={`${detailTitle}: Top Travel Blogs`}
                   description={description}
