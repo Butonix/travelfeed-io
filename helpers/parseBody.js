@@ -20,7 +20,6 @@ import {
   swmregex,
   tfAdBottom,
   tfAdTop,
-  tfJSON,
 } from './regex';
 
 const renderer = new DefaultRenderer({
@@ -87,18 +86,6 @@ const parseBody = (body, options) => {
     /(?:http[s]?:\/\/)?(?:www.)?open\.spotify\.com\/track\/([a-zA-Z0-9]*)/gi,
     `<iframe src="https://open.spotify.com/embed/track/$1" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" />`,
   );
-
-  // Remove tfjson Steem placeholders
-  let tfjsonMatch = tfJSON.exec(parsedBody);
-  while (tfjsonMatch != null) {
-    tfjsonMatch = tfJSON.exec(parsedBody);
-    if (tfjsonMatch && tfjsonMatch[1] && tfjsonMatch[2]) {
-      parsedBody = parsedBody.replace(
-        tfJSON,
-        `<div json='{${tfjsonMatch[1]}}' />`,
-      );
-    }
-  }
 
   // Remove preview images in dtube posts with dtube embeds
   parsedBody = parsedBody.replace(dtubeImageRegex, '');
