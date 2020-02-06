@@ -1,5 +1,5 @@
+import { Query } from '@apollo/react-components';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import { ONBOARD_GET_REVIEWABLE } from '../../helpers/graphql/onboarding';
 import OnboardingItem from './Onboarding/OnboardingItem';
 

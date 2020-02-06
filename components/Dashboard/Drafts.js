@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Card from '@material-ui/core/Card';
@@ -8,7 +9,6 @@ import PublishedIcon from '@material-ui/icons/Check';
 import DraftIcon from '@material-ui/icons/FileCopy';
 import ScheduledIcon from '@material-ui/icons/Schedule';
 import React, { Fragment, useState } from 'react';
-import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';

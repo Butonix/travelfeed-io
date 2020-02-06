@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Newsletter from '../../components/Dashboard/Newsletter';
 import { getRoles } from '../../helpers/token';
+import withApollo from '../../lib/withApollo';
 
-const NewsletterPage = props => {
-  const { open } = props;
+const NewsletterPage = () => {
   const [roles, setRoles] = useState(undefined);
 
   useEffect(() => {
@@ -16,20 +15,10 @@ const NewsletterPage = props => {
 
   return (
     <DashboardPage
-      open={open}
       label="newsletter"
       content={isCurator ? <Newsletter /> : <></>}
     />
   );
 };
 
-NewsletterPage.getInitialProps = props => {
-  const { open } = props.query;
-  return { open };
-};
-
-NewsletterPage.propTypes = {
-  open: PropTypes.string,
-};
-
-export default NewsletterPage;
+export default withApollo(NewsletterPage);

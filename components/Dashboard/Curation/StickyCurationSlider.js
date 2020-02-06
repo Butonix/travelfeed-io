@@ -4,6 +4,7 @@ import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { SET_CURATION_SCORE } from '../../../helpers/graphql/curation';
 import graphQLClient from '../../../helpers/graphQLClient';
+import { swmregex } from '../../../helpers/regex';
 import EmojiSlider from '../../Post/EmojiSlider';
 import BlacklistMenu from './BlacklistMenu';
 
@@ -24,6 +25,7 @@ const useStyles = makeStyles(() => ({
 
 const StickyCurationSlider = props => {
   const {
+    body,
     handleNext,
     handleSetPostWeight,
     // isTf,
@@ -70,12 +72,15 @@ const StickyCurationSlider = props => {
     // if (isTf) score = weight * 10;
     if (negativeScore) score = -100;
     score = Math.round(score);
+    const swmmatch = body.match(swmregex);
+    const swm = swmmatch ? swmmatch.length > 1 : false;
     graphQLClient(SET_CURATION_SCORE, {
       author,
       permlink,
       title,
       score,
       formatting,
+      swm,
       language,
       bilingual,
       footer,
@@ -93,19 +98,15 @@ const StickyCurationSlider = props => {
   };
 
   const handleSliderDrop = () => {
-    if (weight > -1 && weight < 0) {
-      setWeight(0);
-      setLoading(undefined);
+    if (weight < 0) setBlacklistOpen(true);
+    if (weight > 0) {
+      setLoading(true);
     }
     triggerCurate(false);
   };
 
   const handleWeightChange = (event, value) => {
     setWeight(value);
-    if (weight < -1) setBlacklistOpen(true);
-    if (weight < -1 || weight > 0) {
-      setLoading(true);
-    }
   };
 
   const handleBlacklistConfirm = () => {

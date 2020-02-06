@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import red from '@material-ui/core/colors/red';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,7 +10,6 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { Mutation } from 'react-apollo';
 import { ONBOARD_REVIEW } from '../../../helpers/graphql/onboarding';
 
 const theme = createMuiTheme({

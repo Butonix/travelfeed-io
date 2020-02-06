@@ -1,5 +1,6 @@
 import React from 'react';
 import Feed from '../components/Feed/Feed';
+import withApollo from '../lib/withApollo';
 
 const HotFeed = () => {
   return (
@@ -12,6 +13,4 @@ const HotFeed = () => {
   );
 };
 
-HotFeed.getInitialProps = () => {};
-
-export default HotFeed;
+export default withApollo(HotFeed);

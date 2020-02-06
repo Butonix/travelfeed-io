@@ -47,7 +47,7 @@ const SteemfestBanner = () => {
           </div>
           <Card className={classes.paper}>
             <Link
-              href="/destinations?country=thailand"
+              href="/destinations/[...destination]"
               as="/destinations/thailand"
             >
               <CardActionArea>

@@ -84,7 +84,10 @@ class PostCommentItem extends Component {
         console.log('Could not encode URI');
       }
 
-      const htmlBody = parseBody(this.state.body || this.props.post.body, {});
+      const htmlBody = parseBody(
+        this.state.body || this.props.post.body || '',
+        {},
+      );
       const reactParsed = parseHtmlToReact(htmlBody, {
         webpSupport: this.state.webpSupport,
       });
@@ -111,7 +114,7 @@ class PostCommentItem extends Component {
             <Link
               color="textPrimary"
               as={`/@${this.props.post.parent_author}/${this.props.post.parent_permlink}`}
-              href={`/post?author=${this.props.post.parent_author}&permlink=${this.props.post.parent_permlink}`}
+              href="/[author]/[permlink]"
             >
               <strong className="ablue hoverline">Go to parent comment</strong>
             </Link>
@@ -127,9 +130,7 @@ class PostCommentItem extends Component {
             <Link
               color="textPrimary"
               as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-              href={`/post?author=${this.props.post.author}&permlink=${
-                this.props.post.permlink
-              }&depth=${
+              href={`/[author]/[permlink]?depth=${
                 this.props.post.depth
               }&display_name=${displayNameUri}&created_at=${encodeURIComponent(
                 this.props.post.created_at,
@@ -143,7 +144,7 @@ class PostCommentItem extends Component {
               <Link
                 color="textPrimary"
                 as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
-                href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}&depth=0`}
+                href="/[author]/[permlink]?depth=0"
               >
                 <strong className="ablue hoverline">Go to original post</strong>
               </Link>

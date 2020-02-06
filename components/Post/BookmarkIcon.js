@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+import { Mutation, Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -8,7 +10,6 @@ import BookmarkIconFilled from '@material-ui/icons/Bookmark';
 import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import {
   ADD_BOOKMARK,
   DELETE_BOOKMARK,
@@ -21,6 +22,30 @@ const BookmarkIcon = props => {
   const { isHeader, isButton, isMenuItem } = props;
   const [open, setOpen] = useState(false);
 
+  const isBm = (
+    <IsBookmarked
+      isHeader={isHeader}
+      isButton={isButton}
+      isMenuItem={isMenuItem}
+      author={props.author}
+      permlink={props.permlink}
+      onBmChange={props.onBmChange}
+      setOpen={() => setOpen(true)}
+    />
+  );
+
+  const isNotBm = (
+    <IsNotBookmarked
+      isHeader={isHeader}
+      isButton={isButton}
+      isMenuItem={isMenuItem}
+      author={props.author}
+      permlink={props.permlink}
+      onBmChange={props.onBmChange}
+      setOpen={() => setOpen(true)}
+    />
+  );
+
   return (
     <Fragment>
       {open && (
@@ -31,41 +56,25 @@ const BookmarkIcon = props => {
           text=" and bookmark your favorite posts"
         />
       )}
-      <Query
-        fetchPolicy="network-only"
-        query={IS_BOOKMARKED}
-        variables={{
-          author: props.author,
-          permlink: props.permlink,
-        }}
-      >
-        {({ data }) => {
-          if (data && data.isBookmarked) {
-            return (
-              <IsBookmarked
-                isHeader={isHeader}
-                isButton={isButton}
-                isMenuItem={isMenuItem}
-                author={props.author}
-                permlink={props.permlink}
-                onBmChange={props.onBmChange}
-                setOpen={() => setOpen(true)}
-              />
-            );
-          }
-          return (
-            <IsNotBookmarked
-              isHeader={isHeader}
-              isButton={isButton}
-              isMenuItem={isMenuItem}
-              author={props.author}
-              permlink={props.permlink}
-              onBmChange={props.onBmChange}
-              setOpen={() => setOpen(true)}
-            />
-          );
-        }}
-      </Query>
+      {getUser() ? (
+        <Query
+          fetchPolicy="network-only"
+          query={IS_BOOKMARKED}
+          variables={{
+            author: props.author,
+            permlink: props.permlink,
+          }}
+        >
+          {({ data }) => {
+            if (data && data.isBookmarked) {
+              return isBm;
+            }
+            return isNotBm;
+          }}
+        </Query>
+      ) : (
+        isNotBm
+      )}
     </Fragment>
   );
 };

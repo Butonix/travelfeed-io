@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,7 +8,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import ReCAPTCHA from 'react-google-recaptcha';
 import isEmail from 'validator/lib/isEmail';
 import { RECAPTCHA_SITE_KEY } from '../../config';

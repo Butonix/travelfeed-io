@@ -1,4 +1,5 @@
 // Todo: Show current mana, ressource credits, upvote worth
+import { Query } from '@apollo/react-components';
 import {
   cyan,
   green,
@@ -15,7 +16,6 @@ import QualityIcon from '@material-ui/icons/CheckCircle';
 import TotalPostsIcon from '@material-ui/icons/Create';
 import TotalFeaturedIcon from '@material-ui/icons/Star';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import calculateQualityScore from '../../helpers/calculateQualityScore';
 import { GET_DASHBOARD_POSTS } from '../../helpers/graphql/posts';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
@@ -49,9 +49,13 @@ const Stats = () => {
                 <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={TotalPayoutIcon}
-                    title="Total Earnings"
+                    title="Earnings This Month"
                     value={
-                      data && data.userstats ? data.userstats.total_payout : ''
+                      data &&
+                      data.userstats &&
+                      data.userstats.recent_payouts.length > 0
+                        ? data.userstats.recent_payouts[0].earnings
+                        : ''
                     }
                     prefix="$"
                     iconColor={cyan[800]}

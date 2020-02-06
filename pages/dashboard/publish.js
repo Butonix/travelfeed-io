@@ -1,9 +1,13 @@
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
+import withApollo from '../../lib/withApollo';
 
-const PublishPage = props => {
-  const { open, permlink, draftId, clone } = props;
+const PublishPage = () => {
+  const router = useRouter();
+
+  const { open, permlink, draftId, clone } = router.query;
 
   const Publish = dynamic(() => import('../../components/Dashboard/Publish'), {
     ssr: false,
@@ -19,14 +23,4 @@ const PublishPage = props => {
   );
 };
 
-PublishPage.getInitialProps = props => {
-  const { permlink, draftId, open, clone } = props.query;
-  return {
-    permlink,
-    draftId,
-    clone,
-    open,
-  };
-};
-
-export default PublishPage;
+export default withApollo(PublishPage);

@@ -1,29 +1,34 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import { indigo, teal } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import Cookie from 'js-cookie';
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import OnboardStart from '../../components/Onboarding/OnboardStart';
 import { GET_TF_STATS } from '../../helpers/graphql/stats';
+import withApollo from '../../lib/withApollo';
 
-const JoinPage = props => {
-  const [referrer, setReferrer] = useState(undefined);
+const JoinPage = () => {
+  const router = useRouter();
+
+  const passedRef = router.query.ref;
+
+  const [referrer, setReferrer] = useState(router.query.ref);
 
   useEffect(() => {
     ReactPiwik.push(['trackGoal', 1]);
-    if (props.referrer) {
-      Cookie.set('referrer', props.referrer);
-      setReferrer(props.referrer);
+    if (passedRef) {
+      Cookie.set('referrer', passedRef);
+      setReferrer(passedRef);
     } else {
       setReferrer(Cookie.get('referrer'));
     }
-  }, [props]);
+  }, []);
 
   return (
     <Fragment>
@@ -33,10 +38,7 @@ const JoinPage = props => {
       />
       <Header />
       <Query query={GET_TF_STATS} variables={{ days: 1000 }}>
-        {({ data, loading, error }) => {
-          if (loading || error || data.stats === null) {
-            return <></>;
-          }
+        {({ data }) => {
           return (
             <>
               <div
@@ -67,10 +69,13 @@ const JoinPage = props => {
                       <Typography gutterBottom variant="subtitle1">
                         On TravelFeed, you can discover travel content created
                         by a large community of likeminded travelers! With{' '}
-                        <strong>{data.stats.posts} blog posts</strong>, you will
-                        almost certainly discover insiders' tips about your
-                        travel destination and find other travelers to connect
-                        with.
+                        <strong>
+                          {data && data.stats ? data.stats.posts : 'many'} blog
+                          posts
+                        </strong>
+                        , you will almost certainly discover insiders' tips
+                        about your travel destination and find other travelers
+                        to connect with.
                       </Typography>
                     </div>
                   </div>
@@ -87,8 +92,12 @@ const JoinPage = props => {
                         <strong>The</strong> Travel Community.
                       </Typography>
                       <Typography gutterBottom variant="subtitle1">
-                        With <strong>{data.stats.authors} authors</strong> and
-                        many more readers, TravelFeed is one of the largest
+                        With{' '}
+                        <strong>
+                          {data && data.stats ? data.stats.authors : 'many'}{' '}
+                          authors
+                        </strong>{' '}
+                        and many more readers, TravelFeed is one of the largest
                         international communities of independent travelers.
                         Soon, you will be able to create custom trips and find
                         travel buddies for your next trip.
@@ -122,8 +131,14 @@ const JoinPage = props => {
                         your post in cryptocurrency.
                       </Typography>
                       <Typography gutterBottom variant="subtitle1">
-                        So far, <strong>${data.stats.payout}</strong> have been
-                        paid out to TravelFeed authors.
+                        So far,{' '}
+                        <strong>
+                          $
+                          {data && data.stats
+                            ? data.stats.payout
+                            : 'large amounts of money'}
+                        </strong>{' '}
+                        have been paid out to TravelFeed authors.
                       </Typography>
                     </div>
                   </div>
@@ -155,13 +170,4 @@ const JoinPage = props => {
   );
 };
 
-JoinPage.getInitialProps = props => {
-  const { ref } = props.query;
-  return { referrer: ref };
-};
-
-JoinPage.propTypes = {
-  referrer: PropTypes.string,
-};
-
-export default JoinPage;
+export default withApollo(JoinPage);

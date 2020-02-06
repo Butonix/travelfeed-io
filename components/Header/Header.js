@@ -44,7 +44,7 @@ class Header extends Component {
   }
 
   getUser() {
-    this.setState({ user: getUser() });
+    this.setState({ user: getUser() || null });
   }
 
   handleLogout = () => {
@@ -142,58 +142,64 @@ class Header extends Component {
                 >
                   <DestinationsNav isSmall />
                 </div>
-                <div
-                  className={`${(this.state.user &&
-                    'col-xl-4 col-lg-5 col-md-4') ||
-                    'col-xl-3 col-lg-3 col-md-3'} d-none d-xl-block d-lg-block d-md-block my-auto text-center`}
-                >
-                  <GeoCoder />
-                </div>
-                {!this.state.user && (
-                  <div className="my-auto col-xl-2 col-lg-3 d-md-none d-sm-none d-none d-xl-block d-lg-block text-right">
-                    <LoginButton />
-                  </div>
-                )}
-                <div
-                  className={`my-auto ${(active === 'post' &&
-                    'col-4 col-sm-2') ||
-                    'col-2 col-sm-1'} d-xl-none d-lg-none d-md-none`}
-                >
-                  {(active === 'post' && (
-                    <>
-                      <div className="container-fluid">
-                        <div className="row">
-                          <div className="col-6">
-                            <BookmarkIcon
-                              isHeader
-                              author={this.props.socialShare.author}
-                              permlink={this.props.socialShare.permlink}
-                            />
-                          </div>
-                          <div className="col-6">
-                            <ShareButton socialShare={this.props.socialShare} />
-                          </div>
-                        </div>
+                {this.state.user !== undefined && (
+                  <>
+                    <div
+                      className={`${(this.state.user &&
+                        'col-xl-4 col-lg-5 col-md-4') ||
+                        'col-xl-3 col-lg-3 col-md-3'} d-none d-xl-block d-lg-block d-md-block my-auto text-center`}
+                    >
+                      <GeoCoder />
+                    </div>
+                    {!this.state.user && (
+                      <div className="my-auto col-xl-2 col-lg-3 d-md-none d-sm-none d-none d-xl-block d-lg-block text-right">
+                        <LoginButton />
                       </div>
-                    </>
-                  )) ||
-                    (active === 'blog' && (
-                      <FollowButton
-                        author={this.props.author}
-                        btnstyle="icon"
+                    )}
+                    <div
+                      className={`my-auto ${(active === 'post' &&
+                        'col-4 col-sm-2') ||
+                        'col-2 col-sm-1'} d-xl-none d-lg-none d-md-none`}
+                    >
+                      {(active === 'post' && (
+                        <>
+                          <div className="container-fluid">
+                            <div className="row">
+                              <div className="col-6">
+                                <BookmarkIcon
+                                  isHeader
+                                  author={this.props.socialShare.author}
+                                  permlink={this.props.socialShare.permlink}
+                                />
+                              </div>
+                              <div className="col-6">
+                                <ShareButton
+                                  socialShare={this.props.socialShare}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )) ||
+                        (active === 'blog' && (
+                          <FollowButton
+                            author={this.props.author}
+                            btnstyle="icon"
+                          />
+                        )) || <MobileGeocoderButton />}
+                    </div>
+                    <div
+                      className={`my-auto ${(this.state.user &&
+                        'col-xl-2 col-lg-2 col-md-2') ||
+                        'col-xl-1 col-lg-1 col-md-2'} d-none d-xl-block d-lg-block d-md-block text-right`}
+                    >
+                      <HeaderMenu
+                        isDashboard={false}
+                        handleLogout={this.handleLogout}
                       />
-                    )) || <MobileGeocoderButton />}
-                </div>
-                <div
-                  className={`my-auto ${(this.state.user &&
-                    'col-xl-2 col-lg-2 col-md-2') ||
-                    'col-xl-1 col-lg-1 col-md-2'} d-none d-xl-block d-lg-block d-md-block text-right`}
-                >
-                  <HeaderMenu
-                    isDashboard={false}
-                    handleLogout={this.handleLogout}
-                  />
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </AppBar>

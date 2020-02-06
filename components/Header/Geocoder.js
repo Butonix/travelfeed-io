@@ -100,7 +100,11 @@ const Geocoder = props => {
         const bound1 = bounds[Object.keys(bounds)[1]];
         const bound2 = bounds[Object.keys(bounds)[0]];
         Router.push(
-          `/location?location_box=${bound1.g},${bound2.g},${bound1.h},${bound2.h}&formatted_address=${result.formatted_address}${args}`,
+          `/location?location_box=${bound1[Object.keys(bound1)[0]]},${
+            bound2[Object.keys(bound2)[0]]
+          },${bound1[Object.keys(bound1)[1]]},${
+            bound2[Object.keys(bound2)[1]]
+          }&formatted_address=${result.formatted_address}${args}`,
         );
       })
       .catch(err => {

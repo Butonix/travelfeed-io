@@ -1,9 +1,9 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import isEmail from 'validator/lib/isEmail';
 import { REFERRAL_MAIL } from '../../../helpers/graphql/contest';
 

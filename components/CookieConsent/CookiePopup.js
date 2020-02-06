@@ -40,7 +40,7 @@ class CookiePopup extends Component {
               className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
             />
             <Typography
-              variant="p"
+              variant="button"
               onClick={() => this.props.decline()}
               className="text-light col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 cpointer text-light text-center font-weight-bold p-2"
               style={{ background: indigo[this.state.declineColor] }}
@@ -50,7 +50,7 @@ class CookiePopup extends Component {
               Decline
             </Typography>
             <Typography
-              variant="p"
+              variant="button"
               onClick={() => this.props.accept()}
               className="text-light col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 cpointer text-light text-center font-weight-bold p-2"
               onMouseEnter={() => this.setState({ acceptColor: 800 })}

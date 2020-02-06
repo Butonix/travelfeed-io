@@ -252,6 +252,9 @@ const Curation = props => {
       blacklisted,
       weight,
     } = posts[postPosition];
+    const isIntro =
+      tags.indexOf('introduceyourself') !== -1 &&
+      !permlink.match(/introducing-myself-to-travelfeed-/);
     const isTf = app && app.split('/')[0] === 'travelfeed';
     const htmlBody = parseBody(body, {});
     const sanitized = sanitize(htmlBody, { allowedTags: [] });
@@ -458,6 +461,7 @@ const Curation = props => {
           </div>
         </Card>
         <StickyCurationSlider
+          body={body}
           author={author}
           permlink={permlink}
           title={title}
@@ -481,6 +485,7 @@ const Curation = props => {
             <Card className="mt-5 mb-5">
               {!loading && (
                 <PostContent
+                  isIntro={isIntro}
                   showWordCount
                   author={author}
                   id={post_id}

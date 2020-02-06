@@ -16,8 +16,6 @@ export const GET_POSTS = gql`
     $is_comment: Boolean
     $min_curation_score: Int
     $min_total_votes: Int
-    $include_nsfw: Boolean
-    $include_hidden: Boolean
     $orderby: String
     $orderdir: String
     $offset: Int
@@ -38,8 +36,6 @@ export const GET_POSTS = gql`
       is_comment: $is_comment
       min_curation_score: $min_curation_score
       min_total_votes: $min_total_votes
-      include_nsfw: $include_nsfw
-      include_hidden: $include_hidden
       orderby: $orderby
       orderdir: $orderdir
       offset: $offset
@@ -77,17 +73,57 @@ export const GET_POSTS = gql`
   }
 `;
 
-export const GET_NOTIFICATIONS = gql`
-  query posts($author: String, $min_curation_score: Int, $limit: Int) {
+export const GET_INTRO_POSTS = gql`
+  query posts($tags: [String], $min_curation_score: Int, $limit: Int) {
+    posts(tags: $tags, min_curation_score: $min_curation_score, limit: $limit) {
+      author
+      permlink
+      title
+    }
+  }
+`;
+
+export const GET_DISCOVER_POSTS = gql`
+  query posts(
+    $country_code: [String]
+    $min_curation_score: Int
+    $limit: Int
+    $orderby: String
+  ) {
     posts(
-      author: $author
+      country_code: $country_code
+      min_curation_score: $min_curation_score
+      limit: $limit
+      orderby: $orderby
+    ) {
+      author
+      permlink
+      title
+      img_url
+    }
+  }
+`;
+
+export const GET_RECOMMENDED_POSTS = gql`
+  query posts(
+    $country_code: [String]
+    $orderby: String
+    $min_curation_score: Int
+    $limit: Int
+  ) {
+    posts(
+      country_code: $country_code
+      orderby: $orderby
       min_curation_score: $min_curation_score
       limit: $limit
     ) {
       author
       permlink
       title
-      curation_score
+      display_name
+      img_url
+      subdivision
+      city
     }
   }
 `;
@@ -98,8 +134,6 @@ export const GET_BLOG_POSTS = gql`
       author
       permlink
       title
-      img_url
-      votes
     }
   }
 `;

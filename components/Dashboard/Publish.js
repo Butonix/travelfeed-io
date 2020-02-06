@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,7 +11,6 @@ import DiffMatchPatch from 'diff-match-patch';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
@@ -198,8 +198,14 @@ const PostEditor = props => {
           json.app &&
           json.app.split('/')[0] === 'travelfeed'
         ) {
+          let queryid = json.easyEditorId;
+          try {
+            queryid = JSON.parse(json.easyEditorId);
+          } catch {
+            queryid = json.easyEditorId;
+          }
           graphQLClient(GET_DRAFT_BY_ID, {
-            id: JSON.parse(json.easyEditorId),
+            id: queryid,
           }).then(({ draft }) => {
             if (draft && draft.body) {
               setCodeEditor(false);
@@ -355,6 +361,7 @@ const PostEditor = props => {
 
   const pastPublish = res => {
     if (res.success) {
+      if (!codeEditor) setIsEditId(true);
       saveDraft({ publishedDate: new Date() });
       setSuccess(true);
     }
@@ -396,7 +403,7 @@ const PostEditor = props => {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You need to set a valid permlink
+          {'  '}You need to set a valid permalink
         </span>
       ),
       hide:
@@ -450,7 +457,7 @@ const PostEditor = props => {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You cannot set an existing permlink
+          {'  '}You cannot set an existing permalink
         </span>
       ),
       hide: permlinkValid,
@@ -491,7 +498,7 @@ const PostEditor = props => {
         if (res) {
           newNotification({
             message:
-              'The permlink of your post has been used in a previous post. Please change it.',
+              'The permalink of your post has been used in a previous post. Please change it.',
             success: false,
           });
           resolve(false);
@@ -529,7 +536,7 @@ const PostEditor = props => {
         setPermlinkValid(false);
         newNotification({
           message:
-            'The permlink of your post has been used in a previous post. Please change it.',
+            'The permalink of your post has been used in a previous post. Please change it.',
           success: false,
         });
       } else {
@@ -548,7 +555,7 @@ const PostEditor = props => {
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = meta;
-        if (!codeEditor) metadata.easyEditorId = JSON.stringify(id);
+        if (!codeEditor) metadata.easyEditorId = id;
         else metadata.easyEditorId = undefined;
         const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
@@ -557,9 +564,7 @@ const PostEditor = props => {
         if (linkList.length > 0) metadata.links = linkList;
         if (mentionList.length > 0) metadata.users = mentionList;
         body = `<a href="https://travelfeed.io/@${username}/${perm}"><center>${
-          imageList.length > 0
-            ? `<img src="${imageList[0]}" alt="${title}"/>`
-            : ''
+          featuredImage ? `<img src="${imageList[0]}" alt="${title}"/>` : ''
         }<h3>Read "${title}" on TravelFeed.io for the best experience</h3></center></a><hr />\n\n${body}`;
         body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
         if (location) {
@@ -628,7 +633,7 @@ const PostEditor = props => {
         undefined,
         true,
       );
-    }, 10000);
+    }, 12000);
   }
 
   if (!saved) {
@@ -857,14 +862,14 @@ const PostEditor = props => {
                               !permlinkValid ? (
                                 <span>
                                   <WarnIcon />
-                                  {'  '}Permlink
+                                  {'  '}Permalink
                                 </span>
                               ) : (
-                                'Permlink'
+                                'Permalink'
                               )
                             }
                             description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
-                            helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                            helper="Set a custom permalink here if you are unhappy with the long default permalink or if your permalink is conflicting with an existing post."
                             value={`https://travelfeed.io/@${user}/${permlink ||
                               getSlug(title)}`}
                             selector={

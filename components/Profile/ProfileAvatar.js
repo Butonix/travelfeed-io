@@ -22,11 +22,7 @@ const ProfileAvatar = props => {
     );
 
   return (
-    <Link
-      color="textPrimary"
-      as={`/@${author}`}
-      href={`/blog?author=${author}`}
-    >
+    <Link color="textPrimary" as={`/@${author}`} href="/[author]">
       <Img
         className="rounded-circle pr-0"
         style={{ cursor: 'pointer' }}

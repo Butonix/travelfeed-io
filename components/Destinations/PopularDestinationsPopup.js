@@ -68,11 +68,7 @@ const PopularDestinationsPopup = props => {
                                 : `${subdivision}_${location.city}`
                             }`}
                             color="textPrimary"
-                            href={`/destinations?country=${countrySlug}&subdivision=${
-                              location.subdivision
-                                ? location.subdivision
-                                : `${subdivision}&city=${location.city}`
-                            }`}
+                            href="/destinations/[...destination]"
                             as={`/destinations/${countrySlug}/${
                               location.subdivision
                                 ? location.subdivision

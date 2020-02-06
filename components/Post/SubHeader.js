@@ -65,11 +65,7 @@ const SubHeader = props => {
             as={`/destinations/${countryslug}/${
               location.subdivision !== null ? location.subdivision : ''
             }/`}
-            href={`/destinations?country=${countryslug}${
-              location.subdivision !== null
-                ? `&subdivision=${location.subdivision}`
-                : ''
-            }`}
+            href="/destinations/[...destination]"
           >
             <Tooltip
               title={`${
@@ -88,7 +84,7 @@ const SubHeader = props => {
           <Link
             color="textSecondary"
             as={`/topics/${tag}`}
-            href={`/tag?tags=${tag}`}
+            href="/topics/[tag]"
             key={tag}
           >
             <span>#{tag}</span>

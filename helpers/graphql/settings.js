@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 
 export const CHANGE_SETTINGS = gql`
   mutation updatePreferences(
-    $showNSFW: Boolean
     $trackFollows: Boolean
     $trackMentions: Boolean
     $trackReplies: Boolean
@@ -14,7 +13,6 @@ export const CHANGE_SETTINGS = gql`
     $claimRewards: Boolean
   ) {
     updatePreferences(
-      showNSFW: $showNSFW
       trackFollows: $trackFollows
       trackMentions: $trackMentions
       trackReplies: $trackReplies
@@ -31,14 +29,6 @@ export const CHANGE_SETTINGS = gql`
   }
 `;
 
-export const GET_COOKIES_ACCEPTED = gql`
-  query preferences {
-    preferences {
-      hasAcceptedCookies
-    }
-  }
-`;
-
 export const USE_ADVANCED_EDITOR_OPTIONS = gql`
   query preferences {
     preferences {
@@ -50,7 +40,6 @@ export const USE_ADVANCED_EDITOR_OPTIONS = gql`
 export const GET_SETTINGS = gql`
   query preferences {
     preferences {
-      showNSFW
       useDarkMode
       trackFollows
       trackMentions

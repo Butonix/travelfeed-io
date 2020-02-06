@@ -130,10 +130,7 @@ const VoteDetailsBtn = props => {
                     {list.list.map(vote => {
                       return (
                         <>
-                          <Link
-                            as={`/@${vote.voter}`}
-                            href={`/blog?author=${vote.voter}`}
-                          >
+                          <Link as={`/@${vote.voter}`} href="/[author]">
                             <Tooltip
                               title={`${vote.voter} ${
                                 vote.weight > 0 ? '+' : ''

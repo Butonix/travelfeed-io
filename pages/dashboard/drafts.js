@@ -1,27 +1,15 @@
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Drafts from '../../components/Dashboard/Drafts';
+import withApollo from '../../lib/withApollo';
 
-const DraftsPage = props => {
-  const { open } = props;
+const DraftsPage = () => {
+  const router = useRouter();
 
-  return (
-    <DashboardPage
-      open={open}
-      label="drafts"
-      content={<Drafts sortby={props.sortby} />}
-    />
-  );
+  const { sortby } = router.query;
+
+  return <DashboardPage label="drafts" content={<Drafts sortby={sortby} />} />;
 };
 
-DraftsPage.getInitialProps = props => {
-  const { open, sortby } = props.query;
-  return { open, sortby };
-};
-
-DraftsPage.propTypes = {
-  open: PropTypes.string,
-};
-
-export default DraftsPage;
+export default withApollo(DraftsPage);

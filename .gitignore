@@ -5,3 +5,4 @@
 .next
 .idea/*
 bundles
+.env.build

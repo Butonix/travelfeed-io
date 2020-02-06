@@ -1,8 +1,9 @@
+import { Query } from '@apollo/react-components';
+import { getDataFromTree } from '@apollo/react-ssr';
 import { teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Query } from 'react-apollo';
 import ErrorPage from '../../components/General/ErrorPage';
 import FixedBackgroundImage from '../../components/General/FixedBackgroundImage';
 import HeaderCard from '../../components/General/HeaderCard';
@@ -10,6 +11,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import SetEasyLogInPassword from '../../components/Header/SetEasyLogInPassword';
 import { CHECK_ADD_ACCOUNT_PASSWORD } from '../../helpers/graphql/onboarding';
+import withApollo from '../../lib/withApollo';
 
 const LinkEmailPage = props => {
   const { linkToken, isNewsletter } = props;
@@ -76,4 +78,4 @@ LinkEmailPage.propTypes = {
   linkToken: PropTypes.string,
 };
 
-export default LinkEmailPage;
+export default withApollo(LinkEmailPage, { getDataFromTree });

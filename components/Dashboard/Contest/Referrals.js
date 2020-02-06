@@ -1,3 +1,4 @@
+import { Query } from '@apollo/react-components';
 import { cyan } from '@material-ui/core/colors';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,7 +7,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { Query } from 'react-apollo';
 import { REFERRALS } from '../../../helpers/graphql/contest';
 import HeaderCard from '../../General/HeaderCard';
 

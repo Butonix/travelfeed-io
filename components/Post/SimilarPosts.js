@@ -1,11 +1,11 @@
+import { Query } from '@apollo/react-components';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { Query } from 'react-apollo';
 import LazyLoad from 'react-lazyload';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
-import { GET_POSTS } from '../../helpers/graphql/posts';
+import { GET_RECOMMENDED_POSTS } from '../../helpers/graphql/posts';
 import Link from '../../lib/Link';
 import PostPreview from './PostPreview';
 import SimilarPostCard from './SimilarPostCard';
@@ -28,11 +28,11 @@ const SimilarPosts = props => {
   return (
     <>
       <Query
-        query={GET_POSTS}
+        query={GET_RECOMMENDED_POSTS}
         variables={{
           orderby: 'random',
           country_code,
-          min_curation_score: 5000,
+          min_curation_score: 9000,
           limit: 4,
         }}
       >
@@ -49,7 +49,7 @@ const SimilarPosts = props => {
                   >
                     <Link
                       color="inherit"
-                      href={`/destinations?country=${slug}`}
+                      href="/destinations/[...destination]"
                       as={`/destinations/${slug}`}
                     >
                       More from {nameFromCC(country_code)}
@@ -128,7 +128,7 @@ const SimilarPosts = props => {
                     >
                       <Link
                         color="inherit"
-                        href={`/destinations?country=${slug}`}
+                        href="/destinations/[...destination]"
                         as={`/destinations/${slug}`}
                       >
                         More from {nameFromCC(country_code)}

@@ -34,7 +34,7 @@ const LinkTool = props => {
                 >
                   <Link
                     as={`/@${author}/${permlink}`}
-                    href={`/post?author=${author}&permlink=${permlink}&title=${titleUri}&img_url=${encodeURIComponent(
+                    href={`/[author]/[permlink]?title=${titleUri}&img_url=${encodeURIComponent(
                       image,
                     )}`}
                   >
@@ -50,7 +50,7 @@ const LinkTool = props => {
                 <Typography gutterBottom variant="h6">
                   <Link
                     as={`/@${author}/${permlink}`}
-                    href={`/post?author=${author}&permlink=${permlink}&title=${encodeURIComponent(
+                    href={`/[author]/[permlink]?title=${encodeURIComponent(
                       title,
                     )}&img_url=${encodeURIComponent(image)}`}
                   >
@@ -63,7 +63,7 @@ const LinkTool = props => {
                     <Link
                       color="textPrimary"
                       as={`/@${author}`}
-                      href={`/blog?author=${author}`}
+                      href="/[author]"
                     >
                       {author}
                     </Link>
@@ -74,7 +74,7 @@ const LinkTool = props => {
                 </Typography>
                 <Link
                   as={`/@${author}/${permlink}`}
-                  href={`/post?author=${author}&permlink=${permlink}&title=${encodeURIComponent(
+                  href={`/[author]/[permlink]?title=${encodeURIComponent(
                     title,
                   )}&img_url=${encodeURIComponent(image)}`}
                 >

@@ -1,4 +1,5 @@
 // Todo: Add delete account to remove all of users data from our database
+import { Mutation, Query } from '@apollo/react-components';
 import { teal } from '@material-ui/core/colors';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,7 +9,6 @@ import Switch from '@material-ui/core/Switch';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
 import { requestPostingAuthority } from '../../helpers/actions';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
 import hasPostingAuthority from '../../helpers/hasPostingAuthority';
@@ -24,7 +24,6 @@ const Settings = props => {
   const useDarkMode = theme === 'dark';
   const [loaded, setLoaded] = useState(false);
   const [saved, setSaved] = useState(true);
-  const [showNSFW, setShowNSFW] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState(false);
   const [trackFollows, setTrackFollows] = useState(false);
   const [trackMentions, setTrackMentions] = useState(false);
@@ -76,8 +75,6 @@ const Settings = props => {
     if (name === 'useDarkMode') {
       if (useDarkMode) setLightMode();
       else setDarkMode();
-    } else if (name === 'showNSFW') {
-      setShowNSFW(event.target.checked);
     } else if (name === 'useAdvancedEditorOptions') {
       setUseAdvancedEditorOptions(event.target.checked);
     } else if (name === 'trackFollows') {
@@ -147,7 +144,6 @@ const Settings = props => {
                 {({ data }) => {
                   if (loaded === false && data && data.preferences) {
                     setLoaded(true);
-                    setShowNSFW(data.preferences.showNSFW);
                     setTrackFollows(data.preferences.trackFollows);
                     setTrackMentions(data.preferences.trackMentions);
                     setTrackReplies(data.preferences.trackReplies);
@@ -163,7 +159,6 @@ const Settings = props => {
                     <Mutation
                       mutation={CHANGE_SETTINGS}
                       variables={{
-                        showNSFW,
                         trackFollows,
                         trackMentions,
                         trackReplies,
@@ -195,21 +190,6 @@ const Settings = props => {
                           <Fragment>
                             <FormControl fullWidth>
                               <FormGroup>
-                                <FormControlLabel
-                                  labelPlacement="end"
-                                  control={
-                                    <Switch
-                                      checked={showNSFW}
-                                      onChange={handleCheckboxChange(
-                                        'showNSFW',
-                                      )}
-                                      onInput={changeSettings}
-                                      value="showNSFW"
-                                      color="primary"
-                                    />
-                                  }
-                                  label="Show NSFW posts"
-                                />
                                 <FormControlLabel
                                   labelPlacement="end"
                                   control={

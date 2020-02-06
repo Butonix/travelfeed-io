@@ -4,6 +4,7 @@ import FixedBackgroundImage from '../../components/General/FixedBackgroundImage'
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import NewsLetterSubscribe from '../../components/Sidebar/NewsLetterSubscribe';
+import withApollo from '../../lib/withApollo';
 
 const NewsletterSubscribePage = () => {
   return (
@@ -33,6 +34,4 @@ const NewsletterSubscribePage = () => {
   );
 };
 
-NewsletterSubscribePage.getInitialProps = () => {};
-
-export default NewsletterSubscribePage;
+export default withApollo(NewsletterSubscribePage);

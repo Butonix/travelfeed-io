@@ -269,7 +269,7 @@ const parseHtmlToReact = (htmlBody, options) => {
           return (
             <Link
               as={`/@${blogLink[1]}/${blogLink[2]}`}
-              href={`/post?author=${blogLink[1]}&permlink=${blogLink[2]}`}
+              href="/[author]/[permlink]"
             >
               {domToReact(children, parseOptions)}
             </Link>
@@ -281,7 +281,7 @@ const parseHtmlToReact = (htmlBody, options) => {
         const mention = attribs.href.match(mentionUrl);
         if (mention) {
           return (
-            <Link as={`/@${mention[1]}`} href={`/blog?author=${mention[1]}`}>
+            <Link as={`/@${mention[1]}`} href="/[author]">
               {domToReact(children, parseOptions)}
             </Link>
           );

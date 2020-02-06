@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,7 +9,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { Mutation } from 'react-apollo';
 import { CHANGE_CURATOR_ROLE } from '../../../helpers/graphql/roles';
 
 class ChangeRoles extends React.Component {

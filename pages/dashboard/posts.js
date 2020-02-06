@@ -1,21 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import DashboardPage from '../../components/Dashboard/DashboardPage';
 import Posts from '../../components/Dashboard/Posts';
+import withApollo from '../../lib/withApollo';
 
-const PostsPage = props => {
-  const { open } = props;
-
-  return <DashboardPage open={open} label="posts" content={<Posts />} />;
+const PostsPage = () => {
+  return <DashboardPage label="posts" content={<Posts />} />;
 };
 
-PostsPage.getInitialProps = props => {
-  const { open } = props.query;
-  return { open };
-};
-
-PostsPage.propTypes = {
-  open: PropTypes.string,
-};
-
-export default PostsPage;
+export default withApollo(PostsPage);

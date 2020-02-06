@@ -1,18 +1,29 @@
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import React, { Fragment, useState } from 'react';
 import PhotoDetailHeader from '../components/General/PhotoDetailHeader';
 import PostGrid from '../components/Grid/PostGrid';
 import Header from '../components/Header/Header';
 import { slugFromCC } from '../helpers/countryCodes';
+import withApollo from '../lib/withApollo';
 
-const LocationPage = props => {
+const LocationPage = () => {
+  const router = useRouter();
+
   const [topic, setTopic] = useState(undefined);
 
-  const { country_code, subdivision, city } = props;
+  const { country_code, subdivision, city, formatted_address } = router.query;
+  let locations = [];
+  const location_box = [];
+  if (router.query && router.query.location_box) {
+    locations = router.query.location_box.split(',');
+    locations.forEach(el => {
+      location_box.push(parseFloat(el));
+    });
+  }
 
   const query = {
-    location_box: props.location_box,
-    country_code: props.country_code,
+    location_box,
+    country_code,
     orderby: 'curation_score DESC, total_votes DESC',
     orderdir: '',
     limit: 9,
@@ -26,13 +37,13 @@ const LocationPage = props => {
         noIndex
         noEdit
         query={{
-          search: props.formatted_address,
+          search: formatted_address,
           country_code,
           subdivision,
           city,
         }}
-        title={props.formatted_address}
-        countrySlug={slugFromCC(props.country_code)}
+        title={formatted_address || 'Search'}
+        countrySlug={slugFromCC(country_code)}
         topic={topic}
         setTopic={setTopic}
       />
@@ -59,33 +70,4 @@ const LocationPage = props => {
   );
 };
 
-LocationPage.getInitialProps = props => {
-  const { formatted_address, country_code, subdivision, city } = props.query;
-  const locations = props.query.location_box.split(',');
-  const location_box = [];
-  locations.forEach(el => {
-    location_box.push(parseFloat(el));
-  });
-
-  return {
-    location_box,
-    formatted_address,
-    country_code,
-    subdivision,
-    city,
-  };
-};
-
-LocationPage.defaultProps = {
-  query: undefined,
-};
-
-LocationPage.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string),
-  formatted_address: PropTypes.string.isRequired,
-  location_box: PropTypes.arrayOf(PropTypes.number).isRequired,
-  country_code: PropTypes.string.isRequired,
-};
-
-export default LocationPage;
+export default withApollo(LocationPage);

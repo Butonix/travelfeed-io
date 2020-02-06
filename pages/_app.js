@@ -5,10 +5,8 @@ import Cookie from 'js-cookie';
 import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import Router from 'next/router';
-import { parseCookies } from 'nookies';
 import { SnackbarProvider } from 'notistack';
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import CookieConsent from '../components/CookieConsent/CookieConsent';
 import NewUserMessage from '../components/General/NewUserMessage';
@@ -16,7 +14,6 @@ import UserContext from '../components/General/UserContext';
 import { registerServiceWorker } from '../helpers/notifications';
 import { getUser, hasCookieConsent } from '../helpers/token';
 import { getTheme } from '../lib/theme';
-import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
 
@@ -35,24 +32,11 @@ const Piwik = new ReactPiwik({
 });
 
 Router.events.on('routeChangeStart', () => {
-  if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
   ReactPiwik.push(['setDocumentTitle', document.title]);
   ReactPiwik.push(['trackPageView']);
 });
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
-    let cookies = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-      cookies = parseCookies(ctx);
-    }
-
-    return { pageProps, cookies };
-  }
-
   componentDidMount() {
     const theme = Cookie.get('use_dark_mode') !== 'true' ? 'light' : 'dark';
     this.setState({ theme });
@@ -101,16 +85,16 @@ class MyApp extends App {
   };
 
   render() {
-    const { Component, pageProps, apollo, cookies } = this.props;
-    let colorscheme = cookies.use_dark_mode !== 'true' ? 'light' : 'dark';
-    if (this.state && this.state.theme) colorscheme = this.state.theme;
+    const { Component, pageProps } = this.props;
+    let paletteType = 'light';
+    if (this.state && this.state.theme) paletteType = this.state.theme;
     const theme = getTheme({
-      paletteType: colorscheme,
+      paletteType,
     });
     return (
       <UserContext.Provider
         value={{
-          theme: colorscheme,
+          theme: paletteType,
           setDarkMode: this.setDarkMode,
           setLightMode: this.setLightMode,
           // React Hooks: https://reacttricks.com/sharing-global-data-in-next-with-custom-app-and-usecontext-hook/
@@ -121,11 +105,9 @@ class MyApp extends App {
           {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
           <SnackbarProvider maxSnack={3}>
-            <ApolloProvider client={apollo}>
-              <CookieConsent />
-              <NewUserMessage />
-              <Component pageContext={this.pageContext} {...pageProps} />
-            </ApolloProvider>
+            <CookieConsent />
+            <NewUserMessage />
+            <Component pageContext={this.pageContext} {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>
       </UserContext.Provider>
@@ -133,4 +115,4 @@ class MyApp extends App {
   }
 }
 
-export default withApollo(MyApp);
+export default MyApp;

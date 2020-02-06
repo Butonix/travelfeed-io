@@ -4,6 +4,7 @@ import ErrorPage from '../components/General/ErrorPage';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import { getUser } from '../helpers/token';
+import withApollo from '../lib/withApollo';
 
 const BookmarksPage = () => {
   const [user, setUser] = useState(null);
@@ -38,4 +39,4 @@ const BookmarksPage = () => {
   );
 };
 
-export default BookmarksPage;
+export default withApollo(BookmarksPage);

@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -8,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import owasp from 'owasp-password-strength-test';
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import { ONBOARD_CREATE } from '../../helpers/graphql/onboarding';
 import steem from '../../helpers/steem';
 import generateSteemPassphrase from '../../helpers/steeminvite/generateSteemPassphrase';
@@ -132,7 +132,7 @@ const OnboardCreate = props => {
             <FormLabel component="legend" className="pt-5">
               Want to know more about your Steem keys? Watch this video by
               TravelFeed user{' '}
-              <Link as="/@coruscate" href="/blog?author=coruscate">
+              <Link as="/@coruscate" href="/[author]">
                 @coruscate
               </Link>
               .

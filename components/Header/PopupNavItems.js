@@ -1,5 +1,5 @@
+import { Query } from '@apollo/react-components';
 import React from 'react';
-import { Query } from 'react-apollo';
 import { GET_FEATURED_LOCATIONS } from '../../helpers/graphql/locations';
 import PopupNavCard from './PopupNavCard';
 
@@ -11,7 +11,7 @@ const PopupNavItem = props => {
         query={GET_FEATURED_LOCATIONS}
         variables={{ tags, countries, places }}
       >
-        {({ data, loading, error }) => {
+        {({ data }) => {
           return (
             <div className="container-fluid pb-4">
               <div className="row">

@@ -1,7 +1,8 @@
 import React from 'react';
-import Head from '../components/Header/Head';
-import Header from '../components/Header/Header';
-import PopupNavItems from '../components/Header/PopupNavItems';
+import Head from '../../components/Header/Head';
+import Header from '../../components/Header/Header';
+import PopupNavItems from '../../components/Header/PopupNavItems';
+import withApollo from '../../lib/withApollo';
 
 const Topics = () => {
   return (
@@ -17,6 +18,4 @@ const Topics = () => {
   );
 };
 
-Topics.getInitialProps = () => {};
-
-export default Topics;
+export default withApollo(Topics);

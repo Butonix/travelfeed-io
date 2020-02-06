@@ -1,7 +1,7 @@
+import { Query } from '@apollo/react-components';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
 import Img from 'react-image';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import { getAccount } from '../../helpers/steem';
@@ -30,7 +30,7 @@ const PostAuthorProfile = props => {
                 <Link
                   color="textPrimary"
                   as={`/@${props.author}`}
-                  href={`/blog?author=${props.author}`}
+                  href="/[author]"
                 >
                   <Img
                     style={{ cursor: 'pointer' }}
@@ -58,7 +58,7 @@ const PostAuthorProfile = props => {
                   <Link
                     color="textPrimary"
                     as={`/@${props.author}`}
-                    href={`/blog?author=${props.author}`}
+                    href="/[author]"
                   >
                     <Typography variant="h6" className="textPrimary cpointer">
                       {props.display_name}

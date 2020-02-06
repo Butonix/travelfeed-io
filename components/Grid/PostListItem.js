@@ -56,9 +56,7 @@ class PostListItem extends Component {
       <Link
         color="textPrimary"
         as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-        href={`/post?author=${this.props.post.author}&permlink=${
-          this.props.post.permlink
-        }&title=${encodeURIComponent(
+        href={`/[author]/[permlink]?title=${encodeURIComponent(
           this.props.post.title,
         )}&display_name=${encodeURIComponent(
           this.props.post.display_name,
@@ -205,14 +203,15 @@ class PostListItem extends Component {
                           <LocationIcon />
                         </span>
                       </Tooltip>
-                    )) || (
+                    )) ||
+                    (!this.props.isDraftMode && (
                       <Tooltip
                         title="Edit the post to add a location"
                         placement="bottom"
                       >
                         <NoLocationIcon />
                       </Tooltip>
-                    )}
+                    ))}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   !this.props.isDraftMode &&
                     ((new Date(this.props.post.created_at) <

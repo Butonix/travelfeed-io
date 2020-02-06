@@ -1,8 +1,8 @@
+import { Query } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
-import { green, indigo, teal } from '@material-ui/core/colors';
+import { indigo, teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
 import HeaderCard from '../General/HeaderCard';
 import RecentEarnings from './Stats/RecentEarningsChart';
@@ -16,23 +16,7 @@ const Wallet = () => {
             return (
               <Fragment>
                 <Grid item className="p-1" lg={6} md={6} sm={11} xs={12}>
-                  <HeaderCard
-                    title="Total Earnings"
-                    background={green[600]}
-                    content={
-                      <Fragment>
-                        {data && data.userstats && (
-                          <p>
-                            You have earned a total of{' '}
-                            <strong>${data.userstats.total_payout}</strong> with
-                            your TravelBlog so far.
-                          </p>
-                        )}
-                      </Fragment>
-                    }
-                  />
-                  <div className="pt-2">
-                    {' '}
+                  <div>
                     <HeaderCard
                       title="Wallet"
                       background={indigo[600]}

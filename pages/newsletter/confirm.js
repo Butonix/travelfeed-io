@@ -1,3 +1,4 @@
+import { getDataFromTree } from '@apollo/react-ssr';
 import { teal } from '@material-ui/core/colors';
 import FormLabel from '@material-ui/core/FormLabel';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +11,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import { NEWSLETTER_CONFIRM_SUBSCRIBE } from '../../helpers/graphql/newsletter';
 import graphQLClient from '../../helpers/graphQLClient';
+import withApollo from '../../lib/withApollo';
 
 const NewsletterConfirmPage = props => {
   const [success, setSuccess] = useState(undefined);
@@ -73,4 +75,4 @@ NewsletterConfirmPage.propTypes = {
   subscribeToken: PropTypes.string,
 };
 
-export default NewsletterConfirmPage;
+export default withApollo(NewsletterConfirmPage, { getDataFromTree });

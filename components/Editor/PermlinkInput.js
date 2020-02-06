@@ -36,7 +36,7 @@ const PermlinkInput = props => {
       id="standard-name"
       value={value}
       placeholder={props.placeholder}
-      label="Custom permlink"
+      label="Custom permalink"
       onChange={handleChange('name')}
       margin="normal"
     />

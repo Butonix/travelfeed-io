@@ -10,12 +10,9 @@ import {
   setHideNewUserMessage,
 } from '../../helpers/token';
 import Link from '../../lib/Link';
-import LoginButton from '../Header/LoginButton';
 
 const NewUserMessage = () => {
   const [open, setOpen] = useState(false);
-  const [signUpOpen, setSignUpOpen] = useState(false);
-  const [color1, setColor1] = useState(700);
   const [color2, setColor2] = useState(700);
 
   useEffect(() => {
@@ -26,11 +23,6 @@ const NewUserMessage = () => {
     )
       setOpen(true);
   }, []);
-
-  const handleJoinClick = () => {
-    setOpen(false);
-    setSignUpOpen(true);
-  };
 
   const onClose = () => {
     setOpen(false);
@@ -82,35 +74,21 @@ const NewUserMessage = () => {
                   style={{ width: '20px' }}
                   className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
                 />
-                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 p-0">
+                <div className="col-xl-8 col-lg8 col-md-8 col-sm-8 col-12 p-0">
                   <Link href="/join">
                     <div
                       onClick={() => setOpen(false)}
                       onKeyDown={() => setOpen(false)}
                       className="text-light text-center font-weight-bold p-2 w-100"
-                      style={{ background: indigo[color1] }}
-                      onMouseEnter={() => setColor1(800)}
-                      onMouseLeave={() => setColor1(700)}
+                      style={{ background: teal[color2] }}
+                      onMouseEnter={() => setColor2(800)}
+                      onMouseLeave={() => setColor2(700)}
                       role="button"
                       tabIndex="0"
                     >
-                      <Typography variant="p">Learn more</Typography>
+                      <Typography variant="button">Learn more</Typography>
                     </div>
                   </Link>
-                </div>
-                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 p-0">
-                  <div
-                    className="cpointer text-light text-center font-weight-bold p-2 w-100"
-                    style={{ background: teal[color2] }}
-                    onMouseEnter={() => setColor2(800)}
-                    onMouseLeave={() => setColor2(700)}
-                    onClick={handleJoinClick}
-                    onKeyDown={handleJoinClick}
-                    role="button"
-                    tabIndex="-1"
-                  >
-                    <Typography variant="p">Join now</Typography>
-                  </div>
                 </div>
                 <div
                   style={{ height: '20px' }}
@@ -120,14 +98,6 @@ const NewUserMessage = () => {
             </div>
           </div>
         </>
-      )}
-      {signUpOpen && (
-        <LoginButton
-          open={signUpOpen}
-          hideButtons
-          onClickClose={() => setSignUpOpen(false)}
-          text=" and Start Your Free Travel Blog"
-        />
       )}
     </>
   );

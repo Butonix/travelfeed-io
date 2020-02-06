@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Query } from '@apollo/react-components';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import React, { Component, Fragment } from 'react';
-import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
@@ -126,6 +126,7 @@ class Bookmarks extends Component {
                               created_at: post.created_at,
                               readtime,
                               excerpt: sanitized,
+                              body: post.body,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,

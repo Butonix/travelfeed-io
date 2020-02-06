@@ -14,7 +14,7 @@ const SliderTags = props => {
               <Link
                 color="textPrimary"
                 as={`/topics/${tag}`}
-                href={`/tag?tags=${tag}`}
+                href="/topics/[tag]"
                 key={tag}
               >
                 <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">

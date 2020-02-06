@@ -1,37 +1,36 @@
+import { useQuery } from '@apollo/react-hooks';
 import Button from '@material-ui/core/Button';
 import { teal } from '@material-ui/core/colors';
 import Skeleton from '@material-ui/lab/Skeleton';
-// import Link from '../../lib/Link';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import {
   nameFromCC,
   randomCountry,
   slugFromCC,
 } from '../../helpers/countryCodes';
-import { GET_POSTS } from '../../helpers/graphql/posts';
-import graphQLClient from '../../helpers/graphQLClient';
+import { GET_DISCOVER_POSTS } from '../../helpers/graphql/posts';
 import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 import PostPreview from '../Post/PostPreview';
 
-const DiscoverCountry = () => {
-  const [country_code, setCountryCode] = useState(null);
-  const [countryPosts, setCountryPosts] = useState([1, 2, 3, 4, 5]);
+const country_code = randomCountry();
 
-  useEffect(() => {
-    const cc = randomCountry();
-    setCountryCode(cc);
-    graphQLClient(GET_POSTS, {
-      country_code: cc,
+const DiscoverCountry = () => {
+  const { data } = useQuery(GET_DISCOVER_POSTS, {
+    variables: {
+      country_code,
       limit: 5,
       min_curation_score: 9000,
-    }).then(({ posts }) => {
-      setCountryPosts(posts);
-    });
-  }, []);
+      orderby: 'random',
+    },
+    ssr: false,
+  });
 
   const country_name = country_code ? nameFromCC(country_code) : '';
   const countryslug = country_code ? slugFromCC(country_code) : '';
+
+  let countryPosts = [1, 2, 3, 4, 5];
+  if (data && data.posts) countryPosts = data.posts;
 
   return (
     <Fragment>
@@ -63,7 +62,7 @@ const DiscoverCountry = () => {
               <Link
                 color="textPrimary"
                 as={`/destinations/${countryslug}`}
-                href={`/destinations?country=${countryslug}`}
+                href="/destinations/[...destination]"
               >
                 <Button variant="contained" color="primary">
                   <span className="text-light">Explore More</span>

@@ -1,9 +1,9 @@
 /* eslint-disable import/no-cycle */
 // https://sysgears.com/articles/how-to-implement-infinite-scroll-with-graphql-and-react/
+import { Query } from '@apollo/react-components';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import LazyLoad from 'react-lazyload';
 import { commentQuery } from '../../helpers/graphql/comments';

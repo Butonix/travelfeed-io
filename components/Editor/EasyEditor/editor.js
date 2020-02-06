@@ -52,7 +52,7 @@ class Editor extends Component {
     const { holderId, autofocus, data } = this.props;
 
     this.editor = new EditorJS({
-      holderId,
+      holder: holderId,
       autofocus,
       data,
       tools: this._tools,

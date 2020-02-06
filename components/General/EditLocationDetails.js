@@ -1,3 +1,4 @@
+import { Mutation } from '@apollo/react-components';
 import Button from '@material-ui/core/Button';
 import red from '@material-ui/core/colors/red';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,7 +20,6 @@ import TextField from '@material-ui/core/TextField';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import EditIcon from '@material-ui/icons/Edit';
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import { ADD_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 import { getRoles } from '../../helpers/token';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
