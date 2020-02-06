@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import Typography from '@material-ui/core/Typography';
 import React, { Fragment } from 'react';
 import { imageProxy } from '../../helpers/getImage';

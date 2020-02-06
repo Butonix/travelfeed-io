@@ -1,4 +1,5 @@
 import { Query } from '@apollo/react-components';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import React, { Fragment } from 'react';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import ErrorPage from '../General/ErrorPage';

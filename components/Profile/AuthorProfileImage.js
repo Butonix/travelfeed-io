@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';

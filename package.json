@@ -47,6 +47,7 @@
     "@sentry/node": "^5.10.1",
     "@turf/helpers": "^6.1.4",
     "@zeit/next-bundle-analyzer": "^0.1.2",
+    "@zeit/next-css": "^1.0.1",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-context": "^1.0.19",

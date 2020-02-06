@@ -2,7 +2,7 @@
 /**
  * Build styles
  */
-require('./index.module.css').toString();
+require('./index.css').toString();
 
 /**
  * Delimiter Block for the Editor.js.
