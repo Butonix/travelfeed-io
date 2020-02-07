@@ -49,6 +49,12 @@ const Team = () => {
         'https://img.travelfeed.io/jpphotography%2F20191205T063918961Z-Reina.jpg',
       content: 'Public Relations Manager and Testing Analyst',
     },
+    {
+      name: 'Tautvydas Slevas',
+      username: 'invisusmundi',
+      photo: 'http://invisusmundi.lt/wp-content/uploads/2018/03/Photo.jpg',
+      content: 'User Acquisition Manager',
+    },
   ];
   const curators = [
     {
@@ -72,6 +78,12 @@ const Team = () => {
       username: 'worldcapture',
       photo:
         'https://cdn.steemitimages.com/DQmSm16YZEhpHFsLW8J9RRmAaL4mbW5S2amC1HhGo5xUtwc/Qd-H4Itg_400x400.jpg',
+      content: 'English Curator',
+    },
+    {
+      username: 'pushpedal',
+      photo:
+        'https://cdn.steemitimages.com/DQmdsct32Se2VcvUJHyVcThud2ua6QMfe463XWV5iMayedi/IMG_20180713_090448_044.jpg',
       content: 'English Curator',
     },
     {
