@@ -542,11 +542,13 @@ const PostEditor = props => {
       } else {
         const parentAuthor = '';
         let parentPermlink;
-        if (defaultTag) {
-          parentPermlink = defaultTag;
+        if (primaryTag) {
+          parentPermlink = primaryTag;
+        } else if (tags.length > 0 && tags[0].match(/hive-/)) {
+          // eslint-disable-next-line prefer-destructuring
+          parentPermlink = tags[0];
         } else {
-          parentPermlink =
-            language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
+          parentPermlink = defaultTag;
         }
         let body = content;
         if (!codeEditor) body = json2md(content);
@@ -750,7 +752,7 @@ const PostEditor = props => {
                         data.preferences &&
                         data.preferences.useAdvancedEditorOptions === false
                           ? ''
-                          : ' The first tag is set automatically based on your language selection. Generic and some Steem-specific tags are highlighted in green, these will appear on some Steem frontends but will be hidden or replaced on TravelFeed.'
+                          : ' The first tag is set automatically based on your language selection. Generic and some Steem-specific tags are highlighted in green, these will appear on some Steem frontends but will be hidden or replaced on TravelFeed. To post to a Steem community, set the community tag (hive-...) as the first tag.'
                       }`}
                       value={`${
                         data &&
