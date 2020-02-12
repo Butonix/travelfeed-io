@@ -102,18 +102,35 @@ const parseHtmlToReact = (htmlBody, options) => {
                 <amp-img
                   alt={attribs.alt}
                   layout="responsive"
-                  src={regSrc}
+                  src={webpSrc}
                   width={attribWidth}
                   height={attribHeight}
-                />
+                >
+                  <amp-img
+                    alt={attribs.alt}
+                    fallback=""
+                    layout="responsive"
+                    src={regSrc}
+                    width={attribWidth}
+                    height={attribHeight}
+                  />
+                </amp-img>
               )) || (
                 <div className="fixed-height-container">
                   <amp-img
                     alt={attribs.alt}
-                    src={regSrc}
+                    src={webpSrc}
                     class="contain"
                     layout="fill"
-                  />
+                  >
+                    <amp-img
+                      alt={attribs.alt}
+                      fallback=""
+                      src={regSrc}
+                      class="contain"
+                      layout="fill"
+                    />
+                  </amp-img>
                 </div>
               )}
               {attribs.alt !== undefined &&
