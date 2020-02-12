@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import 'react-markdown-editor-lite/lib/index.css';
 import uploadFile from '../../helpers/imageUpload';
 import parseBody from '../../helpers/parseBody';
 
