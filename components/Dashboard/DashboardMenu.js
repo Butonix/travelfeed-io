@@ -16,6 +16,7 @@ import CommentsIcon from '@material-ui/icons/Comment';
 import PublishIcon from '@material-ui/icons/Create';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import DraftIcon from '@material-ui/icons/FileCopy';
+import FlagIcon from '@material-ui/icons/Flag';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -347,6 +348,14 @@ class DashboardMenu extends Component {
                     <MailIcon />
                   </ListItemIcon>
                   <ListItemText primary="Newsletter" />
+                </ListItem>
+              </Link>
+              <Link color="textPrimary" href="/dashboard/reports">
+                <ListItem selected={this.props.active === 'reports'} button>
+                  <ListItemIcon>
+                    <FlagIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Reports" />
                 </ListItem>
               </Link>
             </List>
