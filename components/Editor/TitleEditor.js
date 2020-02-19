@@ -19,7 +19,7 @@ const TitleEditor = props => {
   const handleTitleEditorChange = changedtitle => {
     setTimer(clearTimeout(timer));
 
-    setValue(changedtitle.target.value);
+    setValue(changedtitle.target.value.replace(/\n/, ''));
 
     setTimer(setTimeout(triggerChange(changedtitle.target.value), 1000));
   };
