@@ -1,8 +1,20 @@
+import Button from '@material-ui/core/Button';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import uploadFile from '../../../../../helpers/imageUpload';
+import { asyncForEach } from '../../../../../helpers/utils';
+
+function toArray(fileList) {
+  return Array.prototype.slice.call(fileList);
+}
 
 class EasyGaleryUpload extends Component {
-  state = { images: [] };
+  constructor({ data }) {
+    super({ data });
+    this.data = {
+      images: data,
+    };
+  }
 
   static get toolbox() {
     return {
@@ -12,15 +24,39 @@ class EasyGaleryUpload extends Component {
     };
   }
 
+  async uploadFiles(files) {
+    let newImg = this.data.images;
+    if (typeof newImg[0] === 'undefined') newImg = [];
+    await asyncForEach(toArray(files), async file => {
+      uploadFile(file, {}).then(res => {
+        newImg.push(res);
+      });
+    });
+    this.data.images = newImg;
+  }
+
   save() {
-    return { images: this.state.images };
+    return Object.assign(this.data, {
+      images: this.data.images,
+    });
   }
 
   render() {
     const div = document.createElement('DIV');
 
     ReactDOM.render(
-      <div className="bg-primary">Image upload placeholder</div>,
+      <>
+        <Button variant="contained" component="label">
+          Upload Images
+          <input
+            multiple
+            type="file"
+            accept="image/*"
+            className="d-none"
+            onChange={event => this.uploadFiles(event.target.files)}
+          />
+        </Button>
+      </>,
       div,
     );
 
