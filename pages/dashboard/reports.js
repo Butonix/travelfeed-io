@@ -14,7 +14,7 @@ const ReportsPage = () => {
   const isCurator = roles && roles.indexOf('curator') !== -1;
 
   return (
-    <DashboardPage label="Reports" content={isCurator ? <Reports /> : <></>} />
+    <DashboardPage label="reports" content={isCurator ? <Reports /> : <></>} />
   );
 };
 
