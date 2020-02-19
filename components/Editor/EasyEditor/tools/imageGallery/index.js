@@ -27,9 +27,23 @@ class EasyGaleryUpload extends Component {
   async uploadFiles(files) {
     let newImg = this.data.images;
     if (typeof newImg[0] === 'undefined') newImg = [];
+    const output = document.getElementById('result');
+
     await asyncForEach(toArray(files), async file => {
+      const loader = document.createElement('div');
+      loader.classList.add('col-4');
+      loader.innerHTML = `<div class="spinner-border text-secondary m-5" height="50" width="50" />`;
+      output.insertBefore(loader, null);
+
       uploadFile(file, {}).then(res => {
         newImg.push(res);
+        const div = document.createElement('div');
+        div.classList.add('col-4');
+
+        div.innerHTML = `<img class="img-fluid" src="${res.url}"/>`;
+
+        output.insertBefore(div, null);
+        loader.parentNode.removeChild(loader);
       });
     });
     this.data.images = newImg;
@@ -46,8 +60,8 @@ class EasyGaleryUpload extends Component {
 
     ReactDOM.render(
       <>
-        <Button variant="contained" component="label">
-          Upload Images
+        <Button variant="contained" color="secondary" component="label">
+          Click to upload images
           <input
             multiple
             type="file"
@@ -56,6 +70,9 @@ class EasyGaleryUpload extends Component {
             onChange={event => this.uploadFiles(event.target.files)}
           />
         </Button>
+        <div className="container pt-2">
+          <div id="result" className="row" />
+        </div>
       </>,
       div,
     );
