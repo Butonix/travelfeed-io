@@ -3,8 +3,7 @@ import { useAmp } from 'next/amp';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SinglePostAmp from '../../components/Amp/SinglePostAmp';
-import SinglePost from '../../components/Post/SinglePost';
+import Post from '../../components/Post/Post';
 import withApollo from '../../lib/withApollo';
 
 export const config = { amp: 'hybrid' };
@@ -18,9 +17,7 @@ const PostPage = () => {
 
   post.author = router.query.author.replace(/@/, '');
 
-  return (
-    <>{isAmp ? <SinglePostAmp post={post} /> : <SinglePost post={post} />}</>
-  );
+  return <Post post={post} isAmp={isAmp} />;
 };
 
 PostPage.defaultProps = {
