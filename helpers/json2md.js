@@ -125,6 +125,10 @@ const json2md = data => {
       }'/><h3>Read "${
         b.data.meta.title
       }" on TravelFeed.io</h3></center></a></div>\n\n`;
+    } else if (b.type === 'imageGallery' && b.data.images) {
+      html += `\n\n<div json='${JSON.stringify(
+        b,
+      )}'>Image galleries are not supported by your current frontend. View this post on TravelFeed.io for the full experience.</div>\n\n`;
     }
   });
   return html;
