@@ -204,7 +204,9 @@ const SinglePost = props => {
   const canonicalUrl = canonicalLinker(json, app, category, author, permlink);
 
   let bodycontent = (
-    <div className="textPrimary postcontent postCardContent">{bodyText}</div>
+    <div className="textPrimary postcontent postCardContent postanchors">
+      {bodyText}
+    </div>
   );
 
   if (is_nsfw && hideNsfw) {

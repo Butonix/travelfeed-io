@@ -2613,7 +2613,7 @@ const SinglePostAmp = props => {
         )}
         <main id="content" role="main" className="">
           <article className="photo-article">
-            <div className="postcontent">
+            <div className="postcontent postanchors">
               {(depth > 0 || !img_url) && (
                 <>
                   <h1 className="pt3">

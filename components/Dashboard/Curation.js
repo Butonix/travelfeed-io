@@ -266,7 +266,7 @@ const Curation = props => {
     const { bodyText } = reactParsed;
     const bodycontent = (
       // eslint-disable-next-line react/no-danger
-      <div className="textPrimary postcontent postCardContent">
+      <div className="textPrimary postcontent postCardContent postanchors">
         <Typography gutterBottom variant="h2">
           {title}
         </Typography>
