@@ -6,12 +6,12 @@ import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { withStyles } from '@material-ui/styles';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import readingTime from 'reading-time';
 import { imageProxy } from '../../helpers/getImage';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
-import supportsWebp from '../../helpers/webp';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
 import PostMap from '../Maps/PostMap';
@@ -93,12 +93,7 @@ const SinglePost = props => {
         Math.round((ref.current.offsetWidth + 100) / 100) * 100;
       setCardWidth(newCardWidth);
     }
-    const getWebpSupport = async () => {
-      const isWebp = await supportsWebp();
-      return isWebp;
-    };
-    const webp = getWebpSupport();
-    setWebpSupport(webp);
+    setWebpSupport(isWebpSupported());
   }, []);
 
   const toggleModal = () => {

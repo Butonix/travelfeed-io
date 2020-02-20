@@ -4,12 +4,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import MapIcon from '@material-ui/icons/Map';
 import React, { Fragment, useEffect, useState } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import ProgressiveImage from 'react-progressive-image';
 import { getBudgetScore } from '../../helpers/budgetScore';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
-import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import PopularDestinationsPopup from '../Destinations/PopularDestinationsPopup';
 import Head from '../Header/Head';
@@ -23,12 +23,7 @@ const PhotoDetailHeader = props => {
 
   useEffect(() => {
     setScreenWidth(Math.ceil(window.innerWidth / 100) * 100);
-    const getWebpSupport = async () => {
-      const isWebp = await supportsWebp();
-      return isWebp;
-    };
-    const webp = getWebpSupport();
-    setWebpSupport(webp);
+    setWebpSupport(isWebpSupported());
   }, []);
 
   const countryName = nameFromSlug(countrySlug);

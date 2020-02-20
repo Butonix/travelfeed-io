@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import {
@@ -22,7 +23,6 @@ import { GET_POSTS } from '../../helpers/graphql/posts';
 import graphQLClient from '../../helpers/graphQLClient';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
-import supportsWebp from '../../helpers/webp';
 import FixedBackgroundImage from '../General/FixedBackgroundImage';
 import PostContent from '../Post/PostContent';
 import DotOptions from './Curation/DotOptions';
@@ -132,12 +132,7 @@ const Curation = props => {
 
   useEffect(() => {
     fetchPosts();
-    const getWebpSupport = async () => {
-      const isWebp = await supportsWebp();
-      return isWebp;
-    };
-    const webp = getWebpSupport();
-    setWebpSupport(webp);
+    setWebpSupport(isWebpSupported());
   }, []);
 
   const newNotification = notification => {

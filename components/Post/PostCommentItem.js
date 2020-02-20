@@ -7,10 +7,10 @@ import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
-import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import ProfileName from '../Profile/ProfileName';
@@ -40,7 +40,7 @@ class PostCommentItem extends Component {
     if (this.props.post && user === this.props.post.author) {
       this.setState({ isEdit: true });
     }
-    const webpSupport = await supportsWebp();
+    const webpSupport = isWebpSupported();
     this.setState({
       webpSupport,
     });

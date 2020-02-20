@@ -2,10 +2,10 @@ import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
-import supportsWebp from '../../helpers/webp';
 import PostContent from '../Post/PostContent';
 import PostTitle from '../Post/PostTitle';
 
@@ -13,12 +13,7 @@ const EditorPreview = props => {
   const [webpSupport, setWebpSupport] = useState(undefined);
 
   useEffect(() => {
-    const getWebpSupport = async () => {
-      const isWebp = await supportsWebp();
-      return isWebp;
-    };
-    const webp = getWebpSupport();
-    setWebpSupport(webp);
+    setWebpSupport(isWebpSupported());
   }, []);
 
   let bodyText = <br />;

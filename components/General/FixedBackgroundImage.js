@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import { imageProxy } from '../../helpers/getImage';
-import supportsWebp from '../../helpers/webp';
 
 const FixedBackgroundImage = props => {
   const { component } = props;
@@ -11,12 +11,7 @@ const FixedBackgroundImage = props => {
   const [webpSupport, setWebpSupport] = useState(undefined);
 
   useEffect(() => {
-    const getWebpSupport = async () => {
-      const isWebp = await supportsWebp();
-      return isWebp;
-    };
-    const webp = getWebpSupport();
-    setWebpSupport(webp);
+    setWebpSupport(isWebpSupported());
     setWindowWidth((Math.ceil(window.innerWidth / 640) + 1) * 640);
     setOpacity(1);
   }, []);
