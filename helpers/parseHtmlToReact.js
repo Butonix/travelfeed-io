@@ -346,7 +346,7 @@ const parseHtmlToReact = (htmlBody, options) => {
           } catch {
             return <></>;
           }
-          return <ImageGallery images={galleryImages} />;
+          return <ImageGallery images={galleryImages} isWebp={isWebp} />;
         }
         let headings = [];
         if (json.type === 'tableOfContents')
