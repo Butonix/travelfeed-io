@@ -12,6 +12,7 @@ import getSlug from 'speakingurl';
 import AmpImageGallery from '../components/Amp/AmpImageGallery';
 import ImageGallery from '../components/Post/DynamicPostComponents/ImageGallery';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
+import MasonryImageGallery from '../components/Post/DynamicPostComponents/MasonryImageGallery';
 import TableOfContents from '../components/Post/DynamicPostComponents/TableOfContents';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
@@ -342,8 +343,10 @@ const parseHtmlToReact = (htmlBody, options) => {
         }
         if (json.type === 'imageGallery') {
           let galleryImages;
+          let style;
           try {
             galleryImages = json.data.images;
+            style = json.data.style;
           } catch {
             return <></>;
           }
@@ -352,6 +355,12 @@ const parseHtmlToReact = (htmlBody, options) => {
             embeds.selector = true;
             embeds.lightbox = true;
           }
+          if (style === 'masonry')
+            return options.amp ? (
+              <AmpImageGallery images={galleryImages} isWebp={isWebp} />
+            ) : (
+              <MasonryImageGallery images={galleryImages} isWebp={isWebp} />
+            );
           return options.amp ? (
             <AmpImageGallery images={galleryImages} isWebp={isWebp} />
           ) : (

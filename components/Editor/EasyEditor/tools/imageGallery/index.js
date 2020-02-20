@@ -1,3 +1,7 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-underscore-dangle */
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
@@ -10,10 +14,41 @@ function toArray(fileList) {
 }
 
 class EasyGaleryUpload extends Component {
-  constructor({ data }) {
-    super({ data });
+  constructor({ data, api }) {
+    super({ data, api });
+    this.api = api;
+    this.settings = [
+      {
+        name: 'gallery',
+        title: 'Gallery',
+        icon:
+          '<svg id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0, 0, 400,400"><g id="svgg"><path id="path0" d="M22.113 7.778 C 16.744 11.052,17.163 -2.122,17.381 156.616 L 17.578 300.218 20.580 302.648 L 23.582 305.078 198.315 305.274 C 391.830 305.492,377.092 305.844,378.599 300.972 C 378.831 300.223,379.346 298.999,379.745 298.253 C 380.182 297.434,380.469 240.576,380.469 154.803 L 380.469 12.711 378.837 10.637 C 375.125 5.917,388.780 6.250,198.672 6.253 C 27.520 6.256,24.568 6.281,22.113 7.778 M353.906 138.437 C 353.906 199.539,353.615 249.197,353.260 248.789 C 352.904 248.381,349.841 243.652,346.453 238.281 C 343.065 232.910,340.050 228.340,339.753 228.125 C 339.456 227.910,335.178 221.406,330.248 213.672 C 325.317 205.938,317.988 194.632,313.961 188.549 C 309.935 182.465,304.355 173.888,301.563 169.488 C 298.770 165.087,296.118 161.100,295.669 160.626 C 295.221 160.153,293.111 157.059,290.982 153.751 C 281.138 138.461,270.727 140.168,258.806 159.027 C 255.803 163.778,251.802 169.817,249.915 172.448 C 248.028 175.079,243.528 181.972,239.914 187.765 C 234.026 197.205,233.220 198.175,232.152 197.108 C 231.035 195.990,227.225 190.963,200.837 155.783 C 195.066 148.091,190.114 141.621,189.832 141.406 C 189.550 141.191,185.261 135.566,180.301 128.906 C 169.979 115.047,169.476 114.525,164.902 112.911 C 158.966 110.817,151.175 112.914,148.238 117.396 C 147.520 118.492,146.128 120.276,145.146 121.359 C 144.163 122.443,140.195 127.642,136.328 132.914 C 132.461 138.186,127.939 144.275,126.279 146.445 C 117.560 157.845,99.590 181.620,93.892 189.294 C 90.318 194.108,85.045 201.006,82.174 204.623 C 79.302 208.240,73.262 216.191,68.750 222.292 C 64.238 228.393,56.768 238.404,52.148 244.539 L 43.750 255.694 43.750 141.519 L 43.750 27.344 198.828 27.344 L 353.906 27.344 353.906 138.437 M100.603 71.527 C 94.117 74.904,92.442 81.941,96.911 87.031 C 104.994 96.237,121.102 91.971,121.091 80.627 C 121.082 71.759,109.791 66.744,100.603 71.527 M177.688 168.331 C 182.778 175.191,187.356 181.218,187.863 181.724 C 188.369 182.231,192.977 188.348,198.103 195.318 C 203.228 202.288,207.990 208.566,208.685 209.269 C 209.379 209.972,213.579 215.469,218.017 221.484 C 222.455 227.500,228.579 235.586,231.626 239.453 C 234.674 243.320,240.114 250.527,243.716 255.469 C 247.318 260.410,250.673 264.805,251.172 265.234 C 252.046 265.986,259.494 275.806,263.171 281.055 L 264.950 283.594 159.770 283.594 L 54.590 283.594 57.099 280.101 C 58.479 278.179,60.200 275.971,60.925 275.193 C 61.650 274.415,66.459 268.165,71.612 261.304 C 91.957 234.213,101.111 222.130,103.558 219.141 C 104.964 217.422,110.100 210.694,114.971 204.189 C 119.843 197.684,128.532 186.082,134.282 178.407 C 140.031 170.733,145.305 163.878,146.001 163.176 C 146.696 162.473,150.070 158.068,153.498 153.387 L 159.731 144.876 164.082 150.368 C 166.476 153.388,172.598 161.472,177.688 168.331 M285.251 192.383 C 289.695 199.365,293.865 205.703,294.517 206.467 C 295.169 207.230,299.775 214.344,304.751 222.275 C 309.728 230.207,314.354 237.316,315.032 238.075 C 315.710 238.833,320.496 246.133,325.667 254.297 C 330.839 262.461,335.372 269.492,335.740 269.922 C 336.993 271.381,344.531 282.740,344.531 283.168 C 344.531 283.402,333.862 283.594,320.821 283.594 L 297.111 283.594 285.860 268.646 C 279.672 260.425,270.650 248.384,265.811 241.888 C 260.971 235.393,256.576 229.551,256.044 228.906 C 255.511 228.262,253.783 226.147,252.204 224.208 L 249.333 220.681 252.205 216.788 C 253.785 214.647,259.121 206.507,264.063 198.700 C 272.012 186.140,276.397 179.688,276.984 179.688 C 277.087 179.688,280.808 185.400,285.251 192.383 M17.188 348.828 L 17.188 383.594 76.563 383.594 L 135.938 383.594 135.938 348.828 L 135.938 314.063 76.563 314.063 L 17.188 314.063 17.188 348.828 M138.281 348.828 L 138.281 383.594 197.656 383.594 L 257.031 383.594 257.031 348.828 L 257.031 314.063 197.656 314.063 L 138.281 314.063 138.281 348.828 M261.719 349.609 L 261.719 384.375 321.094 384.375 L 380.469 384.375 380.469 349.609 L 380.469 314.844 321.094 314.844 L 261.719 314.844 261.719 349.609 " stroke="none" fill-rule="evenodd"></path></g></svg>',
+        default: true,
+      },
+      {
+        name: 'masonry',
+        title: 'Masonry',
+        icon:
+          '<svg id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0, 0, 400,400"><g id="svgg"><path id="path0" d="M0.000 61.719 L 0.000 123.438 92.188 123.438 L 184.375 123.438 184.375 61.719 L 184.375 0.000 92.188 0.000 L 0.000 0.000 0.000 61.719 M220.313 51.563 L 220.313 103.125 310.156 103.125 L 400.000 103.125 400.000 51.563 L 400.000 0.000 310.156 0.000 L 220.313 0.000 220.313 51.563 M224.219 267.969 L 224.219 400.000 312.109 400.000 L 400.000 400.000 400.000 267.969 L 400.000 135.938 312.109 135.938 L 224.219 135.938 224.219 267.969 M0.000 210.156 L 0.000 267.969 93.359 267.969 L 186.719 267.969 186.719 210.156 L 186.719 152.344 93.359 152.344 L 0.000 152.344 0.000 210.156 M0.000 348.047 L 0.000 400.000 93.750 400.000 L 187.500 400.000 187.500 348.047 L 187.500 296.094 93.750 296.094 L 0.000 296.094 0.000 348.047 " stroke="none" fill-rule="evenodd"></path></g></svg>',
+        default: false,
+      },
+    ];
     this.data = {
       images: data,
+      style: this.settings.find(tune => tune.default === true).name,
+    };
+  }
+
+  get CSS() {
+    return {
+      baseBlock: this.api.styles.block,
+      wrapper: 'cdx-list',
+      wrapperOrdered: 'cdx-list--ordered',
+      wrapperUnordered: 'cdx-list--unordered',
+      item: 'cdx-list__item',
+      settingsWrapper: 'cdx-list-settings',
+      settingsButton: this.api.styles.settingsButton,
+      settingsButtonActive: this.api.styles.settingsButtonActive,
     };
   }
 
@@ -58,6 +93,73 @@ class EasyGaleryUpload extends Component {
     return Object.assign(this.data, {
       images: this.data.images,
     });
+  }
+
+  /**
+   * Toggles List style
+   * @param {string} style - 'ordered'|'unordered'
+   */
+  toggleTune(style) {
+    this.data.style = style;
+  }
+
+  /**
+   * Helper for making Elements with attributes
+   *
+   * @param  {string} tagName           - new Element tag name
+   * @param  {array|string} classNames  - list or name of CSS classname(s)
+   * @param  {Object} attributes        - any attributes
+   * @return {Element}
+   */
+  _make(tagName, classNames = null, attributes = {}) {
+    const el = document.createElement(tagName);
+
+    if (Array.isArray(classNames)) {
+      el.classList.add(...classNames);
+    } else if (classNames) {
+      el.classList.add(classNames);
+    }
+
+    for (const attrName in attributes) {
+      el[attrName] = attributes[attrName];
+    }
+
+    return el;
+  }
+
+  renderSettings() {
+    const wrapper = this._make('div', [this.CSS.settingsWrapper], {});
+
+    this.settings.forEach(item => {
+      const itemEl = this._make('div', this.CSS.settingsButton, {
+        innerHTML: item.icon,
+      });
+
+      itemEl.addEventListener('click', () => {
+        this.toggleTune(item.name);
+
+        // clear other buttons
+        const buttons = itemEl.parentNode.querySelectorAll(
+          // eslint-disable-next-line prefer-template
+          '.' + this.CSS.settingsButton,
+        );
+
+        Array.from(buttons).forEach(button =>
+          button.classList.remove(this.CSS.settingsButtonActive),
+        );
+
+        // mark active
+        itemEl.classList.toggle(this.CSS.settingsButtonActive);
+      });
+
+      if (this.data.style === item.name) {
+        itemEl.classList.add(this.CSS.settingsButtonActive);
+      }
+
+      wrapper.appendChild(itemEl);
+    });
+
+    return wrapper;
   }
 
   render() {
