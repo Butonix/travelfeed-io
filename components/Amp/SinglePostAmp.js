@@ -102,6 +102,27 @@ const SinglePostAmp = props => {
                 src="https://cdn.ampproject.org/v0/amp-instagram-0.1.js"
               />
             )}
+            {embeds.carousel && (
+              <script
+                async
+                custom-element="amp-carousel"
+                src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"
+              />
+            )}
+            {embeds.selector && (
+              <script
+                async
+                custom-element="amp-selector"
+                src="https://cdn.ampproject.org/v0/amp-selector-0.1.js"
+              />
+            )}
+            {embeds.lightbox && (
+              <script
+                async
+                custom-element="amp-lightbox-gallery"
+                src="https://cdn.ampproject.org/v0/amp-lightbox-gallery-0.1.js"
+              />
+            )}
             {schema && (
               <script
                 type="application/ld+json"

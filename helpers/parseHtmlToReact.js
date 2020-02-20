@@ -9,6 +9,7 @@ import InstagramEmbed from 'react-instagram-embed';
 import LazyLoad from 'react-lazyload';
 import ProgressiveImage from 'react-progressive-image';
 import getSlug from 'speakingurl';
+import AmpImageGallery from '../components/Amp/AmpImageGallery';
 import ImageGallery from '../components/Post/DynamicPostComponents/ImageGallery';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import TableOfContents from '../components/Post/DynamicPostComponents/TableOfContents';
@@ -346,7 +347,16 @@ const parseHtmlToReact = (htmlBody, options) => {
           } catch {
             return <></>;
           }
-          return <ImageGallery images={galleryImages} isWebp={isWebp} />;
+          if (options.amp) {
+            embeds.carousel = true;
+            embeds.selector = true;
+            embeds.lightbox = true;
+          }
+          return options.amp ? (
+            <AmpImageGallery images={galleryImages} isWebp={isWebp} />
+          ) : (
+            <ImageGallery images={galleryImages} isWebp={isWebp} />
+          );
         }
         let headings = [];
         if (json.type === 'tableOfContents')

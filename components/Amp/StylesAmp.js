@@ -2341,6 +2341,14 @@ const StylesAmp = () => {
             padding-top: 55px;
             margin-top: -55px;
           }
+
+          .carousel-preview [selected] {
+            opacity: 0.5;
+            outline: 0;
+          }
+          .carousel-preview button:active {
+            opacity: 0.5;
+          }
         `}
       </style>
     </>
