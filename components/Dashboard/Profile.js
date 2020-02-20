@@ -211,6 +211,7 @@ const Profile = () => {
                     <UpdateProfileButton
                       profile={JSON.stringify({
                         profile: {
+                          version: 2,
                           name: displayName,
                           cover_image: coverImage,
                           profile_image: profileImage,
