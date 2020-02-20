@@ -128,7 +128,13 @@ const json2md = data => {
     } else if (b.type === 'imageGallery' && b.data.images) {
       html += `\n\n<div json='${JSON.stringify(
         b,
-      )}'>Image galleries are not supported by your current frontend. View this post on TravelFeed.io for the full experience.</div>\n\n`;
+      )}'><p><em>Image galleries are not supported by your current frontend. View this post on TravelFeed.io for the full experience.</em></p>${
+        b.data && b.data.images && b.data.images.length > 0
+          ? b.data.images
+              .map(({ url }) => `<center><img src="${url}" /></center>`)
+              .join('')
+          : ''
+      }</div>\n\n`;
     }
   });
   return html;
