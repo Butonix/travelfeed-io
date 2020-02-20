@@ -89,7 +89,9 @@ const BlacklistMenu = props => {
         aria-describedby="alert-dialog-description"
         onClose={onCancel}
       >
-        <DialogTitle id="alert-dialog-title">Blacklist Post</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Blacklist Post @{author}/{permlink}
+        </DialogTitle>
         <DialogContent>
           {!customReason && (
             <>
