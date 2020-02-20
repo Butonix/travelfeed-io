@@ -1,6 +1,9 @@
+import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import ReactImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import LazyLoad from 'react-lazyload';
+import ProgressiveImage from 'react-progressive-image';
 import { imageProxy } from '../../../helpers/getImage';
 
 const ImageGallery = props => {
@@ -26,9 +29,25 @@ const ImageGallery = props => {
       });
     });
   }
+
+  const placeholder = <Skeleton variant="rect" width="100%" height={550} />;
+
   return (
     <div className="fullwidth">
-      <ReactImageGallery items={items} />
+      <LazyLoad offset={700} height={550} once placeholder={placeholder}>
+        {items && items.length > 0 ? (
+          <ProgressiveImage src={items[0].original} placeholder={placeholder}>
+            {(src, loading) => {
+              if (loading) {
+                return placeholder;
+              }
+              return <ReactImageGallery items={items} />;
+            }}
+          </ProgressiveImage>
+        ) : (
+          placeholder
+        )}
+      </LazyLoad>
     </div>
   );
 };
