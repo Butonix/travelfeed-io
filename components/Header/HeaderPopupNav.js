@@ -21,7 +21,7 @@ const styles = () => ({
 
 class HeaderPopupNav extends Component {
   state = {
-    selection: 'Popular Countries',
+    selection: 'Communities',
     random: undefined,
   };
 
@@ -63,6 +63,12 @@ class HeaderPopupNav extends Component {
               <MenuList>
                 <DestinationMenuItem
                   onClick={this.onMenuClick}
+                  icon={<TopicIcon />}
+                  text="Communities"
+                  active={this.state.selection === 'Communities'}
+                />
+                <DestinationMenuItem
+                  onClick={this.onMenuClick}
                   icon={<CountryIcon />}
                   text="Popular Countries"
                   active={this.state.selection === 'Popular Countries'}
@@ -72,12 +78,6 @@ class HeaderPopupNav extends Component {
                   icon={<CityIcon />}
                   text="Popular Places"
                   active={this.state.selection === 'Popular Places'}
-                />
-                <DestinationMenuItem
-                  onClick={this.onMenuClick}
-                  icon={<TopicIcon />}
-                  text="Communities"
-                  active={this.state.selection === 'Communities'}
                 />
                 <Link color="textPrimary" href="/map">
                   <DestinationMenuItem

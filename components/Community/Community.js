@@ -25,9 +25,7 @@ const Community = props => {
   } = props.community;
 
   useEffect(() => {
-    console.log(props.community.name);
     getAccount(props.community.name).then(profile => {
-      console.log(profile);
       if (profile.cover_image) setCoverImage(profile.cover_image);
       else
         setCoverImage(
