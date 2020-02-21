@@ -112,16 +112,17 @@ const PhotoHeader = props => {
               }}
             >
               <em>
-                {(locationDetails && locationDetails.description) || (
-                  <>
-                    <br />
-                    <br />
-                  </>
-                )}
+                {description ||
+                  (locationDetails && locationDetails.description) || (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  )}
               </em>
             </Typography>
             <div className="text-center">
-              {!tag && (
+              {!tag && !props.hideButtons && (
                 <>
                   <Link href={`/map?search=${title}`}>
                     <Button className="m-2" variant="contained" color="primary">

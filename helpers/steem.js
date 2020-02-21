@@ -96,4 +96,15 @@ export const getIsWitnessVote = username => {
   });
 };
 
+// Extracted from https://github.com/steemit/condenser/blob/master/src/app/utils/steemApi.js
+export async function callBridge(method, params) {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line prefer-template
+    steem.api.call('bridge.' + method, params, function(err, data) {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+}
+
 export default steem;
