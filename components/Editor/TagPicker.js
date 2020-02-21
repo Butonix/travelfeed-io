@@ -156,7 +156,7 @@ const TagPicker = props => {
 
   const selectedItem = props.value;
 
-  const allowedTagNumber = props.useAdvancedMode ? 10 : 4;
+  const allowedTagNumber = props.useAdvancedMode ? 10 : 5;
 
   const handleKeyDown = event => {
     if (
