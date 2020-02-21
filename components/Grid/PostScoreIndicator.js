@@ -34,7 +34,7 @@ const PostScoreIndicator = props => {
         <DialogTitle id="alert-dialog-title">Curator evaluation</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {scores && Object.values(scores).indexOf(true) === -1 ? (
+            {!scores || Object.values(scores).indexOf(true) === -1 ? (
               'We love your blog! Keep up the great work :)'
             ) : (
               <ul>
