@@ -567,10 +567,9 @@ const PostEditor = props => {
         const metadata = meta;
         if (!codeEditor) metadata.easyEditorId = id;
         else metadata.easyEditorId = undefined;
-        let taglist;
+        let taglist = tags;
         if (defaultTag.substring(0, 4) !== 'hive')
           taglist = [`${defaultTag}`, ...tags];
-        else taglist = [tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
         if (imageList.length > 0) metadata.image = imageList;
