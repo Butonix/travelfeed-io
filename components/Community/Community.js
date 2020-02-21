@@ -25,15 +25,16 @@ const Community = props => {
   } = props.community;
 
   useEffect(() => {
-    getAccount(name).then(profile => {
-      if (profile.cover_image && !coverImage)
-        setCoverImage(profile.cover_image);
+    console.log(props.community.name);
+    getAccount(props.community.name).then(profile => {
+      console.log(profile);
+      if (profile.cover_image) setCoverImage(profile.cover_image);
       else
         setCoverImage(
           'https://steemitimages.com/p/vM1pGHgNcyCbeeHc87msUy15a6gssa8TxcCWDULWJwXbLzzTNUCuGN3v6fTG1Cxa3iA7dj2rixvqQw5FRuewtFGmCt4r68CcjssuoSnko5jXFk1x2hcHhcFRVCJFWE3Jf3rfCez',
         );
     });
-  }, []);
+  }, [props]);
 
   return (
     <>
