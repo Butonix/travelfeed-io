@@ -7,7 +7,6 @@ import ProgressiveImage from 'react-progressive-image';
 import { getBudgetScore } from '../../helpers/budgetScore';
 import Link from '../../lib/Link';
 import PopularDestinationsPopup from '../Destinations/PopularDestinationsPopup';
-import Head from '../Header/Head';
 import EditLocationDetails from './EditLocationDetails';
 import TopicSelector from './TopicSelector';
 
@@ -42,7 +41,9 @@ const PhotoHeader = props => {
               component="h5"
             >
               {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
-              (tag && `#${tag}`) ||
+              (tag && props.communityTag
+                ? `c/${tag.substring(5, 11)}`
+                : `#${tag}`) ||
                 (query.city && (
                   <span>
                     <Link
@@ -88,7 +89,7 @@ const PhotoHeader = props => {
                   subdivision={props.query.subdivision}
                   city={props.query.city}
                   tag={tag}
-                  data={locationDetails}
+                  data={locationDetails || { title, description, image }}
                 />
               )}
             </Typography>
@@ -236,44 +237,9 @@ url("${image}")`,
       {innerCard}
     </div>
   );
-  const { country_code, subdivision, city } = props.query;
-  const breadcrumbs = [];
-  if (country_code) {
-    breadcrumbs.push(
-      {
-        position: 1,
-        name: 'Destinations',
-        item: `https://travelfeed.io/destinations`,
-      },
-      {
-        position: 2,
-        name: countryName,
-        item: `https://travelfeed.io/destinations/${props.countrySlug}`,
-      },
-    );
-  }
-  if (subdivision) {
-    breadcrumbs.push({
-      position: 3,
-      name: subdivision,
-      item: `https://travelfeed.io/destinations/${props.countrySlug}/${subdivision}`,
-    });
-  }
-  if (city) {
-    breadcrumbs.push({
-      position: 4,
-      name: city,
-      item: `https://travelfeed.io/destinations/${props.countrySlug}/${subdivision}/${city}`,
-    });
-  }
+
   return (
     <>
-      <Head
-        breadcrumbs={breadcrumbs}
-        noIndex={props.noIndex}
-        shorttitle={`${title}: Top Travel Blogs`}
-        description={description}
-      />
       {locationDetails && locationDetails && !locationDetails.image ? (
         loadedCard
       ) : (

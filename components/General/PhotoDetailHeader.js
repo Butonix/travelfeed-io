@@ -4,6 +4,7 @@ import { isWebpSupported } from 'react-image-webp/dist/utils';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
+import Head from '../Header/Head';
 import PhotoHeader from './PhotoHeader';
 
 const PhotoDetailHeader = props => {
@@ -65,22 +66,61 @@ const PhotoDetailHeader = props => {
               );
             }
 
+            const { country_code, subdivision, city } = props.query;
+            const breadcrumbs = [];
+            if (country_code) {
+              breadcrumbs.push(
+                {
+                  position: 1,
+                  name: 'Destinations',
+                  item: `https://travelfeed.io/destinations`,
+                },
+                {
+                  position: 2,
+                  name: countryName,
+                  item: `https://travelfeed.io/destinations/${props.countrySlug}`,
+                },
+              );
+            }
+            if (subdivision) {
+              breadcrumbs.push({
+                position: 3,
+                name: subdivision,
+                item: `https://travelfeed.io/destinations/${props.countrySlug}/${subdivision}`,
+              });
+            }
+            if (city) {
+              breadcrumbs.push({
+                position: 4,
+                name: city,
+                item: `https://travelfeed.io/destinations/${props.countrySlug}/${subdivision}/${city}`,
+              });
+            }
+
             return (
-              <PhotoHeader
-                title={detailTitle}
-                description={description}
-                image={image}
-                query={query}
-                countrySlug={countrySlug}
-                tag={tag}
-                subtitle={
-                  (data && data.locationDetails.subtitle) || countryName
-                }
-                countryName={countryName}
-                locationDetails={
-                  data && data.locationDetails ? data.locationDetails : {}
-                }
-              />
+              <>
+                <Head
+                  noIndex={props.noIndex}
+                  shorttitle={`${title}: Top Travel Blogs`}
+                  description={description}
+                  breadcrumbs={breadcrumbs}
+                />
+                <PhotoHeader
+                  title={detailTitle}
+                  description={description}
+                  image={image}
+                  query={query}
+                  countrySlug={countrySlug}
+                  tag={tag}
+                  subtitle={
+                    (data && data.locationDetails.subtitle) || countryName
+                  }
+                  countryName={countryName}
+                  locationDetails={
+                    data && data.locationDetails ? data.locationDetails : {}
+                  }
+                />
+              </>
             );
           }
           return <Fragment />;

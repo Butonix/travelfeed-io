@@ -76,8 +76,8 @@ class HeaderPopupNav extends Component {
                 <DestinationMenuItem
                   onClick={this.onMenuClick}
                   icon={<TopicIcon />}
-                  text="Popular Topics"
-                  active={this.state.selection === 'Popular Topics'}
+                  text="Communities"
+                  active={this.state.selection === 'Communities'}
                 />
                 <Link color="textPrimary" href="/map">
                   <DestinationMenuItem

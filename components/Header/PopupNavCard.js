@@ -37,8 +37,8 @@ const PopupNavCard = props => {
     );
 
   if (props.data.tag) {
-    href = `/topics/[tag]`;
-    as = `/topics/${props.data.tag}`;
+    href = `/c/[community]`;
+    as = `/c/${props.data.tag}`;
     key = props.data.tag;
   } else if (props.data.subdivision) {
     const slug = slugFromCC(props.data.country_code);
