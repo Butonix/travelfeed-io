@@ -1,6 +1,6 @@
 {
   "name": "travelfeed-io",
-  "version": "2.9.0",
+  "version": "2.9.5",
   "repository": "https://github.com/travelfeed-io/travelfeed-io",
   "description": "The TravelFeed dApp. Powered by Node, Express, React, Next and the Steem Blockchain.",
   "main": "server.js",
