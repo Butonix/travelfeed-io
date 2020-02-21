@@ -66,6 +66,7 @@ const Community = props => {
           <div className="col-xl-3 col-lg-4 d-xl-block d-lg-block d-md-none d-xm-none d-none">
             <div className="pt-3">
               <HeaderCard
+                nobottomborder
                 title="About"
                 titlesize="h5"
                 background={teal[600]}
@@ -96,6 +97,7 @@ const Community = props => {
             </div>
             <div className="pt-3">
               <HeaderCard
+                nobottomborder
                 title="Moderators"
                 titlesize="h5"
                 background={teal[600]}
@@ -132,6 +134,7 @@ const Community = props => {
             {flag_text && (
               <div className="pt-3">
                 <HeaderCard
+                  nobottomborder
                   title="Rules"
                   titlesize="h5"
                   background={teal[600]}

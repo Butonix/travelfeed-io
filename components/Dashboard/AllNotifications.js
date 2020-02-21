@@ -33,7 +33,7 @@ const AllNotifications = props => {
           }
           if (data && data.notifications && data.notifications.length === 0) {
             return (
-              <Card className="mt-5 m-2 text-center">
+              <Card className="mt-3 m-2 text-center">
                 <CardContent>
                   No notifications. Have you enabled notifications in the
                   settings?
