@@ -22,6 +22,7 @@ import { GET_USER_STATS } from '../../helpers/graphql/stats';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
+import VoteButton from '../Post/VoteButton';
 import AllNotifications from './AllNotifications';
 import PostsTable from './Stats/PostsTable';
 import RecentEarnings from './Stats/RecentEarningsChart';
@@ -80,12 +81,16 @@ const Stats = () => {
                     Icon={QualityIcon}
                     title="Quality Score"
                     value={
-                      data && data.userstats
-                        ? calculateQualityScore(
-                            data.userstats.total_featured,
-                            data.userstats.total_posts,
-                          )
-                        : ''
+                      data && data.userstats ? (
+                        <VoteButton
+                          weight={calculateQualityScore(
+                            data.userstats.quality_score,
+                          )}
+                          size="24"
+                        />
+                      ) : (
+                        ''
+                      )
                     }
                     iconColor={pink[600]}
                     boxColor={pink[400]}
