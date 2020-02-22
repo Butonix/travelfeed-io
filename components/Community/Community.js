@@ -142,6 +142,26 @@ const Community = props => {
                       <Typography variant="body1">
                         <ol>
                           {flag_text.split(/\n/).map(rule => {
+                            if (
+                              rule ===
+                              'More info: https://travelfeed.io/@travelfeed/updated-how-to-participate-on-travelfeed-io'
+                            )
+                              return (
+                                <li>
+                                  <Link
+                                    color="textPrimary"
+                                    as="/@travelfeed/updated-how-to-participate-on-travelfeed-io"
+                                    href="/[author]/[permlink]"
+                                  >
+                                    <Typography
+                                      color="primary"
+                                      display="inline"
+                                    >
+                                      More info
+                                    </Typography>
+                                  </Link>
+                                </li>
+                              );
                             return <li>{rule}</li>;
                           })}
                         </ol>
