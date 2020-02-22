@@ -39,6 +39,26 @@ const ErrorPage = props => {
       message:
         'The login credentials you provided are not valid. Please log in again.',
     };
+  else if (statusCode === 'communityNotWhitelisted')
+    error = {
+      title: 'Community not whitelisted',
+      message: (
+        <>
+          This community is not yet whitelisted to be viewed on TravelFeed. If
+          you own this community and believe that it is travel-related, please
+          send us an email at{' '}
+          <Typography color="primary" display="inline">
+            <a
+              href="mailto:contact@travelfeed.io"
+              rel="noopener noreferrer nofollow"
+              target="_blank"
+            >
+              contact@travelfeed.io
+            </a>
+          </Typography>
+        </>
+      ),
+    };
   else if (statusCode === 'exit_url')
     error = {
       title: 'Warning: External Link',

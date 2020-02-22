@@ -15,3 +15,8 @@ export const communities = [
   { title: 'Travel Hacks', tag: 'hive-100001' },
   { title: 'Urban Exploration', tag: 'hive-104387' },
 ];
+
+export const communityList = [];
+communities.forEach(({ tag }) => {
+  communityList.push(tag);
+});
