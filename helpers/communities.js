@@ -11,6 +11,7 @@ export const communities = [
   { title: 'Food of the World', tag: 'hive-155555' },
   { title: 'Hitchhiking', tag: 'hive-177777' },
   { title: 'Road Trips', tag: 'hive-144444' },
+  { title: 'Solo Travel', tag: 'hive-100705' },
   { title: 'Travel Hacks', tag: 'hive-100001' },
   { title: 'Urban Exploration', tag: 'hive-104387' },
 ];
