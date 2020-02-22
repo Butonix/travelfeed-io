@@ -9,7 +9,7 @@ const PopupNavItem = props => {
     <>
       <Query
         query={GET_FEATURED_LOCATIONS}
-        variables={{ tags, countries, places }}
+        variables={{ communities: tags, countries, places }}
       >
         {({ data }) => {
           return (

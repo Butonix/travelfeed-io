@@ -1,25 +1,17 @@
 /* eslint-disable no-shadow */
-import { useQuery } from '@apollo/react-hooks';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { withStyles } from '@material-ui/styles';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import readingTime from 'reading-time';
-import sanitize from 'sanitize-html';
-import canonicalLinker from '../../helpers/canonicalLinker';
-import cleanTags from '../../helpers/cleanTags';
-import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
-import { GET_POST } from '../../helpers/graphql/singlePost';
-import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
-import supportsWebp from '../../helpers/webp';
-import ErrorPage from '../General/ErrorPage';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
 import PostMap from '../Maps/PostMap';
@@ -44,9 +36,46 @@ const styles = () => ({
 });
 
 const SinglePost = props => {
+  const {
+    country_code,
+    title,
+    img_url,
+    excerpt,
+    canonicalUrl,
+    created_at,
+    display_name,
+    tags,
+    breadcrumbs,
+    depth,
+    root_author,
+    root_permlink,
+    author,
+    bodycontent,
+    isTf,
+    htmlBody,
+    sanitized,
+    permlink,
+    root_title,
+    post_id,
+    body,
+    children,
+    total_votes,
+    votes,
+    parent_author,
+    parent_permlink,
+    lazy_img_url,
+    json,
+    latitude,
+    longitude,
+    category,
+    subdivision,
+    curation_score,
+    hasData,
+    schema,
+  } = props.post;
+
   const [webpSupport, setWebpSupport] = useState(undefined);
   const [cardWidth, setCardWidth] = useState(800);
-  const [hideNsfw, setHideNsfw] = useState(true);
   const [state, setState] = useState({
     title: 'Most smiles',
     orderby: 'total_votes',
@@ -64,12 +93,7 @@ const SinglePost = props => {
         Math.round((ref.current.offsetWidth + 100) / 100) * 100;
       setCardWidth(newCardWidth);
     }
-    const getWebpSupport = async () => {
-      const isWebp = await supportsWebp();
-      return isWebp;
-    };
-    const webp = getWebpSupport();
-    setWebpSupport(webp);
+    setWebpSupport(isWebpSupported());
   }, []);
 
   const toggleModal = () => {
@@ -95,102 +119,6 @@ const SinglePost = props => {
 
   const { classes } = props;
 
-  let children = 0;
-  let is_travelfeed;
-  let is_blacklisted;
-  let is_nsfw;
-  let root_title;
-  let tags;
-  let latitude;
-  let longitude;
-  let votes;
-  let total_votes;
-  let post_id;
-  let parent_author;
-  let parent_permlink;
-  let root_author;
-  let root_permlink;
-  let json;
-  let category;
-  let city;
-
-  let {
-    author,
-    permlink,
-    title,
-    body,
-    display_name,
-    img_url,
-    created_at,
-    depth,
-    country_code,
-    subdivision,
-    app,
-    curation_score,
-  } = props.post;
-  const { lazy_img_url } = props.post;
-  if (depth) depth = parseInt(depth, 10);
-  if (!body) body = '';
-  const { data, error } = useQuery(GET_POST, {
-    variables: props.post,
-  });
-  if (data && data.post && data.post.permlink) {
-    is_travelfeed = data.post.is_travelfeed;
-    depth = data.post.depth;
-    is_blacklisted = data.post.is_blacklisted;
-    is_nsfw = data.post.is_nsfw;
-    app = data.post.app;
-    root_title = data.post.root_title;
-    tags = data.post.tags;
-    latitude = data.post.latitude;
-    longitude = data.post.longitude;
-    votes = data.post.votes;
-    total_votes = data.post.total_votes;
-    post_id = data.post.post_id;
-    children = data.post.children;
-    parent_author = data.post.parent_author;
-    parent_permlink = data.post.parent_permlink;
-    root_author = data.post.root_author;
-    root_permlink = data.post.root_permlink;
-    author = data.post.author;
-    permlink = data.post.permlink;
-    title = data.post.title;
-    body = data.post.body;
-    display_name = data.post.display_name;
-    img_url = data.post.img_url;
-    created_at = data.post.created_at;
-    country_code = data.post.country_code;
-    subdivision = data.post.subdivision;
-    city = data.post.city;
-    json = data.post.json;
-    category = data.post.category;
-    curation_score = data.post.curation_score;
-  }
-  const isTf = app ? app.split('/')[0] === 'travelfeed' : false;
-  tags = tags ? cleanTags(tags) : tags;
-  // 404 for error and if post does not exist
-  if (data && data.post && data.post.post_id === null) {
-    return (
-      <>
-        <Header />
-        <ErrorPage statusCode={404} />
-      </>
-    );
-  }
-  if (error && body === '')
-    body = 'Error: Could not load post. Are you online?';
-  // Don't render invalid posts but return Steempeak link
-  if (data && data.post && !is_travelfeed && depth === 0) {
-    const url = `https://steempeak.com/@${author}/${permlink}`;
-    return (
-      <>
-        <Header />
-        <ErrorPage statusCode="invalid_post" url={url} />
-      </>
-    );
-  }
-  // Render post
-  const htmlBody = parseBody(body, {});
   const reactParsed = parseHtmlToReact(htmlBody, {
     cardWidth,
     hideimgcaptions: !isTf,
@@ -198,62 +126,7 @@ const SinglePost = props => {
     webpSupport,
   });
   const { bodyText, images } = reactParsed;
-  const sanitized = sanitize(htmlBody, { allowedTags: [] });
   const readtime = readingTime(sanitized);
-  const excerpt = `${sanitized.substring(0, 180)}[...] by ${author}`;
-  const canonicalUrl = canonicalLinker(json, app, category, author, permlink);
-
-  let bodycontent = (
-    <div className="textPrimary postcontent postCardContent">{bodyText}</div>
-  );
-
-  if (is_nsfw && hideNsfw) {
-    bodycontent = (
-      <div className="textPrimary postcontent postCardContent">
-        <p>This post has been hidden as it is marked as not save for work.</p>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => setHideNsfw(false)}
-        >
-          Show post
-        </Button>
-      </div>
-    );
-  }
-
-  if (is_blacklisted) {
-    bodycontent = (
-      <div className="textPrimary postcontent postCardContent">
-        This post has been removed from TravelFeed.
-      </div>
-    );
-  }
-
-  const slug = slugFromCC(country_code);
-  const countryName = nameFromCC(country_code);
-  const breadcrumbs = [];
-  if (country_code) {
-    breadcrumbs.push({
-      position: 1,
-      name: countryName,
-      item: `https://travelfeed.io/destinations/${slug}`,
-    });
-  }
-  if (subdivision) {
-    breadcrumbs.push({
-      position: 2,
-      name: subdivision,
-      item: `https://travelfeed.io/destinations/${slug}/${subdivision}`,
-    });
-  }
-  if (city) {
-    breadcrumbs.push({
-      position: 3,
-      name: city,
-      item: `https://travelfeed.io/destinations/${slug}/${subdivision}/${city}`,
-    });
-  }
 
   return (
     <Fragment>
@@ -269,6 +142,17 @@ const SinglePost = props => {
           tags,
         }}
         breadcrumbs={breadcrumbs}
+        scripts={
+          schema ? (
+            <script
+              type="application/ld+json"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={schema}
+            />
+          ) : (
+            undefined
+          )
+        }
       />
       <Header
         active="post"
@@ -353,7 +237,21 @@ const SinglePost = props => {
                         display_name={display_name}
                         created_at={created_at}
                         readtime={readtime}
-                        content={bodycontent}
+                        content={
+                          bodycontent || (
+                            <div className="textPrimary postcontent postCardContent postanchors">
+                              {bodyText && bodyText.length > 0
+                                ? bodyText
+                                : [0, 1, 2, 3, 4, 5, 6, 7].map(() => (
+                                    <Skeleton
+                                      variant="text"
+                                      width="100%"
+                                      height={25}
+                                    />
+                                  ))}
+                            </div>
+                          )
+                        }
                         country_code={country_code}
                         subdivision={subdivision}
                         tags={tags}
@@ -361,13 +259,13 @@ const SinglePost = props => {
                         title={title}
                         img_url={img_url}
                       />
-                      {data && data.post && tags && tags.length > 0 && (
+                      {hasData && tags && tags.length > 0 && (
                         <>
                           <Divider variant="middle" />
                           <SliderTags tags={tags} />
                         </>
                       )}
-                      {data && data.post && (
+                      {hasData && (
                         <div className="d-none d-xl-none d-lg-none d-sm-none d-md-block">
                           <Divider variant="middle" />
                           <Typography

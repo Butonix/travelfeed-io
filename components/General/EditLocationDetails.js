@@ -199,7 +199,7 @@ const EditLocationDetails = props => {
                       color="primary"
                       autoFocus
                       variant="contained"
-                      disabled={isTopicsInvalid()}
+                      disabled={props.tag ? false : isTopicsInvalid()}
                     >
                       Save Changes
                     </Button>

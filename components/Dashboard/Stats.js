@@ -16,12 +16,12 @@ import QualityIcon from '@material-ui/icons/CheckCircle';
 import TotalPostsIcon from '@material-ui/icons/Create';
 import TotalFeaturedIcon from '@material-ui/icons/Star';
 import React, { Fragment } from 'react';
-import calculateQualityScore from '../../helpers/calculateQualityScore';
 import { GET_DASHBOARD_POSTS } from '../../helpers/graphql/posts';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
+import PostScoreIndicator from '../Grid/PostScoreIndicator';
 import AllNotifications from './AllNotifications';
 import PostsTable from './Stats/PostsTable';
 import RecentEarnings from './Stats/RecentEarningsChart';
@@ -80,12 +80,13 @@ const Stats = () => {
                     Icon={QualityIcon}
                     title="Quality Score"
                     value={
-                      data && data.userstats
-                        ? calculateQualityScore(
-                            data.userstats.total_featured,
-                            data.userstats.total_posts,
-                          )
-                        : ''
+                      data && data.userstats ? (
+                        <PostScoreIndicator
+                          scores={data.userstats.quality_score[0]}
+                        />
+                      ) : (
+                        ''
+                      )
                     }
                     iconColor={pink[600]}
                     boxColor={pink[400]}

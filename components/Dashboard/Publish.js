@@ -40,6 +40,7 @@ import {
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
+import CommunityPicker from '../Editor/CommunityPicker';
 import DetailedExpansionPanel from '../Editor/DetailedExpansionPanel';
 import EasyEditor from '../Editor/EasyEditor';
 import EditorPreview from '../Editor/EditorPreview';
@@ -67,7 +68,9 @@ const PostEditor = props => {
     props.permlink || props.draftId ? undefined : '',
   );
   const [tags, setTags] = useState([]);
-  const [primaryTag, setPrimaryTag] = useState(undefined);
+  const [primaryTag, setPrimaryTag] = useState(
+    props.community || 'hive-184437',
+  );
   const [completed, setCompleted] = useState(true);
   const [location, setLocation] = useState(undefined);
   const [locationCategory, setLocationCategory] = useState(undefined);
@@ -92,7 +95,10 @@ const PostEditor = props => {
 
   let defaultTag = primaryTag;
   if (!primaryTag) {
-    defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
+    if (language === 'en') defaultTag = 'hive-184437';
+    else if (language === 'pl') defaultTag = 'hive-191315';
+    else if (language === 'es') defaultTag = 'hive-136361';
+    else defaultTag = `${language}-travelfeed`;
   }
 
   // eslint-disable-next-line no-shadow
@@ -359,6 +365,10 @@ const PostEditor = props => {
     setTags(taglist);
   };
 
+  const handleCommunityChange = tag => {
+    setPrimaryTag(tag);
+  };
+
   const pastPublish = res => {
     if (res.success) {
       if (!codeEditor) setIsEditId(true);
@@ -429,7 +439,7 @@ const PostEditor = props => {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You need to select at least 1 more tag
+          {'  '}You need to select at least 1 topic
         </span>
       ),
       hide: tags.length > 0,
@@ -559,7 +569,9 @@ const PostEditor = props => {
         const metadata = meta;
         if (!codeEditor) metadata.easyEditorId = id;
         else metadata.easyEditorId = undefined;
-        const taglist = [`${defaultTag}`, ...tags];
+        let taglist = tags;
+        if (defaultTag.substring(0, 4) !== 'hive')
+          taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
         if (imageList.length > 0) metadata.image = imageList;
@@ -734,11 +746,11 @@ const PostEditor = props => {
                     <DetailedExpansionPanel
                       expanded
                       title="Topics"
-                      description={`Choose your topics carefully to reflect the theme of your post for a chance to be featured and earn extra rewards. You can set up to ${
+                      description={`Choose a community to reflect the  topic of your post. Additionally, you can set up to ${
                         data &&
                         data.preferences &&
                         data.preferences.useAdvancedEditorOptions === false
-                          ? '4 topics'
+                          ? '5 topics'
                           : '10 tags'
                       }${
                         data &&
@@ -755,11 +767,13 @@ const PostEditor = props => {
                           : ' The first tag is set automatically based on your language selection. Generic and some Steem-specific tags are highlighted in green, these will appear on some Steem frontends but will be hidden or replaced on TravelFeed. To post to a Steem community, set the community tag (hive-...) as the first tag.'
                       }`}
                       value={`${
-                        data &&
-                        data.preferences &&
-                        data.preferences.useAdvancedEditorOptions === false
+                        (data &&
+                          data.preferences &&
+                          data.preferences.useAdvancedEditorOptions ===
+                            false) ||
+                        defaultTag.substring(0, 4) === 'hive'
                           ? ''
-                          : defaultTag
+                          : `${defaultTag}, `
                       }${tags &&
                         tags.map(
                           (t, i) =>
@@ -767,31 +781,45 @@ const PostEditor = props => {
                               i > 0
                                 ? ' '
                                 : `${
-                                    data &&
-                                    data.preferences &&
-                                    data.preferences
-                                      .useAdvancedEditorOptions === false &&
-                                    i === 0
+                                    (data &&
+                                      data.preferences &&
+                                      data.preferences
+                                        .useAdvancedEditorOptions === false &&
+                                      i === 0) ||
+                                    i < 2
                                       ? ''
                                       : ','
                                   } `
                             }${t}`,
                         )}`}
                       selector={
-                        <TagPicker
-                          useAdvancedMode={
-                            !(
-                              data &&
-                              data.preferences &&
-                              data.preferences.useAdvancedEditorOptions ===
-                                false
-                            )
-                          }
-                          recommendations={tagRecommendations}
-                          defaultTags={[defaultTag]}
-                          value={tags}
-                          onTagChange={handleTagClick}
-                        />
+                        <>
+                          {language === 'en' && (
+                            <CommunityPicker
+                              isDisabled={editMode}
+                              value={primaryTag}
+                              onCommunityChange={handleCommunityChange}
+                            />
+                          )}
+                          <TagPicker
+                            useAdvancedMode={
+                              !(
+                                data &&
+                                data.preferences &&
+                                data.preferences.useAdvancedEditorOptions ===
+                                  false
+                              )
+                            }
+                            recommendations={tagRecommendations}
+                            defaultTags={
+                              defaultTag.substring(0, 4) !== 'hive'
+                                ? [defaultTag]
+                                : []
+                            }
+                            value={tags}
+                            onTagChange={handleTagClick}
+                          />
+                        </>
                       }
                     />
                   </div>

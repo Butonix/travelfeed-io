@@ -37,7 +37,11 @@ app
     });
 
     server.get('/tag', (req, res) => {
-      res.redirect(`/topics`);
+      res.redirect(`/c`);
+    });
+
+    server.get('/topics', (req, res) => {
+      res.redirect(`/c`);
     });
 
     server.get('/steemfest', (req, res) => {

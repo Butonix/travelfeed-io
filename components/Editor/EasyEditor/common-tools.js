@@ -9,29 +9,12 @@ import Table from '@editorjs/table';
 import { API_URL } from '../../../config';
 import uploadFile from '../../../helpers/imageUpload';
 import Embed from './tools/embed/index';
+import imageGallery from './tools/imageGallery/index';
 import Quote from './tools/quote/index';
 import tableOfContents from './tools/tableOfContents/index';
 
-// TODO: Write maps embed plugin
-// TODO: Write gallery plugin
-
 export default {
   header: Header,
-  delimiter: Delimiter,
-  tableOfContents,
-  list: List,
-  linkTool: {
-    class: LinkTool,
-    config: {
-      endpoint: `${API_URL}/fetchUrl`, // Your backend endpoint for url data fetching
-    },
-  },
-  code: {
-    class: CodeTool,
-    config: {
-      placeholder: 'Enter HTML or Markdown here',
-    },
-  },
   image: {
     class: Image,
     config: {
@@ -60,6 +43,27 @@ export default {
       },
     },
   },
+  imageGallery,
+  delimiter: Delimiter,
+  list: List,
+  quote: Quote,
+  table: {
+    class: Table,
+    inlineToolbar: true,
+  },
+  tableOfContents,
+  linkTool: {
+    class: LinkTool,
+    config: {
+      endpoint: `${API_URL}/fetchUrl`, // Your backend endpoint for url data fetching
+    },
+  },
+  code: {
+    class: CodeTool,
+    config: {
+      placeholder: 'Enter HTML or Markdown here',
+    },
+  },
   embed: {
     class: Embed,
     config: {
@@ -86,11 +90,6 @@ export default {
         },
       },
     },
-  },
-  quote: Quote,
-  table: {
-    class: Table,
-    inlineToolbar: true,
   },
   paragraph: {
     class: Paragraph,

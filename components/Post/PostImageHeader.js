@@ -1,8 +1,8 @@
 import detectIt from 'detect-it';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import { imageProxy } from '../../helpers/getImage';
-import supportsWebp from '../../helpers/webp';
 import PostSocialShares from './PostSocialShares';
 
 class PostImageHeader extends Component {
@@ -23,7 +23,7 @@ class PostImageHeader extends Component {
       // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
       detectIt.passiveEvents ? { passive: true } : false,
     );
-    const webpSupport = await supportsWebp();
+    const webpSupport = isWebpSupported();
     this.setState({
       windowWidth: (Math.ceil(window.innerWidth / 640) + 1) * 640,
       opacity: 1,

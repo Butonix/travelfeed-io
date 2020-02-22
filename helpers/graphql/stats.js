@@ -9,6 +9,16 @@ export const GET_USER_STATS = gql`
         month
         earnings
       }
+      quality_score {
+        formatting
+        language
+        bilingual
+        footer
+        photos
+        short
+        writing
+        valueadding
+      }
     }
   }
 `;

@@ -6,6 +6,7 @@ import TermsText from '../../components/About/Texts/Terms';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import withApollo from '../../lib/withApollo';
 
 const TermsPage = () => {
   const title = 'Terms of Service';
@@ -33,4 +34,4 @@ const TermsPage = () => {
   );
 };
 
-export default TermsPage;
+export default withApollo(TermsPage);

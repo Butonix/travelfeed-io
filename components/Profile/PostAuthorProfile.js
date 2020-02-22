@@ -25,83 +25,83 @@ const PostAuthorProfile = props => {
             return <Fragment />;
           }
           return (
-            <div className="text-center">
-              <div className="pb-2">
-                <Link
-                  color="textPrimary"
-                  as={`/@${props.author}`}
-                  href="/[author]"
-                >
-                  <Img
-                    style={{ cursor: 'pointer' }}
-                    src={[
-                      `https://steemitimages.com/u/${props.author}/avatar/medium`,
-                      'https://steemitimages.com/p/7ohP4GDMGPrVF5MeU8t5EQqCvJfGAJHyAFuxrYFhqA4BPKCkPjVBef1jSt7fHRrXVXRuRKBksi1FSJnZL8Co9zi6CpbK1bmV2sFR?width=80&height=80',
-                    ]}
-                    alt={props.author}
-                    width="80"
-                    height="80"
-                    className="rounded-circle"
-                    loader={
-                      <Skeleton
-                        className="mx-auto"
-                        variant="circle"
-                        width={80}
-                        height={80}
-                      />
-                    }
-                  />
-                </Link>
-              </div>
-              <Fragment>
-                <div>
+            <>
+              <div className="text-center">
+                <div className="pb-2">
                   <Link
                     color="textPrimary"
                     as={`/@${props.author}`}
                     href="/[author]"
                   >
-                    <Typography variant="h6" className="textPrimary cpointer">
-                      {props.display_name}
-                    </Typography>
-                    <Typography color="textSecondary" variant="subtitle">
-                      @{props.author}
-                    </Typography>
+                    <Img
+                      style={{ cursor: 'pointer' }}
+                      src={[
+                        `https://steemitimages.com/u/${props.author}/avatar/medium`,
+                        'https://steemitimages.com/p/7ohP4GDMGPrVF5MeU8t5EQqCvJfGAJHyAFuxrYFhqA4BPKCkPjVBef1jSt7fHRrXVXRuRKBksi1FSJnZL8Co9zi6CpbK1bmV2sFR?width=80&height=80',
+                      ]}
+                      alt={props.author}
+                      width="80"
+                      height="80"
+                      className="rounded-circle"
+                      loader={
+                        <Skeleton
+                          className="mx-auto"
+                          variant="circle"
+                          width={80}
+                          height={80}
+                        />
+                      }
+                    />
                   </Link>
-                  {data.profile.isCurator && (
-                    <p className="h5 pt-1">
-                      <span className="badge badge-success">Curator</span>
-                    </p>
-                  )}
                 </div>
-                <p className="p-2">
-                  {about || (
-                    <>
-                      <Skeleton
-                        className="mx-auto"
-                        variant="text"
-                        width="80%"
-                        height={20}
-                      />
-                      <Skeleton
-                        className="mx-auto"
-                        variant="text"
-                        width="80%"
-                        height={20}
-                      />
-                      <Skeleton
-                        className="mx-auto"
-                        variant="text"
-                        width="80%"
-                        height={20}
-                      />
-                    </>
-                  )}
-                </p>
-              </Fragment>
-              <div>
-                <FollowButton author={props.author} btnstyle="default" />
+                <Fragment>
+                  <div>
+                    <Link
+                      color="textPrimary"
+                      as={`/@${props.author}`}
+                      href="/[author]"
+                    >
+                      <Typography variant="h6" className="textPrimary cpointer">
+                        {props.display_name}
+                      </Typography>
+                      <Typography color="textSecondary" variant="subtitle">
+                        @{props.author}
+                      </Typography>
+                    </Link>
+                    {data.profile.isCurator && (
+                      <p className="h5 pt-1">
+                        <span className="badge badge-success">Curator</span>
+                      </p>
+                    )}
+                  </div>
+                  <p className="p-2">
+                    {about || (
+                      <>
+                        <Skeleton
+                          className="mx-auto"
+                          variant="text"
+                          width="80%"
+                          height={20}
+                        />
+                        <Skeleton
+                          className="mx-auto"
+                          variant="text"
+                          width="80%"
+                          height={20}
+                        />
+                        <Skeleton
+                          className="mx-auto"
+                          variant="text"
+                          width="80%"
+                          height={20}
+                        />
+                      </>
+                    )}
+                  </p>
+                </Fragment>
               </div>
-            </div>
+              <FollowButton author={props.author} btnstyle="default" />
+            </>
           );
         }}
       </Query>

@@ -9,7 +9,10 @@ import InstagramEmbed from 'react-instagram-embed';
 import LazyLoad from 'react-lazyload';
 import ProgressiveImage from 'react-progressive-image';
 import getSlug from 'speakingurl';
+import AmpImageGallery from '../components/Amp/AmpImageGallery';
+import ImageGallery from '../components/Post/DynamicPostComponents/ImageGallery';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
+import MasonryImageGallery from '../components/Post/DynamicPostComponents/MasonryImageGallery';
 import TableOfContents from '../components/Post/DynamicPostComponents/TableOfContents';
 import Link from '../lib/Link';
 import { imageProxy } from './getImage';
@@ -102,18 +105,35 @@ const parseHtmlToReact = (htmlBody, options) => {
                 <amp-img
                   alt={attribs.alt}
                   layout="responsive"
-                  src={regSrc}
+                  src={webpSrc}
                   width={attribWidth}
                   height={attribHeight}
-                />
+                >
+                  <amp-img
+                    alt={attribs.alt}
+                    fallback=""
+                    layout="responsive"
+                    src={regSrc}
+                    width={attribWidth}
+                    height={attribHeight}
+                  />
+                </amp-img>
               )) || (
                 <div className="fixed-height-container">
                   <amp-img
                     alt={attribs.alt}
-                    src={regSrc}
+                    src={webpSrc}
                     class="contain"
                     layout="fill"
-                  />
+                  >
+                    <amp-img
+                      alt={attribs.alt}
+                      fallback=""
+                      src={regSrc}
+                      class="contain"
+                      layout="fill"
+                    />
+                  </amp-img>
                 </div>
               )}
               {attribs.alt !== undefined &&
@@ -319,6 +339,32 @@ const parseHtmlToReact = (htmlBody, options) => {
                 image={image}
               />
             </>
+          );
+        }
+        if (json.type === 'imageGallery') {
+          let galleryImages;
+          let style;
+          try {
+            galleryImages = json.data.images;
+            style = json.data.style;
+          } catch {
+            return <></>;
+          }
+          if (options.amp) {
+            embeds.carousel = true;
+            embeds.selector = true;
+            embeds.lightbox = true;
+          }
+          if (style === 'masonry')
+            return options.amp ? (
+              <AmpImageGallery images={galleryImages} isWebp={isWebp} />
+            ) : (
+              <MasonryImageGallery images={galleryImages} isWebp={isWebp} />
+            );
+          return options.amp ? (
+            <AmpImageGallery images={galleryImages} isWebp={isWebp} />
+          ) : (
+            <ImageGallery images={galleryImages} isWebp={isWebp} />
           );
         }
         let headings = [];

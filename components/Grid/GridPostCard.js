@@ -6,9 +6,9 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import { isWebpSupported } from 'react-image-webp/dist/utils';
 import ProgressiveImage from 'react-progressive-image';
 import { imageProxy } from '../../helpers/getImage';
-import supportsWebp from '../../helpers/webp';
 import Link from '../../lib/Link';
 import DotMenu from '../Post/DotMenu';
 import SubHeader from '../Post/SubHeader';
@@ -39,7 +39,7 @@ class GridPostCard extends Component {
       const cardWidth = Math.ceil(this.myInput.current.offsetWidth / 100) * 100;
       this.setState({ cardWidth });
     }
-    const isWebp = await supportsWebp();
+    const isWebp = isWebpSupported();
     this.setState({ isWebp });
   }
 

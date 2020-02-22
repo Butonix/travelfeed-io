@@ -64,7 +64,10 @@ const iframeWhitelist = [
     fn: src => src.replace(/\?.+$/, ''), // strip query string (yt: autoplay=1,controls=0,showinfo=0, etc)
   },
   {
-    re: /^(https?:)?\/\/www\.google\.com\/maps(|\/d)\/embed.*/i,
+    re: /^(https?:)?\/\/www\.google\.com\/maps(|\/d|\/d\/u\/0)\/embed.*/i,
+  },
+  {
+    re: /^https:\/\/www\.facebook\.com\/plugins\/video\.php\?href=https:\/\/www\.facebook\.com\/.*/i,
   },
   {
     re: /^(https?:)?\/\/(?:emb\.)?(?:d.tube\/#!\/(?:v\/)?)([a-zA-Z0-9\-./]*)/i,

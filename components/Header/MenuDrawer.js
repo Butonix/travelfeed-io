@@ -171,8 +171,8 @@ export default function MenuDrawer(props) {
       <List>
         {[
           {
-            label: 'topics',
-            link: '/topics',
+            label: 'communities',
+            link: '/c',
             icon: <TopicIcon />,
           },
           {

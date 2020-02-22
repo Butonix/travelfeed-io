@@ -21,7 +21,11 @@ const HeaderCard = props => {
         }
       />
       {props.noborder && props.content}
-      {!props.noborder && <CardContent>{props.content}</CardContent>}
+      {!props.noborder && (
+        <CardContent className={props.nobottomborder ? 'pb-0' : undefined}>
+          {props.content}
+        </CardContent>
+      )}
     </Card>
   );
 };

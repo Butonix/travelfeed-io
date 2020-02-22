@@ -7,7 +7,7 @@ import withApollo from '../../lib/withApollo';
 const PublishPage = () => {
   const router = useRouter();
 
-  const { open, permlink, draftId, clone } = router.query;
+  const { open, permlink, draftId, clone, community } = router.query;
 
   const Publish = dynamic(() => import('../../components/Dashboard/Publish'), {
     ssr: false,
@@ -18,7 +18,14 @@ const PublishPage = () => {
       includeMapbox
       open={open}
       label="publish"
-      content={<Publish permlink={permlink} draftId={draftId} clone={clone} />}
+      content={
+        <Publish
+          permlink={permlink}
+          draftId={draftId}
+          clone={clone}
+          community={community}
+        />
+      }
     />
   );
 };

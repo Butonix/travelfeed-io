@@ -6,6 +6,7 @@ import FAQ from '../../components/About/FAQAccordion';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import withApollo from '../../lib/withApollo';
 
 const FaqPage = () => {
   const title = 'FAQ';
@@ -29,4 +30,4 @@ const FaqPage = () => {
   );
 };
 
-export default FaqPage;
+export default withApollo(FaqPage);

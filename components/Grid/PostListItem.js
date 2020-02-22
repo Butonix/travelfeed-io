@@ -24,6 +24,7 @@ import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 import UnScheduleButton from '../Dashboard/Drafts/UnScheduleButton';
 import Excerpt from './Excerpt';
+import PostScore from './PostScore';
 
 dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
@@ -212,6 +213,12 @@ class PostListItem extends Component {
                         <NoLocationIcon />
                       </Tooltip>
                     ))}
+                  {!this.props.isDraftMode && (
+                    <PostScore
+                      author={this.props.post.author}
+                      permlink={this.props.post.permlink}
+                    />
+                  )}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   !this.props.isDraftMode &&
                     ((new Date(this.props.post.created_at) <

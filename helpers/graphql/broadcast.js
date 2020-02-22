@@ -53,17 +53,18 @@ export const ACCOUNT_UPDATE = gql`
 `;
 
 export const FOLLOW = gql`
-  mutation follow($following: String!) {
-    follow(following: $following) {
-      success
-      message
-    }
-  }
-`;
-
-export const UNFOLLOW = gql`
-  mutation unfollow($following: String!) {
-    unfollow(following: $following) {
+  mutation follow(
+    $author: String
+    $community: String
+    $broadcast: Boolean
+    $isFollowed: Boolean!
+  ) {
+    follow(
+      author: $author
+      community: $community
+      broadcast: $broadcast
+      isFollowed: $isFollowed
+    ) {
       success
       message
     }
