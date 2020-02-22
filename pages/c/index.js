@@ -13,7 +13,17 @@ const Communities = () => {
       />
       <Header subheader="Communities" active="communities" />
       <div className="pt-2" />
-      <PopupNavItems tags />
+      <div className="container" id="containerInvisibleOnMobile">
+        <PopupNavItems tags />
+      </div>
+      <style>{`
+        @media (max-width: 992px) {
+          #containerInvisibleOnMobile {
+            padding: 0;
+            margin: 0;
+          }
+        }
+        `}</style>
     </>
   );
 };
