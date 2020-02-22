@@ -246,7 +246,7 @@ url("${image}")`,
 
   return (
     <>
-      {locationDetails && locationDetails && !locationDetails.image ? (
+      {locationDetails && !locationDetails.image ? (
         loadedCard
       ) : (
         <ProgressiveImage src={image} placeholder="">

@@ -120,7 +120,7 @@ const FollowButton = props => {
     }
   };
 
-  if (isFollowed === undefined || !getUser() === undefined) {
+  if (isFollowed === undefined) {
     return (
       <>
         {props.btnstyle === 'default' && (
