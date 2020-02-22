@@ -4,18 +4,18 @@ import Header from '../../components/Header/Header';
 import PopupNavItems from '../../components/Header/PopupNavItems';
 import withApollo from '../../lib/withApollo';
 
-const Topics = () => {
+const Communities = () => {
   return (
     <>
       <Head
-        title="Topics"
-        description="Discover the best travel topics on TravelFeed."
+        title="Communities"
+        description="Discover the best travel communities on TravelFeed."
       />
-      <Header subheader="Topics" active="topics" />
+      <Header subheader="Communities" active="communities" />
       <div className="pt-2" />
       <PopupNavItems tags />
     </>
   );
 };
 
-export default withApollo(Topics);
+export default withApollo(Communities);

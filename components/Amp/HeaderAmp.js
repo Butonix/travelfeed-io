@@ -50,8 +50,8 @@ const HeaderAmp = () => {
             </Link>
           </li>
           <li className="ampstart-faq-item">
-            <Link href="/topics" className="text-decoration-none">
-              <a>Topics</a>
+            <Link href="/c" className="text-decoration-none">
+              <a>Communities</a>
             </Link>
           </li>
           <li className="ampstart-faq-item">

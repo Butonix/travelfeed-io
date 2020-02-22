@@ -15,7 +15,8 @@
   "redirects": [
     { "source": "/blog", "destination": "/@travelfeed" },
     { "source": "/steemfest", "destination": "/destinations/thailand/Bangkok" },
-    { "source": "/tag", "destination": "/topics" },
+    { "source": "/tag", "destination": "/c" },
+    { "source": "/topics", "destination": "/c" },
     { "source": "/featured", "destination": "/" },
     { "source": "/featured/:topic", "destination": "/topics/:topic" },
     { "source": "/created/:topic", "destination": "/topics/:topic" },
