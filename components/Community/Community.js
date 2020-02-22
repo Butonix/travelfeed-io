@@ -34,9 +34,27 @@ const Community = props => {
     });
   }, [props]);
 
+  const breadcrumbs = [
+    {
+      position: 1,
+      name: 'Communities',
+      item: `https://travelfeed.io/c`,
+    },
+    {
+      position: 2,
+      name: title,
+      item: `https://travelfeed.io/c/${name.substring(5, 11)}`,
+    },
+  ];
+
   return (
     <>
-      <Head title={title} image={coverImage} description={about} />
+      <Head
+        title={title}
+        image={coverImage}
+        description={about}
+        breadcrumbs={breadcrumbs}
+      />
       <Header active="community" subheader={title} community={name} />
       <PhotoHeader
         hideButtons
