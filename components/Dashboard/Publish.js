@@ -68,7 +68,9 @@ const PostEditor = props => {
     props.permlink || props.draftId ? undefined : '',
   );
   const [tags, setTags] = useState([]);
-  const [primaryTag, setPrimaryTag] = useState(undefined);
+  const [primaryTag, setPrimaryTag] = useState(
+    props.community || 'hive-184437',
+  );
   const [completed, setCompleted] = useState(true);
   const [location, setLocation] = useState(undefined);
   const [locationCategory, setLocationCategory] = useState(undefined);

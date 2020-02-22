@@ -18,7 +18,7 @@ const CommunityPicker = props => {
 
   const { isDisabled } = props;
 
-  const [community, setCommunity] = React.useState('hive-184437');
+  const [community, setCommunity] = React.useState(props.value);
 
   const handleChange = event => {
     setCommunity(event.target.value);

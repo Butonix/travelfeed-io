@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import PublishIcon from '@material-ui/icons/Create';
 import MapIcon from '@material-ui/icons/Map';
 import React from 'react';
 import ProgressiveImage from 'react-progressive-image';
@@ -127,6 +128,12 @@ const PhotoHeader = props => {
               {props.communityTag && (
                 <div className="d-none d-xl-block d-lg-block d-md-block d-sm-none">
                   <FollowButton btnstyle="solid" community={props.tag} />
+                  <Link href={`/dashboard/publish?community=${props.tag}`}>
+                    <Button variant="contained" color="primary">
+                      <PublishIcon />
+                      <span className="pl-2">Publish</span>
+                    </Button>
+                  </Link>
                 </div>
               )}
               {!tag && !props.hideButtons && (
