@@ -6,6 +6,7 @@ import Team from '../../components/About/Team';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import withApollo from '../../lib/withApollo';
 
 const AboutPage = () => {
   const title = 'About';
@@ -101,4 +102,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default withApollo(AboutPage);

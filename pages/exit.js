@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 import ErrorPage from '../components/General/ErrorPage';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
+import withApollo from '../lib/withApollo';
 
 const ExitPage = () => {
   const router = useRouter();
@@ -29,4 +30,4 @@ const ExitPage = () => {
   );
 };
 
-export default ExitPage;
+export default withApollo(ExitPage);

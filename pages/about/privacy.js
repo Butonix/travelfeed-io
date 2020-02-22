@@ -6,6 +6,7 @@ import PrivacyText from '../../components/About/Texts/Privacy';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import withApollo from '../../lib/withApollo';
 
 const PrivacyPage = () => {
   const title = 'Privacy';
@@ -48,4 +49,4 @@ const PrivacyPage = () => {
   );
 };
 
-export default PrivacyPage;
+export default withApollo(PrivacyPage);

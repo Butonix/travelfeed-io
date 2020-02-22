@@ -7,6 +7,7 @@ import SupportUs from '../../components/About/SupportUs';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import withApollo from '../../lib/withApollo';
 
 const SupportUsPage = () => {
   const title = 'Support Us';
@@ -34,4 +35,4 @@ const SupportUsPage = () => {
   );
 };
 
-export default SupportUsPage;
+export default withApollo(SupportUsPage);

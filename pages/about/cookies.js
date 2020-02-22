@@ -12,6 +12,7 @@ import {
   hasCookieConsent,
   setCookieConsent,
 } from '../../helpers/token';
+import withApollo from '../../lib/withApollo';
 
 class CookiesPage extends Component {
   state = {
@@ -110,4 +111,4 @@ class CookiesPage extends Component {
   }
 }
 
-export default CookiesPage;
+export default withApollo(CookiesPage);
