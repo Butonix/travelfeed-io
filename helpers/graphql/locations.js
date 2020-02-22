@@ -36,11 +36,15 @@ export const GET_LOCATION_DETAILS = gql`
 
 export const GET_FEATURED_LOCATIONS = gql`
   query featuredLocations(
-    $tags: Boolean
+    $communities: Boolean
     $countries: Boolean
     $places: Boolean
   ) {
-    featuredLocations(tags: $tags, countries: $countries, places: $places) {
+    featuredLocations(
+      communities: $communities
+      countries: $countries
+      places: $places
+    ) {
       title
       image
       tag
