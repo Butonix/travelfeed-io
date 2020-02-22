@@ -107,7 +107,9 @@ const PhotoDetailHeader = props => {
                 />
                 <PhotoHeader
                   title={detailTitle}
-                  description={description}
+                  description={
+                    data ? data.locationDetails.description : description
+                  }
                   image={image}
                   query={query}
                   countrySlug={countrySlug}
