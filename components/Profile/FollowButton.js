@@ -190,14 +190,35 @@ const FollowButton = props => {
           </MenuItem>
         )) || (
           <Button
-            style={(changing && { opacity: 0.8 }) || {}}
+            disabled={changing}
             variant={variant}
             size={size}
             color={color}
             onClick={() => toggleFollowAuthor()}
             className={btnclass}
           >
-            {isFollowed ? 'Unfollow' : 'Follow'}
+            {isFollowed ? (
+              <>
+                {size === 'small' ? (
+                  'Unfollow'
+                ) : (
+                  <>
+                    <UnfollowIcon />
+                    <span className="pl-2">Unfollow</span>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {size === 'small' ? (
+                  'Follow'
+                ) : (
+                  <>
+                    <FollowIcon /> <span className="pl-2">Follow</span>
+                  </>
+                )}
+              </>
+            )}
             {changing && (
               <CircularProgress color="secondary" className="ml-2" size={24} />
             )}
