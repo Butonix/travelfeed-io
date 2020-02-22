@@ -21,17 +21,20 @@ import { getRoles, getUser } from '../../helpers/token';
 import LoginButton from '../Header/LoginButton';
 
 const FollowButton = props => {
-  const { author, community } = props;
+  const { community } = props;
 
   const [isFollowed, setFollowed] = useState(undefined);
   const [changing, setChanging] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    graphQLClient(GET_IS_FOLLOWED, { author, community }).then(res => {
+    graphQLClient(GET_IS_FOLLOWED, {
+      author: props.author,
+      community: props.community,
+    }).then(res => {
       setFollowed(res.isFollowed);
     });
-  }, []);
+  }, [props]);
 
   const newNotification = notification => {
     if (notification !== undefined) {
