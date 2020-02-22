@@ -10,9 +10,7 @@ export const GET_SHORT_PROFILE = gql`
 `;
 
 export const GET_IS_FOLLOWED = gql`
-  query profile($author: String!) {
-    profile(username: $author) {
-      isFollowed
-    }
+  query isFollowed($author: String, $community: String) {
+    isFollowed(author: $author, community: $community)
   }
 `;

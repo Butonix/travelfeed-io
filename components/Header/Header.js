@@ -186,6 +186,12 @@ class Header extends Component {
                             author={this.props.author}
                             btnstyle="icon"
                           />
+                        )) ||
+                        (active === 'community' && (
+                          <FollowButton
+                            community={this.props.community}
+                            btnstyle="icon"
+                          />
                         )) || <MobileGeocoderButton />}
                     </div>
                     <div

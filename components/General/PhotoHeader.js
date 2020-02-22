@@ -7,6 +7,7 @@ import ProgressiveImage from 'react-progressive-image';
 import { getBudgetScore } from '../../helpers/budgetScore';
 import Link from '../../lib/Link';
 import PopularDestinationsPopup from '../Destinations/PopularDestinationsPopup';
+import FollowButton from '../Profile/FollowButton';
 import EditLocationDetails from './EditLocationDetails';
 import TopicSelector from './TopicSelector';
 
@@ -123,6 +124,11 @@ const PhotoHeader = props => {
               </em>
             </Typography>
             <div className="text-center">
+              {props.communityTag && (
+                <div className="d-none d-xl-block d-lg-block d-md-block d-sm-none">
+                  <FollowButton btnstyle="solid" community={props.tag} />
+                </div>
+              )}
               {!tag && !props.hideButtons && (
                 <>
                   <Link href={`/map?search=${title}`}>

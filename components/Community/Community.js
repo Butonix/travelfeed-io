@@ -37,7 +37,7 @@ const Community = props => {
   return (
     <>
       <Head title={title} image={coverImage} description={about} />
-      <Header active="community" subheader={title} />
+      <Header active="community" subheader={title} community={name} />
       <PhotoHeader
         hideButtons
         communityTag
@@ -82,11 +82,11 @@ const Community = props => {
                       <div className="row">
                         <div className="col-6 text-center">
                           <Typography variant="h4">{subscribers}</Typography>{' '}
-                          <Typography variant="subtitle2">members</Typography>
+                          <Typography variant="subtitle2">followers</Typography>
                         </div>
                         <div className="col-6 text-center">
                           <Typography variant="h4">{num_authors}</Typography>{' '}
-                          <Typography variant="subtitle2">authors</Typography>
+                          <Typography variant="subtitle2">members</Typography>
                         </div>
                       </div>
                     </div>
