@@ -47,7 +47,7 @@ const Community = props => {
         query={{}}
         tag={name}
       />
-      <div className="pb-3 container-fluid" id="containerInvisibleOnMobile">
+      <div className="pb-3 container-fluid">
         <div className="row">
           <div className="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12">
             <PostGrid
@@ -154,14 +154,6 @@ const Community = props => {
           </div>
         </div>
       </div>
-      <style>{`
-        @media (max-width: 992px) {
-          #containerInvisibleOnMobile {
-            padding: 0;
-            margin: 0;
-          }
-        }
-        `}</style>
     </>
   );
 };
