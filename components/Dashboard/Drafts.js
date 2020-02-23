@@ -12,9 +12,9 @@ import React, { Fragment, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
+import { parseBody } from 'tf-post-parser';
 import { GET_DRAFTS } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
-import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import PostListItem from '../Grid/PostListItem';
 

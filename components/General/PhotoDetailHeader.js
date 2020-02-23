@@ -1,8 +1,8 @@
 import { Query } from '@apollo/react-components';
 import React, { Fragment, useEffect, useState } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
+import { imageProxy } from 'tf-post-parser';
 import { nameFromSlug } from '../../helpers/countryCodes';
-import { imageProxy } from '../../helpers/getImage';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 import Head from '../Header/Head';
 import PhotoHeader from './PhotoHeader';

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import Gallery from 'react-photo-gallery';
-import { imageProxy } from '../../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 
 const MasonryImageGallery = props => {
   const { images, isWebp } = props;

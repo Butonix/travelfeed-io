@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
-import parseBody from '../../helpers/parseBody';
+import { parseBody } from 'tf-post-parser';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import PostContent from '../Post/PostContent';

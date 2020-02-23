@@ -1,5 +1,5 @@
 import React from 'react';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 
 const AmpImageGallery = props => {
   const { images, isWebp } = props;

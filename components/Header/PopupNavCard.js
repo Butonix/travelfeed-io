@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
+import { imageProxy } from 'tf-post-parser';
 import { slugFromCC } from '../../helpers/countryCodes';
-import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
 
 const useStyles = makeStyles(() => ({

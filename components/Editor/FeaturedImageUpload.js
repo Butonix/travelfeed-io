@@ -3,7 +3,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import React, { Fragment, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import uploadFile from '../../helpers/imageUpload';
 
 const baseStyle = {

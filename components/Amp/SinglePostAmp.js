@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import React from 'react';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import { GET_RECOMMENDED_POSTS } from '../../helpers/graphql/posts';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import Head from '../Header/Head';

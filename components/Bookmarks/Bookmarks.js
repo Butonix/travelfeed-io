@@ -8,9 +8,8 @@ import React, { Component, Fragment } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy, parseBody } from 'tf-post-parser';
 import { GET_BOOKMARKS } from '../../helpers/graphql/bookmarks';
-import parseBody from '../../helpers/parseBody';
 import GridPostCard from '../Grid/GridPostCard';
 
 class Bookmarks extends Component {

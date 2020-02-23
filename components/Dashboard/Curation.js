@@ -14,6 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
+import { parseBody } from 'tf-post-parser';
 import {
   ADD_CURATION_AUTHOR_NOTES,
   GET_CURATION_AUTHOR_NOTES,
@@ -21,7 +22,6 @@ import {
 } from '../../helpers/graphql/curation';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import graphQLClient from '../../helpers/graphQLClient';
-import parseBody from '../../helpers/parseBody';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import FixedBackgroundImage from '../General/FixedBackgroundImage';
 import PostContent from '../Post/PostContent';

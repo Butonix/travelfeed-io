@@ -5,7 +5,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import PropTypes from 'prop-types';
 // import Link from '../../lib/Link';
 import React from 'react';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import Link from '../../lib/Link';
 
 const PostPreview = props => {

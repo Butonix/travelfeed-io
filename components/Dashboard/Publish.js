@@ -14,6 +14,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
+import { parseBody } from 'tf-post-parser';
 import { APP_VERSION } from '../../config';
 import categoryFinder from '../../helpers/categoryFinder';
 import { generateDraftId } from '../../helpers/drafts';
@@ -23,7 +24,6 @@ import { GET_POST } from '../../helpers/graphql/singlePost';
 import graphQLClient from '../../helpers/graphQLClient';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
-import parseBody from '../../helpers/parseBody';
 import {
   getImageList,
   getLinkList,

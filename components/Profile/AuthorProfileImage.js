@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Img from 'react-image';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 
 const styles = theme => ({
   imgborder: {

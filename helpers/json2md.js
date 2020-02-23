@@ -1,6 +1,6 @@
 import sanitize from 'sanitize-html';
+import sanitizeHtmlConfig from 'tf-post-parser';
 import TurndownService from 'turndown';
-import sanitizeConfig from './PostParser/SanitizeConfig';
 
 const turndownService = new TurndownService({ emDelimiter: '*' });
 
@@ -61,7 +61,7 @@ const json2md = data => {
     } else if (b.type === 'code') {
       html += `${sanitize(
         b.data.code,
-        sanitizeConfig({
+        sanitizeHtmlConfig({
           secureLinks: false,
           allLinksBlank: false,
         }),

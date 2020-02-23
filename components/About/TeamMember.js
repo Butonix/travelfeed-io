@@ -2,7 +2,7 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Img from 'react-image';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import Link from '../../lib/Link';
 
 const TeamMember = props => {

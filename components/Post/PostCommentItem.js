@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
-import parseBody from '../../helpers/parseBody';
+import { parseBody } from 'tf-post-parser';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';

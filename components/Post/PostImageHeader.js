@@ -2,7 +2,7 @@ import detectIt from 'detect-it';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import PostSocialShares from './PostSocialShares';
 
 class PostImageHeader extends Component {

@@ -4,7 +4,7 @@ import ReactImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import LazyLoad from 'react-lazyload';
 import ProgressiveImage from 'react-progressive-image';
-import { imageProxy } from '../../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 
 const ImageGallery = props => {
   const { images, isWebp } = props;

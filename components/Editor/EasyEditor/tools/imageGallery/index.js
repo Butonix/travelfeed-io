@@ -5,7 +5,7 @@
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { imageProxy } from '../../../../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import uploadFile from '../../../../../helpers/imageUpload';
 import { asyncForEach } from '../../../../../helpers/utils';
 

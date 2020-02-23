@@ -9,7 +9,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import readingTime from 'reading-time';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import parseHtmlToReact from '../../helpers/parseHtmlToReact';
 import { getUser } from '../../helpers/token';
 import Head from '../Header/Head';

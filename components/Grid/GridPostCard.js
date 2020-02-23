@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
 import ProgressiveImage from 'react-progressive-image';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import Link from '../../lib/Link';
 import DotMenu from '../Post/DotMenu';
 import SubHeader from '../Post/SubHeader';

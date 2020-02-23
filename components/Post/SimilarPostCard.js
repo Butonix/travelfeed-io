@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import ProgressiveImage from 'react-progressive-image';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 import Link from '../../lib/Link';
 import Excerpt from '../Grid/Excerpt';
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { isWebpSupported } from 'react-image-webp/dist/utils';
-import { imageProxy } from '../../helpers/getImage';
+import { imageProxy } from 'tf-post-parser';
 
 const FixedBackgroundImage = props => {
   const { component } = props;

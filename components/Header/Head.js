@@ -2,8 +2,8 @@ import { BreadcrumbJsonLd } from 'next-seo';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import { imageProxy } from 'tf-post-parser';
 import { ROOTURL } from '../../config';
-import { imageProxy } from '../../helpers/getImage';
 
 const Head = ({
   title,

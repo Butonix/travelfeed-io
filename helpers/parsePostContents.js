@@ -1,4 +1,4 @@
-import parseBody from './parseBody';
+import { parseBody } from 'tf-post-parser';
 import { allLinks, allMentions, imgFullSize } from './regex';
 
 export const getImageList = body => {

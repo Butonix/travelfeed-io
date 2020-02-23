@@ -1,4 +1,4 @@
-import parseBody from './parseBody';
+import { parseBody } from 'tf-post-parser';
 import { tfJSON } from './regex';
 
 const md2json = (d, useTextBlocks) => {

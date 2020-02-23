@@ -9,13 +9,13 @@ import InstagramEmbed from 'react-instagram-embed';
 import LazyLoad from 'react-lazyload';
 import ProgressiveImage from 'react-progressive-image';
 import getSlug from 'speakingurl';
+import { imageProxy } from 'tf-post-parser';
 import AmpImageGallery from '../components/Amp/AmpImageGallery';
 import ImageGallery from '../components/Post/DynamicPostComponents/ImageGallery';
 import LinkTool from '../components/Post/DynamicPostComponents/LinkTool';
 import MasonryImageGallery from '../components/Post/DynamicPostComponents/MasonryImageGallery';
 import TableOfContents from '../components/Post/DynamicPostComponents/TableOfContents';
 import Link from '../lib/Link';
-import { imageProxy } from './getImage';
 import { exitUrl, instagramPost, mentionUrl, postUrl } from './regex';
 
 const parseHtmlToReact = (htmlBody, options) => {
